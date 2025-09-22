@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -240,18 +241,68 @@ export default function Home() {
       </motion.section>
 
       {/* Trust Badges Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-2xl font-bold text-green-900 mb-6">Trusted By</h2>
-          <p className="mb-6">Resinaro works alongside community groups and institutions.</p>
-          <div className="flex justify-center space-x-10 opacity-80">
-            <img src="/logos/acli.png" alt="ACLI" className="h-12" />
-            <img src="/logos/embassy.png" alt="Italian Embassy" className="h-12" />
-            <img src="/logos/nhs.png" alt="NHS" className="h-12" />
-            <img src="/logos/community.png" alt="Community Org" className="h-12" />
-          </div>
-        </div>
-      </section>
+      <section className="py-12 text-center">
+  <h2 className="text-2xl font-bold text-green-900 mb-4">Trusted By</h2>
+  <p className="mb-8 text-gray-700">
+    Resinaro works alongside community groups and institutions.
+  </p>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
+    <a
+      href="https://www.acli.it/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex justify-center"
+    >
+      <Image
+        src="/logo-ACLI-aps.webp"
+        alt="ACLI"
+        width={80}
+        height={80}
+        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+      />
+    </a>
+    <a
+      href="https://amblondra.esteri.it/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex justify-center"
+    >
+      <Image
+        src="/Emblem_of_Italy.svg.png"
+        alt="Italian Embassy"
+        width={80}
+        height={80}
+        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+      />
+    </a>
+    <a
+      href="https://www.nhs.uk/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex justify-center"
+    >
+      <Image
+        src="/nhs-logo.svg"
+        alt="NHS"
+        width={80}
+        height={80}
+        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+      />
+    </a>
+    <a
+      href="/community"
+      className="flex justify-center"
+    >
+      <Image
+        src="/handshake-solid-full.svg"
+        alt="Community Org"
+        width={80}
+        height={80}
+        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+      />
+    </a>
+  </div>
+</section>
 
 
     </main>

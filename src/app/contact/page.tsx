@@ -70,3 +70,26 @@ export default function Contact() {
     </main>
   );
 }
+
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const formData = {
+    name: (e.target as any).name.value,
+    email: (e.target as any).email.value,
+    message: (e.target as any).message.value,
+  };
+
+  const res = await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+
+  if (res.ok) {
+    alert("Message sent successfully!");
+  } else {
+    alert("Something went wrong.");
+  }
+};
