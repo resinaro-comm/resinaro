@@ -4,14 +4,14 @@ import { ReactNode } from "react";
 
 interface PageWrapperProps {
   children: ReactNode;
-  routeKey?: string;
+  routeKey?: string | null; // allow null here too
 }
 
 export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={routeKey}
+        key={routeKey ?? "default"} // fallback to avoid React key warnings
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
