@@ -5,10 +5,38 @@ import { useState } from "react";
 export default function Contact() {
   const [formStatus, setFormStatus] = useState("");
   const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormStatus("Thank you for your message! We will reply soon.");
+    setLoading(true);
+
+    const form = e.currentTarget;
+    const formData = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setFormStatus("✅ Message sent successfully!");
+        form.reset();
+        setFileName("");
+      } else {
+        setFormStatus("❌ Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setFormStatus("⚠️ Network error, please try later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,15 +57,20 @@ export default function Contact() {
         <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
           <div>
             <label className="block text-sm font-medium mb-1">Name</label>
-            <input type="text" required className="w-full border rounded px-3 py-2" />
+            <input type="text" name="name" required className="w-full border rounded px-3 py-2" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
-            <input type="email" required className="w-full border rounded px-3 py-2" />
+            <input type="email" name="email" required className="w-full border rounded px-3 py-2" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Message</label>
-            <textarea rows={5} required className="w-full border rounded px-3 py-2"></textarea>
+            <textarea
+              name="message"
+              rows={5}
+              required
+              className="w-full border rounded px-3 py-2"
+            ></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Upload Documents</label>
@@ -51,11 +84,12 @@ export default function Contact() {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800"
           >
-            Send Message
+            {loading ? "Sending..." : "Send Message"}
           </button>
-          {formStatus && <p className="text-green-700 mt-4">{formStatus}</p>}
+          {formStatus && <p className="mt-4">{formStatus}</p>}
         </form>
 
         <div className="mt-12 bg-white p-6 rounded-lg shadow">
@@ -70,26 +104,3 @@ export default function Contact() {
     </main>
   );
 }
-
-
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  const formData = {
-    name: (e.target as any).name.value,
-    email: (e.target as any).email.value,
-    message: (e.target as any).message.value,
-  };
-
-  const res = await fetch("/api/contact", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
-  });
-
-  if (res.ok) {
-    alert("Message sent successfully!");
-  } else {
-    alert("Something went wrong.");
-  }
-};
