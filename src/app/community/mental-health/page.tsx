@@ -1,5 +1,5 @@
 
-export const metadata = { title: "Mental Health Support in the UK | Resinaro", description: "Guides, groups and resources to access NHS help and build wellbeing.", alternates: { canonical: "/community/mental-health" },
+export const metadata = { title: "Mental Health Support in the UK | Resinaro", description: "Guides, groups and resources to access NHS help and build wellbeing.", alternates: { canonical: "/community/mental-health" }, }
 
 export default function MentalHealthPage() {
   return (
@@ -12,6 +12,7 @@ export default function MentalHealthPage() {
         At Resinaro, we believe nobody should face loneliness, anxiety,
         or stress alone. This space is here to give hope, guidance, and connection.
       </p>
+      
 
       {/* Immediate Help Section */}
       <section className="mb-10">
