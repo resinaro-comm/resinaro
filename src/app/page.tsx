@@ -206,19 +206,19 @@ export default function Home() {
               {
                 title: "How to apply for your Italian Passport",
                 desc: "Step by step guide for 2025...",
-                link: "/community/blog",
+                link: "/community",
                 delay: 0.1,
               },
               {
                 title: "Mental Health Resources for People",
                 desc: "Where to find support in the UK...",
-                link: "/community/blog",
+                link: "/community",
                 delay: 0.2,
               },
               {
                 title: "What is AIRE and how to register",
                 desc: "Everything you need to know...",
-                link: "/community/blog",
+                link: "/community",
                 delay: 0.3,
               },
             ].map((blog) => (

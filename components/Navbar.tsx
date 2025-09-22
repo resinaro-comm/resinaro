@@ -50,7 +50,7 @@ const Navbar = () => {
             <Link href="/about" className="hover:text-red-700">About</Link>
             <Link href="/contact" className="hover:text-red-700">Contact</Link>
             <Link href="/services" className="hover:text-red-700">Services</Link>
-            <Link href="/community/blog" className="hover:text-red-700">Community</Link>
+            <Link href="/community" className="hover:text-red-700">Community</Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -89,7 +89,7 @@ const Navbar = () => {
             <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-red-700">About</Link>
             <Link href="/contact" onClick={() => setIsOpen(false)} className="hover:text-red-700">Contact</Link>
             <Link href="/services" onClick={() => setIsOpen(false)} className="hover:text-red-700">Services</Link>
-            <Link href="/community/blog" onClick={() => setIsOpen(false)} className="hover:text-red-700">Community</Link>
+            <Link href="/community" onClick={() => setIsOpen(false)} className="hover:text-red-700">Community</Link>
           </aside>
         </div>
       )}
