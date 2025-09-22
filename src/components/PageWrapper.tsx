@@ -7,10 +7,13 @@ interface PageWrapperProps {
 }
 
 export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
+  // Ensure key is never null (handle usePathname possibly returning null)
+  const safeKey: string | undefined = routeKey ?? undefined;
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={routeKey}
+        key={safeKey}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
