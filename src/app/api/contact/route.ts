@@ -133,10 +133,15 @@ export async function POST(req: Request) {
     // Initialize google clients (lazy import)
     const { drive, sheets, sheetId } = await initGoogleClients();
 
-    // create folder for this submission
-    const folder = await createSubmissionFolder(drive, submissionId);
+        // Use the shared parent folder directly (avoid creating per-submission folders
+    // which may end up owned by the service account and trigger quota 403s).
+    const parentFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    if (!parentFolderId) {
+      return NextResponse.json({ error: "Server not configured: missing GOOGLE_DRIVE_FOLDER_ID" }, { status: 500 });
+    }
+    const folderWebViewLink = `https://drive.google.com/drive/folders/${parentFolderId}`;
 
-    // validate + upload files to that folder
+    // validate + upload files directly into the parent folder
     const fileLinks: string[] = [];
     for (const file of files) {
       if (!file || typeof file.size !== "number") continue;
@@ -147,11 +152,11 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `File "${file.name}" has unsupported type: ${file.type}` }, { status: 400 });
       }
 
-      const link = await uploadToDrive(drive, file, folder.id!);
+      const link = await uploadToDrive(drive, file, parentFolderId);
       fileLinks.push(link || "Upload failed");
     }
 
-    // append row to sheet
+    // append row to sheet (record parent folder link)
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
       range: "Sheet1!A:I", // columns: SubmissionId,First,Last,Phone,Email,Message,FolderLink,FileLinks,Timestamp
@@ -164,14 +169,14 @@ export async function POST(req: Request) {
           phone,
           email,
           message,
-          folder.webViewLink || "",
+          folderWebViewLink,
           fileLinks.join(", "),
           new Date().toISOString(),
         ]],
       },
     });
 
-    return NextResponse.json({ success: true, submissionId, folderLink: folder.webViewLink, fileLinks });
+    return NextResponse.json({ success: true, submissionId, folderLink: folderWebViewLink, fileLinks });
   } catch (err) {
     console.error("Error handling form submission:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
