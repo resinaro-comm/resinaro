@@ -308,3 +308,32 @@ export default function Home() {
     </main>
   );
 }
+
+{/* Trust & Safety Section */}
+<div className="mt-12 bg-white p-6 rounded-lg shadow">
+  <h2 className="text-2xl font-bold mb-4">Your Privacy & Safety</h2>
+  <ul className="space-y-4 text-gray-700">
+    <li>
+      <span className="font-semibold">🔒 GDPR Compliant:</span> 
+      We fully comply with UK & EU data protection regulations. 
+      Your documents are used only for the services you request.
+    </li>
+    <li>
+      <span className="font-semibold">📂 Secure Storage:</span> 
+      Files are stored privately on Google Drive and never shared with third parties.
+    </li>
+    <li>
+      <span className="font-semibold">👩‍💼 Controlled Access:</span> 
+      Only verified Resinaro staff can view your files, strictly for processing your request.
+    </li>
+    <li>
+      <span className="font-semibold">🗑 Right to Deletion:</span> 
+      You may request permanent deletion of your files anytime by emailing 
+      <a href="mailto:help@resinaro.com" className="text-green-700 underline"> help@resinaro.com</a>.
+    </li>
+    <li>
+      <span className="font-semibold">⏱ Response Time:</span> 
+      We aim to respond to all messages within 48 hours.
+    </li>
+  </ul>
+</div>

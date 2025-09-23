@@ -11,7 +11,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+     "jsx": "react-jsx",        // or "react" if using the classic runtime + `import React from 'react'`
+    "lib": ["ES2020", "DOM"],
     "incremental": true,
     "plugins": [
       {
