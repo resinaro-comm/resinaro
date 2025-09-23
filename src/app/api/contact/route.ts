@@ -1,98 +1,105 @@
 // src/app/api/contact/route.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { Readable } from "stream";
-
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 
 /**
- * NOTE:
- * - This file preserves your existing Drive + Sheets behavior.
- * - It lazy-imports `googleapis` to avoid bundling it at build time.
- * - A very small eslint-disable block is scoped to the dynamic import helpers
- *   to avoid sprinkling `any` everywhere while keeping strict typing elsewhere.
+ * This route:
+ *  - lazy-imports googleapis for Sheets (keeps bundle small)
+ *  - lazy-imports @google-cloud/storage for uploading files to a GCS bucket
+ *  - validates inputs, uploads files to a per-submission prefix in the bucket,
+ *    generates short-lived signed URLs for each uploaded file, and appends a row to Sheets.
+ *
+ * Requirements (to run after this change):
+ *  - Environment vars: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID, GOOGLE_STORAGE_BUCKET
+ *  - Install @google-cloud/storage in your project (I will ask you to run the npm command next)
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-async function createSubmissionFolder(drive: any, submissionId: string) {
-  const res = await drive.files.create({
-    supportsAllDrives: true,            // <--- allow shared drive / shared folder operations
-    requestBody: {
-      name: `Submission_${submissionId}`,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: process.env.GOOGLE_DRIVE_FOLDER_ID ? [process.env.GOOGLE_DRIVE_FOLDER_ID as string] : undefined,
-    },
-    fields: "id, webViewLink",
-  });
-  return res.data;
-}
-
-
-async function uploadToDrive(drive: any, file: File, submissionFolderId: string) {
-  // Convert web File -> ArrayBuffer -> Buffer
-  const ab = await file.arrayBuffer();
-  const buffer = Buffer.from(ab);
-
-  // Create a Node Readable stream from the buffer so googleapis can pipe it.
-  const stream = Readable.from(buffer);
-
-  const res = await drive.files.create({
-    supportsAllDrives: true,            // <--- allow shared drive / shared folder operations
-    requestBody: {
-      name: file.name,
-      parents: [submissionFolderId],
-    },
-    media: {
-      mimeType: file.type || "application/octet-stream",
-      body: stream,
-    },
-    fields: "id, webViewLink",
-  });
-
-  return res.data?.webViewLink;
-}
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
-
+/* Helper: lazy-init googleapis (Sheets) and GCS Storage client */
 async function initGoogleClients() {
-  // lazy import googleapis and create auth/clients
+  // lazy import googleapis for Sheets
   const googleMod = await import("googleapis");
-  // `googleMod` is a dynamically imported module; treat as any only here
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const google: any = (googleMod as any).google ?? (googleMod as any);
 
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
   let privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const sheetId = process.env.GOOGLE_SHEET_ID;
-  if (!clientEmail || !privateKey || !sheetId) {
-    throw new Error("Missing required Google env vars");
+  const bucketName = process.env.GOOGLE_STORAGE_BUCKET;
+
+  if (!clientEmail || !privateKey || !sheetId || !bucketName) {
+    throw new Error("Missing required Google env vars (GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID, GOOGLE_STORAGE_BUCKET)");
   }
-  // Vercel sometimes stores \n as literal backslash-n. Convert if needed.
   privateKey = privateKey.replace(/\\n/g, "\n");
 
+  // auth for Sheets
   const auth = new google.auth.JWT({
     email: clientEmail,
     key: privateKey,
     scopes: [
       "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive.file",
     ],
   });
   await auth.authorize();
-
-  const drive = google.drive({ version: "v3", auth });
   const sheets = google.sheets({ version: "v4", auth });
 
-  return { drive, sheets, sheetId };
+  // lazy import GCS Storage (use dynamic import to keep build-time small)
+  const storageMod = await import("@google-cloud/storage");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { Storage } = storageMod as any;
+
+  // Create storage client using explicit credentials (no need for ADC)
+  const storage = new Storage({
+    credentials: {
+      client_email: clientEmail,
+      private_key: privateKey,
+    },
+    // optional: you can also pass projectId if you set it in env
+    projectId: process.env.GCP_PROJECT_ID,
+  });
+
+  return { sheets, storage, sheetId, bucketName };
+}
+
+/* Upload a single File to GCS under a submission prefix and return a signed URL */
+async function uploadToGCS(storage: any, bucketName: string, submissionId: string, file: File) {
+  const ab = await file.arrayBuffer();
+  const buffer = Buffer.from(ab);
+
+  // object path: submissions/<submissionId>/<filename>
+  const objectName = `submissions/${submissionId}/${file.name.replace(/\//g, "_")}`;
+
+  const bucket = storage.bucket(bucketName);
+  const fileObj = bucket.file(objectName);
+
+  // save buffer (non-resumable for small files)
+  await fileObj.save(buffer, {
+    resumable: false,
+    metadata: {
+      contentType: file.type || "application/octet-stream",
+    },
+  });
+
+  // generate a short-lived signed URL (7 days)
+  const expiresMs = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
+  // getSignedUrl accepts a Date or string in some libs; pass a timestamp number works in recent versions
+  const [signedUrl] = await fileObj.getSignedUrl({
+    action: "read",
+    expires: expiresMs,
+  });
+
+  // Return the signed URL and the GCS object path for debugging/reference
+  return { signedUrl, objectPath: `gs://${bucketName}/${objectName}` };
 }
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
-    // --- DEBUG: log incoming entries so you can see what's being received
+    // debug incoming fields
     console.log("Incoming form keys/values:");
     formData.forEach((v, k) => {
       if (v instanceof File) {
@@ -102,47 +109,38 @@ export async function POST(req: Request) {
       }
     });
 
-    // read textual fields (FormData returns FormDataEntryValue which can be string or File)
+    // textual fields
     const firstName = (formData.get("firstName") as string) || (formData.get("first_name") as string) || "";
     const lastName = (formData.get("lastName") as string) || (formData.get("last_name") as string) || "";
     const phone = (formData.get("phone") as string) || "";
     const email = (formData.get("email") as string) || "";
     const message = (formData.get("message") as string) || "";
 
-    // collect files (FormData.getAll returns arrays of FormDataEntryValue)
+    // files
     const rawFiles = formData.getAll("files");
     const files: File[] = rawFiles
       .filter((v) => (v as unknown as { name?: unknown })?.name)
       .map((v) => v as File);
 
-    // validate required fields
+    // required checks
     const missing: string[] = [];
     if (!firstName.trim()) missing.push("firstName");
     if (!lastName.trim()) missing.push("lastName");
     if (!phone.trim()) missing.push("phone");
     if (!email.trim()) missing.push("email");
     if (!message.trim()) missing.push("message");
-
     if (missing.length) {
       return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 });
     }
 
-    // Generate unique ID for submission
+    // unique submission id
     const submissionId = crypto.randomUUID();
 
-    // Initialize google clients (lazy import)
-    const { drive, sheets, sheetId } = await initGoogleClients();
+    // init clients
+    const { sheets, storage, sheetId, bucketName } = await initGoogleClients();
 
-        // Use the shared parent folder directly (avoid creating per-submission folders
-    // which may end up owned by the service account and trigger quota 403s).
-    const parentFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-    if (!parentFolderId) {
-      return NextResponse.json({ error: "Server not configured: missing GOOGLE_DRIVE_FOLDER_ID" }, { status: 500 });
-    }
-    const folderWebViewLink = `https://drive.google.com/drive/folders/${parentFolderId}`;
-
-    // validate + upload files directly into the parent folder
-    const fileLinks: string[] = [];
+    // upload files to GCS
+    const uploadResults: { url: string; path: string }[] = [];
     for (const file of files) {
       if (!file || typeof file.size !== "number") continue;
       if (file.size > MAX_FILE_SIZE) {
@@ -152,14 +150,18 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `File "${file.name}" has unsupported type: ${file.type}` }, { status: 400 });
       }
 
-      const link = await uploadToDrive(drive, file, parentFolderId);
-      fileLinks.push(link || "Upload failed");
+      const { signedUrl, objectPath } = await uploadToGCS(storage, bucketName, submissionId, file);
+      uploadResults.push({ url: signedUrl, path: objectPath });
     }
 
-    // append row to sheet (record parent folder link)
+    // append row to sheet; record bucket path and signed URLs
+    // columns: SubmissionId,First,Last,Phone,Email,Message,StoragePath,FileLinks,Timestamp
+    const storagePath = `gs://${bucketName}/submissions/${submissionId}/`;
+    const fileLinksStr = uploadResults.map((r) => r.url).join(", ");
+
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: "Sheet1!A:I", // columns: SubmissionId,First,Last,Phone,Email,Message,FolderLink,FileLinks,Timestamp
+      range: "Sheet1!A:I",
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[
@@ -169,16 +171,22 @@ export async function POST(req: Request) {
           phone,
           email,
           message,
-          folderWebViewLink,
-          fileLinks.join(", "),
+          storagePath,
+          fileLinksStr,
           new Date().toISOString(),
         ]],
       },
     });
 
-    return NextResponse.json({ success: true, submissionId, folderLink: folderWebViewLink, fileLinks });
+    return NextResponse.json({
+      success: true,
+      submissionId,
+      storagePath,
+      fileLinks: uploadResults.map((r) => r.url),
+    });
   } catch (err) {
     console.error("Error handling form submission:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */

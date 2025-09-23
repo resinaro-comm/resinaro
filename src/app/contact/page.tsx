@@ -139,7 +139,7 @@ export default function Contact() {
           Fill out the details below and we’ll get back to you as soon as possible.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6 bg-white p-6 rounded-lg shadow">
           <input name="firstName" type="text" required placeholder="First Name" className="w-full border rounded px-3 py-2" />
           <input name="lastName" type="text" required placeholder="Last Name" className="w-full border rounded px-3 py-2" />
           <input name="phone" type="tel" required placeholder="Phone Number" className="w-full border rounded px-3 py-2" />
