@@ -1,6 +1,8 @@
 // src/app/api/contact/route.ts
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { Readable } from "stream";
+
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
@@ -26,8 +28,14 @@ async function createSubmissionFolder(drive: any, submissionId: string) {
   return res.data;
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 async function uploadToDrive(drive: any, file: File, submissionFolderId: string) {
-  const buffer = Buffer.from(await file.arrayBuffer());
+  // Convert web File -> ArrayBuffer -> Buffer
+  const ab = await file.arrayBuffer();
+  const buffer = Buffer.from(ab);
+
+  // Create a Node Readable stream from the buffer so googleapis can pipe it.
+  const stream = Readable.from(buffer);
 
   const res = await drive.files.create({
     requestBody: {
@@ -36,7 +44,7 @@ async function uploadToDrive(drive: any, file: File, submissionFolderId: string)
     },
     media: {
       mimeType: file.type || "application/octet-stream",
-      body: buffer,
+      body: stream,
     },
     fields: "id, webViewLink",
   });
