@@ -59,15 +59,22 @@ const posts = [
   }
 ];
 
-export default function CommunityHub({ searchParams }: { searchParams: { q?: string; category?: string; sort?: string } }) {
+export default async function CommunityHub({ searchParams }: { searchParams?: Promise<unknown> }) {
+  // Accept searchParams possibly as a Promise of unknown to avoid `any`.
+  // At runtime we resolve then narrow to the expected shape.
+  const resolvedUnknown = await Promise.resolve(searchParams) as unknown;
+  const resolved = (resolvedUnknown as { q?: string; category?: string; sort?: string } | undefined);
+
+
   let filtered = posts;
-  const { q, category, sort } = searchParams || {};
+  const { q, category, sort } = (resolved ?? {}) as { q?: string; category?: string; sort?: string };
   if (q) filtered = filtered.filter(p => p.title.toLowerCase().includes(q.toLowerCase()) || p.description.toLowerCase().includes(q.toLowerCase()));
   if (category) filtered = filtered.filter(p => p.category === category);
   if (sort === "title") filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
   if (sort === "category") filtered = filtered.sort((a, b) => a.category.localeCompare(b.category));
 
   const categories = Array.from(new Set(posts.map(p => p.category)));
+
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800 min-h-screen py-12">

@@ -230,7 +230,7 @@ const qa: QA[] = [
   },
 ];
 
-function QAItem({item, idx}: {item: QA; idx: number}) {
+function QAItem({ item }: { item: QA }) {
   const [open, setOpen] = useState(false);
   const btnId = useId();
   const panelId = useId();
@@ -290,13 +290,12 @@ export default function ServicesFAQ() {
         </p>
 
         <div className="space-y-3">
-          {qa.map((item, i) => (<QAItem key={i} item={item} idx={i} />))}
+          {qa.map((item) => (<QAItem key={item.q} item={item} />))}
         </div>
       </div>
 
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </section>

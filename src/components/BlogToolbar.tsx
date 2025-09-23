@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 type Item = {
   id: string;
@@ -27,6 +27,19 @@ export default function BlogToolbar({
       .filter((it) => (nq ? norm(it.title + " " + it.summary).includes(nq) : true))
       .map((it) => it.id);
   }, [items, q, cat]);
+
+  // Notify parent when filteredIds change
+  useEffect(() => {
+    try {
+      onFiltered(filteredIds);
+    } catch (e) {
+      // defensively ignore errors from parent callback so toolbar doesn't break the page
+      // but log in dev for visibility
+      if (process.env.NODE_ENV !== "production") {
+        console.error("BlogToolbar onFiltered threw:", e);
+      }
+    }
+  }, [filteredIds, onFiltered]);
 
   return (
     <div className="mb-6">
@@ -59,17 +72,7 @@ export default function BlogToolbar({
         <span className="text-sm text-gray-600 md:ml-auto">{filteredIds.length} post{filteredIds.length !== 1 ? "s" : ""}</span>
       </div>
 
-      {/* Push filtered IDs up whenever they change */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `(${(() => {
-            // this self-exec runs client-side; framework will not eval until hydration
-            // we signal filtered ids back via a custom event so parent can show/hide cards
-          }).toString()})();`,
-        }}
-      />
-      {/** notify parent imperatively (simpler than prop callback through RSC boundary) */}
-      <span className="hidden" data-ids={filteredIds.join(",")} id="__blogFilteredIds" />
+      {/** The component now notifies the parent via the onFiltered callback. */}
     </div>
   );
 }

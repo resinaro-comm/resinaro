@@ -156,12 +156,15 @@ export default function Home() {
 
       {/* Community Image + Reviews Carousel */}
       <section className="py-16 text-center">
-        <img
+        <Image
           src="/images/about/community-image.png"
           alt="Resinaro community: Italians and migrants in the UK supporting each other at an event."
           className="rounded-3xl max-w-5xl mx-auto block shadow-md mb-6"
-          style={{ width: '100%', height: 'auto' }}
+          width={1200}
+          height={640}
+          priority={false}
         />
+
         <h2 className="text-3xl font-bold text-green-900 mb-8">What Our Community Says</h2>
         <div className="bg-white p-8 rounded shadow max-w-2xl mx-auto relative">
           <p className="italic text-lg">“{reviews[current].text}”</p>

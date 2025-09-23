@@ -1,27 +1,32 @@
+// src/app/api/contact/route.ts
 import { NextResponse } from "next/server";
-import { google } from "googleapis";
 import crypto from "crypto";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 
-// create a subfolder for each submission
-async function createSubmissionFolder(auth: any, submissionId: string) {
-  const drive = google.drive({ version: "v3", auth });
+/**
+ * NOTE:
+ * - This file preserves your existing Drive + Sheets behavior.
+ * - It lazy-imports `googleapis` to avoid bundling it at build time.
+ * - A very small eslint-disable block is scoped to the dynamic import helpers
+ *   to avoid sprinkling `any` everywhere while keeping strict typing elsewhere.
+ */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+async function createSubmissionFolder(drive: any, submissionId: string) {
   const res = await drive.files.create({
     requestBody: {
       name: `Submission_${submissionId}`,
       mimeType: "application/vnd.google-apps.folder",
-      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID as string],
+      parents: process.env.GOOGLE_DRIVE_FOLDER_ID ? [process.env.GOOGLE_DRIVE_FOLDER_ID as string] : undefined,
     },
     fields: "id, webViewLink",
   });
   return res.data;
 }
 
-// upload a single file into the given folder id
-async function uploadToDrive(auth: any, file: File, submissionFolderId: string) {
-  const drive = google.drive({ version: "v3", auth });
+async function uploadToDrive(drive: any, file: File, submissionFolderId: string) {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   const res = await drive.files.create({
@@ -36,7 +41,40 @@ async function uploadToDrive(auth: any, file: File, submissionFolderId: string) 
     fields: "id, webViewLink",
   });
 
-  return res.data.webViewLink;
+  return res.data?.webViewLink;
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
+async function initGoogleClients() {
+  // lazy import googleapis and create auth/clients
+  const googleMod = await import("googleapis");
+  // `googleMod` is a dynamically imported module; treat as any only here
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const google: any = (googleMod as any).google ?? (googleMod as any);
+
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  let privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!clientEmail || !privateKey || !sheetId) {
+    throw new Error("Missing required Google env vars");
+  }
+  // Vercel sometimes stores \n as literal backslash-n. Convert if needed.
+  privateKey = privateKey.replace(/\\n/g, "\n");
+
+  const auth = new google.auth.JWT({
+    email: clientEmail,
+    key: privateKey,
+    scopes: [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive.file",
+    ],
+  });
+  await auth.authorize();
+
+  const drive = google.drive({ version: "v3", auth });
+  const sheets = google.sheets({ version: "v4", auth });
+
+  return { drive, sheets, sheetId };
 }
 
 export async function POST(req: Request) {
@@ -62,7 +100,9 @@ export async function POST(req: Request) {
 
     // collect files (FormData.getAll returns arrays of FormDataEntryValue)
     const rawFiles = formData.getAll("files");
-    const files: File[] = rawFiles.filter((v) => (v as any)?.name).map((v) => v as File);
+    const files: File[] = rawFiles
+      .filter((v) => (v as unknown as { name?: unknown })?.name)
+      .map((v) => v as File);
 
     // validate required fields
     const missing: string[] = [];
@@ -79,20 +119,11 @@ export async function POST(req: Request) {
     // Generate unique ID for submission
     const submissionId = crypto.randomUUID();
 
-    // Google Auth (service account)
-    const auth = new google.auth.JWT({
-      email: process.env.GOOGLE_CLIENT_EMAIL,
-      key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      scopes: [
-        "https://www.googleapis.com/auth/spreadsheets",
-        "https://www.googleapis.com/auth/drive.file",
-      ],
-    });
-
-    const sheets = google.sheets({ version: "v4", auth });
+    // Initialize google clients (lazy import)
+    const { drive, sheets, sheetId } = await initGoogleClients();
 
     // create folder for this submission
-    const folder = await createSubmissionFolder(auth, submissionId);
+    const folder = await createSubmissionFolder(drive, submissionId);
 
     // validate + upload files to that folder
     const fileLinks: string[] = [];
@@ -105,13 +136,13 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `File "${file.name}" has unsupported type: ${file.type}` }, { status: 400 });
       }
 
-      const link = await uploadToDrive(auth, file, folder.id!);
+      const link = await uploadToDrive(drive, file, folder.id!);
       fileLinks.push(link || "Upload failed");
     }
 
     // append row to sheet
     await sheets.spreadsheets.values.append({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+      spreadsheetId: sheetId,
       range: "Sheet1!A:I", // columns: SubmissionId,First,Last,Phone,Email,Message,FolderLink,FileLinks,Timestamp
       valueInputOption: "USER_ENTERED",
       requestBody: {
