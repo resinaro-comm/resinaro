@@ -18,6 +18,7 @@ const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 /* eslint-disable @typescript-eslint/no-explicit-any */
 async function createSubmissionFolder(drive: any, submissionId: string) {
   const res = await drive.files.create({
+    supportsAllDrives: true,            // <--- allow shared drive / shared folder operations
     requestBody: {
       name: `Submission_${submissionId}`,
       mimeType: "application/vnd.google-apps.folder",
@@ -28,7 +29,7 @@ async function createSubmissionFolder(drive: any, submissionId: string) {
   return res.data;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 async function uploadToDrive(drive: any, file: File, submissionFolderId: string) {
   // Convert web File -> ArrayBuffer -> Buffer
   const ab = await file.arrayBuffer();
@@ -38,6 +39,7 @@ async function uploadToDrive(drive: any, file: File, submissionFolderId: string)
   const stream = Readable.from(buffer);
 
   const res = await drive.files.create({
+    supportsAllDrives: true,            // <--- allow shared drive / shared folder operations
     requestBody: {
       name: file.name,
       parents: [submissionFolderId],
@@ -52,6 +54,7 @@ async function uploadToDrive(drive: any, file: File, submissionFolderId: string)
   return res.data?.webViewLink;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
+
 
 async function initGoogleClients() {
   // lazy import googleapis and create auth/clients
