@@ -1,70 +1,126 @@
 import Link from "next/link";
 
-export const metadata = { title: "Community Knowledge Hub | Resinaro", description: "Guides, checklists, and resources for Italians and migrants in the UK.", alternates: { canonical: "/community" }, };
+export const metadata = {
+  title: "Community Knowledge Hub | Resinaro",
+  description: "Guides, checklists, and resources for Italians and migrants in the UK.",
+  alternates: { canonical: "/community" },
+};
 
 const posts = [
+  // Newly upgraded posts (added at the top)
   {
-    title: "Italian Passport in the UK (2025): Documents, Preparation & What to Expect",
-    description: "A clear, up-to-date checklist to renew or apply for an Italian passport in the UK. Required documents, minor applications, fees, and booking tips—with help options.",
+    title: "Open a Revolut Account in the UK (2025) — Quick Guide",
+    description:
+      "Step-by-step guide to opening a Revolut account in the UK for migrants: verification, proof-of-address, payroll, fees and troubleshooting (2025).",
+    slug: "/community/life-in-uk/banking/open-revolut-account-uk-2025",
+    category: "banking",
+  },
+  {
+    title: "Open a Monzo Account in the UK (2025) — Guide for Migrants",
+    description:
+      "How to sign up for Monzo from the UK: ID & liveness checks, receiving your debit card, proof-of-address options and common signup issues.",
+    slug: "/community/life-in-uk/banking/open-monzo-account-uk-2025",
+    category: "banking",
+  },
+  {
+    title: "Open a Starling Account in the UK (2025) — Guide for Migrants",
+    description:
+      "Starling Bank walkthrough for migrants: setup, FSCS protection, card delivery, business options and troubleshooting (2025).",
+    slug: "/community/life-in-uk/banking/open-starling-account-uk-2025",
+    category: "banking",
+  },
+  {
+    title: "Finding Affordable Housing in London (2025): Guide for New Arrivals",
+    description:
+      "Practical advice for finding safe, affordable housing in London: where to search, referencing, deposit protection, avoiding scams and emergency help.",
+    slug: "/community/life-in-uk/finding-affordable-housing-london-2025",
+    category: "housing",
+  },
+  {
+    title: "Navigating NHS Healthcare as an Italian in the UK (2025)",
+    description:
+      "How Italians and EU nationals can register with a GP, get an NHS number, access interpreters, urgent care, prescriptions and GHIC guidance.",
+    slug: "/community/life-in-uk/navigating-nhs-healthcare-italians-uk-2025",
+    category: "health",
+  },
+
+  // Existing posts (unchanged)
+  {
+    title:
+      "Italian Passport in the UK (2025): Documents, Preparation & What to Expect",
+    description:
+      "A clear, up-to-date checklist to renew or apply for an Italian passport in the UK. Required documents, minor applications, fees, and booking tips—with help options.",
     slug: "/community/bureaucracy-guides/italian-passport-uk-docs-prep",
-    category: "bureaucracy-guides"
+    category: "bureaucracy-guides",
   },
   {
-    title: "Italian Electronic ID Card (CIE) in the UK (2025): Eligibility, Documents, Booking & Uses",
-    description: "Complete guide to the Italian CIE from the UK: who can apply, required documents, how to book, fingerprints, minors, fees, and how to use the CIE for digital services (SPID/CIE ID).",
+    title:
+      "Italian Electronic ID Card (CIE) in the UK (2025): Eligibility, Documents, Booking & Uses",
+    description:
+      "Complete guide to the Italian CIE from the UK: who can apply, required documents, how to book, fingerprints, minors, fees, and how to use the CIE for digital services (SPID/CIE ID).",
     slug: "/community/bureaucracy-guides/italian-cie-id-card-uk",
-    category: "bureaucracy-guides"
+    category: "bureaucracy-guides",
   },
   {
-    title: "Registering UK Birth/Marriage/Divorce in Italy (2025): Documents, Apostille & Consular Transcriptions",
+    title:
+      "Registering UK Birth/Marriage/Divorce in Italy (2025): Documents, Apostille & Consular Transcriptions",
     description: "",
     slug: "/community/bureaucracy-guides/register-uk-events-with-italy",
-    category: "bureaucracy-guides"
+    category: "bureaucracy-guides",
   },
   {
-    title: "Exchange Italian Driving Licence for a UK Licence (2025): DVLA Steps, Documents & Timelines",
+    title:
+      "Exchange Italian Driving Licence for a UK Licence (2025): DVLA Steps, Documents & Timelines",
     description: "",
     slug: "/community/life-in-uk/exchange-italian-driving-licence-uk",
-    category: "life-in-uk"
+    category: "life-in-uk",
   },
   {
-    title: "National Insurance Number (NIN) for Italians in the UK: Apply, Replace & Timelines (2025)",
+    title:
+      "National Insurance Number (NIN) for Italians in the UK: Apply, Replace & Timelines (2025)",
     description: "",
     slug: "/community/life-in-uk/national-insurance-number-uk-italians",
-    category: "life-in-uk"
+    category: "life-in-uk",
   },
   {
-    title: "Loneliness to Belonging (2025): A 30-Day Community Plan for Migrants in the UK",
+    title:
+      "Loneliness to Belonging (2025): A 30-Day Community Plan for Migrants in the UK",
     description: "",
     slug: "/community/mental-health/loneliness-belonging-uk-30-day-plan",
-    category: "mental-health"
+    category: "mental-health",
   },
   {
-    title: "NHS Mental Health Support in the UK (2025): How to Access Help, Self-Referral & What to Expect",
+    title:
+      "NHS Mental Health Support in the UK (2025): How to Access Help, Self-Referral & What to Expect",
     description: "",
     slug: "/community/mental-health/nhs-mental-health-access-uk",
-    category: "mental-health"
+    category: "mental-health",
   },
   {
-    title: "AIRE Updates from the UK (2025): Change Address, Marriage, Birth, Name — FAST IT Guide",
+    title:
+      "AIRE Updates from the UK (2025): Change Address, Marriage, Birth, Name — FAST IT Guide",
     description: "",
     slug: "/community/bureaucracy-guides/keep-aire-up-to-date-uk",
-    category: "bureaucracy-guides"
+    category: "bureaucracy-guides",
   },
   {
-    title: "AIRE Registration from the UK (2025): FAST IT Steps, Proofs & Common Errors",
+    title:
+      "AIRE Registration from the UK (2025): FAST IT Steps, Proofs & Common Errors",
     description: "",
     slug: "/community/bureaucracy-guides/aire-registration-uk",
-    category: "bureaucracy-guides"
-  }
+    category: "bureaucracy-guides",
+  },
 ];
 
-export default async function CommunityHub({ searchParams }: { searchParams?: Promise<unknown> }) {
+export default async function CommunityHub({
+  searchParams,
+}: {
+  searchParams?: Promise<unknown>;
+}) {
   // Accept searchParams possibly as a Promise of unknown to avoid `any`.
   // At runtime we resolve then narrow to the expected shape.
   const resolvedUnknown = await Promise.resolve(searchParams) as unknown;
   const resolved = (resolvedUnknown as { q?: string; category?: string; sort?: string } | undefined);
-
 
   let filtered = posts;
   const { q, category, sort } = (resolved ?? {}) as { q?: string; category?: string; sort?: string };
@@ -74,7 +130,6 @@ export default async function CommunityHub({ searchParams }: { searchParams?: Pr
   if (sort === "category") filtered = filtered.sort((a, b) => a.category.localeCompare(b.category));
 
   const categories = Array.from(new Set(posts.map(p => p.category)));
-
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800 min-h-screen py-12">

@@ -22,7 +22,6 @@ const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 async function initGoogleClients() {
   // lazy import googleapis for Sheets
   const googleMod = await import("googleapis");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const google: any = (googleMod as any).google ?? (googleMod as any);
 
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
@@ -48,7 +47,6 @@ async function initGoogleClients() {
 
   // lazy import GCS Storage (use dynamic import to keep build-time small)
   const storageMod = await import("@google-cloud/storage");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { Storage } = storageMod as any;
 
   // Create storage client using explicit credentials (no need for ADC)

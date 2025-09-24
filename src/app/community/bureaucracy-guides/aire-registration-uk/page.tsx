@@ -1,5 +1,6 @@
 // src/app/community/bureaucracy-guides/aire-registration-uk/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title:
@@ -46,6 +47,23 @@ export default function Page() {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 pb-20">
       <div className="container mx-auto max-w-5xl px-6">
+        {/* HERO IMAGE */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          {/* Use the responsive Image component. Width/height match the 3:1 source (3840x1280). */}
+          <Image
+            src="/images/aire-registration-hero-3840x1280.png"
+            alt="Editorial desk with laptop showing a consular form, Italian passport and UK proof-of-address on a neat desk — professional AIRE registration setup."
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-auto object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Preparing documents for AIRE registration — scan proofs at 300 DPI, keep names and addresses consistent.
+          </figcaption>
+        </figure>
+
         {/* Title */}
         <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-6">
           AIRE Registration from the UK: FAST IT Steps, Proofs & Common Errors
