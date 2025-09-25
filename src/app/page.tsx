@@ -155,38 +155,46 @@ export default function Home() {
       </motion.section>
 
       {/* Community Image + Reviews Carousel */}
-      <section className="py-16 text-center">
-        <Image
-          src="/images/about/community-image.png"
-          alt="Resinaro community: Italians and migrants in the UK supporting each other at an event."
-          className="rounded-3xl max-w-5xl mx-auto block shadow-md mb-6"
-          width={1200}
-          height={640}
-          priority={false}
-        />
+<section className="py-16 text-center">
+  {/* wrapper constrains width to the page container and ensures consistent horizontal padding on mobile */}
+  <div className="max-w-5xl mx-auto mb-6 px-4">
+    <div className="w-full overflow-hidden rounded-3xl shadow-md">
+      <Image
+        src="/images/about/community-image.png"
+        alt="Resinaro community: Italians and migrants in the UK supporting each other at an event."
+        width={1200}
+        height={640}
+        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 85vw, 1200px"
+        className="w-full max-w-full h-auto object-cover block"
+        priority={false}
+      />
+    </div>
+  </div>
 
-        <h2 className="text-3xl font-bold text-green-900 mb-8">What Our Community Says</h2>
-        <div className="bg-white p-8 rounded shadow max-w-2xl mx-auto relative">
-          <p className="italic text-lg">“{reviews[current].text}”</p>
-          <p className="mt-4 font-bold">— {reviews[current].author}</p>
+  <h2 className="text-3xl font-bold text-green-900 mb-8">What Our Community Says</h2>
 
-          {/* Controls */}
-          <div className="flex justify-between mt-6">
-            <button
-              onClick={prevReview}
-              className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
-            >
-              ← Prev
-            </button>
-            <button
-              onClick={nextReview}
-              className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
-            >
-              Next →
-            </button>
-          </div>
-        </div>
-      </section>
+  <div className="bg-white p-8 rounded shadow max-w-2xl mx-auto relative">
+    <p className="italic text-lg">“{reviews[current].text}”</p>
+    <p className="mt-4 font-bold">— {reviews[current].author}</p>
+
+    {/* Controls */}
+    <div className="flex justify-between mt-6">
+      <button
+        onClick={prevReview}
+        className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
+      >
+        ← Prev
+      </button>
+      <button
+        onClick={nextReview}
+        className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
+      >
+        Next →
+      </button>
+    </div>
+  </div>
+</section>
+
 
       {/* Blog Preview */}
       <motion.section
