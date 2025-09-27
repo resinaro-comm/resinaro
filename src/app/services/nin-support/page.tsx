@@ -1,68 +1,75 @@
-import ServiceForm from "../../../../components/ServiceForm";
+// src/app/services/nin-support/page.tsx
+import React from "react";
 import { Metadata } from "next";
+import ServiceForm from "../../../components/ServiceForm";
 
 export const metadata: Metadata = {
   title: "National Insurance (NIN) Support | Resinaro",
-  description: "Step-by-step help with National Insurance Number applications and replacements for Italians and migrants in the UK.",
+  description:
+    "Step-by-step help with National Insurance Number applications and replacements for Italians and migrants in the UK.",
   alternates: { canonical: "/services/nin-support" },
 };
 
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
+  mainEntity: [
     {
       "@type": "Question",
-      "name": "How long does it take to receive a NIN?",
-      "acceptedAnswer": {
+      name: "How long does it take to receive a NIN?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Timelines vary. Initial HMRC verification can take a few days to several weeks. We help prepare documents and follow up to reduce avoidable delays."
-      }
+        text:
+          "Timelines vary. Initial HMRC verification can take a few days to several weeks. We help prepare documents and follow up to reduce avoidable delays.",
+      },
     },
     {
       "@type": "Question",
-      "name": "Do I need an appointment to apply?",
-      "acceptedAnswer": {
+      name: "Do I need an appointment to apply?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "Most applicants start the process by applying online or by phone with HMRC. We support you with the application and will contact HMRC where appropriate."
-      }
+        text:
+          "Most applicants start the process by applying online or by phone with HMRC. We support you with the application and will contact HMRC where appropriate.",
+      },
     },
     {
       "@type": "Question",
-      "name": "What if I do not have proof of address?",
-      "acceptedAnswer": {
+      name: "What if I do not have proof of address?",
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": "We advise on acceptable alternatives such as council tax letters, benefit letters or NHS correspondence. We can help obtain or prepare a cover letter explaining your circumstances."
-      }
-    }
-  ]
+        text:
+          "We advise on acceptable alternatives such as council tax letters, benefit letters or NHS correspondence. We can help obtain or prepare a cover letter explaining your circumstances.",
+      },
+    },
+  ],
 };
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "National Insurance Number (NIN) Support",
-  "provider": {
+  name: "National Insurance Number (NIN) Support",
+  provider: {
     "@type": "Organization",
-    "name": "Resinaro",
-    "url": "https://www.resinaro.com",
-    "email": "help@resinaro.com"
+    name: "Resinaro",
+    url: "https://www.resinaro.com",
+    email: "help@resinaro.com",
   },
-  "serviceType": "Document support and liaison with HMRC",
-  "areaServed": {
+  serviceType: "Document support and liaison with HMRC",
+  areaServed: {
     "@type": "Country",
-    "name": "United Kingdom"
+    name: "United Kingdom",
   },
-  "description": "Practical support to apply for a new National Insurance Number or recover a lost/forgotten number. We help prepare documents, contact HMRC and explain timelines.",
-  "offers": {
+  description:
+    "Practical support to apply for a new National Insurance Number or recover a lost/forgotten number. We help prepare documents, contact HMRC and explain timelines.",
+  offers: {
     "@type": "Offer",
-    "availability": "https://schema.org/InStock",
-    "priceCurrency": "GBP",
-    "price": "20.00"
-  }
+    availability: "https://schema.org/InStock",
+    priceCurrency: "GBP",
+    price: "20.00",
+  },
 };
 
-export default function NINSupportPage() {
+export default function NINSupportPage(): React.ReactElement {
   return (
     <main className="bg-neutral-50 text-green-900 py-12 px-4 min-h-screen">
       <section className="max-w-4xl mx-auto text-center mb-10">
@@ -136,6 +143,55 @@ export default function NINSupportPage() {
             </p>
           </section>
 
+          {/* GOV.UK guidance block */}
+          <section className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h2 className="text-2xl font-semibold mb-2 text-green-900">Official GOV.UK guidance</h2>
+
+            <p className="text-gray-700 mb-2">
+              The following is the official guidance from GOV.UK on National Insurance numbers. For the original source and to apply online, visit{" "}
+              <a
+                href="https://www.gov.uk/apply-national-insurance-number"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-800 underline"
+              >
+                GOV.UK — Apply for a National Insurance number
+              </a>.
+            </p>
+
+            <h3 className="font-semibold mt-2">Who can apply for a National Insurance number</h3>
+            <ul className="list-disc list-inside text-gray-700 mb-3 space-y-1">
+              <li>you live in the UK</li>
+              <li>you have the right to work in the UK</li>
+              <li>you are working, looking for work or have an offer to start work</li>
+            </ul>
+
+            <p className="text-gray-700 mb-3">
+              You can start work before you receive your National Insurance number if you can prove you have the right to work in the UK. If you already have a National Insurance number, you do not need to apply for a new one — it stays the same for life.
+            </p>
+
+            <h3 className="font-semibold mt-2">When you do not need a National Insurance number</h3>
+            <p className="text-gray-700 mb-2">
+              You do not need a National Insurance number to start an application for benefits or a student loan. If you need a National Insurance number to get your benefit or student loan paid, you’ll be contacted and told how to get one. You do not need a National Insurance number to apply to the EU Settlement Scheme.
+            </p>
+
+            <h3 className="font-semibold mt-2">Finding your National Insurance number</h3>
+            <p className="text-gray-700 mb-2">
+              Check how to find a National Insurance number on GOV.UK if you already have one. If you have a biometric residence permit (BRP) or eVisa, you might have a National Insurance number on the back of your BRP or visible in your UKVI eVisa account.
+            </p>
+
+            <h3 className="font-semibold mt-2">If you did not get a NIN or have already applied</h3>
+            <ul className="list-disc list-inside text-gray-700 mb-2 space-y-1">
+              <li>If you&apos;re aged 16–19 and didn&apos;t get a number, check whether a parent/guardian filled a Child Benefit form for you.</li>
+              <li>If you do not have a National Insurance number and plan to work, you must apply while you are in the UK.</li>
+              <li>If you&apos;ve already applied it can take up to 4 weeks to get your National Insurance number. You can call the application helpline if it&apos;s been longer, you&apos;ve moved house, or your personal details changed — have your application reference ready if you have one.</li>
+            </ul>
+
+            <p className="text-sm italic text-gray-600">
+              This guidance is also available in Welsh (Cymraeg) on GOV.UK. For the authoritative and most up-to-date instructions, always refer to the GOV.UK page linked above.
+            </p>
+          </section>
+
           <section>
             <h2 className="text-2xl font-semibold mb-2">Price, concessions and refunds</h2>
             <p className="text-gray-700 mb-2">
@@ -183,7 +239,7 @@ export default function NINSupportPage() {
               Complete the form and we will contact you to confirm the booking and next steps.
             </p>
 
-            {/* ServiceForm is expected to be a client component */}
+            {/* Client component — must be located at src/components/ServiceForm.tsx */}
             <ServiceForm />
           </div>
 

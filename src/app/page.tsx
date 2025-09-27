@@ -1,9 +1,10 @@
-
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import ServiceCard from "../components/ServiceCard";
+import Typewriter from "../components/Typewriter";
 
 const reviews = [
   {
@@ -19,7 +20,7 @@ const reviews = [
     author: "Sofia L.",
   },
   {
-  text: "The pricing model makes it feel fair. I paid a clear fee, and they still helped me.",
+    text: "The pricing model makes it feel fair. I paid a clear fee, and they still helped me.",
     author: "Luca D.",
   },
   {
@@ -65,15 +66,27 @@ export default function Home() {
           >
             Help with documents, mental health, and integration — powered by community and fair service fees.
           </motion.p>
+
           <motion.div
-            className="flex justify-center"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.55, delay: 0.5 }}
           >
-            <Link href="/services" className="bg-green-900 hover:bg-red-700 text-white px-6 py-3 rounded transition-transform duration-300 hover:scale-105">
-              Get Help
-            </Link>
+            <Typewriter
+              texts={[
+                "Passport appointments & consular support",
+                "AIRE registration & SPID guidance",
+                "Help finding local NHS and mental health resources",
+                "Practical, fair services for Italians and migrants",
+              ]}
+              typingSpeed={36}
+              deletingSpeed={22}
+              pause={1500}
+              loop
+              className="text-2xl md:text-3xl font-semibold text-white"
+              cursorClassName="ml-2"
+              ariaLive="polite"
+            />
           </motion.div>
         </div>
       </motion.section>
@@ -94,7 +107,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Preview */}
+      {/* Services Preview (updated heading + cards) */}
       <motion.section
         className="py-16 bg-white"
         initial="hidden"
@@ -109,10 +122,11 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Our Services
+            Our Most Popular Services
           </motion.h2>
+
           <motion.p
-            className="mb-8"
+            className="mb-8 text-gray-700"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -120,81 +134,94 @@ export default function Home() {
           >
             Transparent, community-driven, and fairly priced. No hidden fees — just clear, affordable service costs.
           </motion.p>
+
           <motion.div
-            className="grid md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch"
             initial="hidden"
             animate="visible"
             variants={{
-              visible: { transition: { staggerChildren: 0.15 } },
+              visible: { transition: { staggerChildren: 0.08 } },
             }}
           >
-            {[
-              { title: "Passport Appointments", fee: "£40–£60" },
-              { title: "ID Card (CIE)", fee: "£40" },
-              { title: "NIN Support", fee: "£20" },
-              { title: "Bureaucracy Help", fee: "£30" },
-              { title: "Housing Guidance", fee: "£25" },
-            ].map((service) => (
-              <motion.div
-                key={service.title}
-                className="border rounded p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-lg"
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-                }}
-              >
-                <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                <p className="text-sm text-gray-500">Service Fee: {service.fee}</p>
-              </motion.div>
-            ))}
+            <ServiceCard
+              title="Passport Assistance / Appointments"
+              price="£35"
+              href="/services?service=passport"
+              turnaround="1–3 weeks"
+            />
+
+            <ServiceCard
+              title="ID Card (CIE)"
+              price="£35"
+              href="/services?service=idcard"
+              turnaround="1–3 weeks"
+            />
+
+            <ServiceCard
+              title="Italian Citizenship Application"
+              price="£35"
+              href="/services?service=citizenship"
+              turnaround="1–3 weeks"
+            />
+
+            <ServiceCard
+              title="AIRE Registration"
+              price="£35"
+              href="/services?service=aire"
+              turnaround="1–3 weeks"
+            />
           </motion.div>
-          <Link href="/services" className="inline-block mt-8 bg-green-900 text-white px-6 py-3 rounded hover:bg-red-700 transition-transform duration-300 hover:scale-105">
-            View All Services
-          </Link>
+
+          <div className="mt-8">
+            <Link
+              href="/services"
+              className="inline-block mt-4 bg-transparent border border-green-900 text-green-900 px-5 py-2 rounded hover:bg-green-900 hover:text-white transition"
+            >
+              View All Services
+            </Link>
+          </div>
         </div>
       </motion.section>
 
+      {/* rest of page unchanged... (reviews, blog, trust badges, privacy) */}
       {/* Community Image + Reviews Carousel */}
-<section className="py-16 text-center">
-  {/* wrapper constrains width to the page container and ensures consistent horizontal padding on mobile */}
-  <div className="max-w-5xl mx-auto mb-6 px-4">
-    <div className="w-full overflow-hidden rounded-3xl shadow-md">
-      <Image
-        src="/images/about/community-image.png"
-        alt="Resinaro community: Italians and migrants in the UK supporting each other at an event."
-        width={1200}
-        height={640}
-        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 85vw, 1200px"
-        className="w-full max-w-full h-auto object-cover block"
-        priority={false}
-      />
-    </div>
-  </div>
+      <section className="py-16 text-center">
+        <div className="max-w-5xl mx-auto mb-6 px-4">
+          <div className="w-full overflow-hidden rounded-3xl shadow-md">
+            <Image
+              src="/images/about/community-image.png"
+              alt="Resinaro community: Italians and migrants in the UK supporting each other at an event."
+              width={1200}
+              height={640}
+              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 85vw, 1200px"
+              className="w-full max-w-full h-auto object-cover block"
+              priority={false}
+            />
+          </div>
+        </div>
 
-  <h2 className="text-3xl font-bold text-green-900 mb-8">What Our Community Says</h2>
+        <h2 className="text-3xl font-bold text-green-900 mb-8">What Our Community Says</h2>
 
-  <div className="bg-white p-8 rounded shadow max-w-2xl mx-auto relative">
-    <p className="italic text-lg">“{reviews[current].text}”</p>
-    <p className="mt-4 font-bold">— {reviews[current].author}</p>
+        <div className="bg-white p-8 rounded shadow max-w-2xl mx-auto relative">
+          <p className="italic text-lg">“{reviews[current].text}”</p>
+          <p className="mt-4 font-bold">— {reviews[current].author}</p>
 
-    {/* Controls */}
-    <div className="flex justify-between mt-6">
-      <button
-        onClick={prevReview}
-        className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
-      >
-        ← Prev
-      </button>
-      <button
-        onClick={nextReview}
-        className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
-      >
-        Next →
-      </button>
-    </div>
-  </div>
-</section>
-
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={prevReview}
+              className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
+            >
+              ← Prev
+            </button>
+            <button
+              onClick={nextReview}
+              className="px-4 py-2 bg-green-900 text-white rounded hover:bg-red-700"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Blog Preview */}
       <motion.section
@@ -252,99 +279,138 @@ export default function Home() {
       </motion.section>
 
       {/* Trust Badges Section */}
-      <section className="py-12 text-center">
-  <h2 className="text-2xl font-bold text-green-900 mb-4">Trusted By</h2>
-  <p className="mb-8 text-gray-700">
-    Resinaro works alongside community groups and institutions.
-  </p>
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
-    <a
-      href="https://www.acli.it/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex justify-center"
-    >
-      <Image
-        src="/logo-ACLI-aps.webp"
-        alt="ACLI"
-        width={80}
-        height={80}
-        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-      />
-    </a>
-    <a
-      href="https://amblondra.esteri.it/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex justify-center"
-    >
-      <Image
-        src="/Emblem_of_Italy.svg.png"
-        alt="Italian Embassy"
-        width={80}
-        height={80}
-        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-      />
-    </a>
-    <a
-      href="https://www.nhs.uk/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex justify-center"
-    >
-      <Image
-        src="/nhs-logo.svg"
-        alt="NHS"
-        width={80}
-        height={80}
-        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-      />
-    </a>
-    <a
-      href="/community"
-      className="flex justify-center"
-    >
-      <Image
-        src="/handshake-solid-full.svg"
-        alt="Community Org"
-        width={80}
-        height={80}
-        className="mx-auto h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-      />
-    </a>
+      <section className="py-12">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-2xl font-bold text-green-900 mb-2">Trusted By</h2>
+          <p className="mb-8 text-gray-700">
+            Resinaro works alongside community groups and institutions.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 place-items-center">
+            <a
+              href="https://amblondra.esteri.it/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center"
+            >
+              <Image
+                src="/Emblem_of_Italy.svg.png"
+                alt="Italian Embassy - Emblem of Italy"
+                width={80}
+                height={80}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+              />
+            </a>
+
+            <a
+              href="https://www.nhs.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center"
+            >
+              <Image
+                src="/nhs-logo.svg"
+                alt="NHS logo"
+                width={80}
+                height={80}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+              />
+            </a>
+
+            <a href="/community" className="flex flex-col items-center">
+              <Image
+                src="/handshake-solid-full.svg"
+                alt="Community organisation"
+                width={80}
+                height={80}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
+              />
+            </a>
+
+            <a
+              href="https://www.gov.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center"
+            >
+              <Image
+                src="/trust/govuk.png"
+                alt="GOV.UK logo"
+                width={140}
+                height={50}
+                className="w-auto h-12 object-contain grayscale hover:grayscale-0 transition"
+              />
+              <span className="mt-2 text-sm font-semibold text-gray-800">GOV.UK</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    {/* Privacy & Safety — emoji icons kept, short summary removed, four feature cards inside */ }
+<section className="py-12 bg-[#F9F6F1]">
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="text-center mb-8">
+      <h2 className="text-3xl font-bold text-green-900">Your privacy & safety</h2>
+      <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
+        We treat your documents seriously — clear processes, limited access, and straightforward rights for you.
+      </p>
+    </div>
+
+    <div className="rounded-xl overflow-hidden shadow-lg bg-white border border-gray-100">
+      <div className="bg-gradient-to-r from-green-900 to-green-700 text-white px-8 py-5">
+        <div className="max-w-6xl mx-auto text-sm md:text-base">
+          <span className="opacity-95">Clear processes · Minimal access · Simple rights</span>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-8 py-10">
+        {/* Four feature "cards" inside the big card.
+            To add more later: update the `features` array below and adjust the grid classes (e.g. lg:grid-cols-4). */}
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+          {[
+            {
+              emoji: "🔒",
+              title: "GDPR compliant",
+              text: "We comply with UK & EU data protection rules. Documents are used only for the service you requested.",
+            },
+            {
+              emoji: "📂",
+              title: "Secure storage",
+              text: "Files are stored securely with strict access controls. We do not share documents externally without your consent.",
+            },
+            {
+              emoji: "👩‍💼",
+              title: "Controlled access",
+              text: "Only verified Resinaro staff who need to process your case can view your files.",
+            },
+            {
+              emoji: "🗑️",
+              title: "Right to deletion",
+              text: "Request permanent deletion at any time — email help@resinaro.com.",
+            },
+          ].map((f) => (
+            <div key={f.title} className="flex gap-4 items-start bg-white rounded-md p-4 border border-gray-50">
+              <div className="flex-shrink-0 h-12 w-12 rounded-md bg-green-50 text-green-900 flex items-center justify-center text-xl">
+                <span aria-hidden>{f.emoji}</span>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">{f.title}</h3>
+                <p className="mt-1 text-sm text-gray-600">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 
-    </main>
-  );
-}
 
-{/* Trust & Safety Section */}
-<div className="mt-12 bg-white p-6 rounded-lg shadow">
-  <h2 className="text-2xl font-bold mb-4">Your Privacy & Safety</h2>
-  <ul className="space-y-4 text-gray-700">
-    <li>
-      <span className="font-semibold">🔒 GDPR Compliant:</span> 
-      We fully comply with UK & EU data protection regulations. 
-      Your documents are used only for the services you request.
-    </li>
-    <li>
-      <span className="font-semibold">📂 Secure Storage:</span> 
-      Files are stored privately on Google Drive and never shared with third parties.
-    </li>
-    <li>
-      <span className="font-semibold">👩‍💼 Controlled Access:</span> 
-      Only verified Resinaro staff can view your files, strictly for processing your request.
-    </li>
-    <li>
-      <span className="font-semibold">🗑 Right to Deletion:</span> 
-      You may request permanent deletion of your files anytime by emailing 
-      <a href="mailto:help@resinaro.com" className="text-green-700 underline"> help@resinaro.com</a>.
-    </li>
-    <li>
-      <span className="font-semibold">⏱ Response Time:</span> 
-      We aim to respond to all messages within 48 hours.
-    </li>
-  </ul>
-</div>
+
+</main>
+  ); // <-- close the JSX returned by your component
+} // <-- close export default function Home()
+
+

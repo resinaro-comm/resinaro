@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import PassportForm from "../../../components/PassportForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -95,10 +95,11 @@ export default function PassportServicePage() {
           <section>
             <h2 className="text-2xl font-semibold mb-2">Documents you will need</h2>
             <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Proof of UK address (tenancy agreement, council tax, utility bill or bank statement).</li>
-              <li>Current passport if renewing, or birth certificate for first-time adult applicants where required.</li>
+              <li>Proof of UK address (council tax, utility bill or bank statement, etc).</li>
+              <li>Current passport if renewing for adult applicants where required.</li>
               <li>Two biometric passport photos that meet consulate specifications.</li>
               <li>Parental consent documentation for minors where applicable.</li>
+              <li>You must be AIRE registered or you will not be able to get a passport</li>
             </ul>
             <p className="text-sm italic text-green-800 mt-2">
               If you are missing a specific document we will advise on acceptable alternatives or simple routes to obtain them.
@@ -138,7 +139,7 @@ export default function PassportServicePage() {
           <section>
             <h2 className="text-2xl font-semibold mb-2">Fees, concessions and refunds</h2>
             <p className="text-gray-700 mb-2">
-              Typical service fees range from <strong>£40</strong> to <strong>£60</strong> depending on complexity and urgency. Concessions are available on request for people facing financial hardship. Contact help@resinaro.com before booking to discuss a concession.
+              The cost for this service is from <strong>£35</strong> or more depending on complexity and urgency. Concessions are available on request for people facing financial hardship. Contact help@resinaro.com before booking to discuss a concession.
             </p>
             <p className="text-gray-700">
               Refunds: If we fail to deliver the service agreed due to our error, we will offer a full refund or a credit for other Resinaro services. Send refund requests to help@resinaro.com with your booking reference; we will respond within 10 business days.
@@ -182,7 +183,7 @@ export default function PassportServicePage() {
               Complete the form and we will contact you to confirm next steps and any fee details.
             </p>
 
-            <ServiceForm />
+            <PassportForm />
           </div>
 
           <div className="bg-green-900 text-white rounded-xl p-5">

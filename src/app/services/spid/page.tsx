@@ -199,7 +199,7 @@ export default function Page() {
                 Email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> with &quot;SPID HELP&quot; in the subject for priority triage. Include best contact times and a short description.
               </p>
               <div className="flex gap-3">
-                <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
+                <a href="/contact" className="bg-amber-500 hover: bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
                 <a href="/services" className="border border-white px-4 py-2 rounded-lg w-full text-center">All services</a>
               </div>
             </div>

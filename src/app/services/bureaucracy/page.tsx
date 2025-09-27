@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import BureaucracyForm from "../../../components/BureaucracyForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -195,7 +195,7 @@ export default function BureaucracyHelpPage() {
                 Complete the form with a short description of your need and upload any available documents. We will respond with a tailored plan and quote where applicable.
               </p>
 
-              <ServiceForm />
+              <BureaucracyForm />
             </div>
 
             <div className="bg-green-900 text-white rounded-xl p-5">

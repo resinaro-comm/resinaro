@@ -10,3 +10,23 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Inter, Arial, Helvetica, sans-serif;
 }
+
+/* Tailwind-friendly cursor animation (place in globals.css) */
+@keyframes type-cursor {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Utility class used by the component */
+.animate-type-cursor {
+  animation: type-cursor 1s steps(2, start) infinite;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-type-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
