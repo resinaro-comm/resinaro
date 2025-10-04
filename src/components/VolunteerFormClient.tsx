@@ -1,6 +1,6 @@
-// src/components/VolunteerFormClient.tsx
 "use client";
-
+import Link from "next/link";
+// src/components/VolunteerFormClient.tsx
 import { useEffect, useState } from "react";
 
 type FormState = {
@@ -110,7 +110,7 @@ export default function VolunteerFormClient() {
     return (
       <div className="bg-white p-8 rounded-2xl shadow-md text-center">
         <h2 className="text-2xl font-semibold text-green-900 mb-2">Thank you, {submittedName}!</h2>
-        <p className="text-gray-700">We will contact you soon about volunteer opportunities. If this is urgent, please <a href="/contact" className="underline text-green-900">contact us</a>.</p>
+        <p className="text-gray-700">We will contact you soon about volunteer opportunities. If this is urgent, please <Link href="/contact" className="underline text-green-900">contact us</Link>.</p>
       </div>
     );
   }
@@ -187,7 +187,7 @@ export default function VolunteerFormClient() {
           className="mt-1 h-4 w-4 text-green-900 border-gray-300 rounded"
         />
         <label htmlFor="consent" className="text-sm text-gray-700">
-          I confirm I have read the <a href="/privacy-policy" className="underline text-green-900">privacy policy</a> and I consent to being contacted about volunteering.
+          I confirm I have read the <Link href="/privacy-policy" className="underline text-green-900">privacy policy</Link> and I consent to being contacted about volunteering.
         </label>
       </div>
       {errors.consent && <p id="error-consent" className="text-red-600 text-sm mt-1">{errors.consent}</p>}

@@ -1,5 +1,6 @@
 // src/app/community/health/navigating-nhs-healthcare-italians-uk-2025/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Navigating NHS Healthcare as an Italian in the UK (2025): Register, access & tips",
@@ -95,6 +96,22 @@ export default function Page() {
       </section>
 
       <div className="container mx-auto max-w-4xl px-6 mt-10">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/nhs-healthcare-italians-uk-hero-3840x1280.png"
+            alt="NHS healthcare center entrance with staff helping patients with translation services"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            NHS healthcare services welcome all residents — register with a GP and access free healthcare support.
+          </figcaption>
+        </figure>
+
         {/* Intro */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <p className="leading-relaxed">

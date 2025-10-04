@@ -1,5 +1,6 @@
 // src/app/community/banking/open-monzo-account-uk-2025/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Open a Monzo Account in the UK (2025) — Guide for Migrants",
@@ -95,6 +96,22 @@ export default function Page() {
       </section>
 
       <div className="container mx-auto max-w-4xl px-6 mt-10">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/monzo-account-uk-hero-3840x1280.png"
+            alt="Monzo banking app on smartphone with coral debit card on a modern desk setup"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Opening a Monzo account in the UK — digital banking made simple for migrants and residents.
+          </figcaption>
+        </figure>
+
         {/* Intro card */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <p className="leading-relaxed">

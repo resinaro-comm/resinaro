@@ -57,7 +57,7 @@ export default function Page() {
             height={1280}
             priority
             quality={85}
-            className="w-full h-auto object-cover"
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
           />
           <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
             Preparing documents for AIRE registration — scan proofs at 300 DPI, keep names and addresses consistent.

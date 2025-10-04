@@ -15,7 +15,19 @@ module.exports = {
       fontFamily: {
         inter: ['var(--font-inter)', 'sans-serif'],
       },
+      keyframes: {
+        spinSlow: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        spinSlow: 'spinSlow 80s linear infinite',
+      },
     },
   },
+  safelist: [
+    'opacity-[0.35]'
+  ],
   plugins: [],
 };

@@ -1,3 +1,4 @@
+import Link from "next/link";
 "use client";
 
 export default function ServicesTrust() {
@@ -125,12 +126,12 @@ export default function ServicesTrust() {
         </div>
 
         <div className="mt-8">
-          <a
+          <Link
             href="/contact"
             className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-900"
           >
             Talk to a real person — we’ll guide you step by step
-          </a>
+          </Link>
         </div>
       </div>
     </section>

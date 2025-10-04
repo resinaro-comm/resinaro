@@ -1,5 +1,6 @@
 // src/app/community/mental-health/nhs-mental-health-access-uk/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title:
@@ -46,6 +47,22 @@ export default function Page() {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 py-12">
       <div className="container mx-auto max-w-5xl px-6">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/nhs-mental-health-access-hero-3840x1280.png"
+            alt="NHS mental health services with supportive counselor and patient in welcoming healthcare setting"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Accessing NHS mental health support — talking therapies, crisis support, and professional care for all residents.
+          </figcaption>
+        </figure>
+
         {/* Title */}
         <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-6">
           NHS Mental Health Support in the UK (2025): How to Access Help,

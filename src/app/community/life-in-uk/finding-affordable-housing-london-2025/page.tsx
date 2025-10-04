@@ -1,5 +1,6 @@
 // src/app/community/housing/finding-affordable-housing-london-2025/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Finding Affordable Housing in London (2025): Where to search, your rights & how to avoid scams",
@@ -106,6 +107,22 @@ export default function Page() {
       </section>
 
       <div className="container mx-auto max-w-4xl px-6 mt-10">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/housing-london-hero-3840x1280.png"
+            alt="London housing search with rental listings and viewing appointments for affordable accommodation"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Finding affordable housing in London — search strategies, tenant rights, and avoiding rental scams.
+          </figcaption>
+        </figure>
+
         {/* Intro */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <p className="leading-relaxed">

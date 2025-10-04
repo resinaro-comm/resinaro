@@ -76,6 +76,13 @@ export default function Page() {
           <p className="text-lg text-green-800 italic max-w-3xl mx-auto">
             Assistance to register or update your AIRE record so you can access consular services and official updates while living in the UK.
           </p>
+          <div className="max-w-lg mx-auto mt-6 mb-4">
+            <img 
+              src="/images/aire-registration.png" 
+              alt="AIRE registration documents and Italian consular services" 
+              className="w-full h-auto rounded-lg shadow-md" 
+            />
+          </div>
         </header>
 
         <div className="grid gap-10 lg:grid-cols-2">

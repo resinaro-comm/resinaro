@@ -71,6 +71,13 @@ export default function Page() {
           <p className="text-lg text-green-800 italic max-w-2xl mx-auto">
             Help obtaining or renewing your Italian Electronic ID Card (Carta d&apos;Identit\u00E0 Elettronica) from the UK — documentation, booking and biometric guidance.
           </p>
+          <div className="max-w-lg mx-auto mt-6 mb-4">
+            <img 
+              src="/images/servies-idcard.png" 
+              alt="Italian electronic ID card (CIE)" 
+              className="w-full h-auto rounded-lg shadow-md" 
+            />
+          </div>
         </header>
 
         <div className="grid gap-10 lg:grid-cols-2">

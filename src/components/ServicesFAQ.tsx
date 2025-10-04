@@ -1,6 +1,7 @@
 "use client";
 
 import React, {useState, useId} from "react";
+import Link from "next/link";
 
 type QA = {
   q: string;
@@ -128,7 +129,7 @@ const qa: QA[] = [
           for Monzo, Starling, and Revolut on our blog.
         </p>
         <p className="text-sm">
-          See: <a className="underline text-green-800" href="/community/life-in-uk/bank-account">Opening a UK bank account guide</a>.
+          See: <Link className="underline text-green-800" href="/community/life-in-uk/bank-account">Opening a UK bank account guide</Link>.
         </p>
       </>
     ),
@@ -207,7 +208,7 @@ const qa: QA[] = [
           usually via official systems—avoid third-party “slots” sellers.
         </p>
         <p className="text-sm">
-          We can guide you through AIRE, passports, CIE, and more: see <a className="underline text-green-800" href="/services/bureaucracy">Bureaucracy Help</a>.
+          We can guide you through AIRE, passports, CIE, and more: see <Link className="underline text-green-800" href="/services/bureaucracy">Bureaucracy Help</Link>.
         </p>
       </>
     ),
@@ -286,7 +287,7 @@ export default function ServicesFAQ() {
         <p className="text-gray-700 mb-8">
           Practical answers for Italians and other migrants — with links to official guidance.
           If you need one-to-one help,{" "}
-          <a className="underline text-green-800" href="/contact">contact us</a>.
+          <Link className="underline text-green-800" href="/contact">contact us</Link>.
         </p>
 
         <div className="space-y-3">

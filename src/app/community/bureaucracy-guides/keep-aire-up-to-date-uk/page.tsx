@@ -1,5 +1,6 @@
 // src/app/community/bureaucracy-guides/keep-aire-up-to-date-uk/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title:
@@ -46,6 +47,22 @@ export default function Page() {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 py-12">
       <div className="container mx-auto max-w-5xl px-6">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/aire-updates-hero-3840x1280.png"
+            alt="FAST IT portal showing AIRE update forms with UK marriage certificate and proof of address"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Keeping AIRE up to date from the UK — address changes, marriage, births, and status updates via FAST IT.
+          </figcaption>
+        </figure>
+
         {/* Title */}
         <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-6">
           Keep Your AIRE Up to Date (2025): Address, Marriage, Birth, Name

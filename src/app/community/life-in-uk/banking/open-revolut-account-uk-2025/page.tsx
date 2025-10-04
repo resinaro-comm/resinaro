@@ -1,5 +1,6 @@
 // src/app/community/life-in-uk/banking/open-revolut-account-uk-2025/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Open a Revolut Account in the UK (2025) — Quick Guide",
@@ -97,6 +98,22 @@ export default function Page() {
       </section>
 
       <div className="container mx-auto max-w-4xl px-6 mt-10">
+        {/* Hero Image */}
+        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <Image
+            src="/images/revolut-hero-3840x1280.png"
+            alt="Revolut banking app on smartphone with UK account details and verification documents"
+            width={3840}
+            height={1280}
+            priority
+            quality={85}
+            className="w-full h-48 md:h-64 lg:h-80 object-cover"
+          />
+          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
+            Opening a Revolut account in the UK — fast digital banking with instant account setup for migrants.
+          </figcaption>
+        </figure>
+
         {/* Intro card */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <p className="leading-relaxed">

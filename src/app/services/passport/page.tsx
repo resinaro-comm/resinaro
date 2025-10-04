@@ -69,6 +69,13 @@ export default function PassportServicePage() {
         <p className="italic text-lg text-green-800 mb-6">
           Fast, transparent support for booking Italian passport appointments and related consular services in the UK.
         </p>
+        <div className="max-w-lg mx-auto mb-8">
+          <img 
+            src="/images/service-passport.png" 
+            alt="Italian passport service" 
+            className="w-full h-auto rounded-lg shadow-md" 
+          />
+        </div>
       </section>
 
       <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2">
