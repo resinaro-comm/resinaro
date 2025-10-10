@@ -133,10 +133,10 @@ export default function Page() {
           <p className="mt-3">
             Need help with references, proof-of-address or tenancy checks?{" "}
             <Link
-              href="/services/housing"
+              href="/services"
               className="underline text-green-900 hover:text-green-800"
             >
-              Book housing support →
+              View Resinaro Services →
             </Link>
           </p>
         </div>
@@ -366,10 +366,10 @@ export default function Page() {
               Struggling to find a safe, affordable place? Resinaro helps with document checks, references, and trusted partner introductions.
             </p>
             <Link
-              href="/services/housing"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Get housing support →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

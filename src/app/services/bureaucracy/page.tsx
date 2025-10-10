@@ -2,9 +2,9 @@ import BureaucracyForm from "../../../components/BureaucracyForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Bureaucracy Help | Resinaro — AIRE, SPID, Benefits & More",
+  title: "Bureaucracy Help | Resinaro — AIRE, Benefits & More",
   description:
-    "Cut through the red tape — Resinaro provides practical help with AIRE, SPID setup, UK benefits, consular paperwork and other administrative tasks for Italians and migrants in the UK.",
+    "Cut through the red tape — Resinaro provides practical help with AIRE, UK benefits, consular paperwork and other administrative tasks for Italians and migrants in the UK.",
   alternates: { canonical: "/services/bureaucracy-help" },
 };
 
@@ -21,15 +21,7 @@ const faqJsonLd = {
           "AIRE is the register of Italians living abroad. If you are an Italian resident in the UK you should check whether you are required to register. We provide guidance to check and update AIRE and explain how it affects consular services.",
       },
     },
-    {
-      "@type": "Question",
-      name: "Can Resinaro set up SPID for me?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text:
-          "We guide you through SPID setup and the required documents and checks. Depending on the identity provider, certain steps may need to be performed by the applicant in person or via a video check; we assist throughout the process.",
-      },
-    },
+    
     {
       "@type": "Question",
       name: "Do you act as a legal representative for benefit claims?",
@@ -39,32 +31,24 @@ const faqJsonLd = {
           "Resinaro provides practical guidance and help to prepare benefit applications and supporting documents. We do not provide formal legal representation. For complex cases we can signpost to regulated advice or local welfare services.",
       },
     },
-    {
-      "@type": "Question",
-      name: "How long does it take to update AIRE or set up SPID?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text:
-          "Timelines vary by consulate and identity provider. Initial document checks and a guidance plan are typically provided within 1 to 3 business days. Full processing times depend on external services.",
-      },
-    },
+    
   ],
 };
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Bureaucracy Help — AIRE, SPID, Benefits and Administrative Support",
+  name: "Bureaucracy Help — AIRE, Benefits and Administrative Support",
   provider: {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com",
+  email: "resinaro@proton.me",
   },
   serviceType: "Document preparation, consular liaison and administrative support",
   areaServed: { "@type": "Country", name: "United Kingdom" },
   description:
-    "Practical help with AIRE registration, SPID setup, UK benefit applications, consular paperwork and general administrative tasks for Italians and migrants in the UK.",
+    "Practical help with AIRE registration, UK benefit applications, consular paperwork and general administrative tasks for Italians and migrants in the UK.",
   offers: {
     "@type": "Offer",
     priceCurrency: "GBP",
@@ -79,7 +63,7 @@ export default function BureaucracyHelpPage() {
         <header className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-3">Bureaucracy Help</h1>
           <p className="text-lg text-green-800 italic max-w-3xl mx-auto">
-            Cut through the red tape — Resinaro helps with AIRE, SPID, UK benefits and other official admin so you can get on with life.
+            Cut through the red tape — Resinaro helps with AIRE, UK benefits and other official admin so you can get on with life.
           </p>
         </header>
 
@@ -97,7 +81,6 @@ export default function BureaucracyHelpPage() {
               <h2 className="text-2xl font-semibold mb-2">Core services</h2>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
                 <li>AIRE registration checks and support to update consular records.</li>
-                <li>SPID guidance and step-by-step assistance with identity verification.</li>
                 <li>Help preparing UK benefit applications and signposting to local welfare support.</li>
                 <li>Consular paperwork support: passport, CIE, citizenship and registries.</li>
                 <li>Document checks, translations guidance and form completion support.</li>
@@ -145,7 +128,6 @@ export default function BureaucracyHelpPage() {
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
                 <li>Document review & checklist: 1–3 business days.</li>
-                <li>Support for SPID/AIRE steps: varies by provider and consulate.</li>
                 <li>Benefit application assistance: guidance provided quickly; processing times follow the relevant agency schedules.</li>
               </ul>
             </section>
@@ -153,10 +135,10 @@ export default function BureaucracyHelpPage() {
             <section>
               <h2 className="text-2xl font-semibold mb-2">Concessions, pricing and refunds</h2>
               <p className="text-gray-700 mb-2">
-                Standard service fee is <strong>£30</strong>. Concessionary rates are available for people in financial hardship. Contact help@resinaro.com before booking to request a concessionary assessment.
+                Standard service fee is <strong>£30</strong>. Concessionary rates are available for people in financial hardship. Contact resinaro@proton.me before booking to request a concessionary assessment.
               </p>
               <p className="text-gray-700">
-                Refunds: If Resinaro fails to deliver the agreed service due to our error we will offer a full refund or a service credit. Refund requests should be emailed to help@resinaro.com and will be reviewed within 10 business days.
+                Refunds: If Resinaro fails to deliver the agreed service due to our error we will offer a full refund or a service credit. Refund requests should be emailed to resinaro@proton.me and will be reviewed within 10 business days.
               </p>
             </section>
 
@@ -178,9 +160,7 @@ export default function BureaucracyHelpPage() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-2">Testimonials</h2>
-              <blockquote className="border-l-4 pl-4 italic text-gray-700">
-                &quot;Resinaro helped me update AIRE and set up SPID. The checklist was clear and the support saved me time.&quot; — Francesca
-              </blockquote>
+              
               <blockquote className="border-l-4 pl-4 italic text-gray-700 mt-3">
                 &quot;They explained benefit options and helped me prepare the documents for my application.&quot; — Paolo
               </blockquote>
@@ -201,7 +181,7 @@ export default function BureaucracyHelpPage() {
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Urgent administrative issues</h3>
               <p className="text-sm mb-3">
-                If you have a time-sensitive issue affecting work, benefits or housing, email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> with &quot;URGENT&quot; in the subject and include preferred contact times.
+                If you have a time-sensitive issue affecting work, benefits or housing, email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> with &quot;URGENT&quot; in the subject and include preferred contact times.
               </p>
               <div className="flex gap-3">
                 <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
@@ -214,7 +194,7 @@ export default function BureaucracyHelpPage() {
               <ul className="list-disc list-inside space-y-2">
                 <li>Gather any official letters or correspondence related to your issue.</li>
                 <li>Have your passport or ID and proof of address ready.</li>
-                <li>If asking about SPID or AIRE, note the consulate jurisdiction and any reference numbers.</li>
+                <li>If asking about AIRE, note the consulate jurisdiction and any reference numbers.</li>
               </ul>
             </div>
           </aside>
@@ -224,12 +204,7 @@ export default function BureaucracyHelpPage() {
         <section className="max-w-4xl mx-auto mt-12">
           <h2 className="text-2xl font-semibold mb-4 text-green-900">Frequently asked questions</h2>
 
-          <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-            <summary className="font-semibold cursor-pointer">What is SPID and why might I need it?</summary>
-            <div className="mt-2 text-gray-700">
-              SPID is a digital identity system used to access Italian public services online. It is often required for consular services, tax portals and some administrative processes. We guide you through the providers and identity verification options.
-            </div>
-          </details>
+          
 
           <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
             <summary className="font-semibold cursor-pointer">How do I update my AIRE registration?</summary>

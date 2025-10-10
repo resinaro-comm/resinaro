@@ -16,7 +16,7 @@ export default function Page() {
         {/* Hero Image */}
         <div className="relative w-full h-72 md:h-96 mb-6 overflow-hidden rounded-xl">
           <Image
-            src="/Logo.jpg" // Using Logo.jpg as placeholder - can be replaced with a dedicated image later
+            src="/images/raising-bilingual-kids.jpg"
             alt="Raising Bilingual Kids - Italian at Home"
             fill
             priority

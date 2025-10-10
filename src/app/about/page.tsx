@@ -52,10 +52,10 @@ export default function Page() {
     "description": "Resinaro provides fair, transparent support for Italians and migrants in the UK.",
     "foundingDate": "2025-01-01",
     "areaServed": ["GB"],
-    "email": "help@resinaro.com",
+  "email": "resinaro@proton.me",
     "contactPoint": [{
       "@type": "ContactPoint",
-      "email": "help@resinaro.com",
+  "email": "resinaro@proton.me",
       "contactType": "customer support",
       "availableLanguage": ["it", "en"]
     }]
@@ -121,7 +121,7 @@ export default function Page() {
       {
         "@type": "HowToStep",
         "name": "Tell us the situation",
-        "text": "Submit a short form or email help@resinaro.com with your location, documents and deadlines."
+  "text": "Submit a short form or email resinaro@proton.me with your location, documents and deadlines."
       },
       {
         "@type": "HowToStep",

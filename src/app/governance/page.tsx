@@ -24,7 +24,7 @@ const orgJsonLd = {
     {
       "@type": "ContactPoint",
       contactType: "customer support",
-      email: "help@resinaro.com",
+  email: "resinaro@proton.me",
       url: "https://www.resinaro.com/contact",
     },
   ],
@@ -49,7 +49,7 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Clients can raise a concern using the Contact page or by emailing help@resinaro.com. We publish our complaints process and aim to respond within 10 working days.",
+          "Clients can raise a concern using the Contact page or by emailing resinaro@proton.me. We publish our complaints process and aim to respond within 10 working days.",
       },
     },
     {
@@ -211,7 +211,7 @@ export default function GovernancePage() {
           </p>
 
           <ol className="list-decimal list-inside text-gray-600">
-            <li>Raise the issue via Contact or email help@resinaro.com.</li>
+            <li>Raise the issue via Contact or email resinaro@proton.me.</li>
             <li>We acknowledge receipt within 3 business days.</li>
             <li>We investigate and propose a resolution, typically within 10 business days.</li>
             <li>If unresolved, an independent reviewer will be appointed where appropriate.</li>
@@ -233,7 +233,7 @@ export default function GovernancePage() {
 
             <div className="p-4 border rounded-lg text-sm">
               <strong className="text-gray-800">Data protection</strong>
-              <p className="text-gray-600 mt-2">We follow UK data protection standards. Contact help@resinaro.com to exercise your rights.</p>
+              <p className="text-gray-600 mt-2">We follow UK data protection standards. Contact resinaro@proton.me to exercise your rights.</p>
             </div>
           </div>
         </section>
@@ -287,7 +287,7 @@ export default function GovernancePage() {
         {/* CTA */}
         <section className="bg-green-900 py-8 px-6 rounded-xl text-center text-white">
           <h3 className="text-xl font-semibold mb-2">Questions about governance or transparency?</h3>
-          <p className="text-sm mb-4">Email help@resinaro.com or download our transparency report for detailed figures and policies.</p>
+          <p className="text-sm mb-4">Email resinaro@proton.me or download our transparency report for detailed figures and policies.</p>
           <div className="flex justify-center gap-3">
             <a href="/reports/transparency-2025.pdf" target="_blank" rel="noopener noreferrer" className="bg-white text-green-900 px-5 py-2 rounded-md font-semibold">Download report</a>
             <a href="/contact" className="border-white border px-5 py-2 rounded-md hover:bg-white/10">Contact us</a>

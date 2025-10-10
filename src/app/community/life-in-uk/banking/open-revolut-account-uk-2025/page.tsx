@@ -128,10 +128,10 @@ export default function Page() {
           <p className="mt-3">
             Need help with documents or proof-of-address?{" "}
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="underline text-green-900 hover:text-green-800"
             >
-              Book bureaucracy help →
+              View Resinaro Services →
             </Link>
           </p>
         </div>
@@ -379,10 +379,10 @@ export default function Page() {
               before you verify with Revolut?
             </p>
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Get help with documents →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

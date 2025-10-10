@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import TranslationForm from "../../../components/TranslationForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     "name": "Resinaro",
     "url": "https://www.resinaro.com",
-    "email": "help@resinaro.com"
+  "email": "resinaro@proton.me"
   },
   "serviceType": "Certified translation and document localisation",
   "areaServed": {"@type": "Country", "name": "United Kingdom"},
@@ -160,7 +160,7 @@ export default function Page() {
           <section>
             <h2 className="text-2xl font-semibold mb-2">Process: how to order</h2>
             <ol className="list-decimal list-inside text-gray-700 space-y-2">
-              <li><strong>Enquiry:</strong> Use the booking form or email help@resinaro.com with scanned documents.</li>
+              <li><strong>Enquiry:</strong> Use the booking form or email resinaro@proton.me with scanned documents.</li>
               <li><strong>Assessment & quote:</strong> We review the files and confirm scope, turnaround and cost.</li>
               <li><strong>Acceptance:</strong> Client accepts the quote and provides any additional authorisations.</li>
               <li><strong>Translation & QA:</strong> Work is completed and independently reviewed.</li>
@@ -207,7 +207,7 @@ export default function Page() {
               Upload your documents and tell us your required format and deadline. We will respond with a quote and availability.
             </p>
 
-            <ServiceForm />
+            <TranslationForm />
           </div>
 
           <div className="bg-green-900 text-white rounded-xl p-5">

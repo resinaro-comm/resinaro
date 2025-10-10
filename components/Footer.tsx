@@ -20,7 +20,7 @@ const structuredData = {
       "@type": "ContactPoint",
       telephone: "+44-20-1234-5678",
       contactType: "customer service",
-      email: "help@resinaro.com",
+  email: "resinaro@proton.me",
       areaServed: "GB",
       availableLanguage: ["English"],
     },
@@ -105,7 +105,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="mailto:help@resinaro.com"
+                href="mailto:resinaro@proton.me"
                 aria-label="Email"
                 className="text-gray-700 hover:text-green-900"
               >
@@ -193,8 +193,8 @@ export default function Footer() {
           <div className="opacity-90">
             <span className="text-white/70">Mon–Fri · 9:00–17:00 (UK)</span>
             <span aria-hidden="true" className="mx-2">·</span>
-            <a href="mailto:help@resinaro.com" className="hover:underline">
-              help@resinaro.com
+            <a href="mailto:resinaro@proton.me" className="hover:underline">
+              resinaro@proton.me
             </a>
           </div>
         </div>

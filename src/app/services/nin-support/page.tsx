@@ -1,7 +1,7 @@
 // src/app/services/nin-support/page.tsx
 import React from "react";
 import { Metadata } from "next";
-import ServiceForm from "../../../components/ServiceForm";
+import NinForm from "../../../components/NinForm";
 
 export const metadata: Metadata = {
   title: "National Insurance (NIN) Support | Resinaro",
@@ -52,7 +52,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com",
+  email: "resinaro@proton.me",
   },
   serviceType: "Document support and liaison with HMRC",
   areaServed: {
@@ -195,10 +195,10 @@ export default function NINSupportPage(): React.ReactElement {
           <section>
             <h2 className="text-2xl font-semibold mb-2">Price, concessions and refunds</h2>
             <p className="text-gray-700 mb-2">
-              The standard service fee is <strong>£20</strong>. Concessionary rates are available on request for people in financial hardship. Contact help@resinaro.com to ask about concessions before booking.
+              The standard service fee is <strong>£20</strong>. Concessionary rates are available on request for people in financial hardship. Contact resinaro@proton.me to ask about concessions before booking.
             </p>
             <p className="text-gray-700">
-              Refunds: If we cannot provide the agreed service due to our error, we will offer a full refund or a credit toward other Resinaro services. Refund requests should be emailed to help@resinaro.com and will be reviewed within 10 business days.
+              Refunds: If we cannot provide the agreed service due to our error, we will offer a full refund or a credit toward other Resinaro services. Refund requests should be emailed to resinaro@proton.me and will be reviewed within 10 business days.
             </p>
           </section>
 
@@ -239,14 +239,13 @@ export default function NINSupportPage(): React.ReactElement {
               Complete the form and we will contact you to confirm the booking and next steps.
             </p>
 
-            {/* Client component — must be located at src/components/ServiceForm.tsx */}
-            <ServiceForm />
+            <NinForm />
           </div>
 
           <div className="bg-green-900 text-white rounded-xl p-5">
             <h3 className="font-semibold text-lg mb-2">Need urgent help?</h3>
             <p className="text-sm mb-4">
-              Email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> and mark the message &quot;Urgent&quot; if the matter is time sensitive.
+              Email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and mark the message &quot;Urgent&quot; if the matter is time sensitive.
             </p>
             <div className="flex gap-3">
               <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
@@ -286,7 +285,7 @@ export default function NINSupportPage(): React.ReactElement {
         <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
           <summary className="font-semibold cursor-pointer">How do I request a concession or refund?</summary>
           <div className="mt-2 text-gray-700">
-            Email help@resinaro.com to request a concession before booking. For refunds, contact help@resinaro.com and include your booking reference and reason.
+            Email resinaro@proton.me to request a concession before booking. For refunds, contact resinaro@proton.me and include your booking reference and reason.
           </div>
         </details>
       </section>

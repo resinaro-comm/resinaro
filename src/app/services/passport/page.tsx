@@ -50,7 +50,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com",
+  email: "resinaro@proton.me",
   },
   serviceType: "Passport appointment booking and consular support",
   areaServed: {
@@ -146,10 +146,10 @@ export default function PassportServicePage() {
           <section>
             <h2 className="text-2xl font-semibold mb-2">Fees, concessions and refunds</h2>
             <p className="text-gray-700 mb-2">
-              The cost for this service is from <strong>£35</strong> or more depending on complexity and urgency. Concessions are available on request for people facing financial hardship. Contact help@resinaro.com before booking to discuss a concession.
+              The cost for this service is from <strong>£35</strong> or more depending on complexity and urgency. Concessions are available on request for people facing financial hardship. Contact resinaro@proton.me before booking to discuss a concession.
             </p>
             <p className="text-gray-700">
-              Refunds: If we fail to deliver the service agreed due to our error, we will offer a full refund or a credit for other Resinaro services. Send refund requests to help@resinaro.com with your booking reference; we will respond within 10 business days.
+              Refunds: If we fail to deliver the service agreed due to our error, we will offer a full refund or a credit for other Resinaro services. Send refund requests to resinaro@proton.me with your booking reference; we will respond within 10 business days.
             </p>
           </section>
 
@@ -196,7 +196,7 @@ export default function PassportServicePage() {
           <div className="bg-green-900 text-white rounded-xl p-5">
             <h3 className="font-semibold text-lg mb-2">Urgent cases</h3>
             <p className="text-sm mb-4">
-              For urgent or time-sensitive passport issues email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> and include &quot;Urgent&quot; in the subject line.
+              For urgent or time-sensitive passport issues email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and include &quot;Urgent&quot; in the subject line.
             </p>
             <div className="flex gap-3">
               <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
@@ -236,7 +236,7 @@ export default function PassportServicePage() {
         <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
           <summary className="font-semibold cursor-pointer">Are fees refundable?</summary>
           <div className="mt-2 text-gray-700">
-            Refunds are provided if Resinaro fails to deliver the agreed service due to our error. Refund requests should be emailed to help@resinaro.com with the booking reference and reason.
+            Refunds are provided if Resinaro fails to deliver the agreed service due to our error. Refund requests should be emailed to resinaro@proton.me with the booking reference and reason.
           </div>
         </details>
       </section>

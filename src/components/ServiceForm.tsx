@@ -3,6 +3,11 @@
 
 import React, { useState, useRef } from "react";
 
+/** Google Apps Script endpoint + token (shared with Visa form) **/
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
+const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN in Apps Script
+
 /**
  * Client-side ServiceForm:
  * - optional proof-of-residence upload
@@ -14,7 +19,8 @@ export default function ServiceForm(){
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
   const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -27,6 +33,19 @@ export default function ServiceForm(){
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const submitRef = useRef<HTMLButtonElement | null>(null);
+
+  // Helper to base64-encode a File without using 'any'
+  async function fileToBase64(file: File) {
+    const buf = await file.arrayBuffer();
+    let binary = "";
+    const bytes = new Uint8Array(buf);
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      const slice = bytes.subarray(i, i + chunk);
+      binary += String.fromCharCode(...Array.from(slice));
+    }
+    return btoa(binary);
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setError(null);
@@ -63,8 +82,8 @@ export default function ServiceForm(){
     setError(null);
     setSuccessMsg(null);
 
-    if (!name.trim() || !email.trim()) {
-      setError("Please enter your full name and email.");
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      setError("Please enter your first and last name and email.");
       return;
     }
     if (!consent) {
@@ -75,6 +94,10 @@ export default function ServiceForm(){
       setError("Please upload proof of residence or tick 'I don't have proof'.");
       return;
     }
+    if (!message.trim()) {
+      setError("Please provide a short note about your request.");
+      return;
+    }
     if (noProof && noProofExplanation.trim().length < 10) {
       setError("Please briefly explain why you don't have proof of residence (at least 10 characters).");
       return;
@@ -83,37 +106,70 @@ export default function ServiceForm(){
     setSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("name", name.trim());
-      formData.append("email", email.trim());
-      formData.append("phone", phone.trim());
-      formData.append("message", message.trim());
-      formData.append("noProof", noProof ? "1" : "0");
-      formData.append("noProofExplanation", noProofExplanation.trim());
-      formData.append("service", "nin");
-
-      files.forEach((f) => formData.append("files", f, f.name));
-
-      const res = await fetch("/api/services/book", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => null);
-        throw new Error(text || "Failed to submit. Please try again or email help@resinaro.com.");
+      // a) Determine service key by pathname
+      let serviceKey = "visa-application";
+      if (typeof window !== "undefined") {
+        const p = window.location?.pathname || "";
+        if (p.startsWith("/services/aire")) serviceKey = "aire-registration";
+        else if (p.startsWith("/services/id-card")) serviceKey = "id-card";
       }
 
-      setSuccessMsg("Booking submitted — we will contact you shortly.");
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setFiles([]);
-      setNoProof(false);
-      setNoProofExplanation("");
-      setConsent(false);
-      if (submitRef.current) submitRef.current.blur();
+      // b) Create booking reference
+      const bookingId = crypto.randomUUID();
+
+      // c) Build uploads payload for GAS (base64)
+      const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
+      for (const f of files) {
+        filesPayload.push({ filename: f.name, mimeType: f.type, data: await fileToBase64(f) });
+      }
+
+      // d) Pack variable answers
+      const dataPayload = {
+        message: message.trim(),
+        noProof,
+        noProofExplanation: noProofExplanation.trim(),
+      };
+
+      // e) Send to Google Apps Script first
+      const r1 = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          token: GAS_TOKEN,
+          action: "submit",
+          bookingId,
+          service: serviceKey,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.trim(),
+          telephone: phone.trim(),
+          files: filesPayload,
+          data: dataPayload,
+        }),
+      });
+      type GasResponse = { ok?: boolean; error?: string } | undefined;
+      let r1json: GasResponse = undefined;
+      try { r1json = (await r1.json()) as GasResponse; } catch {}
+      if (!r1.ok || !(r1json && r1json.ok)) {
+        const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
+        throw new Error(msg);
+      }
+
+      // f) Ask our API for the Stripe Payment Link and redirect
+      const fd = new FormData();
+      fd.append("bookingId", bookingId);
+      fd.append("service", serviceKey);
+      fd.append("email", email.trim());
+  fd.append("name", `${firstName.trim()} ${lastName.trim()}`);
+
+      const res = await fetch("/api/services/book", { method: "POST", body: fd });
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || "Could not prepare checkout.");
+      }
+      const { url } = (await res.json()) as { url?: string };
+      if (!url) throw new Error("No payment link returned.");
+      window.location.href = url;
+      return;
     } catch (err: unknown) {
       // safe extraction: prefer Error.message when available
       const messageText = err instanceof Error ? err.message : String(err);
@@ -126,15 +182,27 @@ export default function ServiceForm(){
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
-      <div>
-        <label className="block text-sm font-medium">Full name *</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full rounded border px-3 py-2"
-          required
-          aria-required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">First name *</label>
+          <input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+            aria-required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Last name *</label>
+          <input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+            aria-required
+          />
+        </div>
       </div>
 
       <div>
@@ -150,13 +218,13 @@ export default function ServiceForm(){
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Phone</label>
-        <input value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." />
+        <label className="block text-sm font-medium">Phone *</label>
+        <input value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." required />
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Short note (optional)</label>
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" rows={3} />
+        <label className="block text-sm font-medium">Short note *</label>
+        <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" rows={3} required />
       </div>
 
       <div className="bg-gray-50 border rounded p-3">
@@ -209,12 +277,13 @@ export default function ServiceForm(){
 
       <div>
         <button ref={submitRef} type="submit" disabled={submitting} className={`bg-green-900 text-white px-4 py-2 rounded ${submitting ? "opacity-60 cursor-wait" : "hover:bg-green-800"}`}>
-          {submitting ? "Submitting..." : "Book NIN Support"}
+          {submitting ? "Submitting..." : "Book service + Pay"}
         </button>
+        <p className="text-xs text-gray-600 mt-2">You will be redirected to payment after submitting your details.</p>
       </div>
 
       <div className="text-xs text-gray-500 mt-2">
-        By submitting you agree to our <a className="underline" href="/privacy">Privacy Policy</a>. If you need immediate assistance email <a className="underline" href="mailto:help@resinaro.com">help@resinaro.com</a>.
+  By submitting you agree to our <a className="underline" href="/privacy">Privacy Policy</a>. If you need immediate assistance email <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
       </div>
     </form>
   );

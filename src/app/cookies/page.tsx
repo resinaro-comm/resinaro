@@ -218,7 +218,7 @@ export default function CookiesPage() {
           <p>
             If you have questions about this policy, want to withdraw consent or raise a privacy concern please contact our Data Protection Officer at:
           </p>
-          <p className="mt-2"><strong>Email:</strong> <a href="mailto:help@resinaro.com" className="underline text-green-900">help@resinaro.com</a></p>
+          <p className="mt-2"><strong>Email:</strong> <a href="mailto:resinaro@proton.me" className="underline text-green-900">resinaro@proton.me</a></p>
           <p className="mt-3">
             You also have the right to lodge a complaint with the UK Information Commissioner&apos;s Office (ICO) if you believe we have not handled your data in accordance with applicable law.
           </p>

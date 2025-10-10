@@ -49,10 +49,10 @@ export default function Page() {
           If you want step-by-step help preparing your application or recovering
           your number, we can assist:{" "}
           <Link
-            href="/services/nin-support"
+            href="/services"
             className="underline text-green-900 hover:text-green-800"
           >
-            NIN Support →
+            View Resinaro Services →
           </Link>
         </p>
 
@@ -298,10 +298,10 @@ export default function Page() {
               application?
             </p>
             <Link
-              href="/services/nin-support"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              NIN Support →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

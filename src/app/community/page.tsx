@@ -29,7 +29,6 @@ type Post = {
   minutes?: number; // read time
   tags?: string[];
   updatedAt?: string; // ISO date
-  lang?: "en" | "it";
   featured?: boolean;
 };
 
@@ -115,7 +114,7 @@ const posts: Post[] = [
       "Games, books and tools to keep Italian alive in the UK: picture dictionaries, story time, labels and music.",
     slug: "/community/kids-italian-at-home",
     category: "family",
-    image: "/images/resinaro-general.png",
+    image: "/images/raising-bilingual-kids.jpg",
     minutes: 9,
     tags: ["family", "language"],
   },
@@ -125,7 +124,7 @@ const posts: Post[] = [
       "Simple, non-prescription items many households keep on hand in the UK: thermometer, plasters, electrolytes and more.",
     slug: "/community/home-pharmacy-uk",
     category: "health",
-    image: "/images/resinaro-general.png",
+    image: "/images/home-pharmacy-basics.png",
     minutes: 7,
     tags: ["health", "first aid"],
   },
@@ -135,7 +134,7 @@ const posts: Post[] = [
       "Grounded EU→UK and UK→EU adapters, multi-port chargers, and safe surge-protected extensions for renters.",
     slug: "/community/power-adapters-uk-italy",
     category: "housing",
-    image: "/images/resinaro-general.png",
+    image: "/images/desk-chargers-adapter.jpg",
     minutes: 8,
     tags: ["power", "adapters"],
   },
@@ -304,6 +303,142 @@ const posts: Post[] = [
     minutes: 14,
     tags: ["AIRE", "FAST IT"],
   },
+
+  // New long-form 2025 guides
+  {
+    title:
+      "UK Renting for Italians (2025): Right to Rent, Referencing, Deposits & Templates",
+    description:
+      "Step-by-step renting guide in easy English: Right to Rent (EU), passing referencing without UK credit history, deposits and protection, viewing checklists, and scam warnings.",
+    slug: "/community/uk-renting-for-italians-2025",
+    category: "housing",
+    image: "/images/housing-london-hero-3840x1280.png",
+    minutes: 22,
+    tags: ["housing", "renting", "tenancy"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "UK Tax Code for Italians (2025): Fix Emergency Tax (1257L, BR, 0T, W1/M1) + Templates",
+    description:
+      "Decode UK tax codes and fix common issues fast: 1257L, BR, 0T, W1/M1, starter forms, HMRC contact routes, and payroll templates.",
+    slug: "/community/uk-tax-code-for-italians-2025",
+    category: "work",
+    image: "/images/resinaro-general.png",
+    minutes: 18,
+    tags: ["tax", "payslip", "HMRC"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "Proof of Address Without Bills (2025): 12 Accepted Docs + Copy-Paste Templates",
+    description:
+      "No bills yet? Build a fast proof-of-address bundle with tenancy, employer/GP letters, bank welcome letter, C/O wording and scripts for banks/GP/DVLA.",
+    slug: "/community/proof-of-address-without-bills-2025",
+    category: "life-in-uk",
+    image: "/images/resinaro-general.png",
+    minutes: 20,
+    tags: ["identity", "address", "DVLA"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "Rejected by UK Banks? Open an Account Without Credit History (Italians, 2025)",
+    description:
+      "Pass KYC without a UK credit file: documents that work, C/O wording, branch scripts, and which banks to try first.",
+    slug: "/community/open-uk-bank-account-no-credit-italians-2025",
+    category: "banking",
+    image: "/images/revolut-hero-3840x1280.png",
+    minutes: 19,
+    tags: ["banking", "KYC", "credit"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "First Payslip Explained (UK, 2025): Tax Code, NI Letter, YTD and Templates",
+    description:
+      "Understand your first UK payslip: tax code meanings, NI letter, gross→net, YTD, and how to fix common problems with templates.",
+    slug: "/community/first-payslip-italians-uk-2025",
+    category: "work",
+    image: "/images/fisrt-payslip-uk-italian.jpg",
+    minutes: 16,
+    tags: ["work", "payslip", "tax"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "Council Tax for Italians (2025): Bands, Discounts & Moving-In Steps",
+    description:
+      "What Council Tax is, how to find your band, set discounts (single-person/student), moving-in checklist and payment setup.",
+    slug: "/community/council-tax-italians-2025",
+    category: "housing",
+    image: "/images/housing-london-hero-3840x1280.png",
+    minutes: 17,
+    tags: ["council tax", "housing"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "National Insurance Number (NIN) for Italians (2025): Apply, Replace & Timelines",
+    description:
+      "Exactly how to apply or recover a UK NIN in 2025: documents, online steps, phone script, timelines and follow-ups.",
+    slug: "/community/national-insurance-number-italians-uk-2025",
+    category: "work",
+    image: "/images/national-insurance-number-uk-hero-3840x1280.png",
+    minutes: 15,
+    tags: ["NIN", "work"],
+    updatedAt: "2025-10-10",
+  },
+
+  // Newly added 2025 guides
+  {
+    title:
+      "EU Settlement Scheme (EUSS) for Italians (2025): Share Codes, Update Passport, Travel & Fixes",
+    description:
+      "Easy 2025 guide for Italians: create the right share code, update a new passport in your EUSS record, fix sign-in issues and understand travel checks.",
+    slug: "/community/euss-italians-2025-share-codes-update-passport",
+    category: "life-in-uk",
+    image: "/images/italian-passport-uk-hero-3840x1280.png",
+    minutes: 20,
+    tags: ["EUSS", "work", "rent"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "Utilities Setup (2025): Energy, Water, Council Tax & Broadband — Day‑1 Checklist",
+    description:
+      "Move-in playbook: find your energy/water suppliers, submit opening readings, register Council Tax, pick broadband, and handle previous-tenant debt letters.",
+    slug: "/community/utilities-setup-uk-2025",
+    category: "housing",
+    image: "/images/housing-london-hero-3840x1280.png",
+    minutes: 20,
+    tags: ["utilities", "council tax", "broadband"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "Oyster vs Contactless vs Travelcards (2025): Caps, Zones & Which to Use",
+    description:
+      "Definitive London transport explainer: daily/weekly caps, zones, Hopper fare and the best option by use-case—plus setup and tips.",
+    slug: "/community/oyster-vs-contactless-travelcards-2025",
+    category: "travel",
+    image: "/images/landscape-image.png",
+    minutes: 18,
+    tags: ["transport", "London"],
+    updatedAt: "2025-10-10",
+  },
+  {
+    title:
+      "UK Mobile for Newcomers (2025): Best SIM & eSIM, PAYG vs Monthly, EU Roaming",
+    description:
+      "Simple guide to UK mobile: SIM vs eSIM, PAYG vs monthly, no-credit-check options, porting and troubleshooting with copy‑paste scripts.",
+    slug: "/community/uk-sim-esim-newcomers-2025",
+    category: "life-in-uk",
+    image: "/images/resinaro-general.png",
+    minutes: 18,
+    tags: ["mobile", "SIM", "eSIM"],
+    updatedAt: "2025-10-10",
+  },
 ];
 
 // ---------- Helpers ----------
@@ -342,7 +477,6 @@ export default async function CommunityHub({
   const category = resolved.category || "";
   const tag = resolved.tag || "";
   const sort = resolved.sort || ""; // "title" | "category" | "recent" | "readtime"
-  const lang = (resolved.lang as "en" | "it" | undefined) || ""; // future-proof
 
   // Filter
   let filtered = posts.slice();
@@ -354,7 +488,7 @@ export default async function CommunityHub({
     );
   if (category) filtered = filtered.filter((p) => p.category === category);
   if (tag) filtered = filtered.filter((p) => (p.tags || []).includes(tag));
-  if (lang) filtered = filtered.filter((p) => (p.lang || "en") === lang);
+  // language filtering removed (site currently EN-only)
 
   // Sort
   if (sort === "title")
@@ -397,9 +531,9 @@ export default async function CommunityHub({
         </div>
       </section>
 
-      {/* STICKY FILTER BAR */}
+      {/* FILTER BAR (non-sticky) */}
       <form
-        className="sticky top-14 z-10 bg-[#F9F6F1]/90 backdrop-blur supports-[backdrop-filter]:bg-[#F9F6F1]/70 border-b"
+        className="bg-[#F9F6F1] border-b"
         role="search"
       >
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-3 items-center">
@@ -451,17 +585,7 @@ export default async function CommunityHub({
             <option value="readtime">Shortest read</option>
           </select>
 
-          {/* Language toggle ready (if/when you localise posts) */}
-          <select
-            name="lang"
-            defaultValue={lang}
-            aria-label="Language"
-            className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
-          >
-            <option value="">EN + IT</option>
-            <option value="en">EN</option>
-            <option value="it">IT</option>
-          </select>
+          {/* Language filter removed: content is EN-only for now */}
 
           <button
             type="submit"

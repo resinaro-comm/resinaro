@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Services — Resinaro | Practical support for migrants in the UK",
   description:
-    "Full list of Resinaro services: passports, NIN, AIRE, SPID, housing, translations, benefits support, mental health and community integration. Transparent fees and clear timelines.",
+    "Full list of Resinaro services: passports, NIN, AIRE, housing, translations, benefits support, mental health and community integration. Transparent fees and clear timelines.",
   alternates: { canonical: "/services" },
 };
 
@@ -25,18 +25,18 @@ type Service = {
 };
 
 const services: Service[] = [
-  { id: "passport", icon: "🛂", title: "Passport & Consular Services", desc: "Booking, paperwork review and urgent consular support for Italian passports from the UK.", bullets: ["Consulate bookings (London/Manchester)", "Document pack checks", "Urgent support"], fee: "£35", path: "/services/passport", turnaround: "1–4 weeks", badge: "Popular", image: "/images/passportreg.png" },
-  { id: "nin", icon: "💼", title: "National Insurance (NIN) Support", desc: "Apply for a new NIN or replace a lost one with a step-by-step guide and HMRC contact support.", bullets: ["Prepare documents", "Contact HMRC where needed", "Explain timelines"], fee: "£20", path: "/services/nin-support", turnaround: "Same day–48hrs", badge: "Fast", image: "/images/nationalinsurance.png" },
-  { id: "bureaucracy", icon: "📄", title: "Bureaucracy Help (AIRE / SPID / Benefits)", desc: "AIRE registration, SPID setup, and benefit application help — cut through red tape.", bullets: ["AIRE registration & updates", "SPID setup & troubleshooting", "Benefits paperwork signposting"], fee: "£30", path: "/services/bureaucracy", turnaround: "1–14 days", image: "/images/aire-registration.png" },
-  { id: "aire", icon: "🗂️", title: "AIRE Registration & Updates", desc: "Register or update your AIRE record to keep consular services and rights in order.", bullets: ["Full AIRE registration", "Address/name updates", "Document checklist & submission"], fee: "£25", path: "/services/aire", turnaround: "3–14 days", image: "/images/aire-registration-hero-3840x1280.png" },
-  { id: "idcard", icon: "🆔", title: "Italian ID Card Assistance (CIE)", desc: "Help obtaining or renewing the Carta d’Identità Elettronica from the UK consulate.", bullets: ["Consular booking guidance", "Biometric & photo requirements", "Minor/consent guidance"], fee: "£35", path: "/services/id-card", turnaround: "2–6 weeks", image: "/images/cie-hero-3840x1280.png" },
-  { id: "translations", icon: "📝", title: "Certified Translations", desc: "Professional, certified translations (Italian ↔ English) for legal and official documents.", bullets: ["Certified translator partners", "Fast turnaround options", "Formatting for official use"], fee: "From £25 per page", path: "/services/translation", turnaround: "24–72 hours", image: "/images/service-passport.png" },
-  { id: "housing", icon: "🏠", title: "Housing Guidance", desc: "Find housing safely, avoid scams, and understand tenant rights across the UK.", bullets: ["Search checklist & vetted partners", "Deposit protection guidance", "Council housing advice"], fee: "£25", path: "/services/housing", turnaround: "1–14 days", image: "/images/housing-london-hero-3840x1280.png" },
-  { id: "benefits", icon: "💷", title: "Benefits Guidance", desc: "Clear advice on eligibility and applications for UK benefits and entitlements.", bullets: ["Eligibility checks", "Application support", "Appeals signposting"], fee: "From £15 (advice)", path: "/services/benefits", turnaround: "1–7 days", image: "/images/nhs-mental-health-access-hero-3840x1280.png" },
-  { id: "settled", icon: "🔒", title: "Settled Status Support", desc: "Guidance for EU Settlement Scheme applications, status checks and appeals.", bullets: ["Application review", "Appeals and evidence help", "Rights explained"], fee: "£30", path: "/services/settled-status", turnaround: "1–14 days", image: "/images/italian-essentials.png" },
-  { id: "spid", icon: "🔑", title: "SPID Digital Identity", desc: "SPID registration and troubleshooting so you can access Italian digital services from the UK.", bullets: ["ID provider guidance", "NFC/phone compatibility checks", "Login troubleshooting"], fee: "£20", path: "/services/spid", turnaround: "1–7 days", image: "/images/spid-digital-id.png" },
-  { id: "mental", icon: "🧠", title: "Mental Health Support", desc: "Free community guidance and signposting to NHS and local mental health resources.", bullets: ["Confidential listening", "Peer & support groups", "How to access NHS services"], fee: "Free Service", path: "/services/mental-health", turnaround: "Varies", image: "/images/stress-anxiety-toolkit-hero-3840x1280.png" },
-  { id: "community", icon: "🌍", title: "Community Integration & Events", desc: "Cultural workshops, language meetups and volunteer opportunities to build local networks.", bullets: ["Workshops & meetups", "Volunteer programmes", "Practical integration support"], fee: "Free Service", path: "/services/community", turnaround: "Ongoing", image: "/images/community-background.png" },
+  { id: "passport", icon: "🛂", title: "Passport & Consular Services", desc: "Booking, paperwork review and urgent consular support for Italian passports from the UK.", bullets: ["Consulate bookings (London/Manchester)", "Document pack checks", "Urgent support"], fee: "£35", path: "/services/passport", turnaround: "1–3 weeks", badge: "Popular", image: "/images/passportreg.png" },
+  { id: "visa", icon: "🛃", title: "Visa Appointment Support", desc: "Booking and document prep help for visa/biometrics appointments in the UK and Schengen (where eligible).", bullets: ["Portal setup (UKVI/TLS/VFS)", "Tailored checklist", "Appointment search & booking"], fee: "£35", path: "/services/visa", turnaround: "1–3 weeks", badge: "New", image: "/images/service-visa.png" },
+  { id: "nin", icon: "💼", title: "National Insurance (NIN) Support", desc: "Apply for a new NIN or replace a lost one with a step-by-step guide and HMRC contact support.", bullets: ["Prepare documents", "Contact HMRC where needed", "Explain timelines"], fee: "£35", path: "/services/nin-support", turnaround: "1–3 weeks", badge: "Fast", image: "/images/nationalinsurance.png" },
+  { id: "bureaucracy", icon: "📄", title: "Bureaucracy Help (AIRE / Benefits)", desc: "AIRE registration and benefit application help — cut through red tape.", bullets: ["AIRE registration & updates", "Benefits paperwork signposting"], fee: "£35", path: "/services/bureaucracy", turnaround: "1–3 weeks", image: "/images/aire-registration.png" },
+  { id: "aire", icon: "🗂️", title: "AIRE Registration & Updates", desc: "Register or update your AIRE record to keep consular services and rights in order.", bullets: ["Full AIRE registration", "Address/name updates", "Document checklist & submission"], fee: "£35", path: "/services/aire", turnaround: "1–3 weeks", image: "/images/aire-registration-hero-3840x1280.png" },
+  { id: "idcard", icon: "🆔", title: "Italian ID Card Assistance (CIE)", desc: "Help obtaining or renewing the Carta d’Identità Elettronica from the UK consulate.", bullets: ["Consular booking guidance", "Biometric & photo requirements", "Minor/consent guidance"], fee: "£35", path: "/services/id-card", turnaround: "1–3 weeks", image: "/images/cie-hero-3840x1280.png" },
+  { id: "translations", icon: "📝", title: "Certified Translations", desc: "Professional, certified translations (Italian ↔ English) for legal and official documents.", bullets: ["Certified translator partners", "Fast turnaround options", "Formatting for official use"], fee: "£35", path: "/services/translation", turnaround: "1–3 weeks", image: "/images/service-passport.png" },
+  { id: "housing", icon: "🏠", title: "Housing Guidance", desc: "Find housing safely, avoid scams, and understand tenant rights across the UK.", bullets: ["Search checklist & vetted partners", "Deposit protection guidance", "Council housing advice"], fee: "£35", path: "/services/housing", turnaround: "1–3 weeks", image: "/images/housing-london-hero-3840x1280.png" },
+  { id: "benefits", icon: "💷", title: "Benefits Guidance", desc: "Clear advice on eligibility and applications for UK benefits and entitlements.", bullets: ["Eligibility checks", "Application support", "Appeals signposting"], fee: "£35", path: "/services/benefits", turnaround: "1–3 weeks", image: "/images/nhs-mental-health-access-hero-3840x1280.png" },
+  { id: "settled", icon: "🔒", title: "Settled Status Support", desc: "Guidance for EU Settlement Scheme applications, status checks and appeals.", bullets: ["Application review", "Appeals and evidence help", "Rights explained"], fee: "£35", path: "/services/settled-status", turnaround: "1–3 weeks", image: "/images/italian-essentials.png" },
+  
+  
 ];
 
 export default async function ServicesPage({
@@ -69,7 +69,7 @@ export default async function ServicesPage({
     provider: {
       "@type": "Organization",
       name: "Resinaro",
-      email: "help@resinaro.com",
+  email: "resinaro@proton.me",
       url: "https://www.resinaro.com",
     },
     hasOfferCatalog: {
@@ -88,7 +88,7 @@ export default async function ServicesPage({
     <main className="bg-[#F9F6F1] text-gray-800 min-h-screen">
       {/* HERO */}
       <section className="relative">
-        <div className="relative h-[260px] sm:h-[320px] md:h-[380px] overflow-hidden">
+  <div className="relative h-[360px] sm:h-[420px] md:h-[500px] overflow-hidden">
           <Image
             src="/images/resinaro-general.png"
             alt="Resinaro — practical support for migrants in the UK"
@@ -97,10 +97,10 @@ export default async function ServicesPage({
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-green-950/70 via-green-900/50 to-transparent" />
-          <div className="absolute inset-0 flex items-center">
-            <div className="container mx-auto px-6 max-w-7xl">
-              <div className="max-w-3xl text-white">
+          <div className="absolute inset-0 bg-gradient-to-b from-green-950/70 via-green-900/40 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center text-center">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <div className="text-white">
                 <p className="inline-block text-xs tracking-widest uppercase bg-white/10 rounded-full px-3 py-1 mb-3">
                   Services
                 </p>
@@ -226,15 +226,9 @@ export default async function ServicesPage({
                     <Link
                       href={s.path}
                       className="inline-flex items-center rounded-lg bg-green-900 text-white px-3.5 py-2 text-sm font-medium hover:bg-green-800 transition"
-                      aria-label={`Book or learn more about ${s.title}`}
+                      aria-label={`Book ${s.title}`}
                     >
-                      Book / Learn more
-                    </Link>
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center rounded-lg border border-gray-300 px-3.5 py-2 text-sm hover:bg-gray-50"
-                    >
-                      Ask a question
+                      Book
                     </Link>
                   </div>
                 </div>

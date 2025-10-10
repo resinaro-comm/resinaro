@@ -82,10 +82,10 @@ export default function Page() {
             If you’d like help checking documents or submitting correctly the
             first time, we can assist:{" "}
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="underline text-green-900 hover:text-green-800"
             >
-              Bureaucracy Help →
+              View Resinaro Services →
             </Link>
           </p>
         </div>
@@ -337,10 +337,10 @@ export default function Page() {
               Need help gathering the right proofs and submitting correctly?
             </p>
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Get AIRE Help →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

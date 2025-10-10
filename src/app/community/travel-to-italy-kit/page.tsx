@@ -196,10 +196,8 @@ export default function Page() {
             <li>Emergency sheet: contact, insurer, EHIC/GHIC (if you have one), card blocks, local consulate address.</li>
           </ul>
           <p className="mt-3 text-sm">
-            Need help with documents? See{" "}
-            <Link href="/services/passport" className="underline text-green-900">Passport support</Link>,{" "}
-            <Link href="/services/id-card" className="underline text-green-900">CIE guidance</Link>, or{" "}
-            <Link href="/services/aire-registration" className="underline text-green-900">AIRE registration</Link>.
+            Need help with documents?{" "}
+            <Link href="/services" className="underline text-green-900">View Resinaro Services →</Link>.
           </p>
         </section>
 
@@ -301,13 +299,8 @@ export default function Page() {
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/services/aire-registration">
-                AIRE Registration & Updates
-              </Link>
-            </li>
-            <li>
-              <Link className="underline text-green-900" href="/services/passport">
-                Passport & Consular Appointments
+              <Link className="underline text-green-900" href="/services">
+                View Resinaro Services →
               </Link>
             </li>
           </ul>

@@ -20,7 +20,7 @@ const structuredData = {
       "@type": "ContactPoint",
       telephone: "+44-20-1234-5678",
       contactType: "customer service",
-      email: "help@resinaro.com",
+  email: "resinaro@proton.me",
       areaServed: "GB",
       availableLanguage: ["English", "Italian"],
     },
@@ -65,9 +65,9 @@ export default function Footer() {
 
       {/* Main footer grid */}
       <div className="container mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           {/* Brand + newsletter */}
-          <div>
+          <div className="sm:col-span-1">
             <h3 className="text-xl font-bold text-green-900">Resinaro</h3>
             <p className="mt-1 text-sm text-gray-700 max-w-xs">
               Italian roots — practical support for people in the UK.
@@ -138,7 +138,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="mailto:help@resinaro.com"
+                href="mailto:resinaro@proton.me"
                 aria-label="Email"
                 className="text-gray-700 hover:text-green-900"
               >
@@ -153,7 +153,7 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <nav aria-label="Explore">
+          <nav aria-label="Explore" className="col-span-1">
             <div className="font-semibold text-gray-900 mb-2">Explore</div>
             <ul className="space-y-1 text-sm">
               <li>
@@ -180,7 +180,7 @@ export default function Footer() {
           </nav>
 
           {/* Services */}
-          <nav aria-label="Services">
+          <nav aria-label="Services" className="col-span-1">
             <div className="font-semibold text-gray-900 mb-2">Services</div>
             <ul className="space-y-1 text-sm">
               {services.map((s) => (
@@ -194,7 +194,7 @@ export default function Footer() {
           </nav>
 
           {/* Legal + contact */}
-          <div>
+          <div className="sm:col-span-1 lg:col-span-1">
             <nav aria-label="Legal">
               <div className="font-semibold text-gray-900 mb-2">Legal</div>
               <ul className="space-y-1 text-sm">
@@ -219,8 +219,8 @@ export default function Footer() {
             <div className="mt-4 text-sm text-gray-700">
               <div className="font-semibold text-gray-900">Contact</div>
               <p className="mt-1">
-                <a href="mailto:help@resinaro.com" className="hover:text-green-900">
-                  help@resinaro.com
+                <a href="mailto:resinaro@proton.me" className="hover:text-green-900">
+                  resinaro@proton.me
                 </a>
               </p>
               <p className="mt-1">Mon–Fri · 9:00–17:00 (UK)</p>

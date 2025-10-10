@@ -93,8 +93,8 @@ export default function Page() {
           <p className="leading-relaxed">
             This guide focuses on <strong>preparation and documents</strong> so your appointment goes smoothly. If you’d
             like us to help with booking or reviewing your file, we offer a simple, transparent service:&nbsp;
-            <Link href="/services/passport" className="underline text-green-900 hover:text-green-800">
-              Passport &amp; Consular Services
+            <Link href="/services" className="underline text-green-900 hover:text-green-800">
+              View Resinaro Services →
             </Link>.
           </p>
         </div>
@@ -238,10 +238,10 @@ export default function Page() {
               We can help you <strong>review your documents</strong> and <strong>book the earliest viable appointment</strong>.
             </p>
             <Link
-              href="/services/passport"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Get Passport Help →
+              View Resinaro Services →
             </Link>
           </div>
         </section>
@@ -363,10 +363,10 @@ export default function Page() {
               Need help assembling your file or getting an appointment?
             </p>
             <Link
-              href="/services/passport"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Passport &amp; Consular Services →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

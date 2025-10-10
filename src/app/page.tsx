@@ -57,14 +57,14 @@ export default function Home() {
     },
     {
       title: "Community-first",
-      desc: "We’re built by and for migrants. Empathy + professional execution.",
+      desc: "Empathy + professional execution.",
       icon: "🤝",
     },
     {
       title: "Fast, practical outcomes",
       desc: "We focus on the next concrete step—documents, booking, confirmation.",
       icon: "🚀",
-    },
+    },  
   ];
 
   const steps: Step[] = [
@@ -199,7 +199,7 @@ export default function Home() {
         ],
         contactPoint: {
           "@type": "ContactPoint",
-          email: "help@resinaro.com",
+          email: "resinaro@proton.me",
           contactType: "customer support",
           availableLanguage: ["it", "en"],
         },
@@ -262,7 +262,7 @@ export default function Home() {
         animate="animate"
       >
         {/* Background composite image (Amalfi ↔ London) */}
-        <div className="relative h-[54vh] md:h-[64vh] lg:h-[72vh] w-full">
+  <div className="relative h-[70vh] md:h-[72vh] lg:h-[78vh] w-full">
           <Image
             src="/images/landscape-image.png"
             alt="Italy and UK combined skyline"
@@ -296,7 +296,7 @@ export default function Home() {
               <Typewriter
                 texts={[
                   "Passport appointments & consular support",
-                  "AIRE registration & SPID guidance",
+                  "AIRE registration & consular guidance",
                   "NHS & housing guidance, clearly explained",
                   "No hidden fees — outcomes you can use",
                 ]}
@@ -310,22 +310,22 @@ export default function Home() {
               />
             </motion.div>
 
-            <motion.div className="mt-8 flex items-center justify-center gap-3 flex-wrap" {...fadeUp(0.45)}>
+            <motion.div className="mt-8 flex flex-wrap items-center justify-center gap-3" {...fadeUp(0.45)}>
               <Link
                 href="/services"
-                className="rounded-lg bg-white/90 text-green-900 font-semibold px-5 py-3 hover:bg-white transition shadow"
+                className="inline-flex whitespace-nowrap text-center rounded-lg bg-white/90 text-green-900 font-semibold px-5 py-3 hover:bg-white transition shadow"
               >
                 See services
               </Link>
               <Link
                 href="/contact"
-                className="rounded-lg bg-emerald-600 text-white font-semibold px-5 py-3 hover:bg-emerald-700 transition shadow"
+                className="inline-flex whitespace-nowrap text-center rounded-lg bg-emerald-600 text-white font-semibold px-5 py-3 hover:bg-emerald-700 transition shadow"
               >
                 Get help now
               </Link>
               <Link
                 href="/community"
-                className="rounded-lg bg-white/10 text-white backdrop-blur px-5 py-3 hover:bg-white/20 transition"
+                className="inline-flex whitespace-nowrap text-center rounded-lg bg-white/10 text-white backdrop-blur px-5 py-3 hover:bg-white/20 transition"
               >
                 Read guides
               </Link>
@@ -371,7 +371,7 @@ export default function Home() {
 
           {/* Cards */}
           <motion.div
-            className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-6xl mx-auto"
+            className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-6xl mx-auto"
             variants={staggerChildren}
           >
             <motion.div {...blurIn(0.05)}>
@@ -387,6 +387,9 @@ export default function Home() {
             </motion.div>
             <motion.div {...blurIn(0.2)}>
               <ServiceCard title="AIRE Registration" price="£35" href="/services/aire" turnaround="1–3 weeks" />
+            </motion.div>
+            <motion.div {...blurIn(0.27)}>
+              <ServiceCard title="Visa Appointment Support" price="£35" href="/services/visa" turnaround="1–3 weeks" />
             </motion.div>
           </motion.div>
 

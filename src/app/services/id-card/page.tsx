@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import CieForm from "../../../../components/CieForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     "name": "Resinaro",
     "url": "https://www.resinaro.com",
-    "email": "help@resinaro.com"
+  "email": "resinaro@proton.me"
   },
   "serviceType": "Consular assistance, appointment booking and document preparation",
   "areaServed": { "@type": "Country", "name": "United Kingdom" },
@@ -73,7 +73,7 @@ export default function Page() {
           </p>
           <div className="max-w-lg mx-auto mt-6 mb-4">
             <img 
-              src="/images/servies-idcard.png" 
+              src="/images/cie-hero-3840x1280.png" 
               alt="Italian electronic ID card (CIE)" 
               className="w-full h-auto rounded-lg shadow-md" 
             />
@@ -149,7 +149,7 @@ export default function Page() {
                 Service fees are shown at the booking stage and reflect the time spent preparing documents and liaising with the consulate. Concessionary rates are available for those in financial hardship; please enquire before booking.
               </p>
               <p className="text-gray-700">
-                If we fail to deliver the agreed service due to our error we will offer an appropriate refund or a credit toward other Resinaro services. Refund requests should be emailed to help@resinaro.com.
+                If we fail to deliver the agreed service due to our error we will offer an appropriate refund or a credit toward other Resinaro services. Refund requests should be emailed to resinaro@proton.me.
               </p>
             </section>
 
@@ -188,13 +188,13 @@ export default function Page() {
                 Use the form to tell us which consulate covers you, upload any available documents and choose a preferred timeline. We will respond with a tailored checklist and next steps.
               </p>
 
-              <ServiceForm />
+              <CieForm />
             </div>
 
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Need urgent help?</h3>
               <p className="text-sm mb-3">
-                Email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> and include &quot;CIE URGENT&quot; in the subject for time-sensitive requests.
+                Email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and include &quot;CIE URGENT&quot; in the subject for time-sensitive requests.
               </p>
               <div className="flex gap-3">
                 <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>

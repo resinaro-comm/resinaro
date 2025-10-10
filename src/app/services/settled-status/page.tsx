@@ -59,7 +59,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com",
+  email: "resinaro@proton.me",
   },
   serviceType: "Immigration status support and document preparation",
   areaServed: { "@type": "Country", name: "United Kingdom" },
@@ -149,7 +149,7 @@ export default function Page() {
                 If an application is refused we will explain the reason for the decision and the remedies available. This may include requesting an administrative review or pursuing an appeal. We provide evidence review, drafting assistance and can signpost to specialist immigration solicitors for complex cases.
               </p>
               <p className="text-sm text-gray-600">
-                Where a complaint about our service is required, see our Complaints procedure or email help@resinaro.com.
+                Where a complaint about our service is required, see our Complaints procedure or email resinaro@proton.me.
               </p>
             </section>
 
@@ -163,10 +163,10 @@ export default function Page() {
             <section>
               <h2 className="text-2xl font-semibold mb-2">Fees, concessions and refunds</h2>
               <p className="text-gray-700 mb-2">
-                Resinaro provides fee-based support for document checks and application assistance. Contact help@resinaro.com for a quote. We offer concessionary support in cases of financial hardship; please enquire before booking.
+                Resinaro provides fee-based support for document checks and application assistance. Contact resinaro@proton.me for a quote. We offer concessionary support in cases of financial hardship; please enquire before booking.
               </p>
               <p className="text-gray-700">
-                If we fail to deliver the agreed service due to our error we will consider a refund or credit. Refund requests should be emailed to help@resinaro.com.
+                If we fail to deliver the agreed service due to our error we will consider a refund or credit. Refund requests should be emailed to resinaro@proton.me.
               </p>
             </section>
           </div>
@@ -184,7 +184,7 @@ export default function Page() {
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Urgent enquiries</h3>
               <p className="text-sm mb-3">
-                If you are at risk of losing access to work or services, email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> and include &quot;Urgent&quot; in the subject line. We will prioritise triage where possible.
+                If you are at risk of losing access to work or services, email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and include &quot;Urgent&quot; in the subject line. We will prioritise triage where possible.
               </p>
               <div className="flex gap-3">
                 <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>

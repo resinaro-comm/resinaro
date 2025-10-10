@@ -46,7 +46,7 @@ export default function Page() {
         <p className="mb-8">
           Join our workshops and peer groups:{" "}
           <Link
-            href="/services/community"
+            href="/community"
             className="underline text-green-900 hover:text-green-800"
           >
             Community Integration →
@@ -252,7 +252,7 @@ export default function Page() {
               Want a gentle accountability partner for 4 weeks?
             </p>
             <Link
-              href="/services/community"
+              href="/community"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
               Join a group →

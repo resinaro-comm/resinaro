@@ -122,8 +122,8 @@ export default function Page() {
           </p>
           <p className="mt-3">
             Need hands-on support with registration or paperwork?{" "}
-            <Link href="/services/health" className="underline text-green-900 hover:text-green-800">
-              Book healthcare support →
+            <Link href="/services" className="underline text-green-900 hover:text-green-800">
+              View Resinaro Services →
             </Link>
           </p>
         </div>
@@ -274,8 +274,8 @@ export default function Page() {
             <p className="mb-3">
               Need help registering, filling forms, or arranging interpreters? Resinaro can help with hands-on support and document checks.
             </p>
-            <Link href="/services/health" className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800">
-              Get healthcare support →
+            <Link href="/services" className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800">
+              View Resinaro Services →
             </Link>
           </div>
         </section>

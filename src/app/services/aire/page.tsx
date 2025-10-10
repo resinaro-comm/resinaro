@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import AireForm from "../../../../components/AireForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -59,7 +59,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com"
+  email: "resinaro@proton.me"
   },
   serviceType: "Consular registration assistance",
   areaServed: { "@type": "Country", name: "United Kingdom" },
@@ -156,7 +156,7 @@ export default function Page() {
                 Our standard AIRE assistance package is quoted at booking depending on the complexity of the update. Concessionary rates are available for those in financial hardship; please enquire before booking.
               </p>
               <p className="text-gray-700">
-                If Resinaro fails to deliver an agreed service due to our error we will consider a refund or credit. Refund requests should be sent to help@resinaro.com.
+                If Resinaro fails to deliver an agreed service due to our error we will consider a refund or credit. Refund requests should be sent to resinaro@proton.me.
               </p>
             </section>
 
@@ -197,13 +197,13 @@ export default function Page() {
                 Use the form to tell us your current UK address, consulate area if known, and upload any available documents. We will respond with a tailored checklist and next steps.
               </p>
 
-              <ServiceForm />
+              <AireForm />
             </div>
 
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Urgent consular issues</h3>
               <p className="text-sm mb-3">
-                If you have a time-sensitive consular issue (for example an imminent travel or legal deadline) email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> with &quot;AIRE URGENT&quot; in the subject. We will prioritise triage where possible.
+                If you have a time-sensitive consular issue (for example an imminent travel or legal deadline) email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> with &quot;AIRE URGENT&quot; in the subject. We will prioritise triage where possible.
               </p>
               <div className="flex gap-3">
                 <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>

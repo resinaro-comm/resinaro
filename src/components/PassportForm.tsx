@@ -3,6 +3,11 @@
 
 import React, { useRef, useState } from "react";
 
+/** Google Apps Script endpoint + token (shared) **/
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
+const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN
+
 const MAX_ADDITIONAL_FILES = 4;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
@@ -15,13 +20,14 @@ export default function PassportForm() {
   const filesRef = useRef<HTMLInputElement | null>(null);
 
   // basic contact
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
-  // booking type: general support or appointment
-  const [bookingType, setBookingType] = useState<"support" | "appointment">("support");
+  // booking flow: appointment-only (general support removed)
+  const [bookingType] = useState<"support" | "appointment">("appointment");
 
   // appointment-specific fields
   const [heightCm, setHeightCm] = useState(""); // allow users to input centimetres
@@ -36,6 +42,7 @@ export default function PassportForm() {
   // prenotami credentials or account creation
   const [prenotamiEmail, setPrenotamiEmail] = useState("");
   const [prenotamiPassword, setPrenotamiPassword] = useState("");
+  const [showPrenotamiPassword, setShowPrenotamiPassword] = useState(false);
   const [createPrenotami, setCreatePrenotami] = useState(false);
   const [acceptPrenotamiCharge, setAcceptPrenotamiCharge] = useState(false);
 
@@ -51,6 +58,18 @@ export default function PassportForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  async function fileToBase64(file: File) {
+    const buf = await file.arrayBuffer();
+    let binary = "";
+    const bytes = new Uint8Array(buf);
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      const slice = bytes.subarray(i, i + chunk);
+      binary += String.fromCharCode(...Array.from(slice));
+    }
+    return btoa(binary);
+  }
 
   // file handlers
   function handleProofChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -121,8 +140,12 @@ export default function PassportForm() {
     setSuccess(null);
 
     // basic validation
-    if (!fullName.trim() || !email.trim()) {
-      setError("Please enter your full name and email.");
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      setError("Please enter your first and last name and email.");
+      return;
+    }
+    if (!phone.trim()) {
+      setError("Please enter your phone number.");
       return;
     }
 
@@ -139,12 +162,12 @@ export default function PassportForm() {
     }
 
     // appointment-specific validation
-    if (bookingType === "appointment") {
+  if (bookingType === "appointment") {
       // require personal details
       if (!heightCm.trim() || !eyeColour.trim() || !maritalStatus) {
         setError("For passport appointments we need your height, eye colour and marital status.");
         return;
-      }
+  }
 
       // NEW: require answer to kids question
       if (hasKidsUnder18 === "") {
@@ -178,78 +201,78 @@ export default function PassportForm() {
     setSubmitting(true);
 
     try {
-      const fd = new FormData();
-      fd.append("name", fullName.trim());
-      fd.append("email", email.trim());
-      fd.append("phone", phone.trim());
-      fd.append("message", message.trim());
-      fd.append("service", bookingType === "appointment" ? "passport-appointment" : "passport-support");
-      fd.append("aireRegistered", aireRegistered);
-      fd.append("bookingType", bookingType);
+  const serviceKey = createPrenotami ? "passport-assistance-account" : "passport-assistance";
+      const bookingId = crypto.randomUUID();
 
-      // appointment details if applicable
-      if (bookingType === "appointment") {
-        fd.append("heightCm", heightCm.trim());
-        fd.append("eyeColour", eyeColour.trim());
-        fd.append("maritalStatus", maritalStatus);
-        // NEW: append kids answer
-        fd.append("hasKidsUnder18", hasKidsUnder18);
-
-        // prenotami credentials (sensitive)
-        if (prenotamiEmail.trim()) fd.append("prenotami_email", prenotamiEmail.trim());
-        if (prenotamiPassword) fd.append("prenotami_password", prenotamiPassword); // store/handle securely server-side
-        if (createPrenotami) {
-          fd.append("createPrenotami", "1");
-          fd.append("prenotami_fee", "20.00");
-        } else {
-          fd.append("createPrenotami", "0");
-        }
-      }
-
-      // required proof for appointment
+      // Build files payload for GAS
+  const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
       if (bookingType === "appointment" && proofOfResidence) {
-        fd.append("proofOfResidence", proofOfResidence, proofOfResidence.name);
+        filesPayload.push({ filename: proofOfResidence.name, mimeType: proofOfResidence.type, data: await fileToBase64(proofOfResidence) });
+      }
+      for (const f of additionalFiles) filesPayload.push({ filename: f.name, mimeType: f.type, data: await fileToBase64(f) });
+
+      // Data payload (avoid sending raw password via email—GAS script should treat it carefully)
+      const dataPayload: Record<string, string> = {
+        bookingType,
+        aireRegistered,
+        heightCm: heightCm.trim(),
+        eyeColour: eyeColour.trim(),
+        maritalStatus,
+        hasKidsUnder18,
+        createPrenotami: createPrenotami ? "1" : "0",
+        prenotamiEmail: prenotamiEmail.trim(),
+      };
+      if (message.trim()) dataPayload.message = message.trim();
+      if (prenotamiPassword) {
+        // Include the raw password for operational needs; ensure your GAS script stores/handles securely.
+        dataPayload.prenotamiPassword = prenotamiPassword;
+        dataPayload.prenotami_password = prenotamiPassword; // compatibility with earlier naming
       }
 
-      // additional files (photos / ID / other docs)
-      additionalFiles.forEach((f) => fd.append("files", f, f.name));
-
-      const res = await fetch("/api/services/book", {
+      // Send to GAS first
+      const r1 = await fetch(GAS_URL, {
         method: "POST",
-        body: fd,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          token: GAS_TOKEN,
+          action: "submit",
+          bookingId,
+          service: serviceKey,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.trim(),
+          telephone: phone.trim(),
+          files: filesPayload,
+          data: dataPayload,
+        }),
       });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => null);
-        throw new Error(text || "Submission failed. Please try again or email help@resinaro.com.");
+      type GasResponse = { ok?: boolean; error?: string } | undefined;
+      let r1json: GasResponse = undefined;
+      try { r1json = (await r1.json()) as GasResponse; } catch {}
+      if (!r1.ok || !(r1json && r1json.ok)) {
+        const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
+        throw new Error(msg);
       }
 
-      setSuccess(
-        bookingType === "appointment"
-          ? "Appointment request submitted — we will contact you to confirm booking details and next steps."
-          : "Request submitted — we will contact you shortly."
-      );
+    // Then call our API to get Stripe link
+    const fd = new FormData();
+    fd.append("bookingId", bookingId);
+    // Keep GAS service stable; choose checkout service based on account creation
+    const checkoutService = createPrenotami ? "passport-assistance-account" : "passport-assistance";
+    fd.append("service", checkoutService);
+      fd.append("email", email.trim());
+  fd.append("name", `${firstName.trim()} ${lastName.trim()}`);
 
-      // reset form
-      setFullName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setBookingType("support");
-      setHeightCm("");
-      setEyeColour("");
-      setMaritalStatus("single");
-      setHasKidsUnder18(""); // reset new field
-      setPrenotamiEmail("");
-      setPrenotamiPassword("");
-      setCreatePrenotami(false);
-      setAcceptPrenotamiCharge(false);
-      setProofOfResidence(null);
-      setAdditionalFiles([]);
-      setConsent(false);
-      setAireRegistered("unsure");
-      if (proofRef.current) proofRef.current.value = "";
-      if (filesRef.current) filesRef.current.value = "";
+      const res = await fetch("/api/services/book", { method: "POST", body: fd });
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || "Could not prepare checkout.");
+      }
+      const { url } = (await res.json()) as { url?: string };
+      if (!url) throw new Error("No payment link returned.");
+      window.location.href = url;
+      return;
+
+  // No further code after redirect
     } catch (err: unknown) {
       // safe extraction of error message without using `any`
       const messageText = err instanceof Error ? err.message : String(err);
@@ -265,14 +288,25 @@ export default function PassportForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
-      <div>
-        <label className="block text-sm font-medium">Full Name *</label>
-        <input
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="mt-1 block w-full rounded border px-3 py-2"
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">First name *</label>
+          <input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Last name *</label>
+          <input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+          />
+        </div>
       </div>
 
       <div>
@@ -287,29 +321,16 @@ export default function PassportForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Phone</label>
+        <label className="block text-sm font-medium">Phone *</label>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="mt-1 block w-full rounded border px-3 py-2"
           placeholder="+44..."
+          required
         />
       </div>
-
-      {/* Booking type toggle */}
-      <div className="bg-gray-50 border rounded p-3">
-        <p className="text-sm font-medium mb-2">What do you need?</p>
-        <div className="flex gap-4 items-center">
-          <label className="inline-flex items-center gap-2">
-            <input type="radio" name="bookingType" checked={bookingType === "support"} onChange={() => setBookingType("support")} />
-            <span>General passport support</span>
-          </label>
-          <label className="inline-flex items-center gap-2">
-            <input type="radio" name="bookingType" checked={bookingType === "appointment"} onChange={() => setBookingType("appointment")} />
-            <span>Book passport support / appointment</span>
-          </label>
-        </div>
-      </div>
+      {/* Booking type toggle removed: always appointment mode */}
 
       {/* AIRE question (unchanged flow) */}
       <div className="bg-gray-50 border rounded p-3">
@@ -474,18 +495,37 @@ export default function PassportForm() {
 
                 <div>
                   <label className="block text-sm font-medium">Prenotami password *</label>
-                  <input
-                    type="password"
-                    value={prenotamiPassword}
-                    onChange={(e) => setPrenotamiPassword(e.target.value)}
-                    className="mt-1 block w-full rounded border px-3 py-2"
-                    autoComplete="new-password"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPrenotamiPassword ? "text" : "password"}
+                      value={prenotamiPassword}
+                      onChange={(e) => setPrenotamiPassword(e.target.value)}
+                      className="mt-1 block w-full rounded border px-3 py-2 pr-10"
+                      autoComplete="new-password"
+                      aria-describedby="prenotami-password-help"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPrenotamiPassword((s) => !s)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+                      aria-label={showPrenotamiPassword ? "Hide password" : "Show password"}
+                      title={showPrenotamiPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPrenotamiPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                          <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-2.146-2.146A12.33 12.33 0 0 0 21.75 12c-1.2-3.34-4.89-7.5-9.75-7.5-1.765 0-3.402.5-4.85 1.308L3.53 2.47ZM7.28 6.22A10.82 10.82 0 0 1 12 5.25c4.116 0 7.31 3.24 8.44 6.75a10.83 10.83 0 0 1-2.26 3.676l-2.153-2.153A4.5 4.5 0 0 0 9.977 7.816L7.28 6.22Zm4.72 3.03a3 3 0 0 1 3 3c0 .343-.06.671-.171.976l-3.805-3.805c.305-.111.633-.171.976-.171Zm-5.62-.768 2.108 2.108A4.5 4.5 0 0 0 12 16.5a4.48 4.48 0 0 0 2.91-1.087l2.24 2.24A10.82 10.82 0 0 1 12 18.75C7.884 18.75 4.69 15.51 3.56 12a10.81 10.81 0 0 1 2.82-3.518Z" />
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                          <path d="M12 5.25c-4.86 0-8.55 4.16-9.75 7.5 1.2 3.51 4.324 6.75 9.75 6.75s8.55-3.24 9.75-6.75c-1.2-3.34-4.89-7.5-9.75-7.5Zm0 2.25a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                  <p id="prenotami-password-help" className="text-xs text-gray-500 mt-1">
+                    We will only use these credentials to log in and book the appointment on your behalf. For security, consider changing your password after the booking.
+                  </p>
                 </div>
-
-                <p className="text-xs text-gray-500 mt-1">
-                  We will only use these credentials to log in and book the appointment on your behalf. For security, consider changing your password after the booking.
-                </p>
               </>
             )}
 
@@ -524,8 +564,8 @@ export default function PassportForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Message (optional)</label>
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" rows={4} />
+        <label className="block text-sm font-medium">Message *</label>
+        <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" rows={4} required />
       </div>
 
       <div className="text-sm">
@@ -547,11 +587,12 @@ export default function PassportForm() {
           disabled={submitDisabled}
           className={`px-4 py-2 rounded text-white ${submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"}`}
         >
-          {submitting ? "Submitting..." : "Book passport support / appointment"}
+          {submitting ? "Submitting..." : "Book passport appointment + Pay"}
         </button>
         {aireIsNoOrUnsure && (
           <span className="ml-3 text-sm text-gray-700">You must register AIRE before we can proceed — use the Fast.it site link above.</span>
         )}
+        <p className="text-xs text-gray-600 mt-2">You will be redirected to payment after submitting your details.</p>
       </div>
     </form>
   );

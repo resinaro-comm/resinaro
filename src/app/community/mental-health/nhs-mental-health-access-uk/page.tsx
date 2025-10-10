@@ -326,7 +326,7 @@ export default function Page() {
               call?
             </p>
             <Link
-              href="/services/mental-health"
+              href="/community/mental-health"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
               Mental Health Support →

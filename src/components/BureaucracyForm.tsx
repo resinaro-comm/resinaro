@@ -3,6 +3,11 @@
 
 import React, { useRef, useState } from "react";
 
+/** Google Apps Script endpoint + token (shared) **/
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
+const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN
+
 const MAX_ADDITIONAL_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
@@ -11,7 +16,8 @@ export default function BureaucracyForm() {
   const proofRef = useRef<HTMLInputElement | null>(null);
   const addRef = useRef<HTMLInputElement | null>(null);
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -26,6 +32,18 @@ export default function BureaucracyForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  async function fileToBase64(file: File) {
+    const buf = await file.arrayBuffer();
+    let binary = "";
+    const bytes = new Uint8Array(buf);
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      const slice = bytes.subarray(i, i + chunk);
+      binary += String.fromCharCode(...Array.from(slice));
+    }
+    return btoa(binary);
+  }
 
   function handleProofChange(e: React.ChangeEvent<HTMLInputElement>) {
     setError(null);
@@ -91,8 +109,8 @@ export default function BureaucracyForm() {
     setSuccess(null);
 
     // Validation
-    if (!name.trim() || !email.trim()) {
-      setError("Please enter your full name and email.");
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      setError("Please enter your first and last name and email.");
       return;
     }
     if (!proof) {
@@ -107,42 +125,56 @@ export default function BureaucracyForm() {
     setSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("name", name.trim());
-      formData.append("email", email.trim());
-      formData.append("phone", phone.trim());
-      formData.append("message", message.trim());
-      // mark the service so your backend can route/price correctly
-      formData.append("service", "bureaucracy-help");
+      const bookingId = crypto.randomUUID();
+      const serviceKey = "bureaucracy-help";
 
-      // required proof field (explicit name)
-      formData.append("proofOfResidence", proof, proof.name);
+      // c) Build uploads payload for GAS
+      const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
+      if (proof) filesPayload.push({ filename: proof.name, mimeType: proof.type, data: await fileToBase64(proof) });
+      for (const f of additionalFiles) filesPayload.push({ filename: f.name, mimeType: f.type, data: await fileToBase64(f) });
 
-      // optional additional files
-      additionalFiles.forEach((f) => formData.append("files", f, f.name));
+      const dataPayload = { message: message.trim() };
 
-      // POST to your existing booking endpoint
-      const res = await fetch("/api/services/book", {
+      // d) Send to GAS
+      const r1 = await fetch(GAS_URL, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          token: GAS_TOKEN,
+          action: "submit",
+          bookingId,
+          service: serviceKey,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.trim(),
+          telephone: phone.trim(),
+          files: filesPayload,
+          data: dataPayload,
+        }),
       });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => null);
-        throw new Error(text || "Submission failed — please try again or email help@resinaro.com.");
+      type GasResponse = { ok?: boolean; error?: string } | undefined;
+      let r1json: GasResponse = undefined;
+      try { r1json = (await r1.json()) as GasResponse; } catch {}
+      if (!r1.ok || !(r1json && r1json.ok)) {
+        const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
+        throw new Error(msg);
       }
 
-      setSuccess("Request submitted — we will contact you shortly with next steps.");
-      // reset
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setProof(null);
-      setAdditionalFiles([]);
-      setConsent(false);
-      if (proofRef.current) proofRef.current.value = "";
-      if (addRef.current) addRef.current.value = "";
+      // e) Ask API for Stripe URL and redirect
+      const fd = new FormData();
+      fd.append("bookingId", bookingId);
+      fd.append("service", serviceKey);
+      fd.append("email", email.trim());
+  fd.append("name", `${firstName.trim()} ${lastName.trim()}`);
+
+      const res = await fetch("/api/services/book", { method: "POST", body: fd });
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || "Could not prepare checkout.");
+      }
+      const { url } = (await res.json()) as { url?: string };
+      if (!url) throw new Error("No payment link returned.");
+      window.location.href = url;
+      return;
     } catch (err: unknown) {
       // safe error extraction
       const messageText = err instanceof Error ? err.message : String(err);
@@ -155,15 +187,27 @@ export default function BureaucracyForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
-      <div>
-        <label className="block text-sm font-medium">Full name *</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full rounded border px-3 py-2"
-          required
-          aria-required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">First name *</label>
+          <input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+            aria-required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Last name *</label>
+          <input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+            aria-required
+          />
+        </div>
       </div>
 
       <div>
@@ -178,12 +222,13 @@ export default function BureaucracyForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Phone</label>
+        <label className="block text-sm font-medium">Phone *</label>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="mt-1 block w-full rounded border px-3 py-2"
           placeholder="+44..."
+          required
         />
       </div>
 
@@ -199,6 +244,7 @@ export default function BureaucracyForm() {
           accept=".pdf,image/png,image/jpeg"
           onChange={handleProofChange}
           className="mt-1"
+          required
           aria-describedby="proof-help"
         />
         <p id="proof-help" className="text-xs text-gray-500 mt-1">
@@ -270,12 +316,13 @@ export default function BureaucracyForm() {
           disabled={submitting}
           className={`bg-green-900 text-white px-4 py-2 rounded ${submitting ? "opacity-60 cursor-wait" : "hover:bg-green-800"}`}
         >
-          {submitting ? "Submitting..." : "Request help"}
+          {submitting ? "Submitting..." : "Request help + Pay"}
         </button>
+        <p className="text-xs text-gray-600 mt-2">You will be redirected to payment after submitting your details.</p>
       </div>
 
       <div className="text-xs text-gray-500 mt-2">
-        By submitting you agree to our <a className="underline" href="/privacy">Privacy Policy</a>. If you need immediate assistance email <a className="underline" href="mailto:help@resinaro.com">help@resinaro.com</a>.
+  By submitting you agree to our <a className="underline" href="/privacy">Privacy Policy</a>. If you need immediate assistance email <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
       </div>
     </form>
   );

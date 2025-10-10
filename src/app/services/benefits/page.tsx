@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import BenefitsForm from "../../../components/BenefitsForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     "name": "Resinaro",
     "url": "https://www.resinaro.com",
-    "email": "help@resinaro.com"
+  "email": "resinaro@proton.me"
   },
   "serviceType": "Benefits advice, application support and appeals",
   "areaServed": { "@type": "Country", "name": "United Kingdom" },
@@ -190,13 +190,13 @@ export default function Page() {
                 Use the short form to describe your situation and upload any letters or documents. We will respond with a tailored plan and next steps.
               </p>
 
-              <ServiceForm />
+              <BenefitsForm />
             </div>
 
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Immediate support</h3>
               <p className="text-sm mb-3">
-                If you require immediate financial help or face severe hardship email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> with &quot;URGENT&quot; in the subject and include the best time to call.
+                If you require immediate financial help or face severe hardship email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> with &quot;URGENT&quot; in the subject and include the best time to call.
               </p>
               <a href="/contact" className="inline-block bg-amber-500 hover:bg-amber-600 px-4 py-2 rounded-md font-semibold text-white">Contact us</a>
             </div>

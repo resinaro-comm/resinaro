@@ -1,6 +1,6 @@
 export default function NewsletterCard() {
   const mailto =
-    "mailto:help@resinaro.com?subject=Subscribe%20to%20Resinaro%20Blog&body=Please%20subscribe%20me%20to%20blog%20updates.";
+  "mailto:resinaro@proton.me?subject=Subscribe%20to%20Resinaro%20Blog&body=Please%20subscribe%20me%20to%20blog%20updates.";
   return (
     <section className="mt-10">
       <div className="container mx-auto max-w-5xl px-6">

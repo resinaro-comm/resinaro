@@ -76,7 +76,7 @@ export default function RefundPolicy() {
             <li>Clear reason for the refund request and any supporting evidence (screenshot, bank statement, emails).</li>
           </ul>
           <p className="text-gray-700 mt-3">
-            Contact: <a href="mailto:help@resinaro.com" className="underline text-green-900">help@resinaro.com</a> or use our <a href="/contact" className="underline text-green-900">contact form</a>.
+            Contact: <a href="mailto:resinaro@proton.me" className="underline text-green-900">resinaro@proton.me</a> or use our <a href="/contact" className="underline text-green-900">contact form</a>.
           </p>
         </section>
 
@@ -116,7 +116,7 @@ export default function RefundPolicy() {
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-2">9. Getting help and escalation</h2>
           <p className="text-gray-700 mb-2">
-            If you have not received an acknowledgement within 3 business days or you are unhappy with our reply, please write to <strong>help@resinaro.com</strong> with the subject line &quot;Refund escalation&quot; and we will escalate your case to a senior representative.
+            If you have not received an acknowledgement within 3 business days or you are unhappy with our reply, please write to <strong>resinaro@proton.me</strong> with the subject line &quot;Refund escalation&quot; and we will escalate your case to a senior representative.
           </p>
           <p className="text-gray-700">
             For full details about how we handle personal data related to payments and refunds, see our <a href="/privacy-policy" className="underline text-green-900">Privacy Policy</a> and <a href="/cookies" className="underline text-green-900">Cookies Policy</a>.
@@ -130,7 +130,7 @@ export default function RefundPolicy() {
             <p className="text-gray-700 mb-3">Contact our support team with your order details and we will respond within 3 business days.</p>
             <div className="flex gap-3">
               <a href="/contact" className="inline-block bg-amber-500 hover:bg-amber-600 text-white font-semibold px-5 py-2 rounded">Contact form</a>
-              <a href="mailto:help@resinaro.com" className="inline-block bg-green-900 hover:bg-green-800 text-white font-semibold px-5 py-2 rounded">Email support</a>
+              <a href="mailto:resinaro@proton.me" className="inline-block bg-green-900 hover:bg-green-800 text-white font-semibold px-5 py-2 rounded">Email support</a>
             </div>
           </div>
         </section>

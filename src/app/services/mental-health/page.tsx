@@ -59,7 +59,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     "name": "Resinaro",
     "url": "https://www.resinaro.com",
-    "email": "help@resinaro.com"
+  "email": "resinaro@proton.me"
   },
   "serviceType": "Peer support, guidance and NHS signposting",
   "areaServed": { "@type": "Country", "name": "United Kingdom" },
@@ -107,7 +107,7 @@ export default function MentalHealthSupportPage() {
             <section>
               <h2 className="text-2xl font-semibold mb-2">How we work: simple steps</h2>
               <ol className="list-decimal list-inside text-gray-700 space-y-2">
-                <li><strong>Reach out:</strong> Use the form or email help@resinaro.com to describe your need.</li>
+                <li><strong>Reach out:</strong> Use the form or email resinaro@proton.me to describe your need.</li>
                 <li><strong>Triage & signposting:</strong> We assess the best next step and provide clear options.</li>
                 <li><strong>Support & follow up:</strong> We offer short-term peer support, referral guidance and follow up to ensure the link to services.</li>
               </ol>

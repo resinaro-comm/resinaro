@@ -1,4 +1,4 @@
-import ServiceForm from "../../../../components/ServiceForm";
+import HousingForm from "../../../components/HousingForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -59,7 +59,7 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-    email: "help@resinaro.com"
+  email: "resinaro@proton.me"
   },
   serviceType: "Housing advice, tenant rights and council application support",
   areaServed: { "@type": "Country", name: "United Kingdom" },
@@ -68,7 +68,7 @@ const serviceJsonLd = {
   offers: {
     "@type": "Offer",
     priceCurrency: "GBP",
-    price: "25.00"
+    price: "35.00"
   }
 };
 
@@ -187,13 +187,13 @@ export default function HousingGuidancePage() {
                 Complete the short form and include a link or screenshots of the listing if relevant. We will respond with a risk assessment and practical next steps.
               </p>
 
-              <ServiceForm />
+              <HousingForm />
             </div>
 
             <div className="bg-green-900 text-white rounded-xl p-5">
               <h3 className="font-semibold text-lg mb-2">Urgent housing issues</h3>
               <p className="text-sm mb-3">
-                If you face an imminent loss of home or homelessness, email <a href="mailto:help@resinaro.com" className="underline text-amber-300">help@resinaro.com</a> with &quot;URGENT&quot; in the subject and include the best time to contact you. We will prioritise triage and signpost emergency services.
+                If you face an imminent loss of home or homelessness, email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> with &quot;URGENT&quot; in the subject and include the best time to contact you. We will prioritise triage and signpost emergency services.
               </p>
               <a href="/contact" className="inline-block bg-amber-500 hover:bg-amber-600 px-4 py-2 rounded-md font-semibold text-white">Contact us</a>
             </div>

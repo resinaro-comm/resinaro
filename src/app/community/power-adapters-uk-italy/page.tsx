@@ -60,7 +60,7 @@ export default function Page() {
         {/* Hero */}
         <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-xl">
           <Image
-            src="/Logo.jpg" // replace with a dedicated hero when ready
+            src="/images/desk-chargers-adapter.jpg"
             alt="Safe power setup for UK and Italy with adapters, chargers and surge-protected extensions"
             fill
             priority

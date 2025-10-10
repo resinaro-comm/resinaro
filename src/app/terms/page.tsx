@@ -4,7 +4,7 @@ import TermsAcceptance from "@/components/TermsAcceptance";
 export const metadata = {
   title: "Terms of Service | Resinaro",
   description:
-    "Resinaro Terms of Service — short summary and full legal terms. Read the TL;DR or the full text. Contact help@resinaro.com for questions.",
+  "Resinaro Terms of Service — short summary and full legal terms. Read the TL;DR or the full text. Contact resinaro@proton.me for questions.",
   alternates: { canonical: "/terms" },
 };
 
@@ -179,7 +179,7 @@ export default function Terms() {
                 <summary className="cursor-pointer text-sm text-green-800 underline">Read full text</summary>
                 <div className="mt-3 text-gray-700 leading-relaxed">
                   Resinaro is committed to the safety and welfare of service users. If any member of our team believes someone may be at risk of harm, abuse or exploitation we may make a safeguarding referral to relevant statutory agencies in line with applicable guidance.
-                  We will take reasonable steps to protect personal data in these circumstances while prioritising safety. To report a safeguarding concern contact help@resinaro.com.
+                  We will take reasonable steps to protect personal data in these circumstances while prioritising safety. To report a safeguarding concern contact resinaro@proton.me.
                 </div>
               </details>
             </article>
@@ -214,11 +214,11 @@ export default function Terms() {
             {/* 9. Complaints */}
             <article id="complaints" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
               <h2 className="text-2xl font-semibold text-green-900 mb-2">9. Complaints & disputes</h2>
-              <p className="text-gray-700 mb-2">Short summary: contact help@resinaro.com — acknowledgement target: 3 business days.</p>
+              <p className="text-gray-700 mb-2">Short summary: contact resinaro@proton.me — acknowledgement target: 3 business days.</p>
               <details className="mt-2">
                 <summary className="cursor-pointer text-sm text-green-800 underline">Read full text</summary>
                 <div className="mt-3 text-gray-700 leading-relaxed">
-                  If you are unhappy with a part of our service contact help@resinaro.com. We aim to acknowledge complaints within three business days and to resolve them promptly.
+                  If you are unhappy with a part of our service contact resinaro@proton.me. We aim to acknowledge complaints within three business days and to resolve them promptly.
                   Where a dispute cannot be resolved informally the matter may be referred to mediation or the courts as set out in these Terms.
                 </div>
               </details>
@@ -256,7 +256,7 @@ export default function Terms() {
                 For questions about these Terms or our Services contact:
               </p>
               <div className="mt-3 text-gray-700">
-                <div><strong>Email:</strong> <a href="mailto:help@resinaro.com" className="text-green-800 underline">help@resinaro.com</a></div>
+                <div><strong>Email:</strong> <a href="mailto:resinaro@proton.me" className="text-green-800 underline">resinaro@proton.me</a></div>
               </div>
             </article>
 

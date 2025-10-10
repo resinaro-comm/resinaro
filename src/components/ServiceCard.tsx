@@ -51,7 +51,7 @@ export default function ServiceCard({
         {(title.toLowerCase().includes('id card') || title.toLowerCase().includes('cie')) && (
           <div className="w-full">
             <img
-              src="/images/spid-digital-id.png"
+              src="/images/cie-hero-3840x1280.png"
               alt="Italian electronic ID card (CIE)"
               className="w-full h-auto block"
             />
@@ -62,6 +62,15 @@ export default function ServiceCard({
             <img
               src="/images/aire-registration.png"
               alt="AIRE registration service"
+              className="w-full h-auto block"
+            />
+          </div>
+        )}
+        {title.toLowerCase().includes('visa') && (
+          <div className="w-full">
+            <img
+              src="/images/service-visa.png"
+              alt="Visa appointment support"
               className="w-full h-auto block"
             />
           </div>

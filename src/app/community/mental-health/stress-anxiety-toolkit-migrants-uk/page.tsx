@@ -79,7 +79,7 @@ export default function Page() {
           <p className="mt-3">
             For 1-to-1 planning and accountability, we can help:{" "}
             <Link
-              href="/services/mental-health"
+              href="/community/mental-health"
               className="underline text-green-900 hover:text-green-800"
             >
               Mental Health Support →
@@ -309,7 +309,7 @@ export default function Page() {
               Want a personalised plan and weekly check-ins?
             </p>
             <Link
-              href="/services/mental-health"
+              href="/community/mental-health"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
               Talk to us →

@@ -97,10 +97,10 @@ export default function Page() {
             Need help ensuring your documents and AIRE are correct before
             booking?{" "}
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="underline text-green-900 hover:text-green-800"
             >
-              Bureaucracy Help →
+              View Resinaro Services →
             </Link>
           </p>
         </div>
@@ -401,10 +401,10 @@ export default function Page() {
               correct?
             </p>
             <Link
-              href="/services/bureaucracy"
+              href="/services"
               className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
-              Get Help →
+              View Resinaro Services →
             </Link>
           </div>
         </section>

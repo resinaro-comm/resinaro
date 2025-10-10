@@ -16,7 +16,7 @@ export default function Page() {
         {/* Hero Image */}
         <div className="relative w-full h-72 md:h-96 mb-6 overflow-hidden rounded-xl">
           <Image
-            src="/Logo.jpg" // Using Logo.jpg as placeholder - can be replaced with a dedicated image later
+            src="/images/home-pharmacy-basics.png" 
             alt="Home Pharmacy Basics"
             fill
             priority
@@ -73,8 +73,8 @@ export default function Page() {
           <h2 className="text-xl font-bold text-green-900 mb-2">Related reads</h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/services/nhs-healthcare-italians-uk">
-                NHS Healthcare for Italians in the UK
+              <Link className="underline text-green-900" href="/services">
+                View Resinaro Services →
               </Link>
             </li>
           </ul>
