@@ -75,14 +75,14 @@ export default function Footer() {
 
             {/* Socials */}
             <div className="mt-4 flex items-center gap-4" aria-label="Social links">
+              {/* Instagram */}
               <a
-                href="https://www.instagram.com/"
+                href="https://www.instagram.com/resinarouk/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="text-gray-700 hover:text-green-900"
               >
-                {/* Instagram glyph */}
                 <svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-hidden="true">
                   <path
                     fill="currentColor"
@@ -90,20 +90,31 @@ export default function Footer() {
                   />
                 </svg>
               </a>
+              {/* YouTube */}
               <a
-                href="https://www.linkedin.com/"
+                href="https://www.youtube.com/@resinaroUK"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn"
+                aria-label="YouTube"
                 className="text-gray-700 hover:text-green-900"
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-hidden="true">
-                  <path
-                    fill="currentColor"
-                    d="M6.94 6.5A1.94 1.94 0 1 1 5 4.56A1.94 1.94 0 0 1 6.94 6.5M4.5 8h5v12h-5zm7.25 0h4.78v1.65h.07a5.23 5.23 0 0 1 4.68-2.57c5 0 5.93 3.29 5.93 7.56V20h-5v-6.29c0-1.5 0-3.43-2.09-3.43s-2.41 1.63-2.41 3.32V20h-5z"
-                  />
+                  <path fill="currentColor" d="M21.8 8.001a2.75 2.75 0 0 0-1.936-1.945C18.1 5.5 12 5.5 12 5.5s-6.1 0-7.864.556A2.75 2.75 0 0 0 2.2 8.001C1.643 9.765 1.643 12 1.643 12s0 2.235.557 3.999a2.75 2.75 0 0 0 1.936 1.945C5.9 18.5 12 18.5 12 18.5s6.1 0 7.864-.556a2.75 2.75 0 0 0 1.936-1.945C22.357 14.235 22.357 12 22.357 12s0-2.235-.557-3.999zM10.5 15.5v-7l6 3.5-6 3.5z"/>
                 </svg>
               </a>
+              {/* TikTok */}
+              <a
+                href="https://www.tiktok.com/@resinaro.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="text-gray-700 hover:text-green-900"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-hidden="true">
+                  <path fill="currentColor" d="M17.25 2A3.25 3.25 0 0 0 14 5.25V17a2.75 2.75 0 1 1-2.75-2.75h.25V12h-.25A5.25 5.25 0 1 0 16.5 17v-5.5h1.25A3.25 3.25 0 0 0 21 8.25V5.5h-2.25A1.25 1.25 0 0 1 17.25 4.25V2z"/>
+                </svg>
+              </a>
+              {/* Email */}
               <a
                 href="mailto:resinaro@proton.me"
                 aria-label="Email"

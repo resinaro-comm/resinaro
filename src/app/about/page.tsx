@@ -281,13 +281,13 @@ export default function Page() {
                   <td className="px-4 py-3">National Insurance (NIN)</td>
                   <td className="px-4 py-3">2–4 weeks</td>
                   <td className="px-4 py-3">Application support, HMRC steps, tracking tips</td>
-                  <td className="px-4 py-3">From £20</td>
+                  <td className="px-4 py-3">From £35</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3">AIRE (register/update)</td>
                   <td className="px-4 py-3">2–6 weeks</td>
                   <td className="px-4 py-3">Jurisdiction check, docs pack, FAST-IT guidance</td>
-                  <td className="px-4 py-3">From £25</td>
+                  <td className="px-4 py-3">From £35</td>
                 </tr>
               
               </tbody>

@@ -85,14 +85,14 @@ const serviceJsonLd = {
 
 export default function VisaServicePage() {
   return (
-    <main className="bg-neutral-50 text-green-900 py-12 px-4 min-h-screen">
-      <section className="max-w-3xl mx-auto text-center mb-12">
-        <h1 className="text-4xl font-bold mb-2">Visa Appointment Support</h1>
-        <p className="italic text-lg text-green-800 mb-6">
+    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
+      <section className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
+        <h1 className="text-4xl font-bold">Visa Appointment Support</h1>
+        <p className="italic text-lg text-green-800">
           Straightforward help for Italians to book visa/biometrics appointments
           and prepare documents in the UK — flat fee <strong>£35</strong>.
         </p>
-        <div className="max-w-lg mx-auto mb-8">
+        <div className="max-w-lg mx-auto">
           <img
             src="/images/service-visa.png"
             alt="Visa appointment support"
@@ -101,7 +101,7 @@ export default function VisaServicePage() {
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2">
+  <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2 px-2 sm:px-6 md:px-8">
         {/* Left column: details */}
         <div className="space-y-6">
           <section>
@@ -225,9 +225,9 @@ export default function VisaServicePage() {
 
         {/* Right column: form and CTAs */}
         <aside className="space-y-6">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold mb-3">Book visa support (£35)</h2>
-            <p className="text-sm text-gray-700 mb-4">
+          <div className="bg-white border border-gray-200 rounded-xl p-0 shadow-sm">
+            <h2 className="text-xl font-semibold">Book visa support (£35)</h2>
+            <p className="text-sm text-gray-700">
               Complete the form and we’ll confirm next steps and any required
               documents. You’ll only pay our fee once we accept your booking.
             </p>
@@ -235,7 +235,7 @@ export default function VisaServicePage() {
             <VisaForm />
           </div>
 
-          <div className="bg-green-900 text-white rounded-xl p-5">
+          <div className="bg-green-900 text-white rounded-xl p-3">
             <h3 className="font-semibold text-lg mb-2">Urgent case?</h3>
             <p className="text-sm mb-4">
               Email{" "}
@@ -263,7 +263,7 @@ export default function VisaServicePage() {
             </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-5 text-sm text-gray-700">
+          <div className="bg-white border border-gray-200 rounded-xl p-3 text-sm text-gray-700">
             <h4 className="font-semibold mb-2">Before you book</h4>
             <ul className="list-disc list-inside space-y-2">
               <li>Know your visa route (work, study, family, visit, etc.).</li>
@@ -276,12 +276,12 @@ export default function VisaServicePage() {
       </div>
 
       {/* FAQ section */}
-      <section className="max-w-4xl mx-auto mt-12">
+  <section className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4 text-green-900">
           Frequently asked questions
         </h2>
 
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
+  <details className="bg-white border border-gray-200 rounded-xl p-3 mb-2">
           <summary className="font-semibold cursor-pointer">
             Can you complete the forms for me?
           </summary>

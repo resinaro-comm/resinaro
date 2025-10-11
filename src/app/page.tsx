@@ -550,10 +550,10 @@ export default function Home() {
               {blog.map((b) => (
                 <motion.article
                   key={b.title}
-                  className="border rounded-xl p-6 shadow-sm hover:shadow-md transition bg-white text-left"
+                  className="border rounded-xl shadow-sm hover:shadow-md transition bg-white text-left p-0 overflow-hidden flex flex-col"
                   {...blurIn(b.delay)}
                 >
-                  <div className="w-full aspect-[3/1] mb-4 rounded overflow-hidden bg-gray-200 relative">
+                  <div className="w-full aspect-[3/1] relative">
                     <Image
                       src={b.img}
                       alt={b.alt}
@@ -562,26 +562,27 @@ export default function Home() {
                       className="object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-bold text-green-900">{b.title}</h3>
-                  <p className="text-sm text-gray-700 mt-1">{b.desc}</p>
-                  <Link
-                    href={b.link}
-                    className="inline-flex items-center gap-1 text-green-900 underline mt-2 hover:decoration-4"
-                  >
-                    Read more <span aria-hidden>→</span>
-                  </Link>
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-lg font-bold text-green-900">{b.title}</h3>
+                    <p className="text-sm text-gray-700 mt-1">{b.desc}</p>
+                    <Link
+                      href={b.link}
+                      className="inline-flex items-center gap-1 text-green-900 underline mt-2 hover:decoration-4"
+                    >
+                      Read more <span aria-hidden>→</span>
+                    </Link>
+                  </div>
                 </motion.article>
               ))}
             </div>
-
-            <motion.div className="mt-8" {...fadeUp(0.25)}>
+            <div className="mt-8 flex justify-center">
               <Link
                 href="/community"
                 className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition"
               >
                 Browse all guides <span aria-hidden>→</span>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </section>

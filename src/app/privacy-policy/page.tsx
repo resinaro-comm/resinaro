@@ -69,7 +69,7 @@ export default function PrivacyPolicy() {
             <li>Right to restrict or object to processing.</li>
             <li>Right to data portability.</li>
           </ul>
-          <p className="mt-2">To exercise these rights, contact us at: <strong>privacy@resinaro.org</strong></p>
+          <p className="mt-2">To exercise these rights, contact us at: <strong>resinaro@proton.me</strong></p>
         </section>
 
         <section className="mb-8">
@@ -92,8 +92,7 @@ export default function PrivacyPolicy() {
           <h2 className="text-2xl font-bold mb-2">10. Contact Us</h2>
           <p>
             If you have any questions about this Privacy Policy, please contact us:  
-            <br />Email: <strong>privacy@resinaro.org</strong>  
-            <br />Phone: +44 20 1234 5678  
+            <br />Email: <strong>resinaro@proton.me</strong>  
             <br />Address: Resinaro Community, London, UK
           </p>
         </section>

@@ -15,6 +15,37 @@ const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"
 const FAST_IT_URL = "https://serviziconsolari.esteri.it/ScoFE/index.sco";
 
 export default function PassportForm() {
+  // Under-12 child passport section
+  const [hasUnder12Child, setHasUnder12Child] = useState(""); // "yes" | "no" | ""
+  const [numUnder12, setNumUnder12] = useState(1);
+  const [children, setChildren] = useState([
+    { name: "", dob: "", docs: [] as File[] }
+  ]);
+  const MAX_CHILD_DOCS = 6;
+
+  function handleNumUnder12Change(e: React.ChangeEvent<HTMLInputElement>) {
+    const n = Math.max(1, parseInt(e.target.value) || 1);
+    setNumUnder12(n);
+    setChildren((prev) => {
+      const arr = [...prev];
+      while (arr.length < n) arr.push({ name: "", dob: "", docs: [] });
+      while (arr.length > n) arr.pop();
+      return arr;
+    });
+  }
+  function handleChildField(idx: number, field: "name" | "dob", value: string) {
+    setChildren((prev) => prev.map((c, i) => i === idx ? { ...c, [field]: value } : c));
+  }
+  function handleChildDocsChange(idx: number, e: React.ChangeEvent<HTMLInputElement>) {
+    const sel = e.target.files;
+    if (!sel || sel.length === 0) return;
+    const arr = Array.from(sel);
+    setChildren((prev) => prev.map((c, i) => i === idx ? { ...c, docs: [...c.docs, ...arr].slice(0, MAX_CHILD_DOCS) } : c));
+    if (e.target) e.target.value = "";
+  }
+  function removeChildDoc(idx: number, docIdx: number) {
+    setChildren((prev) => prev.map((c, i) => i === idx ? { ...c, docs: c.docs.filter((_, j) => j !== docIdx) } : c));
+  }
   // refs
   const proofRef = useRef<HTMLInputElement | null>(null);
   const filesRef = useRef<HTMLInputElement | null>(null);
@@ -288,27 +319,24 @@ export default function PassportForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">First name *</label>
-          <input
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Last name *</label>
-          <input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">First name *</label>
+        <input
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
       </div>
-
+      <div>
+        <label className="block text-sm font-medium">Last name *</label>
+        <input
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
+      </div>
       <div>
         <label className="block text-sm font-medium">Email *</label>
         <input
@@ -319,7 +347,6 @@ export default function PassportForm() {
           required
         />
       </div>
-
       <div>
         <label className="block text-sm font-medium">Phone *</label>
         <input
@@ -381,47 +408,100 @@ export default function PassportForm() {
       {/* Appointment-only fields */}
       {bookingType === "appointment" && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium">Height (cm) *</label>
-              <input
-                value={heightCm}
-                onChange={(e) => setHeightCm(e.target.value)}
-                className="mt-1 block w-full rounded border px-3 py-2"
-                placeholder="e.g. 175"
-                required
-              />
+          {/* Under-12 child passport section */}
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded p-4 mb-4">
+            <p className="font-medium mb-2">Are you trying to get a passport for your under 12 years old child in this query too?</p>
+            <div className="flex gap-6 items-center mb-2">
+              <label className="inline-flex items-center gap-2">
+                <input type="radio" name="hasUnder12Child" checked={hasUnder12Child === "yes"} onChange={() => setHasUnder12Child("yes")}/>
+                <span>Yes</span>
+              </label>
+              <label className="inline-flex items-center gap-2">
+                <input type="radio" name="hasUnder12Child" checked={hasUnder12Child === "no"} onChange={() => setHasUnder12Child("no")}/>
+                <span>No</span>
+              </label>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium">Eye colour *</label>
-              <input
-                value={eyeColour}
-                onChange={(e) => setEyeColour(e.target.value)}
-                className="mt-1 block w-full rounded border px-3 py-2"
-                placeholder="e.g. Brown"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Marital status *</label>
-              <select
-                value={maritalStatus}
-                onChange={(e) =>
-                  setMaritalStatus(
-                    e.target.value as "single" | "married" | "divorced" | "widowed" | "other"
-                  )
-                }
-                className="mt-1 block w-full rounded border px-3 py-2"
-              >
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+            {hasUnder12Child === "yes" && (
+              <div className="mt-3 space-y-6">
+                <div>
+                  <label className="block text-sm font-medium">How many children under 12?</label>
+                  <input type="number" min={1} value={numUnder12} onChange={handleNumUnder12Change} className="mt-1 block w-24 rounded border px-3 py-2" />
+                </div>
+                {children.slice(0, numUnder12).map((child, idx) => (
+                  <div key={idx} className="border rounded p-3 bg-white mb-2">
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium">Child {idx+1} full name *</label>
+                      <input value={child.name} onChange={e => handleChildField(idx, "name", e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="Child's name" required />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium">Child {idx+1} date of birth *</label>
+                      <input type="text" inputMode="text" pattern="\d{2}/\d{2}/\d{4}" placeholder="dd/mm/yyyy" value={child.dob} onChange={e => handleChildField(idx, "dob", e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium">Upload required documents for Child {idx+1} *</label>
+                      <ul className="list-disc pl-5 text-xs mb-2 text-gray-700">
+                        <li>Completed application forms (e.g. MOD2 form for postal applications)</li>
+                        <li>Three identical, recent passport-sized photos of the child</li>
+                        <li>Consent form signed by both parents</li>
+                        <li>Photocopies of both parents&apos; valid ID (no driving licences)</li>
+                        <li>Payment proof (postal order for consular fee, if required)</li>
+                        <li>Previous Italian passport for the child (if applicable)</li>
+                      </ul>
+                      <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png" onChange={e => handleChildDocsChange(idx, e)} className="mt-2" />
+                      {child.docs.length > 0 && (
+                        <ul className="mt-2 space-y-1 text-xs">
+                          {child.docs.map((f, i) => (
+                            <li key={i} className="flex items-center justify-between bg-gray-50 border px-2 py-1 rounded">
+                              <span>{f.name} ({(f.size/1024/1024).toFixed(2)} MB)</span>
+                              <button type="button" onClick={() => removeChildDoc(idx, i)} className="text-red-600 text-xs">Remove</button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG. Up to {MAX_CHILD_DOCS} files per child.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Height (cm) *</label>
+            <input
+              value={heightCm}
+              onChange={(e) => setHeightCm(e.target.value)}
+              className="mt-1 block w-full rounded border px-3 py-2"
+              placeholder="e.g. 175"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Eye colour *</label>
+            <input
+              value={eyeColour}
+              onChange={(e) => setEyeColour(e.target.value)}
+              className="mt-1 block w-full rounded border px-3 py-2"
+              placeholder="e.g. Brown"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Marital status *</label>
+            <select
+              value={maritalStatus}
+              onChange={(e) =>
+                setMaritalStatus(
+                  e.target.value as "single" | "married" | "divorced" | "widowed" | "other"
+                )
+              }
+              className="mt-1 block w-full rounded border px-3 py-2"
+            >
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="divorced">Divorced</option>
+              <option value="widowed">Widowed</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           {/* NEW required question: kids under 18 */}

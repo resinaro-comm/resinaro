@@ -9,6 +9,35 @@ const GAS_URL =
 const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN in Apps Script
 
 export default function AireForm() {
+  // Group booking logic
+  const [numOthers, setNumOthers] = useState(0); // number of additional people (not including self)
+  const [group, setGroup] = useState([] as { name: string; dob: string; idFile: File | null }[]);
+  const MAX_GROUP = 8;
+  const [hasItalianId, setHasItalianId] = useState(""); // "yes" | "no"
+
+  function handleNumOthersChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const n = Math.max(0, Math.min(MAX_GROUP - 1, parseInt(e.target.value) || 0));
+    setNumOthers(n);
+    setGroup((prev) => {
+      const arr = [...prev];
+      while (arr.length < n) arr.push({ name: "", dob: "", idFile: null });
+      while (arr.length > n) arr.pop();
+      return arr;
+    });
+  }
+  function handleGroupField(idx: number, field: "name" | "dob", value: string) {
+    setGroup((prev) => prev.map((p, i) => i === idx ? { ...p, [field]: value } : p));
+  }
+  function handleGroupIdFile(idx: number, e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null;
+    setGroup((prev) => prev.map((p, i) => i === idx ? { ...p, idFile: f } : p));
+  }
+  // Pricing logic
+  let price = 35;
+  const totalPeople = 1 + numOthers;
+  if (totalPeople === 1) price = 35;
+  else if (totalPeople === 2) price = 35;
+  else if (totalPeople >= 3) price = 50;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -108,43 +137,72 @@ export default function AireForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" aria-live="polite">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">First name *</label>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Last name *</label>
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
+      <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded p-4 mb-2">
+        <h2 className="text-base font-bold mb-1 text-green-900">AIRE Registration Pricing</h2>
+        <ul className="list-disc pl-5 text-sm text-gray-800 mb-2">
+          <li><strong>£35</strong> for a single person or a couple (2 people)</li>
+          <li><strong>£50</strong> for a family/group of 3 or more</li>
+        </ul>
+        <p className="text-xs text-gray-700">You can register a whole household in one go. Price is based on the number of people included in this booking.</p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Email *</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Telephone *</label>
-          <input value={telephone} onChange={(e) => setTelephone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." required />
-        </div>
+      <div className="bg-gray-50 border rounded p-3 mb-2">
+        <label className="block text-sm font-medium mb-1">How many other people are you registering (not including yourself)?</label>
+        <input type="number" min={0} max={MAX_GROUP - 1} value={numOthers} onChange={handleNumOthersChange} className="mt-1 block w-24 rounded border px-3 py-2" />
+        <p className="text-xs text-gray-600 mt-1">For a couple, enter 1. For a family, enter the number of additional people (adults + children) besides yourself.</p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Date of birth *</label>
-          <input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Place of birth *</label>
-          <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Country of birth *</label>
-          <input value={countryOfBirth} onChange={(e) => setCountryOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
+      {group.slice(0, numOthers).map((person, idx) => (
+        <fieldset key={idx} className="border-2 border-green-200 rounded-xl bg-white mb-6 px-4 py-5 shadow-sm">
+          <legend className="px-2 py-1 text-base font-semibold text-green-900 bg-green-50 border border-green-200 rounded mb-4">Person {idx+2} details</legend>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Full name *</label>
+            <input value={person.name} onChange={e => handleGroupField(idx, 'name', e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="Full name" required />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Date of birth *</label>
+            <input type="text" inputMode="text" pattern="\d{2}/\d{2}/\d{4}" placeholder="dd/mm/yyyy" value={person.dob} onChange={e => handleGroupField(idx, 'dob', e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Upload valid ID for this person *</label>
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => handleGroupIdFile(idx, e)} className="mt-1 text-base w-full" required />
+            {person.idFile && <span className="text-sm text-gray-600 ml-2">{person.idFile.name}</span>}
+            <p className="text-sm text-gray-500 mt-1">PDF, JPG, PNG. One file per person. <strong>At least one person must have an Italian ID (passport or carta d&apos;identità).</strong></p>
+          </div>
+        </fieldset>
+      ))}
+      <div className="bg-red-50 border-l-4 border-red-400 rounded p-3 mb-2 text-xs text-red-800">
+        <strong>Important:</strong> At least one person in your group must have a valid Italian ID (passport or carta d&apos;identità). If no one has an Italian ID, we cannot help register you for AIRE.
       </div>
-
+      <div className="bg-green-50 border-l-4 border-green-400 rounded p-3 mb-2 text-sm text-green-900">
+        <strong>Total price for this booking: £{price}</strong>
+      </div>
+      <div>
+        <label className="block text-sm font-medium">First name *</label>
+        <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Last name *</label>
+        <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Email *</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Telephone *</label>
+        <input value={telephone} onChange={(e) => setTelephone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Date of birth *</label>
+        <input type="text" inputMode="text" pattern="\d{2}/\d{2}/\d{4}" placeholder="dd/mm/yyyy" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Place of birth *</label>
+        <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Country of birth *</label>
+        <input value={countryOfBirth} onChange={(e) => setCountryOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </div>
       <div className="bg-gray-50 border rounded p-3">
         <p className="text-sm font-medium mb-2">Marital status *</p>
         <div className="flex items-center gap-6">
@@ -165,10 +223,6 @@ export default function AireForm() {
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium">Children (first and last names, one per line)</label>
-        <textarea value={childrenNames} onChange={(e) => setChildrenNames(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" rows={3} placeholder="e.g. Anna Rossi\nLuca Bianchi" />
-      </div>
 
       <div className="bg-gray-50 border rounded p-3">
         <p className="text-sm font-medium mb-2">Do you have multiple citizenships? *</p>

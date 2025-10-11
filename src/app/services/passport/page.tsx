@@ -63,24 +63,32 @@ const serviceJsonLd = {
 
 export default function PassportServicePage() {
   return (
-    <main className="bg-neutral-50 text-green-900 py-12 px-4 min-h-screen">
-      <section className="max-w-3xl mx-auto text-center mb-12">
-        <h1 className="text-4xl font-bold mb-2">Passport & Consular Services</h1>
-        <p className="italic text-lg text-green-800 mb-6">
+    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
+      <section className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
+        <h1 className="text-4xl font-bold">Passport & Consular Services</h1>
+        <p className="italic text-lg text-green-800">
           Fast, transparent support for booking Italian passport appointments and related consular services in the UK.
         </p>
-        <div className="max-w-lg mx-auto mb-8">
+        <div className="max-w-lg mx-auto">
           <img 
             src="/images/service-passport.png" 
             alt="Italian passport service" 
             className="w-full h-auto rounded-lg shadow-md" 
           />
         </div>
+        <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded p-4 text-left max-w-2xl mx-auto">
+          <h2 className="text-lg font-bold text-green-900">Pricing</h2>
+          <ul className="list-disc pl-5 text-sm text-gray-800 mb-2">
+            <li><strong>£35 per person</strong> (adult or child) for each passport application or consular support case.</li>
+            <li><strong>+£20 per prenotami.it account</strong> if you want us to register and manage the account for you (optional, per account).</li>
+          </ul>
+          <p className="text-xs text-gray-700">All prices are per person. If you are applying for multiple children or adults, each application is charged separately. The prenotami.it registration service is optional and can make the process easier if you do not already have an account.</p>
+        </div>
       </section>
 
-      <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2">
+  <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2 px-2 sm:px-6 md:px-8">
         {/* Left column: details */}
-        <div className="space-y-6">
+  <div className="space-y-4">
           <section>
             <h2 className="text-2xl font-semibold mb-2">Overview</h2>
             <p className="text-gray-700">
@@ -183,19 +191,19 @@ export default function PassportServicePage() {
         </div>
 
         {/* Right column: form and CTAs */}
-        <aside className="space-y-6">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold mb-3">Book passport support</h2>
-            <p className="text-sm text-gray-700 mb-4">
+  <aside className="space-y-4">
+          <div className="bg-white border border-gray-200 rounded-xl p-0 shadow-sm">
+            <h2 className="text-xl font-semibold">Book passport support</h2>
+            <p className="text-sm text-gray-700">
               Complete the form and we will contact you to confirm next steps and any fee details.
             </p>
 
             <PassportForm />
           </div>
 
-          <div className="bg-green-900 text-white rounded-xl p-5">
-            <h3 className="font-semibold text-lg mb-2">Urgent cases</h3>
-            <p className="text-sm mb-4">
+          <div className="bg-green-900 text-white rounded-xl p-3">
+            <h3 className="font-semibold text-lg">Urgent cases</h3>
+            <p className="text-sm">
               For urgent or time-sensitive passport issues email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and include &quot;Urgent&quot; in the subject line.
             </p>
             <div className="flex gap-3">
@@ -204,8 +212,8 @@ export default function PassportServicePage() {
             </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-5 text-sm text-gray-700">
-            <h4 className="font-semibold mb-2">Before you book</h4>
+          <div className="bg-white border border-gray-200 rounded-xl p-3 text-sm text-gray-700">
+            <h4 className="font-semibold">Before you book</h4>
             <ul className="list-disc list-inside space-y-2">
               <li>Have your ID and address proof ready.</li>
               <li>Bring any consulate correspondence you have.</li>
@@ -216,10 +224,10 @@ export default function PassportServicePage() {
       </div>
 
       {/* FAQ section */}
-      <section className="max-w-4xl mx-auto mt-12">
+  <section className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4 text-green-900">Frequently asked questions</h2>
 
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
+  <details className="bg-white border border-gray-200 rounded-xl p-3 mb-2">
           <summary className="font-semibold cursor-pointer">How do I replace a lost passport?</summary>
           <div className="mt-2 text-gray-700">
             Report the loss to local police if required, collect any reference or report numbers, and contact the consulate for replacement procedures. We can guide you through the required evidence and help prepare the documentation.

@@ -24,6 +24,7 @@ export default function VisaForm() {
   // Identity & birth details (required)
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [countryOfBirth, setCountryOfBirth] = useState("");
+  const [currentNationality, setCurrentNationality] = useState("");
   const [placeOfBirth, setPlaceOfBirth] = useState("");
 
   // Passport (required)
@@ -98,7 +99,8 @@ export default function VisaForm() {
     if (!email.trim()) return setError("Please enter your email.");
     if (!telephone.trim()) return setError("Please enter your telephone number.");
     if (!dateOfBirth) return setError("Please enter your date of birth.");
-    if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
+  if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
+  if (!currentNationality.trim()) return setError("Please enter your current nationality.");
     if (!placeOfBirth.trim()) return setError("Please enter your place of birth (city/town).");
     if (!passportNumber.trim()) return setError("Please enter your passport number.");
     if (!passportExpiry) return setError("Please enter your passport expiry date.");
@@ -131,7 +133,8 @@ export default function VisaForm() {
         passportNumber: passportNumber.trim(),
         passportExpiry,
         dateOfBirth,
-        countryOfBirth: countryOfBirth.trim(),
+  countryOfBirth: countryOfBirth.trim(),
+  currentNationality: currentNationality.trim(),
         placeOfBirth: placeOfBirth.trim(),
         marriedToEU,
         profession: profession.trim(),
@@ -199,108 +202,115 @@ if (!r1.ok || !(r1json && r1json.ok)) {
   const submitDisabled = submitting || !consent;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
+    <div className="bg-white rounded-xl shadow-lg max-w-2xl mx-auto px-2 sm:px-6 py-6 sm:py-8 border border-gray-200">
+      {/* Remove duplicate title/intro block inside the form */}
+
+      <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data" aria-live="polite">
       {/* Contact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">First name *</label>
-          <input
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Last name *</label>
-          <input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">First name *</label>
+        <input
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Last name *</label>
+        <input
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Email *</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Telephone *</label>
-          <input
-            value={telephone}
-            onChange={(e) => setTelephone(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="+44..."
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">Email *</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Telephone *</label>
+        <input
+          value={telephone}
+          onChange={(e) => setTelephone(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="+44..."
+          required
+        />
       </div>
 
       {/* Birth details */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Date of birth *</label>
-          <input
-            type="date"
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Country of birth *</label>
-          <input
-            value={countryOfBirth}
-            onChange={(e) => setCountryOfBirth(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="e.g. Italy"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Place of birth (city/town) *</label>
-          <input
-            value={placeOfBirth}
-            onChange={(e) => setPlaceOfBirth(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="e.g. Milan"
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">Date of birth *</label>
+        <input
+          type="text"
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="dd/mm/yyyy"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Country of birth *</label>
+        <input
+          value={countryOfBirth}
+          onChange={(e) => setCountryOfBirth(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="e.g. Italy"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Current nationality *</label>
+        <input
+          value={currentNationality}
+          onChange={(e) => setCurrentNationality(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="e.g. Italian, Albanian, etc."
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Place of birth (city/town) *</label>
+        <input
+          value={placeOfBirth}
+          onChange={(e) => setPlaceOfBirth(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="e.g. Milan"
+          required
+        />
       </div>
 
       {/* Passport */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Passport number *</label>
-          <input
-            value={passportNumber}
-            onChange={(e) => setPassportNumber(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="As shown on passport"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Passport expiry date *</label>
-          <input
-            type="date"
-            value={passportExpiry}
-            onChange={(e) => setPassportExpiry(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">Passport number *</label>
+        <input
+          value={passportNumber}
+          onChange={(e) => setPassportNumber(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="As shown on passport"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Passport expiry date *</label>
+        <input
+          type="text"
+          value={passportExpiry}
+          onChange={(e) => setPassportExpiry(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="dd/mm/yyyy"
+          required
+        />
       </div>
 
       {/* Status question */}
@@ -329,37 +339,35 @@ if (!r1.ok || !(r1json && r1json.ok)) {
       </div>
 
       {/* Profession and employer */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Profession *</label>
-          <input
-            value={profession}
-            onChange={(e) => setProfession(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="e.g. driver, doctor, cleaner, teacher"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Employer name *</label>
-          <input
-            value={employerName}
-            onChange={(e) => setEmployerName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="Company / organisation"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Employer address *</label>
-          <input
-            value={employerAddress}
-            onChange={(e) => setEmployerAddress(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            placeholder="Street, city, postcode"
-            required
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium">Profession *</label>
+        <input
+          value={profession}
+          onChange={(e) => setProfession(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="e.g. driver, doctor, cleaner, teacher"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Employer name *</label>
+        <input
+          value={employerName}
+          onChange={(e) => setEmployerName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="Company / organisation"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Employer address *</label>
+        <input
+          value={employerAddress}
+          onChange={(e) => setEmployerAddress(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          placeholder="Street, city, postcode"
+          required
+        />
       </div>
 
       {/* Proof of UK residence */}
@@ -444,6 +452,7 @@ if (!r1.ok || !(r1json && r1json.ok)) {
         </button>
         <p className="text-xs text-gray-600 mt-2">You will be redirected to payment after submitting your details.</p>
       </div>
-    </form>
+      </form>
+    </div>
   );
 }

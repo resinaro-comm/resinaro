@@ -9,6 +9,7 @@ import NinForm from "../../components/NinForm";
 import HousingForm from "../../components/HousingForm";
 import TranslationForm from "../../components/TranslationForm";
 import BenefitsForm from "../../components/BenefitsForm";
+import VisaForm from "../../components/VisaForm";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
@@ -24,6 +25,7 @@ type ServiceKey =
   | "housing"
   | "translation"
   | "benefits"
+  | "visa"
   | "other";
 
 // Payment-eligible services (these forms will redirect to Stripe themselves)
@@ -35,6 +37,7 @@ const PAY_ELIGIBLE = new Set<ServiceKey>([
   "housing",
   "translation",
   "benefits",
+  "visa",
 ]);
 
 function OtherContactForm({ serviceKey }: { serviceKey: "other" }) {
@@ -224,10 +227,10 @@ export default function Contact() {
   ];
 
   return (
-    <main className="bg-[#F9F6F1] text-gray-800">
+  <main className="bg-[#F9F6F1] text-gray-800">
       {/* Header / Trust strip */}
       <header className="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-10">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 py-8 sm:py-10">
           <h1 className="text-3xl md:text-4xl font-extrabold">Contact Resinaro</h1>
           <p className="mt-2 text-white/90">
             The fastest way to get help. Share a few details, and we’ll reply with clear next steps.
@@ -249,10 +252,10 @@ export default function Contact() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-8">
+  <div className="max-w-6xl mx-auto px-2 sm:px-6 py-6 sm:py-10 grid lg:grid-cols-3 gap-6 sm:gap-8">
         {/* FORM CARD */}
         <section className="lg:col-span-2">
-          <div className="space-y-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div className="space-y-6 bg-white p-3 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div>
               <h2 className="text-xl font-bold text-green-900 mb-3">What do you need help with?</h2>
               <div className="grid md:grid-cols-2 gap-3 items-start">
@@ -270,6 +273,7 @@ export default function Contact() {
                     <option value="housing">Housing</option>
                     <option value="translation">Translations</option>
                     <option value="benefits">Benefits</option>
+                    <option value="visa">Visa</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -296,6 +300,7 @@ export default function Contact() {
               {service === "housing" && <HousingForm />}
               {service === "translation" && <TranslationForm />}
               {service === "benefits" && <BenefitsForm />}
+              {service === "visa" && <VisaForm />}
               {service === "other" && (
                 <OtherContactForm serviceKey={"other"} />
               )}
@@ -353,8 +358,8 @@ export default function Contact() {
       </div>
 
       {/* Footer note */}
-      <section className="max-w-6xl mx-auto px-6 pb-12">
-        <div className="bg-white rounded-xl border border-gray-200 p-6 text-sm text-gray-700">
+      <section className="max-w-6xl mx-auto px-2 sm:px-6 pb-8 sm:pb-12">
+        <div className="bg-white rounded-xl border border-gray-200 p-3 sm:p-6 text-sm text-gray-700">
           <p>
             Prefer email? Contact{" "}
               <a href="mailto:resinaro@proton.me" className="underline text-green-800">

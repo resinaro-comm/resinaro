@@ -1,4 +1,4 @@
-import AireForm from "../../../../components/AireForm";
+import AireForm from "../../../../src/components/AireForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -69,14 +69,22 @@ const serviceJsonLd = {
 
 export default function Page() {
   return (
-    <main className="bg-neutral-50 text-green-900 min-h-screen pb-20 px-4">
-      <div className="max-w-4xl mx-auto pt-12">
-        <header className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-3">AIRE Registration & Updates</h1>
+    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
+      <div className="max-w-4xl mx-auto px-2 sm:px-6 md:px-8">
+  <header className="text-center mb-10 md:mb-14">
+          <h1 className="text-4xl font-bold">AIRE Registration & Updates</h1>
           <p className="text-lg text-green-800 italic max-w-3xl mx-auto">
             Assistance to register or update your AIRE record so you can access consular services and official updates while living in the UK.
           </p>
-          <div className="max-w-lg mx-auto mt-6 mb-4">
+          <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded p-4 md:p-6 text-left max-w-2xl mx-auto mb-6">
+            <h2 className="text-base font-bold text-green-900">AIRE Registration Pricing</h2>
+            <ul className="list-disc pl-5 text-sm text-gray-800 mb-2">
+              <li><strong>£35</strong> for a single person or a couple (2 people)</li>
+              <li><strong>£50</strong> for a family/group of 3 or more</li>
+            </ul>
+            <p className="text-xs text-gray-700">You can register a whole household in one go. Price is based on the number of people included in this booking.</p>
+          </div>
+          <div className="max-w-lg mx-auto mb-6">
             <img 
               src="/images/aire-registration.png" 
               alt="AIRE registration documents and Italian consular services" 
@@ -85,7 +93,7 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="grid gap-10 lg:grid-cols-2">
+  <div className="grid gap-10 lg:grid-cols-2">
           {/* Left: content */}
           <div className="space-y-6">
             <section>
