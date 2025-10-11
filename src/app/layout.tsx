@@ -66,6 +66,7 @@ export default function RootLayout({
           </div>
         </section>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
