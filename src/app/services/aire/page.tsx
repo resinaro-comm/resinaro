@@ -2,9 +2,9 @@ import AireForm from "../../../../src/components/AireForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AIRE Registration Help | Resinaro — Update Italian Consular Records",
+  title: "AIRE Registration Help (UK) — Fast, Friendly Support | Resinaro",
   description:
-    "Assistance to register or update AIRE (Anagrafe degli Italiani Residenti all'Estero) from the UK. Step-by-step help, document checks and consulate guidance.",
+    "Simple help to register or update AIRE from the UK. £35 for one or a couple, £50 for 3+ in a household. We guide the steps and review documents. Independent admin support; no guarantees.",
   alternates: { canonical: "/services/aire-registration" },
 };
 
@@ -18,37 +18,28 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "AIRE is the register of Italian citizens living abroad. Registration ensures access to consular services, voting rights, and correct consular jurisdiction for documents such as the CIE and passport."
-      }
+          "AIRE is the register of Italian citizens living abroad. Keeping it updated helps with consular services (passport/CIE), voting rights and correct consular jurisdiction.",
+      },
     },
     {
       "@type": "Question",
-      name: "Can Resinaro register me for AIRE?",
+      name: "Do you register me directly?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Resinaro provides guidance and document checks to help you complete AIRE registration. The final submission is normally made via the consular portal or in-person at the consulate; we will guide you through the required steps."
-      }
+          "We provide admin support and document checks for your AIRE submission. The final decision and processing are done by the consulate via its portal or in person.",
+      },
     },
     {
       "@type": "Question",
-      name: "What documents do I need to update my AIRE record?",
+      name: "How long does it take?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Typical documents include passport or national ID, proof of UK address (utility bill, council tax, tenancy or bank statement) and any supporting documentation such as marriage certificates if you are updating family details."
-      }
+          "We can share a checklist within a few business days. Consulate processing times vary by office and can take several weeks.",
+      },
     },
-    {
-      "@type": "Question",
-      name: "How long does an AIRE update take?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text:
-          "Initial guidance and a checklist can be provided within a few business days. Processing times with the consulate vary by office; some updates are processed quickly while others may take several weeks."
-      }
-    }
-  ]
+  ],
 };
 
 const serviceJsonLd = {
@@ -59,203 +50,142 @@ const serviceJsonLd = {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-  email: "resinaro@proton.me"
+    email: "resinaro@proton.me",
   },
   serviceType: "Consular registration assistance",
   areaServed: { "@type": "Country", name: "United Kingdom" },
   description:
-    "Practical help to register or update AIRE from the UK: document checks, consulate guidance, and step-by-step support for Italian citizens abroad."
+    "Step-by-step help to register or update AIRE: document checks, portal guidance and friendly support. £35 for one/couple; £50 for families of 3+.",
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "GBP",
+    price: "35",
+    availability: "https://schema.org/InStock",
+  },
 };
 
 export default function Page() {
   return (
-    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
-      <div className="max-w-4xl mx-auto px-2 sm:px-6 md:px-8">
-  <header className="text-center mb-10 md:mb-14">
-          <h1 className="text-4xl font-bold">AIRE Registration & Updates</h1>
-          <p className="text-lg text-green-800 italic max-w-3xl mx-auto">
-            Assistance to register or update your AIRE record so you can access consular services and official updates while living in the UK.
-          </p>
-          <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded p-4 md:p-6 text-left max-w-2xl mx-auto mb-6">
-            <h2 className="text-base font-bold text-green-900">AIRE Registration Pricing</h2>
-            <ul className="list-disc pl-5 text-sm text-gray-800 mb-2">
-              <li><strong>£35</strong> for a single person or a couple (2 people)</li>
-              <li><strong>£50</strong> for a family/group of 3 or more</li>
-            </ul>
-            <p className="text-xs text-gray-700">You can register a whole household in one go. Price is based on the number of people included in this booking.</p>
-          </div>
-          <div className="max-w-lg mx-auto mb-6">
-            <img 
-              src="/images/aire-registration.png" 
-              alt="AIRE registration documents and Italian consular services" 
-              className="w-full h-auto rounded-lg shadow-md" 
-            />
-          </div>
-        </header>
-
-  <div className="grid gap-10 lg:grid-cols-2">
-          {/* Left: content */}
-          <div className="space-y-6">
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Why AIRE matters</h2>
-              <p className="text-gray-700">
-                AIRE (Anagrafe degli Italiani Residenti all&apos;Estero) registers Italian citizens living abroad with their local consulate. Keeping AIRE up to date ensures you receive consular communications, can access services such as passport and CIE renewals, and are assigned to the correct consulate for your address.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Who should use this service</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Italian citizens who have recently moved to the UK and need to register with AIRE.</li>
-                <li>People who changed address, name, marital status or family details and need to update consular records.</li>
-                <li>Clients preparing to apply for consular services that require AIRE to be correct, such as CIE, passport renewals or citizenship matters.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">What we do</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Confirm the consulate that covers your UK address and the correct submission route.</li>
-                <li>Provide a consulate-specific checklist and document templates where needed.</li>
-                <li>Review your documents and guide you through the online submission or in-person appointment steps.</li>
-                <li>Advise on common problems, such as mismatched names or missing proof of address.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Documents typically required</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Italian passport or national identity card.</li>
-                <li>Proof of UK address: tenancy agreement, council tax bill, recent utility bill or bank statement.</li>
-                <li>Marriage certificate or birth certificate for family updates (translated if required).</li>
-                <li>Any previous consular correspondence or reference numbers if available.</li>
-              </ul>
-              <p className="text-sm italic text-green-800 mt-2">
-                Requirements vary by consulate. We prepare a tailored checklist for your jurisdiction.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Process & timelines</h2>
-              <ol className="list-decimal list-inside text-gray-700 space-y-2">
-                <li><strong>Initial review:</strong> We check documents and confirm the consulate within 1–3 business days.</li>
-                <li><strong>Checklist & guidance:</strong> We provide step-by-step instructions and any required templates.</li>
-                <li><strong>Submission support:</strong> We assist with online portal submission or prepare documents for an in-person appointment.</li>
-                <li><strong>Follow up:</strong> We advise on expected processing times and help with follow up if additional information is requested by the consulate.</li>
-              </ol>
-              <p className="text-sm italic text-green-800 mt-2">
-                External processing times are set by individual consulates and may vary.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Common issues we solve</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Mismatched personal data between documents.</li>
-                <li>Missing proof of address or insufficient evidence.</li>
-                <li>Unclear consulate jurisdiction for your UK address.</li>
-                <li>Difficulty using official consular portals; we provide guided steps and screenshots.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Fees, concessions and refunds</h2>
-              <p className="text-gray-700 mb-2">
-                Our standard AIRE assistance package is quoted at booking depending on the complexity of the update. Concessionary rates are available for those in financial hardship; please enquire before booking.
-              </p>
-              <p className="text-gray-700">
-                If Resinaro fails to deliver an agreed service due to our error we will consider a refund or credit. Refund requests should be sent to resinaro@proton.me.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Data protection & confidentiality</h2>
-              <p className="text-gray-700">
-                We handle personal data securely and only use it to deliver the service. Documents are stored securely and access is limited to those delivering support. You may request deletion of your information after your case is closed; see our Privacy Policy for details.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-2">Helpful links</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>
-                  <a href="https://serviziconsolarionline.esteri.it/" target="_blank" rel="noopener noreferrer" className="underline text-green-800">
-                    FAST IT — Consular online services (AIRE)
-                  </a>
-                </li>
-                <li>
-                  <a href="https://prenotami.esteri.it/" target="_blank" rel="noopener noreferrer" className="underline text-green-800">
-                    Prenot@Mi — consular booking platform
-                  </a>
-                </li>
-                <li>
-                  <a href="/community/bureaucracy-guides/aire-registration-uk" className="underline text-green-800">
-                    Resinaro: AIRE registration guide (localised tips)
-                  </a>
-                </li>
-              </ul>
-            </section>
-          </div>
-
-          {/* Right: form and CTAs */}
-          <aside className="space-y-6">
-            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <h2 className="text-xl font-semibold mb-3">Request AIRE Support</h2>
-              <p className="text-sm text-gray-700 mb-4">
-                Use the form to tell us your current UK address, consulate area if known, and upload any available documents. We will respond with a tailored checklist and next steps.
-              </p>
-
-              <AireForm />
-            </div>
-
-            <div className="bg-green-900 text-white rounded-xl p-5">
-              <h3 className="font-semibold text-lg mb-2">Urgent consular issues</h3>
-              <p className="text-sm mb-3">
-                If you have a time-sensitive consular issue (for example an imminent travel or legal deadline) email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> with &quot;AIRE URGENT&quot; in the subject. We will prioritise triage where possible.
-              </p>
-              <div className="flex gap-3">
-                <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
-                <a href="/services" className="border border-white px-4 py-2 rounded-lg w-full text-center">All services</a>
-              </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-xl p-5 text-sm text-gray-700">
-              <h4 className="font-semibold mb-2">Before you contact us</h4>
-              <ul className="list-disc list-inside space-y-2">
-                <li>Have your passport or national ID ready.</li>
-                <li>Gather proof of UK address (tenancy, council tax, utility or bank statement).</li>
-                <li>If updating family details, have birth or marriage certificates available.</li>
-              </ul>
-            </div>
-          </aside>
+    <main className="bg-neutral-50 text-green-900 min-h-screen">
+      {/* Full-bleed hero */}
+      <section className="relative w-full">
+        <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
+          <img
+            src="/images/aire-registration.png"
+            alt="AIRE registration — Italian consular records update"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        {/* FAQ block */}
-        <section className="max-w-3xl mx-auto mt-12">
-          <h2 className="text-2xl font-semibold mb-4 text-green-900">Frequently asked questions</h2>
+        {/* Overlay intro with pricing + disclaimers */}
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 -mt-16">
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-5 sm:p-7 md:p-9">
+            <h1 className="text-3xl sm:text-4xl font-extrabold">
+              AIRE Registration & Updates — Friendly Help
+            </h1>
+            <p className="mt-2 text-green-800">
+              We make AIRE simple for UK residents: we share a clear checklist, guide the portal steps
+              and help you avoid common mistakes. <strong>£35</strong> for one person or a couple,
+              <strong> £50</strong> for a household of 3+. We’re an independent admin support service —
+              not the Consulate and not legal advisers — so <strong>no guarantees</strong> of processing
+              times or outcomes. Prefer email? Write to{" "}
+              <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
+            </p>
 
-          <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-            <summary className="font-semibold cursor-pointer">What happens if I do not register with AIRE?</summary>
-            <div className="mt-2 text-gray-700">
-              Not registering may complicate consular communications and access to services. It can also affect the consulate assigned to process your requests for documents and certificates. We recommend registering to ensure correct administrative handling.
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                <h3 className="font-semibold">Pricing</h3>
+                <ul className="text-sm text-gray-800 list-disc list-inside mt-1">
+                  <li><strong>£35</strong> — single person or a couple</li>
+                  <li><strong>£50</strong> — family / group of 3+</li>
+                </ul>
+                <p className="text-xs text-gray-600 mt-2">
+                  Price is per household booking. Consulate decisions and timing are outside our control.
+                </p>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+                <h3 className="font-semibold">Important</h3>
+                <p className="text-sm text-gray-800">
+                  We assist with admin and documents only. You pay any official fees to the authority,
+                  if applicable. We’re not liable for authority outcomes or delays.
+                </p>
+              </div>
             </div>
-          </details>
+          </div>
+        </div>
+      </section>
 
-          <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-            <summary className="font-semibold cursor-pointer">Can I update my AIRE record online?</summary>
-            <div className="mt-2 text-gray-700">
-              Many consulates provide online channels for AIRE updates via FAST IT or their own portals. Where online submission is not available we will advise the correct documentary route and any need for an in-person appointment.
-            </div>
-          </details>
+      {/* Form near the top for mobile */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pt-6 md:pt-10">
+        <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm">
+          <h2 className="text-xl font-semibold mb-2">Start your AIRE request</h2>
+          <p className="text-sm text-gray-700 mb-4">
+            A calm, friendly form. You can also upload documents later — we’ll follow up by email.
+          </p>
+          <AireForm />
+        </div>
+      </section>
 
-          <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-            <summary className="font-semibold cursor-pointer">Do you handle citizenship registrations through AIRE?</summary>
-            <div className="mt-2 text-gray-700">
-              Resinaro assists with document preparation and guidance related to consular matters, including documentation that supports citizenship processes. For formal legal representation in citizenship cases we will signpost to qualified legal professionals where required.
-            </div>
-          </details>
-        </section>
-      </div>
+      {/* Helpful info — short & scannable */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 py-8 md:py-12 grid gap-6 lg:grid-cols-2">
+        <div className="space-y-6">
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">Why AIRE matters</h2>
+            <p className="text-gray-700 mt-2">
+              AIRE links you to the correct consulate, helps with passport/CIE services and ensures
+              you receive official communications. We keep the process simple and tailored to your consulate.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">What we do</h2>
+            <ul className="list-disc list-inside text-gray-700 space-y-2 mt-2">
+              <li>Confirm your consulate and the correct submission route</li>
+              <li>Provide a consulate-specific checklist and templates</li>
+              <li>Review your documents and guide the portal steps</li>
+              <li>Share tips to avoid common delays</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside className="space-y-6">
+          <div className="bg-green-900 text-white rounded-2xl p-5">
+            <h3 className="font-semibold text-lg">Urgent?</h3>
+            <p className="text-sm">
+              Email <a className="underline text-amber-300" href="mailto:resinaro@proton.me?subject=AIRE%20Urgent">resinaro@proton.me</a>{" "}
+              with subject <strong>“AIRE Urgent”</strong>.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 text-sm text-gray-700 shadow-sm">
+            <h4 className="font-semibold mb-2">Before you start</h4>
+            <ul className="list-disc list-inside space-y-2">
+              <li>Have your ID and UK address evidence to hand (if available)</li>
+              <li>Add family members if updating a whole household</li>
+              <li>If unsure, email us first — we’re happy to help</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      {/* FAQs */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pb-10">
+        <h2 className="text-2xl font-semibold mb-4 text-green-900">FAQs</h2>
+
+        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
+          <summary className="font-semibold cursor-pointer">Can I update AIRE online?</summary>
+          <div className="mt-2 text-gray-700">
+            Many consulates use FAST IT for updates; where it’s not available, we guide you through the correct route.
+          </div>
+        </details>
+
+        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
+          <summary className="font-semibold cursor-pointer">Is this legal advice?</summary>
+          <div className="mt-2 text-gray-700">
+            No — we provide administrative support and document guidance only. Decisions and timelines are set by the consulate.
+          </div>
+        </details>
+      </section>
 
       {/* Structured data */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />

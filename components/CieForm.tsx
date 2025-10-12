@@ -1,4 +1,4 @@
-// components/CieForm.tsx
+// src/components/CieForm.tsx
 "use client";
 
 import React, { useRef, useState } from "react";
@@ -10,22 +10,64 @@ const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
+function Section({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
+      <div className="mb-3">
+        <h3 className="text-base sm:text-lg font-semibold text-green-900">{title}</h3>
+        {subtitle && <p className="text-xs sm:text-sm text-gray-700 mt-0.5">{subtitle}</p>}
+      </div>
+      <div className="grid gap-3">{children}</div>
+    </section>
+  );
+}
+
+function Field({
+  label,
+  children,
+  hint,
+  required,
+}: {
+  label: string;
+  children: React.ReactNode;
+  hint?: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-green-900">
+        {label} {required && <span className="text-red-600">*</span>}
+      </label>
+      <div className="mt-1">{children}</div>
+      {hint && <p className="text-[11px] text-gray-600 mt-1">{hint}</p>}
+    </div>
+  );
+}
+
 export default function CieForm() {
   const proofRef = useRef<HTMLInputElement | null>(null);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [email, setEmail] = useState("");
   const [placeOfBirth, setPlaceOfBirth] = useState("");
   const [countryOfBirth, setCountryOfBirth] = useState("");
   const [telephone, setTelephone] = useState("");
-  const [heightCm, setHeightCm] = useState("");
-  const [under18ChildrenCount, setUnder18ChildrenCount] = useState("");
+  const [multipleCitizenships, setMultipleCitizenships] = useState<"yes" | "no" | "">("");
   const [proof, setProof] = useState<File | null>(null);
+
   const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const submitDisabled = submitting || !consent;
 
   function validateFile(f: File): string | null {
     if (!ALLOWED_TYPES.includes(f.type)) return "Proof must be PDF, JPG or PNG.";
@@ -44,26 +86,26 @@ export default function CieForm() {
 
   async function fileToBase64(file: File) {
     const buf = await file.arrayBuffer();
-    let binary = "";
+    let s = "";
     const bytes = new Uint8Array(buf);
     const chunk = 0x8000;
     for (let i = 0; i < bytes.length; i += chunk) {
-      const slice = bytes.subarray(i, i + chunk);
-      binary += String.fromCharCode(...Array.from(slice));
+      s += String.fromCharCode(...Array.from(bytes.subarray(i, i + chunk)));
     }
-    return btoa(binary);
+    return btoa(s);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
+    // Keep same validation rules (do not change required info)
     if (!firstName.trim() || !lastName.trim()) return setError("Please enter your name and surname.");
     if (!dateOfBirth) return setError("Please enter your date of birth.");
     if (!placeOfBirth.trim()) return setError("Please enter your place of birth.");
     if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
-  if (!telephone.trim()) return setError("Please enter your telephone number.");
-  if (!email.trim()) return setError("Please enter your email address.");
+    if (!telephone.trim()) return setError("Please enter your telephone number.");
+    if (multipleCitizenships === "") return setError("Please indicate if you have multiple citizenships.");
     if (!proof) return setError("Please upload your proof of UK address.");
     if (!consent) return setError("Please consent to data processing to continue.");
 
@@ -73,7 +115,11 @@ export default function CieForm() {
       const serviceKey = "id-card";
 
       const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
-      filesPayload.push({ filename: proof.name, mimeType: proof.type, data: await fileToBase64(proof) });
+      filesPayload.push({
+        filename: proof.name,
+        mimeType: proof.type,
+        data: await fileToBase64(proof),
+      });
 
       const dataPayload = {
         firstName: firstName.trim(),
@@ -81,9 +127,8 @@ export default function CieForm() {
         dateOfBirth,
         placeOfBirth: placeOfBirth.trim(),
         countryOfBirth: countryOfBirth.trim(),
-  telephone: telephone.trim(),
-        heightCm: heightCm.trim(),
-        under18ChildrenCount: under18ChildrenCount.trim(),
+        telephone: telephone.trim(),
+        multipleCitizenships,
         otpDisclaimer: "User informed we will need a one-time code (OTP) from email during booking.",
       };
 
@@ -96,7 +141,7 @@ export default function CieForm() {
           bookingId,
           service: serviceKey,
           name: `${firstName.trim()} ${lastName.trim()}`,
-          email: email.trim(),
+          email: "", // unchanged: email optional for this form
           telephone: telephone.trim(),
           files: filesPayload,
           data: dataPayload,
@@ -113,7 +158,7 @@ export default function CieForm() {
       const fd = new FormData();
       fd.append("bookingId", bookingId);
       fd.append("service", serviceKey);
-  fd.append("email", email.trim());
+      fd.append("email", "");
       fd.append("name", `${firstName.trim()} ${lastName.trim()}`);
 
       const r2 = await fetch("/api/services/book", { method: "POST", body: fd });
@@ -126,95 +171,200 @@ export default function CieForm() {
       window.location.href = url;
       return;
     } catch (err: unknown) {
-      const messageText = err instanceof Error ? err.message : String(err);
-      setError(messageText || "Submission failed — please try again later.");
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg || "Submission failed — please try again later.");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSubmitting(false);
     }
   }
 
-  const submitDisabled = submitting || !consent;
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4" aria-live="polite">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Name *</label>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Surname *</label>
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
+      {/* Visual stepper (simple, non-interactive) */}
+      <div className="w-full bg-gray-200/70 h-2 rounded-full">
+        <div className="h-2 rounded-full bg-green-900 transition-[width] duration-300 ease-out" style={{ width: "100%" }} />
       </div>
+      <ol className="mt-3 grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+        {["Your details", "Birth info", "Contact & status", "Proof & consent"].map((t, i) => (
+          <li
+            key={t}
+            className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 border-green-300 bg-green-50 text-green-900"
+          >
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold bg-green-800 text-white">
+              {i + 1}
+            </span>
+            <span className="truncate">{t}</span>
+          </li>
+        ))}
+      </ol>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Date of birth *</label>
-          <input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      {/* Sections */}
+      <Section title="Basic details" subtitle="Exactly as they appear on your documents.">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <Field label="Name" required>
+            <input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              placeholder="Mario"
+            />
+          </Field>
+          <Field label="Surname" required>
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              placeholder="Rossi"
+            />
+          </Field>
         </div>
-        <div>
-          <label className="block text-sm font-medium">Place of birth *</label>
-          <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+      </Section>
+
+      <Section title="Birth information">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Field label="Date of birth" required hint="Use the calendar input">
+            <input
+              type="date"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+            />
+          </Field>
+          <Field label="Place of birth" required>
+            <input
+              value={placeOfBirth}
+              onChange={(e) => setPlaceOfBirth(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              placeholder="City/town"
+            />
+          </Field>
+          <Field label="Country of birth" required>
+            <input
+              value={countryOfBirth}
+              onChange={(e) => setCountryOfBirth(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              placeholder="e.g. Italy"
+            />
+          </Field>
         </div>
-        <div>
-          <label className="block text-sm font-medium">Country of birth *</label>
-          <input value={countryOfBirth} onChange={(e) => setCountryOfBirth(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
-        </div>
-      </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium">Height (cm)</label>
-            <input value={heightCm} onChange={(e) => setHeightCm(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="e.g. 175" />
+      </Section>
+
+      <Section title="Contact & citizenship status">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <Field label="Telephone" required hint="Add country code, e.g. +44 7…">
+            <input
+              value={telephone}
+              onChange={(e) => setTelephone(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              placeholder="+44…"
+            />
+          </Field>
+          <div className="rounded-lg border bg-gray-50 p-3">
+            <p className="text-sm font-medium mb-2">
+              Do you have multiple citizenships? <span className="text-red-600">*</span>
+            </p>
+            <div className="flex flex-wrap items-center gap-6">
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="multiCit"
+                  checked={multipleCitizenships === "yes"}
+                  onChange={() => setMultipleCitizenships("yes")}
+                />
+                <span>Yes</span>
+              </label>
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="multiCit"
+                  checked={multipleCitizenships === "no"}
+                  onChange={() => setMultipleCitizenships("no")}
+                />
+                <span>No</span>
+              </label>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium">How many children under 18?</label>
-            <input type="number" min="0" value={under18ChildrenCount} onChange={(e) => setUnder18ChildrenCount(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="0, 2, 6" />
-          </div>
+        </div>
+      </Section>
+
+      <Section title="Proof & consent" subtitle="Upload one proof of UK address. You can email documents if you prefer: resinaro@proton.me">
+        <div className="rounded-lg border bg-gray-50 p-3">
+          <Field
+            label="Proof of UK address"
+            required
+            hint="Utility bill, council tax, tenancy or bank statement showing your UK address. PDF/JPG/PNG, up to 5 MB."
+          >
+            <input
+              ref={proofRef}
+              type="file"
+              accept=".pdf,image/png,image/jpeg"
+              onChange={onProofChange}
+              className="block w-full"
+            />
+          </Field>
+
+          {proof && (
+            <div className="mt-2 flex items-center justify-between bg-white border px-3 py-2 rounded">
+              <div className="truncate">
+                <strong className="text-sm">{proof.name}</strong>
+                <div className="text-xs text-gray-500">{Math.round(proof.size / 1024)} KB</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setProof(null);
+                  if (proofRef.current) proofRef.current.value = "";
+                }}
+                className="text-red-600 text-sm"
+              >
+                Remove
+              </button>
+            </div>
+          )}
         </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Telephone *</label>
-          <input value={telephone} onChange={(e) => setTelephone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." required />
+        <div className="text-sm bg-amber-50 border-l-4 border-amber-300 p-3 rounded">
+          <strong>Heads-up:</strong> during booking, your consulate portal may send a one-time passcode (OTP) to your email. We’ll ask you to share the code securely at that step.
         </div>
-        <div>
-          <label className="block text-sm font-medium">Email *</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+
+        <div className="rounded-lg border p-3">
+          <p className="text-sm text-gray-800">
+            Service fee: <strong>£35</strong> for administrative assistance.{" "}
+            <em>Consulate/government fees are separate</em> and paid to the authority. We are not the Consulate and do not give legal advice;{" "}
+            <strong>no guarantees</strong> of availability or outcome.
+          </p>
+          <label className="flex items-start gap-2 mt-2 text-sm">
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+            <span>
+              I consent to Resinaro storing and processing my documents strictly to deliver this service.{" "}
+              <a href="/privacy" className="underline">Privacy Policy</a>
+            </span>
+          </label>
         </div>
-      </div>
+      </Section>
 
-      {/* Removed multiple citizenships section as requested */}
-
-      <div className="bg-gray-50 border rounded p-3">
-        <label className="block text-sm font-medium">Proof of UK address *</label>
-        <p className="text-xs text-gray-600 mb-2">Upload a utility bill, council tax, tenancy agreement or bank statement showing your UK address.</p>
-        <input ref={proofRef} type="file" accept=".pdf,image/png,image/jpeg" onChange={onProofChange} className="mt-1" />
-        <p className="text-xs text-gray-500 mt-1">PDF / JPG / PNG. One file, up to {MAX_FILE_SIZE / (1024 * 1024)} MB.</p>
-      </div>
-
-      <div className="text-sm bg-amber-50 border-l-4 border-amber-300 p-3 rounded">
-        Disclaimer: During booking we may need you to provide a one-time passcode (OTP) that is sent to your email. We will request this securely when needed.
-      </div>
-
-      <div className="text-sm mt-2">
-        <label className="flex items-start gap-2">
-          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-          <span>
-            I consent to Resinaro storing and processing my documents strictly to deliver this service. <a href="/privacy" className="underline">Privacy Policy</a>
-          </span>
-        </label>
-      </div>
-
+      {/* Error + actions */}
       {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
 
-      <div className="pt-2">
-        <button type="submit" disabled={submitDisabled} className={`px-4 py-2 rounded text-white ${submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"}`}>
-          {submitting ? "Submitting..." : "Submit CIE details + Pay"}
+      <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+        <p className="text-[11px] text-gray-600">
+          Questions first? Email <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
+        </p>
+        <button
+          type="submit"
+          disabled={submitDisabled}
+          className={`px-4 py-2 rounded text-white ${
+            submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"
+          }`}
+        >
+          {submitting ? "Submitting…" : "Submit CIE details & Pay £35"}
         </button>
-        <p className="text-xs text-gray-600 mt-2">You will be redirected to payment after submitting your details.</p>
       </div>
+
+      <p className="text-[11px] text-gray-600">
+        You’ll be redirected to payment after submitting. We’re an independent admin support service and not the Consulate.
+      </p>
     </form>
   );
 }

@@ -2,10 +2,25 @@ import PassportForm from "../../../components/PassportForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Passport & Consular Services | Resinaro",
+  title: "Italian Passport Help (UK) | Resinaro",
   description:
-    "Fast, transparent support for booking Italian passport appointments and consular services in the UK. Help with first applications, renewals and urgent cases.",
-  alternates: { canonical: "/services/passport-consular" },
+    "We help you book Prenot@Mi passport appointments (12+/adults) and guide Under-12 postal packs. Simple, friendly, and clear — with human help by email when you need it.",
+  alternates: { canonical: "/services/passport" },
+  openGraph: {
+    title: "Italian Passport Help (UK) | Resinaro",
+    description:
+      "Friendly help to book Prenot@Mi appointments (12+/adults) and prepare Under-12 postal packs. We are not the Consulate; availability and issuance are their decision.",
+    url: "https://www.resinaro.com/services/passport",
+    images: [{ url: "/images/service-passport.png", width: 1200, height: 630, alt: "Italian passport help by Resinaro" }],
+    siteName: "Resinaro",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Italian Passport Help (UK) | Resinaro",
+    description:
+      "Book Prenot@Mi (12+/adults) and Under-12 postal help. Clear steps, no false promises. Email resinaro@proton.me for tailored advice.",
+    images: ["/images/service-passport.png"],
+  },
 };
 
 const faqJsonLd = {
@@ -14,29 +29,29 @@ const faqJsonLd = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Can Resinaro guarantee a passport appointment date?",
+      name: "Do you guarantee an appointment or passport?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "We cannot guarantee consulate appointment availability. We monitor appointment windows, advise on fast-track options when available and help prepare a complete application to reduce the chance of rejection.",
+          "No. Appointment availability and passport issuance are decided only by the Consulate. Resinaro provides booking assistance and postal-pack guidance; outcomes and timelines are outside our control.",
       },
     },
     {
       "@type": "Question",
-      name: "What if my passport is lost or stolen?",
+      name: "What does Resinaro actually do?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "We provide step-by-step guidance for lost or stolen passports and can assist with urgent applications and local police reporting where necessary.",
+          "Two things: (1) help monitor and book passport appointments on Prenot@Mi for 12+/adults; (2) guide parents through the Under-12 postal application with a fool-proof checklist.",
       },
     },
     {
       "@type": "Question",
-      name: "Do you handle minors and first-time applicants?",
+      name: "Can I email documents instead of uploading?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Yes. We support first-time applications for minors and adults. Some consulates require parental consent and additional documents for minors; we will advise on the exact requirements.",
+          "Yes. You can email documents to resinaro@proton.me. The form also has an “I’ll email later” option if that’s easier.",
       },
     },
   ],
@@ -45,211 +60,188 @@ const faqJsonLd = {
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Passport & Consular Services",
+  name: "Italian Passport Appointment Help",
   provider: {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-  email: "resinaro@proton.me",
+    email: "resinaro@proton.me",
   },
-  serviceType: "Passport appointment booking and consular support",
-  areaServed: {
-    "@type": "Country",
-    name: "United Kingdom",
-  },
+  serviceType: "Prenot@Mi appointment support and Under-12 postal guidance",
+  areaServed: { "@type": "Country", name: "United Kingdom" },
   description:
-    "Support for booking Italian passport appointments in the UK, help with first-time applications, renewals, and urgent lost or stolen passport cases. Typical fees range from £40 to £60 depending on complexity.",
+    "Clear, friendly support for booking Italian passport appointments and preparing Under-12 postal packs. No guarantees of availability or issuance.",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Services", item: "https://www.resinaro.com/services" },
+    { "@type": "ListItem", position: 2, name: "Passport", item: "https://www.resinaro.com/services/passport" },
+  ],
 };
 
 export default function PassportServicePage() {
   return (
-    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
-      <section className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
-        <h1 className="text-4xl font-bold">Passport & Consular Services</h1>
-        <p className="italic text-lg text-green-800">
-          Fast, transparent support for booking Italian passport appointments and related consular services in the UK.
-        </p>
-        <div className="max-w-lg mx-auto">
-          <img 
-            src="/images/service-passport.png" 
-            alt="Italian passport service" 
-            className="w-full h-auto rounded-lg shadow-md" 
+    <main className="bg-neutral-50 text-green-900 min-h-screen">
+      {/* Full-bleed hero (decorative image; content follows) */}
+      <section className="relative w-full">
+        <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
+          <img
+            src="/images/service-passport.png"
+            alt="Italian passport support"
+            className="w-full h-full object-cover"
+            fetchPriority="high"
           />
         </div>
-        <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded p-4 text-left max-w-2xl mx-auto">
-          <h2 className="text-lg font-bold text-green-900">Pricing</h2>
-          <ul className="list-disc pl-5 text-sm text-gray-800 mb-2">
-            <li><strong>£35 per person</strong> (adult or child) for each passport application or consular support case.</li>
-            <li><strong>+£20 per prenotami.it account</strong> if you want us to register and manage the account for you (optional, per account).</li>
-          </ul>
-          <p className="text-xs text-gray-700">All prices are per person. If you are applying for multiple children or adults, each application is charged separately. The prenotami.it registration service is optional and can make the process easier if you do not already have an account.</p>
+
+        {/* Intro + quick pricing + disclaimers */}
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 -mt-16">
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-5 sm:p-7 md:p-9">
+            <h1 className="text-3xl sm:text-4xl font-extrabold">
+              Italian Passport Help (UK)
+            </h1>
+            <p className="mt-2 text-green-800">
+              We help with <strong>Prenot@Mi booking (12+/adults)</strong> and{" "}
+              <strong>Under-12 postal packs</strong>. If you’re unsure, email{" "}
+              <a className="underline" href="mailto:resinaro@proton.me">
+                resinaro@proton.me
+              </a>{" "}
+              before paying — we’ll steer you.
+            </p>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                <h2 className="font-semibold">Pricing</h2>
+                <ul className="text-sm text-gray-800 list-disc list-inside mt-1">
+                  <li><strong>£35</strong> per person for passport assistance.</li>
+                  <li>
+                    <strong>+£20</strong> if you want us to{" "}
+                    <strong>create &amp; manage</strong> your Prenot@Mi account
+                    (optional). You can create one yourself for free and share login
+                    if you prefer.
+                  </li>
+                </ul>
+                <p className="text-[12px] text-gray-600 mt-2">
+                  Prices are for Resinaro’s help only, not consular fees or postage.
+                </p>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+                <h2 className="font-semibold">Important</h2>
+                <p className="text-sm text-gray-800">
+                  We are <strong>not</strong> the Consulate. Appointment supply and
+                  passport decisions are theirs. We don’t guarantee dates or outcomes.
+                  Don’t book travel until your passport is issued.
+                </p>
+                <p className="text-[12px] text-gray-600 mt-1">
+                  Prefer email? Send info to{" "}
+                  <a className="underline" href="mailto:resinaro@proton.me">
+                    resinaro@proton.me
+                  </a>.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-  <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2 px-2 sm:px-6 md:px-8">
-        {/* Left column: details */}
-  <div className="space-y-4">
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Overview</h2>
-            <p className="text-gray-700">
-              Resinaro helps Italians and other migrants to navigate consular processes in the UK. We focus on preparing complete applications, finding appointment slots where possible, and supporting urgent or complex cases with clear guidance.
-            </p>
-          </section>
+      {/* FORM FIRST for mobile (SEO: keep concise heading + form above fold) */}
+      <section id="book" className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 py-6 md:py-8">
+        <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm">
+          <h2 className="text-xl font-semibold">Book passport support</h2>
+          <p className="text-sm text-gray-700 mb-3">
+            A tiny, friendly wizard. One small step at a time ✨
+          </p>
+          <PassportForm />
+        </div>
+      </section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">What is included</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Help identifying the correct consulate and booking options for your area.</li>
-              <li>Document checks and a tailored checklist for your case.</li>
-              <li>Support with first-time applications and renewals, including biometric photo guidance.</li>
-              <li>Advice and steps for urgent, lost or stolen passport cases.</li>
-              <li>Clear guidance on timelines and what to expect at the appointment.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Documents you will need</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Proof of UK address (council tax, utility bill or bank statement, etc).</li>
-              <li>Current passport if renewing for adult applicants where required.</li>
-              <li>Two biometric passport photos that meet consulate specifications.</li>
-              <li>Parental consent documentation for minors where applicable.</li>
-              <li>You must be AIRE registered or you will not be able to get a passport</li>
-            </ul>
-            <p className="text-sm italic text-green-800 mt-2">
-              If you are missing a specific document we will advise on acceptable alternatives or simple routes to obtain them.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Typical process</h2>
-            <ol className="list-decimal list-inside text-gray-700 space-y-2">
-              <li>
-                <strong>Enquiry & booking:</strong> Use the booking form to describe the case and upload available documents.
-              </li>
-              <li>
-                <strong>Document check:</strong> We review materials and confirm what is required for submission.
-              </li>
-              <li>
-                <strong>Appointment & submission support:</strong> We advise on booking options and help prepare the application pack.
-              </li>
-              <li>
-                <strong>Follow up:</strong> We provide a summary of next steps and assist with follow up where appropriate.
-              </li>
-            </ol>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Timelines & availability</h2>
-            <p className="text-gray-700 mb-2">
-              Consulate appointment availability is managed by the consulate and can vary widely. We will advise on current waiting times and on expedited options where available.
-            </p>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Initial document review: typically within 2 business days.</li>
-              <li>Appointment booking attempts: dependent on consulate availability.</li>
-              <li>Support and follow up: we will assist with reasonable follow up for up to 4 weeks after the booking as part of the service.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Fees, concessions and refunds</h2>
-            <p className="text-gray-700 mb-2">
-              The cost for this service is from <strong>£35</strong> or more depending on complexity and urgency. Concessions are available on request for people facing financial hardship. Contact resinaro@proton.me before booking to discuss a concession.
-            </p>
-            <p className="text-gray-700">
-              Refunds: If we fail to deliver the service agreed due to our error, we will offer a full refund or a credit for other Resinaro services. Send refund requests to resinaro@proton.me with your booking reference; we will respond within 10 business days.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Data protection & confidentiality</h2>
-            <p className="text-gray-700">
-              Documents and personal data you provide are used only to deliver the agreed service and are stored securely. You can request removal of your personal data after the case is closed. See our Privacy Policy for full details.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Outcomes we deliver</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Prepared application packs ready for consulate submission.</li>
-              <li>Assistance locating appointment options and practical advice to improve success rates.</li>
-              <li>Clear written guidance to take to consulate appointments and for employers where needed.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Testimonials</h2>
-            <div className="space-y-3 text-gray-700">
-              <blockquote className="border-l-4 pl-4 italic">
-                &quot;Resinaro helped me navigate the consulate booking system and prepared my application so I felt confident at my appointment.&quot; — Silvia
-              </blockquote>
-              <blockquote className="border-l-4 pl-4 italic">
-                &quot;Practical, timely and professional support when my passport was lost. They helped me understand the immediate steps and assisted with the application.&quot; — Andrea
-              </blockquote>
+      {/* Helpful info (kept short to avoid overwhelm) */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pb-10 md:pb-16 grid gap-8 lg:grid-cols-[1.15fr_1fr]">
+        <div className="space-y-6">
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">What we do</h2>
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border p-4">
+                <h3 className="font-semibold">Prenot@Mi booking (12+/adults)</h3>
+                <p className="text-sm text-gray-700 mt-1">
+                  We monitor and attempt bookings, help set up the account if you
+                  want, and prepare your checklist. Availability is controlled by the
+                  Consulate.
+                </p>
+              </div>
+              <div className="rounded-xl border p-4">
+                <h3 className="font-semibold">Under-12 postal guidance</h3>
+                <p className="text-sm text-gray-700 mt-1">
+                  We give you a fool-proof pack list and review uploads before you
+                  post to the Consulate (no in-person appointment required for U12).
+                </p>
+              </div>
             </div>
-          </section>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">Quick docs (heads-up)</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <h3 className="font-semibold text-sm">For Prenot@Mi</h3>
+                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
+                  <li>Valid photo ID (passport/ID card)</li>
+                  <li>Proof of UK address (≤3 months)</li>
+                  <li>AIRE up to date</li>
+                </ul>
+                <p className="text-[12px] text-gray-600 mt-1">
+                  Unsure you qualify? Email us first:{" "}
+                  <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">For Under-12 (postal)</h3>
+                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
+                  <li>U12 form + both parents’ IDs (no driving licences)</li>
+                  <li>Parents’ consent + 2 photos (one countersigned)</li>
+                  <li>Proof of address + Special Delivery return envelope</li>
+                </ul>
+                <p className="text-[12px] text-gray-600 mt-1">
+                  First passport + birth registration can’t be sent together (rule from 28 May 2025).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">Need tailored advice?</h2>
+            <p className="text-gray-800">
+              If you’re unsure about eligibility or which path to use, email{" "}
+              <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>{" "}
+              before paying. You can also submit documents by email if that’s easier.
+            </p>
+          </div>
         </div>
 
-        {/* Right column: form and CTAs */}
-  <aside className="space-y-4">
-          <div className="bg-white border border-gray-200 rounded-xl p-0 shadow-sm">
-            <h2 className="text-xl font-semibold">Book passport support</h2>
-            <p className="text-sm text-gray-700">
-              Complete the form and we will contact you to confirm next steps and any fee details.
-            </p>
-
-            <PassportForm />
-          </div>
-
-          <div className="bg-green-900 text-white rounded-xl p-3">
-            <h3 className="font-semibold text-lg">Urgent cases</h3>
+        <aside className="space-y-6">
+          <div className="bg-green-900 text-white rounded-2xl p-5">
+            <h3 className="font-semibold text-lg">Urgent?</h3>
             <p className="text-sm">
-              For urgent or time-sensitive passport issues email <a href="mailto:resinaro@proton.me" className="underline text-amber-300">resinaro@proton.me</a> and include &quot;Urgent&quot; in the subject line.
+              Email <a className="underline text-amber-300" href="mailto:resinaro@proton.me">resinaro@proton.me</a>{" "}
+              with subject <strong>“Urgent”</strong>. We’ll advise the correct route.
+              (Urgency is assessed by the Consulate.)
             </p>
-            <div className="flex gap-3">
-              <a href="/contact" className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center">Contact</a>
-              <a href="/services" className="border border-white px-4 py-2 rounded-lg w-full text-center">All services</a>
-            </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-3 text-sm text-gray-700">
-            <h4 className="font-semibold">Before you book</h4>
-            <ul className="list-disc list-inside space-y-2">
-              <li>Have your ID and address proof ready.</li>
-              <li>Bring any consulate correspondence you have.</li>
-              <li>Minors may need parental consent and additional documents.</li>
+          <nav aria-label="Helpful links" className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm text-sm">
+            <h4 className="font-semibold mb-2">More services</h4>
+            <ul className="list-disc list-inside text-gray-700">
+              <li><a className="underline" href="/services">All services</a></li>
+              <li><a className="underline" href="/contact">Contact Resinaro</a></li>
             </ul>
-          </div>
+          </nav>
         </aside>
-      </div>
-
-      {/* FAQ section */}
-  <section className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-4 text-green-900">Frequently asked questions</h2>
-
-  <details className="bg-white border border-gray-200 rounded-xl p-3 mb-2">
-          <summary className="font-semibold cursor-pointer">How do I replace a lost passport?</summary>
-          <div className="mt-2 text-gray-700">
-            Report the loss to local police if required, collect any reference or report numbers, and contact the consulate for replacement procedures. We can guide you through the required evidence and help prepare the documentation.
-          </div>
-        </details>
-
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">Can you book appointments for me directly?</summary>
-          <div className="mt-2 text-gray-700">
-            We use official consulate booking systems and monitoring tools to find available slots and advise on where to apply. Where direct booking is possible we will assist, but appointment availability remains managed by the consulate.
-          </div>
-        </details>
-
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">Are fees refundable?</summary>
-          <div className="mt-2 text-gray-700">
-            Refunds are provided if Resinaro fails to deliver the agreed service due to our error. Refund requests should be emailed to resinaro@proton.me with the booking reference and reason.
-          </div>
-        </details>
       </section>
 
       {/* Structured data */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
     </main>

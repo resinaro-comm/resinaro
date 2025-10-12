@@ -2,9 +2,9 @@ import VisaForm from "../../../components/VisaForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Visa Appointment Support | Resinaro",
+  title: "Visa Help (UK) — Booking & Documents | Resinaro",
   description:
-    "Simple, affordable help (£35) for Italians in the UK to book visa/biometrics appointments and prepare documents. We guide you step-by-step and reduce mistakes.",
+    "Friendly visa appointment & document support for Italians in the UK. Flat fee £35 (admin only). Official visa fees paid to the provider. No guarantees.",
   alternates: { canonical: "/services/visa-booking" },
 };
 
@@ -18,7 +18,7 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "No. Decisions and appointment availability are controlled by the relevant authority (e.g. UKVI, TLScontact, VFS). We help you locate and book available slots and prepare a complete application to reduce errors.",
+          "No. Decisions and appointment availability are controlled by the relevant authority (e.g., UKVI, TLScontact, VFS). We help you locate and book slots and prepare a clean application to reduce errors.",
       },
     },
     {
@@ -27,7 +27,7 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Italians living in or travelling to the UK who need help booking a visa/biometrics appointment or preparing documents (e.g. work, study, family, visit visas). We also support non-EU family members connected to Italian citizens applying for Schengen/Italy visas.",
+          "Italians in the UK who need help booking a visa/biometrics appointment or preparing documents (work, study, family, visit). We also support non-EU family members connected to Italian citizens with Italy/Schengen applications, where eligible.",
       },
     },
     {
@@ -41,20 +41,11 @@ const faqJsonLd = {
     },
     {
       "@type": "Question",
-      name: "What if I’m missing a document?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text:
-          "We’ll identify what’s missing and suggest acceptable alternatives when possible, plus simple steps to obtain what’s required before your appointment.",
-      },
-    },
-    {
-      "@type": "Question",
       name: "How much does it cost?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "The booking & document-check service is a flat fee of £35 per application. Government/consulate fees are separate and paid directly to the authority.",
+          "Our admin support is a flat fee of £35 per application. Government/consulate/provider fees are separate and paid directly on the official portal.",
       },
     },
   ],
@@ -63,18 +54,17 @@ const faqJsonLd = {
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Visa Appointment Support",
+  name: "Visa Appointment & Document Support",
   provider: {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
-  email: "resinaro@proton.me",
+    email: "resinaro@proton.me",
   },
-  serviceType:
-    "Visa/biometrics appointment booking and document preparation support",
+  serviceType: "Visa/biometrics appointment booking and document preparation support",
   areaServed: { "@type": "Country", name: "United Kingdom" },
   description:
-    "Affordable help (£35) for Italians in the UK to book visa/biometric appointments and prepare documents for UK visas and Italy/Schengen applications for eligible family members.",
+    "Clear, friendly help for booking visa/biometric appointments and preparing documents. £35 admin fee; official visa fees paid to the provider. No guarantees.",
   offers: {
     "@type": "Offer",
     priceCurrency: "GBP",
@@ -85,244 +75,148 @@ const serviceJsonLd = {
 
 export default function VisaServicePage() {
   return (
-    <main className="bg-neutral-50 text-green-900 min-h-screen py-8 md:py-16 px-2 md:px-0">
-      <section className="max-w-3xl mx-auto text-center mb-10 md:mb-14">
-        <h1 className="text-4xl font-bold">Visa Appointment Support</h1>
-        <p className="italic text-lg text-green-800">
-          Straightforward help for Italians to book visa/biometrics appointments
-          and prepare documents in the UK — flat fee <strong>£35</strong>.
-        </p>
-        <div className="max-w-lg mx-auto">
+    <main className="bg-neutral-50 text-green-900 min-h-screen">
+      {/* Full-bleed hero */}
+      <section className="relative w-full">
+        <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
           <img
             src="/images/service-visa.png"
-            alt="Visa appointment support"
-            className="w-full h-auto rounded-lg shadow-md"
+            alt="Visa appointment and document support for Italians in the UK"
+            className="w-full h-full object-cover"
           />
+        </div>
+
+        {/* Overlay intro + price disclaimers */}
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 -mt-16">
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-5 sm:p-7 md:p-9">
+            <h1 className="text-3xl sm:text-4xl font-extrabold">
+              Visa Appointment & Document Help (£35)
+            </h1>
+            <p className="mt-2 text-green-800">
+              We make booking and paperwork simple. You pay <strong>£35</strong> for our admin support only.{" "}
+              <em>Official visa fees are separate</em> and paid to the provider (UKVI/TLS/VFS) after we guide you.{" "}
+              No guarantees of availability or outcome.
+            </p>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                <h3 className="font-semibold">What you get</h3>
+                <ul className="text-sm text-gray-800 list-disc list-inside mt-1">
+                  <li>Route check & tailored document list</li>
+                  <li>Portal setup (UKVI/TLS/VFS) + booking support</li>
+                  <li>Pre-submit review to reduce mistakes</li>
+                </ul>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+                <h3 className="font-semibold">Important</h3>
+                <p className="text-sm text-gray-800">
+                  We are <strong>not</strong> UKVI/TLS/VFS and do not provide legal advice. Prefer email? Send docs to{" "}
+                  <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-  <div className="max-w-4xl mx-auto grid gap-10 lg:grid-cols-2 px-2 sm:px-6 md:px-8">
-        {/* Left column: details */}
+      {/* Form near the top for mobile */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pt-6 md:pt-10">
+        <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm">
+          <h2 className="text-xl font-semibold mb-2">Start here — quick form</h2>
+          <p className="text-sm text-gray-700 mb-4">
+            A calm, friendly form. One step at a time — and email is always an option if you prefer.
+          </p>
+          <VisaForm />
+        </div>
+      </section>
+
+      {/* Helpful info (short & scannable) */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 py-8 md:py-12 grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Overview</h2>
-            <p className="text-gray-700">
-              Resinaro helps you navigate visa systems with clear steps, correct
-              documents and stress-free booking. We focus on UK visa journeys
-              (work, study, family, visit) and, where relevant, Italy/Schengen
-              applications for eligible non-EU family members of Italian
-              citizens. We reduce common mistakes and save you time.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">What’s included (£35)</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Assessment of your situation and the correct application path.</li>
-              <li>Tailored document checklist with specific evidence wording.</li>
-              <li>Account setup and guidance on official portals (UKVI, TLS, VFS).</li>
-              <li>Appointment search & booking support at your nearest centre.</li>
-              <li>Pre-submission review to catch common errors before you pay.</li>
-              <li>Email summary with next steps and what to bring on the day.</li>
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">What’s included</h2>
+            <ul className="list-disc list-inside text-gray-700 space-y-2 mt-2">
+              <li>Assessment of your situation and the correct application path</li>
+              <li>Tailored checklist with specific evidence wording</li>
+              <li>Account setup and guidance on official portals</li>
+              <li>Appointment search & booking support at your nearest centre</li>
+              <li>Pre-submission review to catch common errors</li>
+              <li>Email summary with next steps and what to bring</li>
             </ul>
-            <p className="text-sm italic text-green-800 mt-2">
-              Government/consulate fees, courier, priority or biometrics fees
-              are separate and paid directly to the authority/provider.
+            <p className="text-xs text-gray-600 mt-2">
+              Government/consulate fees, courier, priority or biometrics fees are separate and paid to the provider.
             </p>
-          </section>
+          </div>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Documents you may need</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Valid passport (with required blank pages and validity).</li>
-              <li>Proof of UK address (council tax, utility bill, bank statement).</li>
-              <li>
-                Purpose evidence (e.g. job offer/CoS, CAS for students, family
-                relationship proof, travel plan for visits).
-              </li>
-              <li>Financial evidence (bank statements, payslips, sponsor letter).</li>
-              <li>Passport photos & any required forms/consent for minors.</li>
-            </ul>
-            <p className="text-sm italic text-green-800 mt-2">
-              We’ll identify exactly what applies to your route and flag
-              acceptable alternatives if something is missing.
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
+            <h2 className="text-2xl font-semibold">What you may need</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <h3 className="font-semibold text-sm">Common items</h3>
+                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
+                  <li>Valid passport</li>
+                  <li>Proof of UK address (≤3 months)</li>
+                  <li>Financial evidence</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">Route specific</h3>
+                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
+                  <li>Work: job offer/CoS</li>
+                  <li>Study: CAS/offer letter</li>
+                  <li>Family/visit: relationship & travel plan</li>
+                </ul>
+              </div>
+            </div>
+            <p className="text-xs text-gray-600 mt-2">
+              We’ll confirm the exact list and suggest alternatives if something is missing.
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Typical process</h2>
-            <ol className="list-decimal list-inside text-gray-700 space-y-2">
-              <li>
-                <strong>Enquiry:</strong> Submit the form with your situation and
-                target visa type.
-              </li>
-              <li>
-                <strong>Checklist:</strong> Receive a tailored list and portal setup help.
-              </li>
-              <li>
-                <strong>Booking:</strong> We assist in finding and booking a biometrics slot.
-              </li>
-              <li>
-                <strong>Pre-submit check:</strong> Final review to reduce mistakes.
-              </li>
-              <li>
-                <strong>On-the-day:</strong> You get a one-page brief of what to bring and do.
-              </li>
-            </ol>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Timelines & availability</h2>
-            <p className="text-gray-700 mb-2">
-              Appointment availability is managed by the official provider and
-              can vary by city and season. We’ll advise current patterns and any
-              priority options where available.
-            </p>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Initial response: usually within 1–2 business days.</li>
-              <li>Booking attempts: ongoing until an offered slot is secured.</li>
-              <li>Support window: reasonable follow-up for 4 weeks post-booking.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Fees, concessions & refunds</h2>
-            <p className="text-gray-700 mb-2">
-              The service fee is a flat <strong>£35</strong> per application. If
-              you’re facing financial hardship, email{" "}
-              <a href="mailto:resinaro@proton.me" className="underline">
-                resinaro@proton.me
-              </a>{" "}
-              and we’ll try to help.
-            </p>
-            <p className="text-gray-700">
-              <strong>Refunds:</strong> If we fail to deliver the agreed admin
-              support due to our error, we’ll refund you or credit another
-              Resinaro service. Email your booking reference and details; we
-              reply within 10 business days.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Compliance & disclaimer</h2>
-            <p className="text-gray-700">
-              We are not affiliated with UKVI, TLScontact, VFS or any consulate.
-              We provide administrative assistance and document guidance only —
-              not legal advice and not representation. Decisions rest with the
-              relevant authority.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Results you can expect</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Clear, personalised checklist and portal setup.</li>
-              <li>Faster, cleaner submission with fewer avoidable errors.</li>
-              <li>Appointment secured as soon as a slot is available.</li>
-            </ul>
-          </section>
+          </div>
         </div>
 
-        {/* Right column: form and CTAs */}
         <aside className="space-y-6">
-          <div className="bg-white border border-gray-200 rounded-xl p-0 shadow-sm">
-            <h2 className="text-xl font-semibold">Book visa support (£35)</h2>
-            <p className="text-sm text-gray-700">
-              Complete the form and we’ll confirm next steps and any required
-              documents. You’ll only pay our fee once we accept your booking.
+          <div className="bg-green-900 text-white rounded-2xl p-5">
+            <h3 className="font-semibold text-lg">Urgent?</h3>
+            <p className="text-sm">
+              Email <a className="underline text-amber-300" href="mailto:resinaro@proton.me?subject=Urgent%20visa%20support">resinaro@proton.me</a>{" "}
+              with subject <strong>“Urgent visa support”</strong> and your location.
             </p>
-
-            <VisaForm />
           </div>
 
-          <div className="bg-green-900 text-white rounded-xl p-3">
-            <h3 className="font-semibold text-lg mb-2">Urgent case?</h3>
-            <p className="text-sm mb-4">
-              Email{" "}
-              <a
-                href="mailto:resinaro@proton.me?subject=Urgent%20visa%20support"
-                className="underline text-amber-300"
-              >
-                resinaro@proton.me
-              </a>{" "}
-              with subject “Urgent visa support” and your location.
-            </p>
-            <div className="flex gap-3">
-              <a
-                href="/contact"
-                className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2 rounded-lg w-full text-center"
-              >
-                Contact
-              </a>
-              <a
-                href="/services"
-                className="border border-white px-4 py-2 rounded-lg w-full text-center"
-              >
-                All services
-              </a>
-            </div>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-xl p-3 text-sm text-gray-700">
-            <h4 className="font-semibold mb-2">Before you book</h4>
+          <div className="bg-white border border-gray-200 rounded-2xl p-5 text-sm text-gray-700 shadow-sm">
+            <h4 className="font-semibold mb-2">Before you start</h4>
             <ul className="list-disc list-inside space-y-2">
-              <li>Know your visa route (work, study, family, visit, etc.).</li>
-              <li>Have ID and proof of UK address to hand.</li>
-              <li>Gather any sponsor/employer/education letters if relevant.</li>
-              <li>Minors may need parental consent and extra documents.</li>
+              <li>Know your target visa (work, study, family, visit, etc.)</li>
+              <li>Have ID and proof of UK address to hand</li>
+              <li>Gather any sponsor/employer/education letters</li>
+              <li>Minors may need consent & extra documents</li>
             </ul>
           </div>
         </aside>
-      </div>
+      </section>
 
-      {/* FAQ section */}
-  <section className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-4 text-green-900">
-          Frequently asked questions
-        </h2>
+      {/* FAQ (short) */}
+      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pb-10">
+        <h2 className="text-2xl font-semibold mb-4 text-green-900">FAQs</h2>
 
-  <details className="bg-white border border-gray-200 rounded-xl p-3 mb-2">
-          <summary className="font-semibold cursor-pointer">
-            Can you complete the forms for me?
-          </summary>
+        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
+          <summary className="font-semibold cursor-pointer">Can you complete the forms for me?</summary>
           <div className="mt-2 text-gray-700">
-            We guide you step-by-step and check your entries. Where systems
-            allow, we can assist screen-share to reduce errors before
-            submission.
+            We guide you step-by-step and check entries. Where portals allow, we’ll assist via screen-share to reduce errors before payment.
           </div>
         </details>
 
         <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">
-            Do you help with Italy/Schengen visas for my non-EU family?
-          </summary>
+          <summary className="font-semibold cursor-pointer">What if no appointments are available?</summary>
           <div className="mt-2 text-gray-700">
-            Yes—where eligible, we advise documents and booking at TLS/VFS for
-            Italy applications and prepare a simple pack for the appointment.
-          </div>
-        </details>
-
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">
-            What happens if no appointments are available?
-          </summary>
-          <div className="mt-2 text-gray-700">
-            We’ll monitor and attempt booking when slots open, advise on
-            alternative centres where possible, and share timing patterns to
-            improve your chances.
+            We monitor and attempt booking when slots open, advise on alternative centres where possible, and share timing patterns to improve your chances.
           </div>
         </details>
       </section>
 
       {/* Structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
     </main>
   );
 }
