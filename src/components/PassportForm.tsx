@@ -391,6 +391,10 @@ export default function PassportForm() {
       );
       fd.append("email", email.trim());
       fd.append("name", `${first.trim()} ${last.trim()}`);
+      if (service === "under12") {
+        window.location.href = "https://buy.stripe.com/dRmdR9gVU3td9Ut6AOaMU0c";
+        return;
+      }
       const pay = await fetch("/api/services/book", { method: "POST", body: fd });
       if (!pay.ok) throw new Error(await pay.text().catch(() => "Checkout error."));
       const { url } = await pay.json();
@@ -464,10 +468,10 @@ export default function PassportForm() {
                 onChange={() => setService("prenotami")}
               />
               <span className="text-sm">
-                <strong>Prenot@Mi booking</strong> (12+/adults)
+                <strong>Prenot@Mi booking</strong> (Age 12+/adults)
               </span>
               <p className="text-xs text-gray-600 mt-1">
-                We monitor & try to book. The Consulate controls availability.
+                We use Prenot@Mi to book. The Consulate controls availability.
               </p>
             </label>
             <label
@@ -483,10 +487,10 @@ export default function PassportForm() {
                 onChange={() => setService("under12")}
               />
               <span className="text-sm">
-                <strong>Under-12 postal</strong>
+                <strong>Under-12 Passport Assistance</strong>
               </span>
               <p className="text-xs text-gray-600 mt-1">
-                We prep your pack & review uploads. You post to the Consulate.
+                We assist with the process. 
               </p>
             </label>
           </div>
@@ -685,130 +689,135 @@ export default function PassportForm() {
 
               {/* Extra 12+/adult applicants */}
               <div>
-                <SectionTitle>Also booking for another 12+ / adult?</SectionTitle>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                  <div>
-                    <label className="block text-sm font-medium">
-                      How many additional people?
-                    </label>
-                    <input
-                      type="number"
-                      min={0}
-                      value={extraCount}
-                      onChange={(e) => setExtra(parseInt(e.target.value || "0", 10))}
-                      className="mt-1 block w-full rounded border px-3 py-2"
-                    />
-                  </div>
-                  <p className="text-xs text-gray-700 self-end">
-                    Teens aged 12–17 need the same details. Add each person below.
-                  </p>
+                <SectionTitle>Also booking for another age 12+ / adult?</SectionTitle>
+                <div className="mt-2">
+                  <label className="block text-sm font-medium">
+                    How many additional people?
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={extraCount === 0 ? "" : extraCount}
+                    onChange={e => {
+                      const val = e.target.value.replace(/[^0-9]/g, "");
+                      setExtra(val === "" ? 0 : parseInt(val, 10));
+                    }}
+                    placeholder="0"
+                    className="mt-1 block w-full rounded border px-3 py-2"
+                    autoComplete="off"
+                  />
                 </div>
-
-                {extraPeople.slice(0, extraCount).map((p, i) => (
-                  <div
-                    key={i}
-                    className="mt-3 rounded-xl border p-3 bg-gray-50 space-y-3"
-                  >
-                    <p className="text-sm font-medium">Person {i + 1}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Full name *
-                        </label>
-                        <input
-                          value={p.name}
-                          onChange={(e) =>
-                            setExtraPeople((prev) =>
-                              prev.map((x, idx) =>
-                                idx === i ? { ...x, name: e.target.value } : x
+                <p className="text-xs text-gray-700 mt-2">
+                  Teens aged 12–17 need the same details. Add each person below.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                  {extraPeople.slice(0, extraCount).map((p, i) => (
+                    <div
+                      key={i}
+                      className="mt-3 rounded-xl border p-3 bg-gray-50 space-y-3"
+                    >
+                      <p className="text-sm font-medium">Person {i + 1}</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium">
+                            Full name *
+                          </label>
+                          <input
+                            value={p.name}
+                            onChange={(e) =>
+                              setExtraPeople((prev) =>
+                                prev.map((x, idx) =>
+                                  idx === i ? { ...x, name: e.target.value } : x
+                                )
                               )
-                            )
-                          }
-                          className="mt-1 block w-full rounded border px-3 py-2"
-                          placeholder="As on ID"
-                        />
+                            }
+                            className="mt-1 block w-full rounded border px-3 py-2"
+                            placeholder="As on ID"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium">
+                            DOB (dd/mm/yyyy) *
+                          </label>
+                          <input
+                            value={p.dob}
+                            onChange={(e) =>
+                              setExtraPeople((prev) =>
+                                prev.map((x, idx) =>
+                                  idx === i ? { ...x, dob: e.target.value } : x
+                                )
+                              )
+                            }
+                            className="mt-1 block w-full rounded border px-3 py-2"
+                            placeholder="dd/mm/yyyy"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          DOB (dd/mm/yyyy) *
-                        </label>
-                        <input
-                          value={p.dob}
-                          onChange={(e) =>
-                            setExtraPeople((prev) =>
-                              prev.map((x, idx) =>
-                                idx === i ? { ...x, dob: e.target.value } : x
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium">
+                            Height (cm) *
+                          </label>
+                          <input
+                            value={p.heightCm}
+                            onChange={(e) =>
+                              setExtraPeople((prev) =>
+                                prev.map((x, idx) =>
+                                  idx === i ? { ...x, heightCm: e.target.value } : x
+                                )
                               )
-                            )
-                          }
-                          className="mt-1 block w-full rounded border px-3 py-2"
-                          placeholder="dd/mm/yyyy"
-                        />
+                            }
+                            className="mt-1 block w-full rounded border px-3 py-2"
+                            placeholder="e.g. 160"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium">
+                            Eye colour *
+                          </label>
+                          <input
+                            value={p.eyeColour}
+                            onChange={(e) =>
+                              setExtraPeople((prev) =>
+                                prev.map((x, idx) =>
+                                  idx === i ? { ...x, eyeColour: e.target.value } : x
+                                )
+                              )
+                            }
+                            className="mt-1 block w-full rounded border px-3 py-2"
+                            placeholder="e.g. Green"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium">
+                            Marital status *
+                          </label>
+                          <select
+                            value={p.maritalStatus}
+                            onChange={(e) =>
+                              setExtraPeople((prev) =>
+                                prev.map((x, idx) =>
+                                  idx === i
+                                    ? { ...x, maritalStatus: e.target.value as Marital }
+                                    : x
+                                )
+                              )
+                            }
+                            className="mt-1 block w-full rounded border px-3 py-2"
+                          >
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                            <option value="divorced">Divorced</option>
+                            <option value="widowed">Widowed</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Height (cm) *
-                        </label>
-                        <input
-                          value={p.heightCm}
-                          onChange={(e) =>
-                            setExtraPeople((prev) =>
-                              prev.map((x, idx) =>
-                                idx === i ? { ...x, heightCm: e.target.value } : x
-                              )
-                            )
-                          }
-                          className="mt-1 block w-full rounded border px-3 py-2"
-                          placeholder="e.g. 160"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Eye colour *
-                        </label>
-                        <input
-                          value={p.eyeColour}
-                          onChange={(e) =>
-                            setExtraPeople((prev) =>
-                              prev.map((x, idx) =>
-                                idx === i ? { ...x, eyeColour: e.target.value } : x
-                              )
-                            )
-                          }
-                          className="mt-1 block w-full rounded border px-3 py-2"
-                          placeholder="e.g. Green"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">
-                          Marital status *
-                        </label>
-                        <select
-                          value={p.maritalStatus}
-                          onChange={(e) =>
-                            setExtraPeople((prev) =>
-                              prev.map((x, idx) =>
-                                idx === i
-                                  ? { ...x, maritalStatus: e.target.value as Marital }
-                                  : x
-                              )
-                            )
-                          }
-                          className="mt-1 block w-full rounded border px-3 py-2"
-                        >
-                          <option value="single">Single</option>
-                          <option value="married">Married</option>
-                          <option value="divorced">Divorced</option>
-                          <option value="widowed">Widowed</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
               {/* Account choice */}
@@ -886,17 +895,21 @@ export default function PassportForm() {
                     Children under 12 *
                   </label>
                   <input
-                    type="number"
-                    min={1}
-                    value={kids}
-                    onChange={(e) =>
-                      setKidsCount(parseInt(e.target.value || "1", 10))
-                    }
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={kids === 1 ? "" : kids}
+                    onChange={e => {
+                      const val = e.target.value.replace(/[^0-9]/g, "");
+                      setKidsCount(val === "" ? 1 : parseInt(val, 10));
+                    }}
+                    placeholder="1"
                     className="mt-1 block w-full rounded border px-3 py-2"
+                    autoComplete="off"
                   />
                 </div>
                 <p className="text-xs text-gray-700 self-end">
-                  Postal only. Do not book travel until passport arrives.
+                  Postal only. Note: we suggest not booking travel until passport arrives.
                 </p>
               </div>
 
@@ -947,7 +960,7 @@ export default function PassportForm() {
                 </li>
                 <li>Include Special Delivery return envelope (≤500g).</li>
                 <li>
-                  First passport + birth registration cannot be sent together
+                  Note: First passport + birth registration cannot be sent together
                   (since 28 May 2025).
                 </li>
               </ul>

@@ -76,11 +76,6 @@ export default function VisaForm() {
   // Status question (required)
   const [marriedToEU, setMarriedToEU] = useState<"yes" | "no" | "">("");
 
-  // Employment details (requested)
-  const [profession, setProfession] = useState("");
-  const [employerName, setEmployerName] = useState("");
-  const [employerAddress, setEmployerAddress] = useState("");
-
   // Proof of UK residence (required upload)
   const [proofOfAddress, setProofOfAddress] = useState<File | null>(null);
 
@@ -91,6 +86,7 @@ export default function VisaForm() {
   const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sendDocsLater, setSendDocsLater] = useState(false);
 
   // Helpers
   function validateFile(f: File, label: string): string | null {
@@ -147,10 +143,6 @@ export default function VisaForm() {
     if (!passportNumber.trim()) return setError("Please enter your passport number.");
     if (!passportExpiry) return setError("Please enter your passport expiry date.");
     if (marriedToEU === "") return setError("Please tell us if you are married to a European citizen.");
-    if (!profession.trim()) return setError("Please enter your profession.");
-    if (!employerName.trim()) return setError("Please enter your employer name.");
-    if (!employerAddress.trim()) return setError("Please enter your employer address.");
-    if (!proofOfAddress) return setError("Please upload your proof of UK residence.");
     if (!notes.trim()) return setError("Please provide additional context in the notes field.");
     if (!consent) return setError("Please consent to data processing to continue.");
 
@@ -179,9 +171,6 @@ export default function VisaForm() {
         currentNationality: currentNationality.trim(),
         placeOfBirth: placeOfBirth.trim(),
         marriedToEU,
-        profession: profession.trim(),
-        employerName: employerName.trim(),
-        employerAddress: employerAddress.trim(),
         notes: notes.trim(),
       };
 
@@ -389,39 +378,11 @@ export default function VisaForm() {
         </div>
       </Section>
 
-      {/* Employment & UK address */}
-      <Section title="Work & proof of UK address" subtitle="This helps us build the correct evidence list for your visa route.">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="Profession" required>
-            <input
-              value={profession}
-              onChange={(e) => setProfession(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="e.g. driver, teacher"
-            />
-          </Field>
-          <Field label="Employer name" required>
-            <input
-              value={employerName}
-              onChange={(e) => setEmployerName(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="Company / organisation"
-            />
-          </Field>
-        </div>
-        <Field label="Employer address" required>
-          <input
-            value={employerAddress}
-            onChange={(e) => setEmployerAddress(e.target.value)}
-            className="block w-full rounded border px-3 py-2"
-            placeholder="Street, city, postcode"
-          />
-        </Field>
-
+      {/* Section: Proof of UK address + upload later option */}
+      <Section title="Proof of UK address" subtitle="You can upload a document now, or send it later by email.">
         <div className="rounded-lg border bg-gray-50 p-3">
           <Field
             label="Proof of UK residence"
-            required
             hint="Examples: council tax, tenancy, utility bill, bank statement, HMRC/DWP/NHS letter — must show your name & current UK address. PDF/JPG/PNG, up to 5 MB."
           >
             <input
@@ -432,7 +393,6 @@ export default function VisaForm() {
               className="block w-full"
             />
           </Field>
-
           {proofOfAddress && (
             <div className="mt-2 flex items-center justify-between bg-white border px-3 py-2 rounded">
               <div className="truncate">
@@ -450,6 +410,14 @@ export default function VisaForm() {
               </button>
             </div>
           )}
+          <label className="flex items-center gap-2 mt-3">
+            <input
+              type="checkbox"
+              checked={sendDocsLater}
+              onChange={e => setSendDocsLater(e.target.checked)}
+            />
+            <span className="text-sm">I will send any documents required for the service to be completed later to <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a></span>
+          </label>
         </div>
       </Section>
 
@@ -457,7 +425,6 @@ export default function VisaForm() {
       <Section title="Notes & consent" subtitle="Deadlines or special situations? Add them here.">
         <Field
           label="Anything else we should know?"
-          required
           hint="Deadlines, dependants, previous refusals, where you’ll apply, etc."
         >
           <textarea

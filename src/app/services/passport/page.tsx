@@ -108,7 +108,7 @@ export default function PassportServicePage() {
               <a className="underline" href="mailto:resinaro@proton.me">
                 resinaro@proton.me
               </a>{" "}
-              before paying — we’ll steer you.
+              before paying — we’ll guide you.
             </p>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -132,7 +132,7 @@ export default function PassportServicePage() {
                 <p className="text-sm text-gray-800">
                   We are <strong>not</strong> the Consulate. Appointment supply and
                   passport decisions are theirs. We don’t guarantee dates or outcomes.
-                  Don’t book travel until your passport is issued.
+                  We recommend not booking travel until your passport is issued.
                 </p>
                 <p className="text-[12px] text-gray-600 mt-1">
                   Prefer email? Send info to{" "}
