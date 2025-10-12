@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import ServiceCard from "../components/ServiceCard";
 import Typewriter from "../components/Typewriter";
 
-
 /**
  * Premium homepage for Resinaro
  * - Brand-consistent hero with composite background + soft gradient veil
@@ -40,7 +39,7 @@ const blurIn = (delay = 0) => ({
 });
 
 type Testimonial = { name: string; quote: string; meta?: string; avatar?: string };
-type Feature = { title: string; desc: string; icon: string };
+type Feature = { title: string; desc: string; href?: string };
 type Step = { title: string; desc: string; meta?: string };
 type Faq = { q: string; a: React.ReactNode };
 
@@ -48,23 +47,22 @@ type Faq = { q: string; a: React.ReactNode };
 
 export default function Home() {
   // ------- Content (could be moved to CMS later) -------
-
   const features: Feature[] = [
     {
-      title: "Clear pricing first",
-      desc: "No upsells or surprise fees. You see the scope and cost before you book.",
-      icon: "💬",
+      title: "Transparent pricing",
+      desc: "You’ll see scope and total before booking. No upsells or surprise fees.",
+      href: "/pricing",
     },
     {
       title: "Community-first",
-      desc: "Empathy + professional execution.",
-      icon: "🤝",
+      desc: "Friendly support with professional execution. We meet you where you are.",
+      href: "/about",
     },
     {
-      title: "Fast, practical outcomes",
-      desc: "We focus on the next concrete step—documents, booking, confirmation.",
-      icon: "🚀",
-    },  
+      title: "Practical outcomes",
+      desc: "We focus on documents, bookings and confirmations—clearly explained.",
+      href: "/services",
+    },
   ];
 
   const steps: Step[] = [
@@ -175,13 +173,11 @@ export default function Home() {
   ];
 
   // ------- Testimonial carousel -------
-
   const [index, setIndex] = useState(0);
   const next = () => setIndex((i) => (i + 1) % testimonials.length);
   const prev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);
 
-  // ------- JSON-LD for SEO (Organization + WebSite + Breadcrumb + Product/Service summary) -------
-
+  // ------- JSON-LD for SEO -------
   const jsonLd = useMemo(
     () => [
       {
@@ -255,14 +251,8 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* -------------------- HERO -------------------- */}
-      <motion.section
-        aria-label="Welcome"
-        className="relative overflow-hidden"
-        initial="initial"
-        animate="animate"
-      >
-        {/* Background composite image (Amalfi ↔ London) */}
-  <div className="relative h-[70vh] md:h-[72vh] lg:h-[78vh] w-full">
+      <motion.section aria-label="Welcome" className="relative overflow-hidden" initial="initial" animate="animate">
+        <div className="relative h-[70vh] md:h-[72vh] lg:h-[78vh] w-full">
           <Image
             src="/images/landscape-image.png"
             alt="Italy and UK combined skyline"
@@ -271,24 +261,16 @@ export default function Home() {
             className="object-cover"
             sizes="100vw"
           />
-          {/* Soft gradient veil for readability */}
           <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_20%,rgba(0,0,0,0.45),rgba(0,0,0,0.15)_55%,rgba(0,0,0,0.0))]" />
         </div>
 
-        {/* Hero content */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="relative max-w-4xl text-center text-white">
-            <motion.h1
-              className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight"
-              {...fadeUp(0.05)}
-            >
+            <motion.h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight" {...fadeUp(0.05)}>
               Inclusive support for all people in the UK
             </motion.h1>
 
-            <motion.p
-              className="mt-4 text-lg md:text-xl/relaxed max-w-3xl mx-auto"
-              {...fadeUp(0.2)}
-            >
+            <motion.p className="mt-4 text-lg md:text-xl/relaxed max-w-3xl mx-auto" {...fadeUp(0.2)}>
               Help with documents and integration — powered by community and fair service fees.
             </motion.p>
 
@@ -334,28 +316,28 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* -------------------- FEATURE PILLARS -------------------- */}
+      {/* -------------------- FEATURE PILLARS (centered, smaller, ALWAYS 3 on desktop) -------------------- */}
       <section className="relative">
         <div className="container mx-auto px-6 -mt-8 md:-mt-10">
-          <motion.div
-            className="grid gap-4 md:grid-cols-3"
+          <motion.ul
+            role="list"
+            className="mx-auto max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             variants={staggerChildren}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
           >
             {features.map((f, i) => (
-              <motion.div
+              <motion.li
                 key={f.title}
-                className="rounded-xl bg-white/90 backdrop-blur border border-gray-200 shadow-sm p-5"
+                className="rounded-xl bg-white/90 backdrop-blur border border-gray-200 shadow-sm p-5 text-center"
                 {...blurIn(0.05 * i)}
               >
-                <div className="text-2xl">{f.icon}</div>
-                <h3 className="mt-2 font-semibold text-green-900">{f.title}</h3>
+                <h3 className="font-semibold text-green-900 text-base">{f.title}</h3>
                 <p className="mt-1 text-sm text-gray-700">{f.desc}</p>
-              </motion.div>
+              </motion.li>
             ))}
-          </motion.div>
+          </motion.ul>
         </div>
       </section>
 
@@ -369,7 +351,6 @@ export default function Home() {
             Transparent, community-driven and fairly priced. No hidden fees — just clear, affordable service costs.
           </motion.p>
 
-          {/* Cards */}
           <motion.div
             className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch max-w-6xl mx-auto"
             variants={staggerChildren}
@@ -510,25 +491,10 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* Controls (keyboard accessible) */}
             <div className="mt-4 flex items-center justify-center gap-3">
-              <button
-                aria-label="Previous testimonial"
-                onClick={prev}
-                className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50"
-              >
-                ←
-              </button>
-              <div className="text-xs text-gray-600">
-                {index + 1} / {testimonials.length}
-              </div>
-              <button
-                aria-label="Next testimonial"
-                onClick={next}
-                className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50"
-              >
-                →
-              </button>
+              <button aria-label="Previous testimonial" onClick={prev} className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50">←</button>
+              <div className="text-xs text-gray-600">{index + 1} / {testimonials.length}</div>
+              <button aria-label="Next testimonial" onClick={next} className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50">→</button>
             </div>
           </div>
         </div>
@@ -565,10 +531,7 @@ export default function Home() {
                   <div className="p-6 flex-1 flex flex-col">
                     <h3 className="text-lg font-bold text-green-900">{b.title}</h3>
                     <p className="text-sm text-gray-700 mt-1">{b.desc}</p>
-                    <Link
-                      href={b.link}
-                      className="inline-flex items-center gap-1 text-green-900 underline mt-2 hover:decoration-4"
-                    >
+                    <Link href={b.link} className="inline-flex items-center gap-1 text-green-900 underline mt-2 hover:decoration-4">
                       Read more <span aria-hidden>→</span>
                     </Link>
                   </div>
@@ -576,10 +539,7 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-8 flex justify-center">
-              <Link
-                href="/community"
-                className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition"
-              >
+              <Link href="/community" className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition">
                 Browse all guides <span aria-hidden>→</span>
               </Link>
             </div>
@@ -590,15 +550,7 @@ export default function Home() {
       {/* -------------------- TRUST BAND with composite background -------------------- */}
       <section className="relative py-16">
         <div className="absolute inset-0 -z-10">
-          <Image
-            src="/images/hero/uk-italy-composite.png"
-            alt=""
-            fill
-            className="object-cover opacity-40"
-            sizes="100vw"
-            aria-hidden
-          />
-          {/* Even tricolore overlay thirds */}
+          <Image src="/images/hero/uk-italy-composite.png" alt="" fill className="object-cover opacity-40" sizes="100vw" aria-hidden />
           <div className="absolute inset-0 mix-blend-multiply pointer-events-none" aria-hidden>
             <div className="absolute inset-0 grid grid-cols-3">
               <div className="bg-[#0B5D3B]/15" />
@@ -610,54 +562,23 @@ export default function Home() {
 
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-2xl font-extrabold text-green-900">Trusted By</h2>
-          <p className="text-gray-700 mt-2">
-            Resinaro works alongside community groups and institutions.
-          </p>
+          <p className="text-gray-700 mt-2">Resinaro works alongside community groups and institutions.</p>
 
           <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-8 place-items-center">
-            <a
-              href="https://amblondra.esteri.it/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center"
-            >
-              <Image
-                src="/Emblem_of_Italy.svg.png"
-                alt="Italian Embassy - Emblem of Italy"
-                width={80}
-                height={80}
-                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-              />
+            <a href="https://amblondra.esteri.it/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
+              <Image src="/Emblem_of_Italy.svg.png" alt="Italian Embassy - Emblem of Italy" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
             </a>
 
             <a href="https://www.nhs.uk/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              <Image
-                src="/nhs-logo.svg"
-                alt="NHS logo"
-                width={80}
-                height={80}
-                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-              />
+              <Image src="/nhs-logo.svg" alt="NHS logo" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
             </a>
 
             <a href="/community" className="flex flex-col items-center">
-              <Image
-                src="/handshake-solid-full.svg"
-                alt="Community organisation"
-                width={80}
-                height={80}
-                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition"
-              />
+              <Image src="/handshake-solid-full.svg" alt="Community organisation" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
             </a>
 
             <a href="https://www.gov.uk/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              <Image
-                src="/trust/govuk.png"
-                alt="GOV.UK logo"
-                width={140}
-                height={50}
-                className="w-auto h-12 object-contain grayscale hover:grayscale-0 transition"
-              />
+              <Image src="/trust/govuk.png" alt="GOV.UK logo" width={140} height={50} className="w-auto h-12 object-contain grayscale hover:grayscale-0 transition" />
               <span className="mt-2 text-sm font-semibold text-gray-800">GOV.UK</span>
             </a>
           </div>
@@ -683,10 +604,7 @@ export default function Home() {
                   <details className="group">
                     <summary className="marker-none list-none cursor-pointer font-semibold text-green-900 flex items-center justify-between">
                       <span>{f.q}</span>
-                      <span
-                        className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border text-sm group-open:rotate-45 transition"
-                        aria-hidden
-                      >
+                      <span className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border text-sm group-open:rotate-45 transition" aria-hidden>
                         +
                       </span>
                     </summary>
@@ -698,6 +616,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-</main>
+    </main>
   );
 }
