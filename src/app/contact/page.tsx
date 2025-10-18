@@ -116,7 +116,7 @@ function OtherContactForm({ serviceKey }: { serviceKey: "other" }) {
         setFiles([]);
         setConsent(false);
       }
-    } catch (err) {
+    } catch {
       setStatus("Network error — please try later.");
     } finally {
       setSubmitting(false);

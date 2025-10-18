@@ -1,5 +1,6 @@
 import VisaForm from "../../../components/VisaForm";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Visa Help (UK) — Booking & Documents | Resinaro",
@@ -79,10 +80,13 @@ export default function VisaServicePage() {
       {/* Full-bleed hero */}
       <section className="relative w-full">
         <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
-          <img
+          <Image
             src="/images/service-visa.png"
             alt="Visa appointment and document support for Italians in the UK"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
           />
         </div>
 

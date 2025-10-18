@@ -1,5 +1,6 @@
 import PassportForm from "../../../components/PassportForm";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Italian Passport Help (UK) | Resinaro",
@@ -88,11 +89,13 @@ export default function PassportServicePage() {
       {/* Full-bleed hero (decorative image; content follows) */}
       <section className="relative w-full">
         <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
-          <img
+          <Image
             src="/images/service-passport.png"
             alt="Italian passport support"
-            className="w-full h-full object-cover"
-            fetchPriority="high"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
           />
         </div>
 

@@ -1,4 +1,5 @@
 import AireForm from "../../../../src/components/AireForm";
+import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -70,10 +71,13 @@ export default function Page() {
       {/* Full-bleed hero */}
       <section className="relative w-full">
         <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
-          <img
+          <Image
             src="/images/aire-registration.png"
             alt="AIRE registration — Italian consular records update"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
           />
         </div>
 

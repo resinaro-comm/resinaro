@@ -3,7 +3,7 @@
 
 import React, { useRef, useState } from "react";
 
-/** Google Apps Script endpoint + token (same logic, just prettier UI) **/
+/** Google Apps Script endpoint + token **/
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
 const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN in Apps Script
@@ -11,6 +11,7 @@ const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 
+/* ---------- Small UI helpers ---------- */
 function Section({
   title,
   subtitle,
@@ -21,10 +22,12 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
+    <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
       <div className="mb-3">
         <h3 className="text-base sm:text-lg font-semibold text-green-900">{title}</h3>
-        {subtitle && <p className="text-xs sm:text-sm text-gray-700 mt-0.5">{subtitle}</p>}
+        {subtitle && (
+          <p className="text-xs sm:text-sm text-gray-700 mt-0.5">{subtitle}</p>
+        )}
       </div>
       <div className="grid gap-3">{children}</div>
     </section>
@@ -53,7 +56,14 @@ function Field({
   );
 }
 
+/* ---------- Component ---------- */
 export default function VisaForm() {
+  // Wizard steps (one-at-a-time)
+  // 1) Contact  2) Identity  3) Address proof  4) Notes & agreements
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const stepTitles = ["Contact", "Identity", "Address", "Notes & consent"];
+  const pct = [0, 25, 50, 75, 100][step] || 0;
+
   // Refs
   const addressRef = useRef<HTMLInputElement | null>(null);
 
@@ -76,19 +86,23 @@ export default function VisaForm() {
   // Status question (required)
   const [marriedToEU, setMarriedToEU] = useState<"yes" | "no" | "">("");
 
-  // Proof of UK residence (required upload)
+  // Proof of UK residence (upload now or later)
   const [proofOfAddress, setProofOfAddress] = useState<File | null>(null);
+  const [sendDocsLater, setSendDocsLater] = useState(false);
 
   // Other
   const [notes, setNotes] = useState("");
 
-  // Consent + UI
+  // Agreements
+  const [startNowConsent, setStartNowConsent] = useState(false); // NEW
+  const [refundPolicyAgree, setRefundPolicyAgree] = useState(false);
   const [consent, setConsent] = useState(false);
+
+  // UI
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sendDocsLater, setSendDocsLater] = useState(false);
 
-  // Helpers
+  /* ---------- Helpers ---------- */
   function validateFile(f: File, label: string): string | null {
     if (!ALLOWED_TYPES.includes(f.type)) return `${label} must be PDF, JPG or PNG.`;
     if (f.size > MAX_FILE_SIZE) return `${label} must be under ${MAX_FILE_SIZE / (1024 * 1024)} MB.`;
@@ -128,31 +142,67 @@ export default function VisaForm() {
     return btoa(binary);
   }
 
+  /* ---------- Step navigation with per-step validation ---------- */
+  function next() {
+    setError(null);
+
+    if (step === 1) {
+      if (!firstName.trim() || !lastName.trim())
+        return setError("Please enter your first and last name.");
+      if (!email.trim()) return setError("Please enter your email.");
+      if (!telephone.trim()) return setError("Please enter your telephone number.");
+      setStep(2);
+      return;
+    }
+
+    if (step === 2) {
+      if (!dateOfBirth) return setError("Please enter your date of birth.");
+      if (!placeOfBirth.trim()) return setError("Please enter your place of birth (city/town).");
+      if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
+      if (!currentNationality.trim()) return setError("Please enter your current nationality.");
+      if (!passportNumber.trim()) return setError("Please enter your passport number.");
+      if (!passportExpiry) return setError("Please enter your passport expiry date.");
+      if (marriedToEU === "") return setError("Please tell us if you are married to a European citizen.");
+      setStep(3);
+      return;
+    }
+
+    if (step === 3) {
+      // Address proof is optional; we just proceed.
+      setStep(4);
+      return;
+    }
+  }
+
+  function back() {
+    setError(null);
+    if (step === 1) return;
+    if (step === 2) return setStep(1);
+    if (step === 3) return setStep(2);
+    if (step === 4) return setStep(3);
+  }
+
+  /* ---------- Submit (final step) ---------- */
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
-    // Required field checks (unchanged logic, just nicer UI above)
-    if (!firstName.trim() || !lastName.trim()) return setError("Please enter your first and last name.");
-    if (!email.trim()) return setError("Please enter your email.");
-    if (!telephone.trim()) return setError("Please enter your telephone number.");
-    if (!dateOfBirth) return setError("Please enter your date of birth.");
-    if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
-    if (!currentNationality.trim()) return setError("Please enter your current nationality.");
-    if (!placeOfBirth.trim()) return setError("Please enter your place of birth (city/town).");
-    if (!passportNumber.trim()) return setError("Please enter your passport number.");
-    if (!passportExpiry) return setError("Please enter your passport expiry date.");
-    if (marriedToEU === "") return setError("Please tell us if you are married to a European citizen.");
-    if (!notes.trim()) return setError("Please provide additional context in the notes field.");
+    // Final checks (agreements + a quick sanity on notes)
+    if (!notes.trim()) return setError("Please add a short note about your situation.");
+    if (!startNowConsent)
+      return setError(
+        "Please confirm you want us to start now and understand the cooling-off terms."
+      );
+    if (!refundPolicyAgree)
+      return setError("Please confirm you agree to the Refund & Credit Policy.");
     if (!consent) return setError("Please consent to data processing to continue.");
 
     setSubmitting(true);
 
     try {
-      // a) Booking reference for linking payment to sheet row
       const bookingId = crypto.randomUUID();
 
-      // b) Build uploads payload (base64)
+      // Build uploads payload (base64)
       const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
       if (proofOfAddress) {
         filesPayload.push({
@@ -162,7 +212,7 @@ export default function VisaForm() {
         });
       }
 
-      // c) Pack variable answers into one JSON blob
+      // Pack answers
       const dataPayload = {
         passportNumber: passportNumber.trim(),
         passportExpiry,
@@ -172,9 +222,16 @@ export default function VisaForm() {
         placeOfBirth: placeOfBirth.trim(),
         marriedToEU,
         notes: notes.trim(),
+        sendDocsLater: sendDocsLater ? "1" : "0",
+
+        // Agreements (audit trail)
+        startNowConsent: startNowConsent ? "1" : "0",
+        refundPolicyAgree: refundPolicyAgree ? "1" : "0",
+        privacyConsent: consent ? "1" : "0",
+        policyVersion: "2025-10-18",
       };
 
-      // d) Send to Google Apps Script
+      // Send to Google Apps Script
       const r1 = await fetch(GAS_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -196,14 +253,14 @@ export default function VisaForm() {
       try {
         r1json = (await r1.json()) as GasResponse;
       } catch {
-        /* ignore JSON parse on some Apps Script responses */
+        /* Some Apps Script deploys return empty body on success */
       }
       if (!r1.ok || !(r1json && r1json.ok)) {
         const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
         throw new Error(msg);
       }
 
-      // e) Stripe Payment Link
+      // Stripe Payment Link
       const fd = new FormData();
       fd.append("bookingId", bookingId);
       fd.append("service", "visa-application");
@@ -227,8 +284,9 @@ export default function VisaForm() {
     }
   }
 
-  const submitDisabled = submitting || !consent;
+  const submitDisabled = submitting || !startNowConsent || !refundPolicyAgree || !consent;
 
+  /* ---------- UI ---------- */
   return (
     <form
       onSubmit={handleSubmit}
@@ -236,242 +294,381 @@ export default function VisaForm() {
       encType="multipart/form-data"
       aria-live="polite"
     >
-      {/* Stepper header (visual only) */}
+      {/* Progress */}
       <div className="w-full bg-gray-200/70 h-2 rounded-full">
-        <div className="h-2 rounded-full bg-green-900 transition-[width] duration-300 ease-out" style={{ width: "100%" }} />
+        <div
+          className="h-2 rounded-full bg-green-900 transition-[width] duration-300 ease-out"
+          style={{ width: `${pct}%` }}
+        />
       </div>
+
+      {/* Stepper */}
       <ol className="mt-3 grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-        {["Contact", "Identity", "Work & Address", "Notes & Consent"].map((t, i) => (
-          <li
-            key={t}
-            className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 border-green-300 bg-green-50 text-green-900"
-          >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold bg-green-800 text-white">
-              {i + 1}
-            </span>
-            <span className="truncate">{t}</span>
-          </li>
-        ))}
+        {stepTitles.map((t, i) => {
+          const active = step >= (i + 1);
+          return (
+            <li
+              key={t}
+              className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${
+                active
+                  ? "border-green-300 bg-green-50 text-green-900"
+                  : "border-gray-200 bg-white text-gray-600"
+              }`}
+            >
+              <span
+                className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold ${
+                  active ? "bg-green-800 text-white" : "bg-gray-300 text-gray-700"
+                }`}
+              >
+                {i + 1}
+              </span>
+              <span className="truncate">{t}</span>
+            </li>
+          );
+        })}
       </ol>
 
-      {/* Contact */}
-      <Section title="Contact details" subtitle="We’ll use this to follow up with your checklist and booking info.">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="First name" required>
-            <input
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="Mario"
-            />
-          </Field>
-          <Field label="Last name" required>
-            <input
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="Rossi"
-            />
-          </Field>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="Email" required>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="you@example.com"
-            />
-          </Field>
-          <Field label="Telephone" required hint="Add country code, e.g. +44 7…">
-            <input
-              value={telephone}
-              onChange={(e) => setTelephone(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="+44…"
-            />
-          </Field>
-        </div>
-      </Section>
-
-      {/* Identity */}
-      <Section title="Identity & birth details" subtitle="Exactly as they appear on your passport/birth documents.">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="Date of birth" required hint="Format: dd/mm/yyyy">
-            <input
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="dd/mm/yyyy"
-            />
-          </Field>
-          <Field label="Place of birth (city/town)" required>
-            <input
-              value={placeOfBirth}
-              onChange={(e) => setPlaceOfBirth(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="e.g. Milan"
-            />
-          </Field>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="Country of birth" required>
-            <input
-              value={countryOfBirth}
-              onChange={(e) => setCountryOfBirth(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="e.g. Italy"
-            />
-          </Field>
-          <Field label="Current nationality" required>
-            <input
-              value={currentNationality}
-              onChange={(e) => setCurrentNationality(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="e.g. Italian"
-            />
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Field label="Passport number" required>
-            <input
-              value={passportNumber}
-              onChange={(e) => setPassportNumber(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="As shown on passport"
-            />
-          </Field>
-          <Field label="Passport expiry date" required hint="Format: dd/mm/yyyy">
-            <input
-              value={passportExpiry}
-              onChange={(e) => setPassportExpiry(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              placeholder="dd/mm/yyyy"
-            />
-          </Field>
-        </div>
-
-        <div className="rounded-lg border bg-gray-50 p-3">
-          <p className="text-sm font-medium mb-2">Are you married to a European citizen? <span className="text-red-600">*</span></p>
-          <div className="flex flex-wrap items-center gap-6">
-            <label className="inline-flex items-center gap-2">
+      {/* STEP 1: Contact */}
+      {step === 1 && (
+        <Section
+          title="Level 1 — Contact"
+          subtitle="Say hi 👋 We’ll use these to send your checklist and booking info."
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="First name" required>
               <input
-                type="radio"
-                name="marriedToEU"
-                checked={marriedToEU === "yes"}
-                onChange={() => setMarriedToEU("yes")}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="Mario"
               />
-              <span>Yes</span>
-            </label>
-            <label className="inline-flex items-center gap-2">
+            </Field>
+            <Field label="Last name" required>
               <input
-                type="radio"
-                name="marriedToEU"
-                checked={marriedToEU === "no"}
-                onChange={() => setMarriedToEU("no")}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="Rossi"
               />
-              <span>No</span>
+            </Field>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="Email" required>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="you@example.com"
+              />
+            </Field>
+            <Field label="Telephone" required hint="Add country code, e.g. +44 7…">
+              <input
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="+44…"
+              />
+            </Field>
+          </div>
+
+          {error && <div className="text-red-600 text-sm">{error}</div>}
+
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={next}
+              className="px-4 py-2 rounded bg-green-900 text-white"
+            >
+              Continue
+            </button>
+          </div>
+        </Section>
+      )}
+
+      {/* STEP 2: Identity */}
+      {step === 2 && (
+        <Section
+          title="Level 2 — Identity"
+          subtitle="Exactly as they appear on your passport/birth documents."
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="Date of birth" required hint="Format: dd/mm/yyyy">
+              <input
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="dd/mm/yyyy"
+              />
+            </Field>
+            <Field label="Place of birth (city/town)" required>
+              <input
+                value={placeOfBirth}
+                onChange={(e) => setPlaceOfBirth(e.target.value)}
+                className="block w-full rounded border px-3 py-2"
+                placeholder="e.g. Milan"
+              />
+            </Field>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="Country of birth" required>
+              <input
+                value={countryOfBirth}
+                onChange={(e) => setCountryOfBirth(e.target.value)}
+                className="block w/full rounded border px-3 py-2"
+                placeholder="e.g. Italy"
+              />
+            </Field>
+            <Field label="Current nationality" required>
+              <input
+                value={currentNationality}
+                onChange={(e) => setCurrentNationality(e.target.value)}
+                className="block w/full rounded border px-3 py-2"
+                placeholder="e.g. Italian"
+              />
+            </Field>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Field label="Passport number" required>
+              <input
+                value={passportNumber}
+                onChange={(e) => setPassportNumber(e.target.value)}
+                className="block w/full rounded border px-3 py-2"
+                placeholder="As shown on passport"
+              />
+            </Field>
+            <Field label="Passport expiry date" required hint="Format: dd/mm/yyyy">
+              <input
+                value={passportExpiry}
+                onChange={(e) => setPassportExpiry(e.target.value)}
+                className="block w/full rounded border px-3 py-2"
+                placeholder="dd/mm/yyyy"
+              />
+            </Field>
+          </div>
+
+          <div className="rounded-lg border bg-gray-50 p-3">
+            <p className="text-sm font-medium mb-2">
+              Are you married to a European citizen?{" "}
+              <span className="text-red-600">*</span>
+            </p>
+            <div className="flex flex-wrap items-center gap-6">
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="marriedToEU"
+                  checked={marriedToEU === "yes"}
+                  onChange={() => setMarriedToEU("yes")}
+                />
+                <span>Yes</span>
+              </label>
+              <label className="inline-flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="marriedToEU"
+                  checked={marriedToEU === "no"}
+                  onChange={() => setMarriedToEU("no")}
+                />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
+          {error && <div className="text-red-600 text-sm">{error}</div>}
+
+          <div className="flex justify-between">
+            <button type="button" onClick={back} className="px-3 py-2 rounded border">
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              className="px-4 py-2 rounded bg-green-900 text-white"
+            >
+              Continue
+            </button>
+          </div>
+        </Section>
+      )}
+
+      {/* STEP 3: Address proof */}
+      {step === 3 && (
+        <Section
+          title="Level 3 — Address proof"
+          subtitle="Upload now or send it later — whichever is easier."
+        >
+          <div className="rounded-lg border bg-gray-50 p-3">
+            <Field
+              label="Proof of UK residence"
+              hint="Examples: council tax, tenancy, utility bill, bank statement, HMRC/DWP/NHS letter — must show your name & current UK address. PDF/JPG/PNG, up to 5 MB."
+            >
+              <input
+                ref={addressRef}
+                type="file"
+                accept=".pdf,image/png,image/jpeg"
+                onChange={onAddressProofChange}
+                className="block w-full"
+              />
+            </Field>
+            {proofOfAddress && (
+              <div className="mt-2 flex items-center justify-between bg-white border px-3 py-2 rounded">
+                <div className="truncate">
+                  <strong className="text-sm">{proofOfAddress.name}</strong>
+                  <div className="text-xs text-gray-500">
+                    {Math.round(proofOfAddress.size / 1024)} KB
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={removeProofOfAddress}
+                  className="text-red-600 text-sm"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+            <label className="flex items-center gap-2 mt-3">
+              <input
+                type="checkbox"
+                checked={sendDocsLater}
+                onChange={(e) => setSendDocsLater(e.target.checked)}
+              />
+              <span className="text-sm">
+                I’ll email any missing documents later to{" "}
+                <a className="underline" href="mailto:resinaro@proton.me">
+                  resinaro@proton.me
+                </a>
+                .
+              </span>
             </label>
           </div>
-        </div>
-      </Section>
 
-      {/* Section: Proof of UK address + upload later option */}
-      <Section title="Proof of UK address" subtitle="You can upload a document now, or send it later by email.">
-        <div className="rounded-lg border bg-gray-50 p-3">
+          {error && <div className="text-red-600 text-sm">{error}</div>}
+          <div className="flex justify-between">
+            <button type="button" onClick={back} className="px-3 py-2 rounded border">
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              className="px-4 py-2 rounded bg-green-900 text-white"
+            >
+              Continue
+            </button>
+          </div>
+        </Section>
+      )}
+
+      {/* STEP 4: Notes & agreements (final) */}
+      {step === 4 && (
+        <Section
+          title="Level 4 — Notes & agreements"
+          subtitle="A couple of quick confirmations and we’re done 🎉"
+        >
           <Field
-            label="Proof of UK residence"
-            hint="Examples: council tax, tenancy, utility bill, bank statement, HMRC/DWP/NHS letter — must show your name & current UK address. PDF/JPG/PNG, up to 5 MB."
+            label="Tell us about your situation"
+            hint="Deadlines, dependants, previous refusals, where you’ll apply, etc."
+            required
           >
-            <input
-              ref={addressRef}
-              type="file"
-              accept=".pdf,image/png,image/jpeg"
-              onChange={onAddressProofChange}
-              className="block w-full"
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="block w-full rounded border px-3 py-2"
+              rows={4}
+              placeholder="A few sentences help us tailor your checklist."
             />
           </Field>
-          {proofOfAddress && (
-            <div className="mt-2 flex items-center justify-between bg-white border px-3 py-2 rounded">
-              <div className="truncate">
-                <strong className="text-sm">{proofOfAddress.name}</strong>
-                <div className="text-xs text-gray-500">
-                  {Math.round(proofOfAddress.size / 1024)} KB
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={removeProofOfAddress}
-                className="text-red-600 text-sm"
-              >
-                Remove
-              </button>
+
+          <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
+            <p className="text-sm text-gray-800">
+              Service fee: <strong>£35</strong> for administrative assistance.{" "}
+              <em>Government/provider fees are separate</em> and paid on the official portal. We’re
+              not UKVI/TLS/VFS and can’t guarantee appointment availability or outcomes — but we’ll
+              make it as easy as possible.
+            </p>
+
+            <div className="mt-3 space-y-3 text-sm">
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={startNowConsent}
+                  onChange={(e) => setStartNowConsent(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I ask you to <strong>start work immediately</strong>. I understand I have a 14-day
+                  cooling-off period, but if I cancel after work has begun you may deduct a
+                  proportionate amount for work already completed; once the service is{" "}
+                  <strong>fully performed</strong> within 14 days, I will{" "}
+                  <strong>lose my right to cancel</strong>.
+                </span>
+              </label>
+
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={refundPolicyAgree}
+                  onChange={(e) => setRefundPolicyAgree(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I have read and agree to the{" "}
+                  <a href="/refund-policy" className="underline text-green-900">
+                    Refund & Credit Policy
+                  </a>
+                  . I understand Resinaro’s default remedy is account credit valid for 12 months, and
+                  cash refunds are only provided where legally required.
+                </span>
+              </label>
+
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I consent to Resinaro storing and processing my information to deliver this
+                  service. <a href="/privacy" className="underline">Privacy Policy</a>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          {error && (
+            <div className="text-red-600 text-sm" role="alert">
+              {error}
             </div>
           )}
-          <label className="flex items-center gap-2 mt-3">
-            <input
-              type="checkbox"
-              checked={sendDocsLater}
-              onChange={e => setSendDocsLater(e.target.checked)}
-            />
-            <span className="text-sm">I will send any documents required for the service to be completed later to <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a></span>
-          </label>
-        </div>
-      </Section>
 
-      {/* Notes & consent */}
-      <Section title="Notes & consent" subtitle="Deadlines or special situations? Add them here.">
-        <Field
-          label="Anything else we should know?"
-          hint="Deadlines, dependants, previous refusals, where you’ll apply, etc."
-        >
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="block w-full rounded border px-3 py-2"
-            rows={4}
-            placeholder="Tell us the context so we can tailor your checklist."
-          />
-        </Field>
+          <div className="flex justify-between">
+            <button type="button" onClick={back} className="px-3 py-2 rounded border">
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={submitDisabled}
+              className={`px-4 py-2 rounded text-white ${
+                submitDisabled
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-900 hover:bg-green-800"
+              }`}
+            >
+              {submitting ? "Submitting…" : "Submit details & Pay £35"}
+            </button>
+          </div>
 
-        <div className="rounded-lg border p-3">
-          <p className="text-sm text-gray-800">
-            Service fee: <strong>£35</strong> for administrative assistance.{" "}
-            <em>Visa/government/provider fees are separate</em> and paid directly on the official portal after we guide you. No guarantees of availability or outcome.
+          <p className="text-[11px] text-gray-600 mt-3">
+            Prefer email? Send the same details to{" "}
+            <a className="underline" href="mailto:resinaro@proton.me">
+              resinaro@proton.me
+            </a>
+            .
           </p>
-          <label className="flex items-start gap-2 mt-2 text-sm">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-            <span>
-              I consent to Resinaro storing and processing my documents strictly to deliver this service.{" "}
-              <a href="/privacy" className="underline">Privacy Policy</a>
-            </span>
-          </label>
-        </div>
-      </Section>
-
-      {/* Error + actions */}
-      {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
-
-      <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
-        <p className="text-[11px] text-gray-600">
-          Prefer email? You can send the same details to <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
-        </p>
-        <button
-          type="submit"
-          disabled={submitDisabled}
-          className={`px-4 py-2 rounded text-white ${
-            submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"
-          }`}
-        >
-          {submitting ? "Submitting…" : "Submit details & Pay £35"}
-        </button>
-      </div>
-
-      <p className="text-[11px] text-gray-600">
-        You’ll be redirected to payment after submitting. We are not UKVI/TLS/VFS and do not provide legal advice.
-      </p>
+        </Section>
+      )}
     </form>
   );
 }

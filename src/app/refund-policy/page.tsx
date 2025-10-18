@@ -1,125 +1,125 @@
+// app/refund-policy/page.tsx
 export default function RefundPolicy() {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 py-16">
       <div className="container mx-auto px-6 max-w-4xl">
-        <h1 className="text-4xl font-bold text-green-900 mb-2">Refund Policy</h1>
-        <p className="mb-6 text-sm text-gray-600">Last updated: 24 September 2025</p>
+        <h1 className="text-4xl font-bold text-green-900 mb-2">Refund & Credit Policy</h1>
+        <p className="mb-6 text-sm text-gray-600">Last updated: 18 October 2025</p>
 
         {/* TL;DR summary box */}
         <div className="bg-white border border-amber-100 p-4 rounded-md shadow-sm mb-8">
           <h2 className="font-semibold text-green-900 mb-2">Quick summary</h2>
           <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-            <li>Payments for services are usually final and non-refundable once a service has been delivered.</li>
-            <li>We consider refunds in clear exception cases (duplicate payment, processing error, fraudulent charge, or where we fail to deliver a confirmed service).</li>
-            <li>To request a refund, contact us with transaction details within 14 days of payment.</li>
-            <li>Approved refunds are returned to the original payment method within 5–10 business days where technically possible.</li>
+            <li>Our £35 fee covers the <strong>full service</strong>. We usually <strong>start immediately</strong> after payment.</li>
+            <li><strong>No cash refunds</strong> as a commercial policy. For cancellations, we issue a <strong>Resinaro credit</strong> by default, valid for <strong>12 months</strong> and usable on any service.</li>
+            <li>You have a 14-day cooling-off right for distance/off-premises purchases. If you ask us to start now and we <em>fully perform</em> the service within that period, the right to cancel ends. If you cancel <em>before</em> completion, we’ll provide credit for the part not supplied (you can request any <strong>legally required cash refund</strong> instead).</li>
+            <li>Where the law requires a refund (e.g., duplicate/unauthorised charge or failure to supply), we will refund in full.</li>
           </ul>
         </div>
 
-        {/* Scope */}
+        {/* 1. Scope */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-2">1. Scope</h2>
           <p className="text-gray-700">
-            This Refund Policy applies to payments made for Resinaro services booked via our website or by direct agreement with Resinaro staff or volunteers.
-            It also covers administrative fees charged for document checking, booking assistance and similar support services. This policy does not cover voluntary donations.
+            This policy applies to payments made for Resinaro services ordered online or by direct agreement. It covers support
+            such as document checks, booking assistance and similar services. It does not cover voluntary donations or third-party official fees.
           </p>
         </section>
 
-        {/* General rule */}
+        {/* 2. Immediate start & cooling-off (CCR 2013) */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">2. General rule</h2>
-          <p className="text-gray-700">
-            Payments are generally considered final once a service has been provided or work has commenced. We set and display fees clearly before booking.
-            When a service is cancelled before work begins we will consider partial or full refunds depending on how much work has been completed.
-          </p>
-        </section>
-
-        {/* Exceptions */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">3. When refunds may be granted</h2>
-          <p className="text-gray-700 mb-2">We review refund requests on a case by case basis. Typical eligible reasons include:</p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>
-              <strong>Duplicate payment</strong> — you paid the same service twice in error and can provide evidence.
-            </li>
-            <li>
-              <strong>Processing error</strong> — a technical or administrative error resulted in an incorrect charge.
-            </li>
-            <li>
-              <strong>Fraudulent or unauthorised transaction</strong> — where a payment was made without the account holder&apos;s consent.
-            </li>
-            <li>
-              <strong>Failure to deliver a confirmed service</strong> — where Resinaro agreed to perform a service and did not deliver as promised, and we cannot reasonably remedy the problem.
-            </li>
-          </ul>
-        </section>
-
-        {/* Non-refundable cases */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">4. Common non-refundable situations</h2>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Services that have been fully completed and delivered as agreed.</li>
-            <li>Administrative time already spent reviewing documents or making bookings when that work was completed prior to a cancellation request.</li>
-            <li>No-shows for booked appointments where prior notice was not provided according to the booking terms.</li>
-            <li>Payments for third-party services or fees (for example, official consular fees) that are non-refundable by the third party.</li>
-          </ul>
-        </section>
-
-        {/* How to request a refund */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">5. How to request a refund</h2>
-          <p className="text-gray-700 mb-2">To request a refund, please contact our support team and include the following:</p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Full name used for the booking.</li>
-            <li>Date of transaction and the amount paid.</li>
-            <li>Transaction or order ID (from your payment confirmation).</li>
-            <li>Clear reason for the refund request and any supporting evidence (screenshot, bank statement, emails).</li>
-          </ul>
-          <p className="text-gray-700 mt-3">
-            Contact: <a href="mailto:resinaro@proton.me" className="underline text-green-900">resinaro@proton.me</a> or use our <a href="/contact" className="underline text-green-900">contact form</a>.
-          </p>
-        </section>
-
-        {/* Processing and timeline */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">6. Processing refunds</h2>
+          <h2 className="text-2xl font-bold mb-2">2. Immediate start & your 14-day cooling-off right</h2>
           <p className="text-gray-700 mb-2">
-            We aim to acknowledge refund requests within 3 business days. Where a refund is approved:
+            We typically begin work immediately after payment so we can act quickly. On our forms, we ask you to confirm that you want us to <strong>start now</strong> and acknowledge:
           </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-2">
-            <li>We will attempt to return funds to the original payment method where possible.</li>
-            <li>Refunds typically appear in the claimant&apos;s account within 5–10 business days, depending on the payment provider and the bank.</li>
-            <li>We are not responsible for the time a bank or card issuer takes to post the refund after we initiate it.</li>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li>You have a 14-day cooling-off period from purchase for distance/off-premises contracts.</li>
+            <li>If you cancel during that period <em>before</em> the service is fully performed, we will provide a proportionate remedy for the part not yet supplied (see Section 4).</li>
+            <li>Once the service is <strong>fully performed</strong> within the cooling-off period, you <strong>lose the right to cancel</strong>.</li>
           </ul>
-          <p className="text-xs text-gray-500">Note: where an original payment was made by cash or a third-party payment method that does not support refunds, we will propose an alternative remedy such as a credit note or bank transfer.</p>
-        </section>
-
-        {/* Chargebacks */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">7. Chargebacks and disputes</h2>
-          <p className="text-gray-700">
-            If you initiate a chargeback with your bank or card issuer, we will investigate and provide evidence to the issuer if we believe the charge was valid.
-            Repeated or unjustified chargebacks may result in account restrictions. We prefer that customers contact us first so we can try to resolve the issue quickly.
+          <p className="text-xs text-gray-500 mt-2">
+            This reflects the UK Consumer Contracts Regulations, which allow performance to start within 14 days if you request it and acknowledge losing the right to cancel once fully performed.
           </p>
         </section>
 
-        {/* Legal rights */}
+        {/* 3. Our default remedy: credit, not cash */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">8. Your legal rights</h2>
+          <h2 className="text-2xl font-bold mb-2">3. Our default remedy: credit (not cash)</h2>
           <p className="text-gray-700">
-            This Refund Policy is without prejudice to your statutory rights under applicable consumer protection laws. Nothing in this Refund Policy attempts to limit rights you may have by law.
-            For consumer advice in the UK please consult Citizens Advice or official government guidance.
+            As a commercial policy, we do <strong>not</strong> offer cash refunds for voluntary cancellations. Instead we issue a <strong>Resinaro account credit</strong>, valid for <strong>12 months</strong>, redeemable against any of our services. Credits are not redeemable for cash (except where the law requires a cash refund).
           </p>
         </section>
 
-        {/* Contact */}
+        {/* 4. If you cancel */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">9. Getting help and escalation</h2>
+          <h2 className="text-2xl font-bold mb-2">4. If you cancel</h2>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Before we start</strong> — we’ll issue a 12-month credit for the full amount. (You may request any legally required cash refund.)</li>
+            <li><strong>After we start but before completion (within 14 days)</strong> — we’ll issue a <strong>proportionate credit</strong> for the part not yet supplied. (You may request any legally required cash refund for the unused portion.)</li>
+            <li><strong>After the service is completed</strong> — no cancellation right applies and no refund/credit is due unless required by law or we choose to offer goodwill credit.</li>
+          </ul>
+        </section>
+
+        {/* 5. When we refund in full (statutory) */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">5. When we refund in full (statutory)</h2>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li><strong>Duplicate payment</strong> or <strong>processing error</strong> by us or our provider;</li>
+            <li><strong>Unauthorised transaction</strong> (fraud);</li>
+            <li><strong>Failure to deliver</strong> the service as agreed, where we cannot reasonably remedy the issue.</li>
+          </ul>
+        </section>
+
+        {/* 6. Third-party fees */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">6. Third-party fees</h2>
+          <p className="text-gray-700">
+            Fees charged by third parties (for example, official consular fees) are non-refundable where the third party will not refund them. We’ll assist you in contacting the third party where possible.
+          </p>
+        </section>
+
+        {/* 7. Non-refundable situations */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">7. Common non-refundable situations</h2>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Services that have been fully completed as agreed.</li>
+            <li>Time already spent reviewing documents, preparing submissions or attempting bookings before a cancellation.</li>
+            <li>No-shows for booked appointments where notice wasn’t given under the booking terms.</li>
+            <li>Third-party fees that are non-refundable by the third party.</li>
+          </ul>
+        </section>
+
+        {/* 8. How to request a credit or statutory refund */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">8. How to request a credit or statutory refund</h2>
+          <p className="text-gray-700 mb-2">Email <a href="mailto:resinaro@proton.me" className="underline text-green-900">resinaro@proton.me</a> or use our <a href="/contact" className="underline text-green-900">contact form</a> and include:</p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Name, date and amount paid, order/transaction ID;</li>
+            <li>Reason and any evidence (e.g., screenshots, bank statement).</li>
+          </ul>
+        </section>
+
+        {/* 9. Processing timeline */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">9. Processing timeline</h2>
           <p className="text-gray-700 mb-2">
-            If you have not received an acknowledgement within 3 business days or you are unhappy with our reply, please write to <strong>resinaro@proton.me</strong> with the subject line &quot;Refund escalation&quot; and we will escalate your case to a senior representative.
+            We aim to acknowledge within 3 business days. Approved credits are applied immediately to your account; approved refunds (where legally required) are sent to the original payment method where possible and typically appear within 5–10 business days, depending on the provider and your bank.
           </p>
+        </section>
+
+        {/* 10. Chargebacks */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">10. Chargebacks and disputes</h2>
           <p className="text-gray-700">
-            For full details about how we handle personal data related to payments and refunds, see our <a href="/privacy-policy" className="underline text-green-900">Privacy Policy</a> and <a href="/cookies" className="underline text-green-900">Cookies Policy</a>.
+            If you raise a chargeback, we’ll provide evidence to the issuer where we believe the charge was valid. Please contact us first so we can resolve issues quickly.
+          </p>
+        </section>
+
+        {/* 11. Your legal rights */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">11. Your legal rights</h2>
+          <p className="text-gray-700">
+            This policy does not affect your statutory rights under UK consumer law. In particular, the Consumer Contracts Regulations provide a 14-day cancellation right for distance/off-premises services, which can be lost once a service is fully performed after you asked us to start within the 14 days; and any cancellation charges must reflect only actual/proportionate costs. Where the law requires a cash refund, we will provide it. 
           </p>
         </section>
 
@@ -134,7 +134,6 @@ export default function RefundPolicy() {
             </div>
           </div>
         </section>
-
       </div>
     </main>
   );

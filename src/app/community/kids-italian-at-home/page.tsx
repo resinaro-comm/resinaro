@@ -1,5 +1,4 @@
 // app/community/kids-italian-at-home/page.tsx
-import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {

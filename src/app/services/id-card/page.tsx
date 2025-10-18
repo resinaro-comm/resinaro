@@ -1,5 +1,6 @@
 import CieForm from "../../../../components/CieForm";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Italian CIE (ID Card) Help — Booking & Documents | Resinaro",
@@ -79,10 +80,13 @@ export default function Page() {
       {/* Full-bleed hero */}
       <section className="relative w-full">
         <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
-          <img
+          <Image
             src="/images/cie-hero-3840x1280.png"
             alt="Italian Electronic ID Card (CIE) — support for UK applicants"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
           />
         </div>
 

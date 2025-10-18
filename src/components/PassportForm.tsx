@@ -136,8 +136,10 @@ export default function PassportForm() {
   const [u12LostForm, setU12LostForm] = useState<File | null>(null);
   const [u12Police, setU12Police] = useState<File | null>(null);
 
-  /** UX */
-  const [consent, setConsent] = useState(false);
+  /** Agreements / UX */
+  const [startNowConsent, setStartNowConsent] = useState(false);
+  const [refundPolicyAgree, setRefundPolicyAgree] = useState(false);
+  const [consent, setConsent] = useState(false); // privacy
   const [err, setErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -279,7 +281,16 @@ export default function PassportForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
-    if (!consent) return setErr("Please agree to data handling.");
+
+    if (!startNowConsent) {
+      return setErr("Please confirm you want us to start now and understand the cooling-off terms.");
+    }
+    if (!refundPolicyAgree) {
+      return setErr("Please confirm you agree to the Refund & Credit Policy.");
+    }
+    if (!consent) {
+      return setErr("Please agree to data handling.");
+    }
 
     const bookingId = crypto.randomUUID();
     const files: Array<{ filename: string; mimeType: string; data: string; tag?: string }> = [];
@@ -316,6 +327,12 @@ export default function PassportForm() {
       telephone: phone.trim(),
       note: note.trim(),
       emailDocsLater: emailDocsLater ? "1" : "0",
+
+      // Agreements (for audit trail)
+      startNowConsent: startNowConsent ? "1" : "0",
+      refundPolicyAgree: refundPolicyAgree ? "1" : "0",
+      privacyConsent: consent ? "1" : "0",
+      policyVersion: "2025-10-18",
     };
 
     if (service === "prenotami") {
@@ -828,9 +845,9 @@ export default function PassportForm() {
                     checked={createAcc}
                     onChange={(e) => setCreateAcc(e.target.checked)}
                   />
-                <span className="text-sm">
-                  Create & manage a Prenot@Mi account for me <strong>(+£20)</strong>
-                </span>
+                  <span className="text-sm">
+                    Create & manage a Prenot@Mi account for me <strong>(+£20)</strong>
+                  </span>
                 </label>
 
                 {!createAcc && (
@@ -1179,22 +1196,58 @@ export default function PassportForm() {
             </div>
           )}
 
-          {/* Consent + actions */}
-          <div className="text-sm">
-            <label className="inline-flex items-start gap-2">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-              />
-              <span>
-                I consent to Resinaro handling my data and, if provided, using my
-                Prenot@Mi credentials solely to book.&nbsp;
-                <a href="/privacy" className="underline">
-                  Privacy Policy
-                </a>
-              </span>
-            </label>
+          {/* Agreements (required) */}
+          <div className="rounded-xl border border-green-200 bg-green-50 p-3">
+            <p className="text-sm font-semibold text-green-900">Agreements (required)</p>
+            <div className="mt-2 space-y-3 text-sm text-gray-800">
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={startNowConsent}
+                  onChange={(e) => setStartNowConsent(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I ask you to <strong>start work immediately</strong>. I understand I have a 14-day
+                  cooling-off period, but if I cancel after work has begun you may deduct a
+                  proportionate amount for work already completed; once the service is <strong>fully
+                  performed</strong> within 14 days, I will <strong>lose my right to cancel</strong>.
+                </span>
+              </label>
+
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={refundPolicyAgree}
+                  onChange={(e) => setRefundPolicyAgree(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I have read and agree to the{" "}
+                  <a href="/refund-policy" className="underline text-green-900">
+                    Refund & Credit Policy
+                  </a>
+                  . I understand Resinaro’s default remedy is account credit valid for 12 months,
+                  and cash refunds are only provided where legally required.
+                </span>
+              </label>
+
+              <label className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  I consent to Resinaro handling my data and, if provided, using my Prenot@Mi
+                  credentials solely to book.{" "}
+                  <a href="/privacy" className="underline text-green-900">
+                    Privacy Policy
+                  </a>
+                </span>
+              </label>
+            </div>
           </div>
 
           {err && <div className="text-red-600 text-sm">{err}</div>}
@@ -1209,9 +1262,19 @@ export default function PassportForm() {
             </button>
             <button
               type="submit"
-              disabled={submitting || !consent || aire !== "yes"}
+              disabled={
+                submitting ||
+                aire !== "yes" ||
+                !startNowConsent ||
+                !refundPolicyAgree ||
+                !consent
+              }
               className={`px-4 py-2 rounded text-white w-full sm:w-auto ${
-                submitting || !consent || aire !== "yes"
+                submitting ||
+                aire !== "yes" ||
+                !startNowConsent ||
+                !refundPolicyAgree ||
+                !consent
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-green-900 hover:bg-green-800"
               }`}
@@ -1221,8 +1284,8 @@ export default function PassportForm() {
           </div>
 
           <p className="text-[11px] text-gray-600">
-            We are not the Consulate. Appointment supply and passport decisions are
-            theirs. If unsure, email{" "}
+            We are not the Consulate. Appointment supply and passport decisions are theirs. If unsure,
+            email{" "}
             <a className="underline" href="mailto:resinaro@proton.me">
               resinaro@proton.me
             </a>{" "}

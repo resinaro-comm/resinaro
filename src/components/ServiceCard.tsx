@@ -3,6 +3,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 type Props = {
@@ -41,38 +42,22 @@ export default function ServiceCard({
         {/* Image area - conditionally shown for services with images */}
         {title.toLowerCase().includes('passport') && (
           <div className="w-full">
-            <img
-              src="/images/service-passport.png"
-              alt="Italian passport service"
-              className="w-full h-auto block"
-            />
+            <Image src="/images/service-passport.png" alt="Italian passport service" width={1200} height={630} className="w-full h-auto block" />
           </div>
         )}
         {(title.toLowerCase().includes('id card') || title.toLowerCase().includes('cie')) && (
           <div className="w-full">
-            <img
-              src="/images/cie-hero-3840x1280.png"
-              alt="Italian electronic ID card (CIE)"
-              className="w-full h-auto block"
-            />
+            <Image src="/images/cie-hero-3840x1280.png" alt="Italian electronic ID card (CIE)" width={1200} height={630} className="w-full h-auto block" />
           </div>
         )}
         {(title.toLowerCase().includes('aire') || title.toLowerCase().includes('anagrafe')) && (
           <div className="w-full">
-            <img
-              src="/images/aire-registration.png"
-              alt="AIRE registration service"
-              className="w-full h-auto block"
-            />
+            <Image src="/images/aire-registration.png" alt="AIRE registration service" width={1200} height={630} className="w-full h-auto block" />
           </div>
         )}
         {title.toLowerCase().includes('visa') && (
           <div className="w-full">
-            <img
-              src="/images/service-visa.png"
-              alt="Visa appointment support"
-              className="w-full h-auto block"
-            />
+            <Image src="/images/service-visa.png" alt="Visa appointment support" width={1200} height={630} className="w-full h-auto block" />
           </div>
         )}
         {/* Centered title area */}
