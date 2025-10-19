@@ -59,7 +59,6 @@ export default function SearchBox({
 }: Props) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState<SearchItem[]>([]);
   const [fuse, setFuse] = useState<Fuse<SearchItem> | null>(null);
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -85,13 +84,12 @@ export default function SearchBox({
       });
 
       // De-dup by URL (prefer enriched static titles)
-      const map = new Map<string, SearchItem>();
-      for (const it of pageItems) map.set(it.url, it);
-      for (const it of staticItems) map.set(it.url, it);
+  const map = new Map<string, SearchItem>();
+  for (const it of pageItems) map.set(it.url, it);
+  for (const it of staticItems) map.set(it.url, it);
 
-      const final = Array.from(map.values());
-      if (!mounted) return;
-      setItems(final);
+  const final = Array.from(map.values());
+  if (!mounted) return;
 
       const f = new Fuse(final, {
         keys: [
@@ -204,7 +202,7 @@ export default function SearchBox({
           {results.length > 0 ? (
             <ul className="max-h-[70vh] overflow-y-auto">
               {results.map((r, i) => (
-                <li key={`${r.url}-${i}`} role="option">
+                <li key={`${r.url}-${i}`} role="option" aria-selected={false}>
                   <Link
                     href={r.url}
                     onClick={() => setOpen(false)}

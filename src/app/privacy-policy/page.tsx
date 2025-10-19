@@ -59,11 +59,7 @@ export default function PrivacyPolicy() {
   return (
     <main className="bg-[#F9F6F1] text-gray-900">
       {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto flex max-w-6xl gap-8 px-6 py-14">
         {/* TOC (sticky on desktop) */}
         <nav className="hidden w-64 shrink-0 lg:block">

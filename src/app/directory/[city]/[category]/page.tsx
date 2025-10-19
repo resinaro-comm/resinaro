@@ -2,6 +2,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import CopyLinkButton from "@/components/CopyLinkButton";
 import type { Metadata } from "next";
 import {
   cities,
@@ -206,18 +207,13 @@ export default function DirectoryPage({ params }: { params: Params }) {
                       Maps
                     </Link>
                   )}
-                  <button
-                    onClick={() =>
-                      navigator.clipboard?.writeText(
-                        `${location.origin}/directory/${cityKey}/${categoryKey}#${b.slug}`
-                      )
-                    }
+                  <CopyLinkButton
+                    path={`/directory/${cityKey}/${categoryKey}#${b.slug}`}
+                    label={`Copy link to ${b.name}`}
                     className="text-sm text-emerald-700 underline underline-offset-4 hover:text-emerald-900"
-                    aria-label={`Copy link to ${b.name}`}
-                    type="button"
                   >
                     Share
-                  </button>
+                  </CopyLinkButton>
                 </div>
               </div>
 
