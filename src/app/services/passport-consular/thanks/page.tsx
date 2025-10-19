@@ -38,7 +38,7 @@ export default function Page() {
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-3">Thank you — Passport Assistance</h1>
           <p className="text-lg text-green-800 italic max-w-2xl mx-auto">
-            Payment received. We’ll confirm your consulate and AIRE status, then send a short plan for booking and documents.
+            Payment received. We’ll confirm your consulate, until you get the date of appointment, do NOT log in to your prenotami account - this could block the system.
           </p>
         </header>
 
@@ -46,7 +46,7 @@ export default function Page() {
           <h2 className="text-2xl font-semibold">What happens next</h2>
           <ul className="list-disc list-inside text-gray-700 space-y-2">
             <li>We match your payment with your form via reference and email.</li>
-            <li>We review required documents for your consulate (AIRE, proof of address, ID, photos).</li>
+            <li>We review documents for your consulate (AIRE, proof of address, ID, photos).</li>
             <li>We email a brief checklist and proposed booking steps/timings.</li>
           </ul>
         </section>

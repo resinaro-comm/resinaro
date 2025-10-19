@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import SearchBox from "@/components/SearchBox"; // ← add
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,12 +77,12 @@ const Navbar = () => {
         aria-label="Primary"
       >
         <div
-          className={`container mx-auto flex items-center justify-between px-4 ${
+          className={`container mx-auto flex items-center gap-3 px-4 ${
             scrolled ? "py-1.5" : "py-2"
           }`}
         >
           {/* Brand */}
-          <Link href="/" className="group leading-tight">
+          <Link href="/" className="group leading-tight shrink-0">
             <span className="text-xl md:text-2xl font-bold text-green-900">Resinaro</span>
             <span className="sr-only">Home</span>
             <div className="h-0.5 w-16 mt-1 flex overflow-hidden rounded">
@@ -91,8 +92,13 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-5">
+          {/* MOBILE search: sits between brand and hamburger */}
+          <div className="flex-1 md:hidden">
+            <SearchBox placeholder="Search the site…" />
+          </div>
+
+          {/* Desktop links + search + CTA */}
+          <div className="ml-auto hidden md:flex items-center gap-4">
             {links.slice(0, 5).map((l) => (
               <Link
                 key={l.href}
@@ -106,6 +112,10 @@ const Navbar = () => {
                 {l.label}
               </Link>
             ))}
+
+            {/* DESKTOP/TABLET search: between links and CTA */}
+            <SearchBox className="w-64" placeholder="Search the site…" />
+
             <Link
               href="/advertise"
               className="inline-flex h-8 items-center rounded-full border border-green-800 px-3 text-[13px] font-medium text-green-900 hover:bg-emerald-50"
@@ -152,9 +162,9 @@ const Navbar = () => {
               className={`
                 fixed right-0 top-[var(--ad-banner-offset,0px)] z-50
                 h-[calc(100vh-var(--ad-banner-offset,0px))]
-                w-[min(12.5rem,55vw)]   /* ~200px, compact and unobtrusive */
+                w-[min(14.5rem,70vw)]
                 rounded-l-[2rem] bg-white/95 backdrop-blur-md shadow-2xl ring-1 ring-black/5
-                overflow-hidden
+                overflow-hidden flex flex-col
               `}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -169,20 +179,27 @@ const Navbar = () => {
                 <div className="flex-1 bg-red-600" />
               </div>
 
-              {/* Header (tight) */}
-              <div className="flex items-center justify-between px-3 py-2 border-b">
-                <span className="text-[13px] font-semibold text-green-900 tracking-wide">Menu</span>
-                <button
-                  className="rounded p-1.5 focus:outline-none focus:ring-2 focus:ring-green-900"
-                  aria-label="Close menu"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <span className="text-xl leading-none">✕</span>
-                </button>
+              {/* Header */}
+              <div className="px-3 pt-2 pb-2 border-b">
+                <div className="flex items-center justify-between">
+                  <span className="text-[13px] font-semibold text-green-900 tracking-wide">Menu</span>
+                  <button
+                    className="rounded p-1.5 focus:outline-none focus:ring-2 focus:ring-green-900"
+                    aria-label="Close menu"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <span className="text-xl leading-none">✕</span>
+                  </button>
+                </div>
+
+                {/* Drawer search */}
+                <div className="mt-2">
+                  <SearchBox placeholder="Search the site…" />
+                </div>
               </div>
 
-              {/* Links: all same size (incl. Advertise) */}
-              <nav className="px-1.5 py-2">
+              {/* Links */}
+              <nav className="px-1.5 py-2 overflow-y-auto">
                 <ul className="space-y-1">
                   {links.map((l) => (
                     <li key={l.href}>
@@ -210,7 +227,7 @@ const Navbar = () => {
                 </ul>
               </nav>
 
-              {/* Footer: tiny, unobtrusive */}
+              {/* Footer */}
               <div className="mt-auto px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-1 text-[11px] text-stone-500">
                 <div className="flex items-center justify-between">
                   <span>© {new Date().getFullYear()} Resinaro</span>
