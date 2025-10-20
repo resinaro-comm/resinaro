@@ -28,8 +28,7 @@ import Image from "next/image";
  */
 
 export const metadata = {
-  title:
-    "First Payslip Explained (UK) — Italians’ Easy Guide (2025)",
+  title: "First Payslip Explained (UK) — Italians’ Easy Guide (2025)",
   description:
     "Decode your first UK payslip in simple English: tax code (1257L/BR/0T/W1M1), NI letter (A/C/H/M/Z), gross→net, YTD, pro-rata, overtime, and fixes with copy-paste templates.",
   alternates: { canonical: "/community/first-payslip-italians-uk-2025" },
@@ -134,74 +133,74 @@ export default function Page() {
   };
 
   return (
-    <main className="bg-[#F9F6F1] text-gray-800 py-12">
-      <div className="container mx-auto max-w-5xl px-6">
-        {/* =========================================================
-            HERO
-        ========================================================= */}
-        <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-xl">
-          <Image
-            src="/images/fisrt-payslip-uk-italian.jpg"
-            alt="First UK payslip explained for Italians — simple labels and steps"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 1200px"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
-          <div className="absolute bottom-0 w-full p-6 text-white">
-            <span className="inline-block mb-2 px-3 py-1 rounded-full text-xs font-medium bg-green-700">
-              WORK & MONEY
-            </span>
-            <h1 className="text-2xl md:text-4xl font-bold">
-              First Payslip Explained (UK) — Italians’ Easy Guide (2025)
-            </h1>
+    <main className="bg-[#F9F6F1] text-gray-800">
+      {/* ===================== FULL-BLEED HERO ===================== */}
+      <section className="relative w-full min-h-[48vh] md:min-h-[56vh] isolate">
+        <Image
+          src="/images/fisrt-payslip-uk-italian.jpg"
+          alt="First UK payslip explained for Italians — simple labels and steps"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/70" />
+        <div className="relative z-10">
+          <div className="mx-auto max-w-6xl px-6 md:px-8">
+            <div className="py-16 md:py-24 lg:py-28">
+              <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 ring-1 ring-white/25 backdrop-blur-sm">
+                WORK &amp; MONEY
+              </span>
+              <h1 className="mt-3 text-3xl md:text-5xl font-bold leading-tight text-white drop-shadow-sm">
+                First Payslip Explained (UK) — Italians’ Easy Guide (2025)
+              </h1>
+            </div>
           </div>
         </div>
+        <div className="pointer-events-none absolute inset-x-0 -bottom-1 h-8 bg-gradient-to-b from-transparent to-[#F9F6F1]" />
+      </section>
 
-        {/* =========================================================
-            WHY THIS GUIDE
-        ========================================================= */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 mb-8">
-          <h2 className="text-2xl font-bold text-green-900 mb-2">
-            Why this guide (and what you’ll learn)
-          </h2>
-          <p className="mb-3">
-            Your first payslip can be confusing. Many Italians see emergency
-            codes, odd numbers, or missing overtime. This guide uses simple
-            English to show what each line means, why amounts change, and what
-            to do if it looks wrong.
-          </p>
-          <ul className="list-disc pl-5 text-sm space-y-1">
-            <li>Find and understand each payslip box in minutes.</li>
-            <li>Know when low pay is normal (starter/pro-rata) vs. a mistake.</li>
-            <li>Copy-paste templates to contact payroll and fix issues fast.</li>
-          </ul>
+      {/* ===================== CONTENT WRAPPER ===================== */}
+      <div className="mx-auto max-w-6xl px-6 md:px-8 pb-20">
+        {/* WHY THIS GUIDE */}
+        <section className="-mt-8 md:-mt-10 lg:-mt-12 relative z-20 mb-8">
+          <div className="rounded-2xl bg-white/90 backdrop-blur-sm ring-1 ring-black/5 shadow-md p-6">
+            <h2 className="text-2xl font-bold text-green-900 mb-2">
+              Why this guide (and what you’ll learn)
+            </h2>
+            <p className="mb-3">
+              Your first payslip can be confusing. Many Italians see emergency
+              codes, odd numbers, or missing overtime. This guide uses simple
+              English to show what each line means, why amounts change, and what
+              to do if it looks wrong.
+            </p>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Find and understand each payslip box in minutes.</li>
+              <li>Know when low pay is normal (starter/pro-rata) vs. a mistake.</li>
+              <li>Copy-paste templates to contact payroll and fix issues fast.</li>
+            </ul>
+          </div>
         </section>
 
-        {/* =========================================================
-            TOC
-        ========================================================= */}
-        <nav aria-label="Contents" className="mb-8">
-          <ul className="flex flex-wrap gap-3 text-sm">
-            <li><a className="underline text-green-900" href="#at-a-glance">1) What’s on a UK payslip (at a glance)</a></li>
-            <li><a className="underline text-green-900" href="#gross-to-net">2) Gross → Net walkthrough (simple numbers)</a></li>
-            <li><a className="underline text-green-900" href="#tax-code">3) Tax code box — quick meanings & fixes</a></li>
-            <li><a className="underline text-green-900" href="#ni-letter">4) NI letters (A/C/H/M/Z) explained</a></li>
-            <li><a className="underline text-green-900" href="#ytd">5) YTD figures & why they matter</a></li>
-            <li><a className="underline text-green-900" href="#surprises">6) Common surprises on first payslip</a></li>
-            <li><a className="underline text-green-900" href="#fix-steps">7) If something looks wrong — do this</a></li>
-            <li><a className="underline text-green-900" href="#templates">8) Templates to payroll/HR</a></li>
-            <li><a className="underline text-green-900" href="#glossary">9) Mini glossary (easy English)</a></li>
-            <li><a className="underline text-green-900" href="#checklist">10) 10-minute payslip checklist</a></li>
-            <li><a className="underline text-green-900" href="#related">Related guides</a></li>
-          </ul>
-        </nav>
+        {/* TOC: non-sticky */}
+<nav aria-label="Contents" className="mb-8 rounded-xl bg-white/80 backdrop-blur-sm ring-1 ring-black/5 p-4 text-sm">
+  <ul className="flex flex-wrap gap-x-6 gap-y-2">
+    <li><a className="hover:underline text-green-900" href="#at-a-glance">1) What’s on a UK payslip (at a glance)</a></li>
+    <li><a className="hover:underline text-green-900" href="#gross-to-net">2) Gross → Net walkthrough (simple numbers)</a></li>
+    <li><a className="hover:underline text-green-900" href="#tax-code">3) Tax code box — quick meanings & fixes</a></li>
+    <li><a className="hover:underline text-green-900" href="#ni-letter">4) NI letters (A/C/H/M/Z) explained</a></li>
+    <li><a className="hover:underline text-green-900" href="#ytd">5) YTD figures & why they matter</a></li>
+    <li><a className="hover:underline text-green-900" href="#surprises">6) Common surprises on first payslip</a></li>
+    <li><a className="hover:underline text-green-900" href="#fix-steps">7) If something looks wrong — do this</a></li>
+    <li><a className="hover:underline text-green-900" href="#templates">8) Templates to payroll/HR</a></li>
+    <li><a className="hover:underline text-green-900" href="#glossary">9) Mini glossary (easy English)</a></li>
+    <li><a className="hover:underline text-green-900" href="#checklist">10) 10-minute payslip checklist</a></li>
+    <li><a className="hover:underline text-green-900" href="#related">Related guides</a></li>
+  </ul>
+</nav>
 
-        {/* =========================================================
-            1) AT A GLANCE
-        ========================================================= */}
-        <section id="at-a-glance" className="bg-white border rounded-xl shadow-sm p-6 mb-8">
+        {/* 1) AT A GLANCE */}
+        <section id="at-a-glance" className="scroll-mt-28 bg-white border rounded-2xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             1) What’s on a UK payslip (at a glance)
           </h2>
@@ -210,7 +209,7 @@ export default function Page() {
             these sections. Use this list to find them fast.
           </p>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Top area</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Employer name and your employee/payroll number.</li>
@@ -218,7 +217,7 @@ export default function Page() {
                 <li>Your name and address (check spelling).</li>
               </ul>
             </div>
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Middle area</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Gross pay (basic + overtime + bonuses).</li>
@@ -226,7 +225,7 @@ export default function Page() {
                 <li>Tax code and NI letter/category.</li>
               </ul>
             </div>
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Bottom area</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Net pay (money to your bank).</li>
@@ -237,14 +236,12 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            2) GROSS → NET WALKTHROUGH
-        ========================================================= */}
-        <section id="gross-to-net" className="mb-10">
+        {/* 2) GROSS → NET */}
+        <section id="gross-to-net" className="scroll-mt-28 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-3">
             2) Gross → Net walkthrough (simple example)
           </h2>
-          <div className="bg-white border rounded-xl p-5 text-sm">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm">
             <p className="mb-3">
               This is not a live calculator. It is a simple explanation to help
               you understand how gross pay becomes net pay. Real numbers depend
@@ -252,7 +249,7 @@ export default function Page() {
             </p>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border rounded-lg">
+              <table className="w-full text-sm border rounded-xl">
                 <thead className="bg-[#F9F6F1]">
                   <tr>
                     <th className="text-left p-3 border-b">Line</th>
@@ -307,10 +304,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            3) TAX CODE BOX — QUICK MEANINGS
-        ========================================================= */}
-        <section id="tax-code" className="bg-white border rounded-xl shadow-sm p-6 mb-10">
+        {/* 3) TAX CODE */}
+        <section id="tax-code" className="scroll-mt-28 bg-white border rounded-2xl shadow-sm p-6 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             3) Tax code box — quick meanings & fixes
           </h2>
@@ -319,7 +314,7 @@ export default function Page() {
             allowance and rate. Here are common ones.
           </p>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm border rounded-lg">
+            <table className="w-full text-sm border rounded-xl">
               <thead className="bg-[#F9F6F1]">
                 <tr>
                   <th className="text-left p-3 border-b">Code</th>
@@ -371,14 +366,12 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            4) NI LETTERS
-        ========================================================= */}
-        <section id="ni-letter" className="mb-10">
+        {/* 4) NI LETTERS */}
+        <section id="ni-letter" className="scroll-mt-28 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-3">
             4) National Insurance (NI) letters (A/C/H/M/Z) in simple words
           </h2>
-          <div className="bg-white border rounded-xl p-5 text-sm">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm">
             <p className="mb-3">
               Your payslip shows an NI category letter. It sets the NI rate you
               pay. Here is a plain-English explainer.
@@ -406,10 +399,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            5) YTD FIGURES
-        ========================================================= */}
-        <section id="ytd" className="bg-white border rounded-xl shadow-sm p-6 mb-10">
+        {/* 5) YTD */}
+        <section id="ytd" className="scroll-mt-28 bg-white border rounded-2xl shadow-sm p-6 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             5) YTD figures (Year-To-Date) and why they matter
           </h2>
@@ -425,29 +416,27 @@ export default function Page() {
           </ul>
         </section>
 
-        {/* =========================================================
-            6) COMMON SURPRISES
-        ========================================================= */}
-        <section id="surprises" className="mb-10">
+        {/* 6) SURPRISES */}
+        <section id="surprises" className="scroll-mt-28 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-3">
             6) Common surprises on the first payslip
           </h2>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div className="bg-white border rounded-lg p-4">
+            <div className="bg-white border rounded-xl p-4 shadow-sm">
               <h3 className="font-semibold text-green-900">Pro-rata pay</h3>
               <p className="mt-2">
                 You started mid-period, so you are paid for part of the month
                 only. Next month will be higher if you work the full period.
               </p>
             </div>
-            <div className="bg-white border rounded-lg p-4">
+            <div className="bg-white border rounded-xl p-4 shadow-sm">
               <h3 className="font-semibold text-green-900">Emergency code</h3>
               <p className="mt-2">
                 BR/0T or W1/M1 appears. It often fixes after HMRC receives your
                 starter info. If not, see our Tax Code guide to correct it.
               </p>
             </div>
-            <div className="bg-white border rounded-lg p-4">
+            <div className="bg-white border rounded-xl p-4 shadow-sm">
               <h3 className="font-semibold text-green-900">Missing overtime</h3>
               <p className="mt-2">
                 Some firms pay overtime one period later. Check the company
@@ -457,10 +446,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            7) IF SOMETHING LOOKS WRONG — DO THIS
-        ========================================================= */}
-        <section id="fix-steps" className="bg-white border rounded-xl shadow-sm p-6 mb-10">
+        {/* 7) FIX STEPS */}
+        <section id="fix-steps" className="scroll-mt-28 bg-white border rounded-2xl shadow-sm p-6 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             7) If something looks wrong — do this
           </h2>
@@ -471,7 +458,7 @@ export default function Page() {
             <li>Email payroll with bullet points (use our templates).</li>
             <li>For code issues, follow the Tax Code fix steps.</li>
           </ol>
-          <div className="mt-4 p-4 border rounded-lg bg-green-50 text-sm">
+          <div className="mt-4 p-4 border rounded-xl bg-green-50 text-sm">
             <p className="font-semibold text-green-900">Pro tip</p>
             <p>
               Keep a small log: dates, who you spoke to, what they said. This
@@ -480,19 +467,17 @@ export default function Page() {
           </div>
         </section>
 
-        {/* =========================================================
-            8) TEMPLATES TO PAYROLL/HR
-        ========================================================= */}
-        <section id="templates" className="mb-10">
+        {/* 8) TEMPLATES */}
+        <section id="templates" className="scroll-mt-28 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-3">
             8) Email/Chat templates to payroll (easy English)
           </h2>
 
-          <div className="bg-white border rounded-xl p-5 text-sm mb-6">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm mb-6">
             <h3 className="font-semibold text-green-900 mb-2">
               A) First payslip check — rate/hours
             </h3>
-            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded border">
+            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded-xl border">
 {`Subject: First payslip check — <Your Name>, <Employee ID>
 
 Hello Payroll,
@@ -511,11 +496,11 @@ Kind regards,
             </pre>
           </div>
 
-          <div className="bg-white border rounded-xl p-5 text-sm mb-6">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm mb-6">
             <h3 className="font-semibold text-green-900 mb-2">
               B) Missing overtime or bonus
             </h3>
-            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded border">
+            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded-xl border">
 {`Subject: Overtime/bonus not shown — <Your Name>
 
 Hello Payroll,
@@ -528,11 +513,11 @@ Thanks for your help,
             </pre>
           </div>
 
-          <div className="bg-white border rounded-xl p-5 text-sm mb-6">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm mb-6">
             <h3 className="font-semibold text-green-900 mb-2">
               C) Tax code query (links to fix)
             </h3>
-            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded border">
+            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded-xl border">
 {`Subject: Tax code on payslip — request to check
 
 Hello Payroll,
@@ -554,11 +539,11 @@ Kind regards,
             </p>
           </div>
 
-          <div className="bg-white border rounded-xl p-5 text-sm">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm">
             <h3 className="font-semibold text-green-900 mb-2">
               D) NI letter clarification
             </h3>
-            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded border">
+            <pre className="whitespace-pre-line bg-[#F9F6F1] p-3 rounded-xl border">
 {`Subject: NI category on payslip — clarification
 
 Hello Payroll,
@@ -572,13 +557,11 @@ Thank you,
           </div>
         </section>
 
-        {/* =========================================================
-            9) MINI GLOSSARY
-        ========================================================= */}
-        <section id="glossary" className="bg-white border rounded-xl shadow-sm p-6 mb-10">
+        {/* 9) GLOSSARY */}
+        <section id="glossary" className="scroll-mt-28 bg-white border rounded-2xl shadow-sm p-6 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">9) Mini glossary (easy English)</h2>
           <div className="grid md:grid-cols-2 gap-6 text-sm">
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <ul className="list-disc pl-5 space-y-1">
                 <li><strong>PAYE</strong>: “Pay As You Earn” tax system through your payroll.</li>
                 <li><strong>NI</strong>: National Insurance contributions.</li>
@@ -587,7 +570,7 @@ Thank you,
                 <li><strong>YTD</strong>: Totals since April of the tax year.</li>
               </ul>
             </div>
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <ul className="list-disc pl-5 space-y-1">
                 <li><strong>P45</strong>: Form from a previous job in the UK.</li>
                 <li><strong>P60</strong>: Year-end summary from your employer.</li>
@@ -598,14 +581,12 @@ Thank you,
           </div>
         </section>
 
-        {/* =========================================================
-            10) CHECKLIST
-        ========================================================= */}
-        <section id="checklist" className="mb-10">
+        {/* 10) CHECKLIST */}
+        <section id="checklist" className="scroll-mt-28 mb-10">
           <h2 className="text-2xl font-bold text-green-900 mb-3">
             10) 10-minute payslip checklist (save this)
           </h2>
-          <div className="bg-white border rounded-xl p-5 text-sm">
+          <div className="bg-white border rounded-2xl p-5 text-sm shadow-sm">
             <ul className="list-disc pl-5 space-y-1">
               <li>Correct name/address, payroll number, and pay dates.</li>
               <li>Rate/hours match your contract; overtime policy understood.</li>
@@ -617,10 +598,8 @@ Thank you,
           </div>
         </section>
 
-        {/* =========================================================
-            RELATED GUIDES
-        ========================================================= */}
-        <section id="related" className="mt-10">
+        {/* RELATED GUIDES */}
+        <section id="related" className="scroll-mt-28 mt-10">
           <h2 className="text-xl font-bold text-green-900 mb-2">Related Resinaro guides</h2>
           <ul className="list-disc pl-6">
             <li>
@@ -641,10 +620,8 @@ Thank you,
           </ul>
         </section>
 
-        {/* =========================================================
-            CTA / SERVICES
-        ========================================================= */}
-        <section className="mt-10 bg-white border rounded-xl shadow-sm p-6">
+        {/* CTA / SERVICES */}
+        <section className="mt-10 bg-white border rounded-2xl shadow-sm p-6">
           <h2 className="text-xl font-bold text-green-900 mb-2">
             Want us to check your payslip today?
           </h2>
@@ -655,22 +632,20 @@ Thank you,
           <div className="flex flex-wrap gap-3">
             <Link
               href="/services"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-green-700 text-white font-medium"
+              className="inline-flex items-center px-4 py-2 rounded-xl bg-green-700 text-white font-medium"
             >
               View Resinaro Services →
             </Link>
             <Link
               href="/checkout/tax-code-priority"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-green-100 text-green-900 font-medium border"
+              className="inline-flex items-center px-4 py-2 rounded-xl bg-green-100 text-green-900 font-medium border"
             >
               Priority Tax Code Check (+£20)
             </Link>
           </div>
         </section>
 
-        {/* =========================================================
-            DISCLOSURE
-        ========================================================= */}
+        {/* DISCLOSURE */}
         <p className="mt-8 text-xs text-gray-500 italic">
           This guide is general information, not financial or tax advice.
           Employers and payroll systems differ. Always follow your employer’s
@@ -678,12 +653,8 @@ Thank you,
           Some links may earn us a small commission at no extra cost to you.
         </p>
 
-        {/* =========================================================
-            APPENDICES FOR SEO DEPTH & PRACTICAL VALUE
-        ========================================================= */}
-
-        {/* Appendix A: Where to find each item on different layouts */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        {/* APPENDICES (unchanged content, upgraded shells) */}
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix A — Finding items on different payslip layouts
           </h2>
@@ -692,7 +663,7 @@ Thank you,
             If you cannot find a box, search for these keywords:
           </p>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Tax code & NI</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Look near “Tax details” or “PAYE”.</li>
@@ -700,7 +671,7 @@ Thank you,
                 <li>NI letter may sit next to NI totals.</li>
               </ul>
             </div>
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Gross & net</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Gross is above deductions lines.</li>
@@ -708,7 +679,7 @@ Thank you,
                 <li>YTD totals near the bottom or on last page.</li>
               </ul>
             </div>
-            <div className="border rounded-lg p-4">
+            <div className="border rounded-xl p-4">
               <h3 className="font-semibold text-green-900">Notes</h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Watch for footnotes about overtime cutoffs.</li>
@@ -719,8 +690,7 @@ Thank you,
           </div>
         </section>
 
-        {/* Appendix B: Pro-rata examples (starter mid-month) */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix B — Pro-rata examples (starter mid-month)
           </h2>
@@ -729,7 +699,7 @@ Thank you,
             then full months after. Here is a simple idea:
           </p>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm border rounded-lg">
+            <table className="w-full text-sm border rounded-xl">
               <thead className="bg-[#F9F6F1]">
                 <tr>
                   <th className="text-left p-3 border-b">Scenario</th>
@@ -753,8 +723,7 @@ Thank you,
           </div>
         </section>
 
-        {/* Appendix C: Overtime & cutoff rules */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix C — Overtime and cutoff rules (why it shows later)
           </h2>
@@ -769,8 +738,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix D: Pension auto-enrolment timing */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix D — Pension auto-enrolment timing
           </h2>
@@ -785,8 +753,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix E: Student loan and postgraduate loan lines */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix E — Student loan deductions (and PGL)
           </h2>
@@ -801,8 +768,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix F: Benefits in kind & K codes (concept) */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix F — Benefits in kind & K codes (concept only)
           </h2>
@@ -817,8 +783,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix G: Name formatting & address consistency for Italians */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix G — Name & address consistency (Italians’ tip)
           </h2>
@@ -833,8 +798,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix H: Termination pay / final payslip basics */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix H — Final payslip when you leave
           </h2>
@@ -849,8 +813,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix I: Weekly vs monthly payslips differences */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix I — Weekly vs monthly payslips
           </h2>
@@ -865,8 +828,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix J: Holiday pay methods (rolled vs accrued) — concept only */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix J — Holiday pay methods (rolled vs accrued)
           </h2>
@@ -881,8 +843,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix K: Statutory payments lines (SSP/SMP/SAP) quick glance */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix K — Statutory payments (SSP/SMP/SAP) at a glance
           </h2>
@@ -897,8 +858,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix L: Bank account & sort code checks for payroll */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix L — Bank account & sort code tips
           </h2>
@@ -913,8 +873,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix M: Keep records like a pro (naming, storage) */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix M — Keep records like a pro
           </h2>
@@ -929,8 +888,7 @@ Thank you,
           </ul>
         </section>
 
-        {/* Appendix N: When to ask for professional help */}
-        <section className="bg-white border rounded-xl shadow-sm p-6 my-10">
+        <section className="bg-white border rounded-2xl shadow-sm p-6 my-10">
           <h2 className="text-2xl font-bold text-green-900 mb-2">
             Appendix N — When to ask for help
           </h2>
@@ -951,10 +909,8 @@ Thank you,
           </div>
         </section>
 
-        {/* =========================================================
-            FINAL CTA
-        ========================================================= */}
-        <section className="mt-10 bg-white border rounded-xl shadow-sm p-6">
+        {/* FINAL CTA */}
+        <section className="mt-10 bg-white border rounded-2xl shadow-sm p-6">
           <h2 className="text-xl font-bold text-green-900 mb-2">
             Ready to feel confident about your payslip?
           </h2>
@@ -965,22 +921,20 @@ Thank you,
           <div className="flex flex-wrap gap-3">
             <Link
               href="/services"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-green-700 text-white font-medium"
+              className="inline-flex items-center px-4 py-2 rounded-xl bg-green-700 text-white font-medium"
             >
               View Resinaro Services →
             </Link>
             <Link
               href="/community/uk-tax-code-for-italians-2025"
-              className="inline-flex items-center px-4 py-2 rounded-lg bg-green-100 text-green-900 font-medium border"
+              className="inline-flex items-center px-4 py-2 rounded-xl bg-green-100 text-green-900 font-medium border"
             >
               Fix Emergency Tax Codes Next
             </Link>
           </div>
         </section>
 
-        {/* =========================================================
-            JSON-LD SCRIPTS
-        ========================================================= */}
+        {/* JSON-LD SCRIPTS */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}

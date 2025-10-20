@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// --- SEO ---
 export const metadata = {
   title: "Italian Passport in the UK (2025): Documents, Preparation & What to Expect",
   description:
     "A clear, up-to-date checklist to renew or apply for an Italian passport in the UK. Required documents, minor applications, fees, and booking tips—with help options.",
+  metadataBase: new URL("https://www.resinaro.com"),
   alternates: {
     canonical: "/community/bureaucracy-guides/italian-passport-uk-docs-prep",
   },
@@ -55,81 +57,111 @@ export default function Page() {
   };
 
   return (
-    <main className="bg-[#F9F6F1] text-gray-800 pb-20">
-      {/* Hero (no image dependency) */}
-      <section className="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white">
-        <div className="container mx-auto max-w-5xl px-6 py-12">
-          <h1 className="text-3xl md:text-4xl font-bold">
-            Italian Passport in the UK (2025): Documents, Preparation & What to Expect
-          </h1>
-          <p className="mt-3 text-white/90">
-            Prepare once, avoid repeat visits. Use the checklists and tables below to get it right the first time.
-          </p>
-          {/* Hero image prompt (for your design workflow) */}
-          {/* Prompt: Photorealistic indoor admin scene, Italian passport booklet on a walnut desk with a UK utility bill,
-              biometric photos, and a printed appointment confirmation. Soft daylight, neutral tones, premium editorial style. 3840×1600. */}
+    <main className="bg-[#F8F6F1] text-gray-800">
+      {/* ===== FULL-BLEED HERO ===== */}
+      <section className="relative w-full min-h-[56vh] md:min-h-[64vh] isolate">
+        {/* Background image (bleed) */}
+        <Image
+          src="/images/italian-passport-uk-hero-3840x1280.png"
+          alt="Italian passport application documents on a desk with UK proof of address and biometric photos"
+          fill
+          priority
+          quality={85}
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Veil + gradient edge for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/60" />
+        {/* Hero copy */}
+        <div className="relative z-10">
+          <div className="mx-auto max-w-6xl px-6 md:px-8">
+            <div className="py-16 md:py-24 lg:py-28">
+              <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 ring-1 ring-white/25 backdrop-blur-sm">
+                Aggiornato · 2025
+              </span>
+              <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-sm">
+                Italian Passport in the UK (2025): Documents, Preparation &amp; What to Expect
+              </h1>
+              <p className="mt-4 max-w-2xl text-white/90 text-base md:text-lg leading-relaxed">
+                Prepare once, avoid repeat visits. Use the checklists and tables below to get it right the first time.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#required-adults"
+                  className="inline-flex items-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-white/90"
+                >
+                  See document checklist
+                </a>
+                <a
+                  href="#booking"
+                  className="inline-flex items-center rounded-xl bg-black/30 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/20 hover:bg-black/40"
+                >
+                  Booking tips (Prenot@Mi)
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+        {/* Soft fade into page background */}
+        <div className="pointer-events-none absolute inset-x-0 -bottom-1 h-8 bg-gradient-to-b from-transparent to-[#F8F6F1]" />
       </section>
 
-      <div className="container mx-auto max-w-5xl px-6 mt-10">
-        {/* Hero Image */}
-        <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <Image
-            src="/images/italian-passport-uk-hero-3840x1280.png"
-            alt="Italian passport application documents on a desk with UK proof of address and biometric photos"
-            width={3840}
-            height={1280}
-            priority
-            quality={85}
-            className="w-full h-48 md:h-64 lg:h-80 object-cover"
-          />
-          <figcaption className="text-sm text-gray-600 px-4 py-3 bg-white/60">
-            Preparing documents for Italian passport renewal in the UK — organize all documents before your appointment.
-          </figcaption>
-        </figure>
-
-        {/* Intro note */}
-        <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-          <p className="leading-relaxed">
-            This guide focuses on <strong>preparation and documents</strong> so your appointment goes smoothly. If you’d
-            like us to help with booking or reviewing your file, we offer a simple, transparent service:&nbsp;
-            <Link href="/services" className="underline text-green-900 hover:text-green-800">
-              View Resinaro Services →
-            </Link>.
-          </p>
+      {/* ===== CONTENT WRAPPER ===== */}
+      <div className="mx-auto max-w-6xl px-6 md:px-8 pb-20">
+        {/* Intro card */}
+        <div className="mx-auto -mt-8 md:-mt-10 lg:-mt-12 relative z-20">
+          <div className="rounded-2xl bg-white/90 backdrop-blur-sm ring-1 ring-black/5 shadow-md p-5 md:p-6">
+            <p className="leading-relaxed">
+              This guide focuses on <strong>preparation and documents</strong> so your appointment goes smoothly. If you’d
+              like us to help with booking or reviewing your file, we offer a simple, transparent service:&nbsp;
+              <Link href="/services" className="underline text-green-900 hover:text-green-800">
+                View Resinaro Services →
+              </Link>.
+            </p>
+          </div>
         </div>
 
+        {/* Quick “On this page” anchor links */}
+        <nav
+          aria-label="On this page"
+          className="mt-8 mb-4 rounded-xl bg-white/70 backdrop-blur-sm ring-1 ring-black/5 p-4 text-sm"
+        >
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            <li><a className="hover:underline text-green-900" href="#who">Who can apply</a></li>
+            <li><a className="hover:underline text-green-900" href="#required-adults">Required documents (Adults)</a></li>
+            <li><a className="hover:underline text-green-900" href="#minors">Minors</a></li>
+            <li><a className="hover:underline text-green-900" href="#costs">Costs &amp; processing</a></li>
+            <li><a className="hover:underline text-green-900" href="#booking">Booking (Prenot@Mi)</a></li>
+            <li><a className="hover:underline text-green-900" href="#pitfalls">Common pitfalls</a></li>
+            <li><a className="hover:underline text-green-900" href="#links">Useful links</a></li>
+            <li><a className="hover:underline text-green-900" href="#faqs">FAQs</a></li>
+          </ul>
+        </nav>
+
         {/* Who can apply */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Who can apply in the UK?</h2>
+        <section id="who" className="mt-10 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Who can apply in the UK?</h2>
           <p>
             You should apply for (or renew) your Italian passport at the <strong>Italian consulate that covers your UK area</strong> and where you are <strong>registered with AIRE</strong>. Generally:
           </p>
           <ul className="list-disc list-inside mt-2 space-y-1">
-            <li>
-              <strong>London Consulate</strong> — England &amp; Wales
-            </li>
-            <li>
-              <strong>Manchester Consulate</strong> — North &amp; some Midlands
-            </li>
-            <li>
-              <strong>Edinburgh Consulate</strong> — Scotland &amp; Northern Ireland
-            </li>
+            <li><strong>London Consulate</strong> — England &amp; Wales</li>
+            <li><strong>Manchester Consulate</strong> — North &amp; some Midlands</li>
+            <li><strong>Edinburgh Consulate</strong> — Scotland &amp; Northern Ireland</li>
           </ul>
-          <p className="mt-2 text-gray-700">
-            Confirm your consular jurisdiction on your consulate’s page.
-          </p>
+          <p className="mt-2 text-gray-700">Confirm your consular jurisdiction on your consulate’s page.</p>
         </section>
 
         {/* Required Documents (Adults) */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Required Documents (Adults)</h2>
-          <p className="mb-3">Use this checklist to assemble your file <strong>before</strong> you try to book.</p>
-          <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+        <section id="required-adults" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Required Documents (Adults)</h2>
+          <p className="mb-4">Use this checklist to assemble your file <strong>before</strong> you try to book.</p>
+
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
             <table className="w-full text-left border-collapse">
               <thead className="bg-gray-50">
                 <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-semibold [&>th]:text-gray-900">
-                  <th>Item</th>
+                  <th className="w-1/3">Item</th>
                   <th>Details</th>
                 </tr>
               </thead>
@@ -162,20 +194,20 @@ export default function Page() {
             </table>
           </div>
 
-          <p className="mt-3">
+          <p className="mt-4 text-gray-700">
             <strong>If your surname has changed</strong> (marriage/divorce), bring proof (marriage certificate, deed poll, etc.).<br />
             <strong>If your passport is lost/stolen</strong>, bring the UK police report + any copy of your old passport.
           </p>
         </section>
 
         {/* Minors */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Minors (Under 18)</h2>
-          <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+        <section id="minors" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Minors (Under 18)</h2>
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
             <table className="w-full text-left border-collapse">
               <thead className="bg-gray-50">
                 <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-semibold [&>th]:text-gray-900">
-                  <th>Item</th>
+                  <th className="w-1/3">Item</th>
                   <th>Details</th>
                 </tr>
               </thead>
@@ -198,7 +230,7 @@ export default function Page() {
                 </tr>
                 <tr className="[&>td]:px-4 [&>td]:py-3 align-top">
                   <td><strong>Fees</strong></td>
-                  <td>Reduced for minors (check current quarter).</td>
+                  <td>(check current quarter on official sites).</td>
                 </tr>
               </tbody>
             </table>
@@ -206,20 +238,20 @@ export default function Page() {
         </section>
 
         {/* Costs & Processing */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Costs & Processing at a Glance</h2>
-          <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+        <section id="costs" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Costs &amp; Processing at a Glance</h2>
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
             <table className="w-full text-left border-collapse">
               <thead className="bg-gray-50">
                 <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-semibold [&>th]:text-gray-900">
-                  <th>Item</th>
+                  <th className="w-1/3">Item</th>
                   <th>Typical expectation</th>
                 </tr>
               </thead>
               <tbody className="[&>tr]:border-t [&>tr]:border-gray-200">
                 <tr className="[&>td]:px-4 [&>td]:py-3 align-top">
                   <td><strong>Fee</strong></td>
-                  <td>Updated quarterly (FX). Adults ~€116 equiv.; minors less. Pay in GBP.</td>
+                  <td>Updated quarterly (FX). Pay in GBP.</td>
                 </tr>
                 <tr className="[&>td]:px-4 [&>td]:py-3 align-top">
                   <td><strong>Processing time</strong></td>
@@ -233,13 +265,11 @@ export default function Page() {
             </table>
           </div>
 
-          <div className="mt-4 bg-white border border-green-200 rounded-xl p-5 shadow-sm">
-            <p className="mb-2">
-              We can help you <strong>review your documents</strong> and <strong>book the earliest viable appointment</strong>.
-            </p>
+          <div className="mt-4 rounded-2xl border border-green-200 bg-white shadow-sm p-5">
+            <p className="mb-2">We can help you <strong>review your documents</strong> and <strong>book the earliest viable appointment</strong>.</p>
             <Link
               href="/services"
-              className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
+              className="inline-flex items-center rounded-xl bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
               View Resinaro Services →
             </Link>
@@ -247,8 +277,8 @@ export default function Page() {
         </section>
 
         {/* Booking Platform */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Booking Platform (Prenot@Mi)</h2>
+        <section id="booking" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Booking Platform (Prenot@Mi)</h2>
           <p>
             You’ll normally book via <strong>Prenot@Mi</strong> (Italian MFA platform). Create an account and select your consulate:
           </p>
@@ -280,8 +310,8 @@ export default function Page() {
         </section>
 
         {/* Pitfalls */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Common Pitfalls (and how to avoid them)</h2>
+        <section id="pitfalls" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Common Pitfalls (and how to avoid them)</h2>
           <ol className="list-decimal list-inside space-y-1">
             <li><strong>AIRE not updated</strong> → Update via <strong>FAST IT</strong> before trying to book.</li>
             <li><strong>Photo specs wrong</strong> → Ask for <strong>35×45&nbsp;mm biometric photos</strong>.</li>
@@ -292,8 +322,8 @@ export default function Page() {
         </section>
 
         {/* Useful Links */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">Useful Links</h2>
+        <section id="links" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">Useful Links</h2>
           <ul className="list-disc list-inside space-y-1">
             <li>
               <a href="https://www.esteri.it/" target="_blank" rel="noopener noreferrer" className="underline text-green-900">
@@ -324,8 +354,8 @@ export default function Page() {
         </section>
 
         {/* FAQs */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-3">FAQs</h2>
+        <section id="faqs" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">FAQs</h2>
 
           <details className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm mb-3">
             <summary className="font-semibold cursor-pointer">Can I renew my passport by post?</summary>
@@ -357,14 +387,12 @@ export default function Page() {
         </section>
 
         {/* Final CTA */}
-        <section className="mt-10">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <p className="mb-3">
-              Need help assembling your file or getting an appointment?
-            </p>
+        <section className="mt-12">
+          <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+            <p className="mb-3">Need help assembling your file or getting an appointment?</p>
             <Link
               href="/services"
-              className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
+              className="inline-flex items-center rounded-xl bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800"
             >
               View Resinaro Services →
             </Link>
