@@ -1,7 +1,7 @@
-// components/HousingForm.tsx
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
@@ -157,7 +157,8 @@ export default function HousingForm() {
         <label className="flex items-start gap-2">
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
           <span>
-            I consent to Resinaro processing my data and files to deliver this service. <a href="/privacy" className="underline">Privacy Policy</a>
+            I consent to Resinaro processing my data and files to deliver this service.{" "}
+            <Link href="/privacy" className="underline">Privacy Policy</Link>
           </span>
         </label>
       </div>

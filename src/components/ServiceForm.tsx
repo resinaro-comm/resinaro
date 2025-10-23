@@ -1,7 +1,7 @@
-// src/components/ServiceForm.tsx
 "use client";
 
 import React, { useState, useRef } from "react";
+import Link from "next/link";
 
 /** Google Apps Script endpoint + token (shared with Visa form) **/
 const GAS_URL =
@@ -337,9 +337,9 @@ export default function ServiceForm() {
             I consent to Resinaro storing and processing my documents for the
             purpose of this service. Files are stored securely and may be deleted
             on request.
-            <a href="/privacy" className="underline ml-1">
+            <Link href="/privacy" className="underline ml-1">
               Privacy Policy
-            </a>
+            </Link>
           </span>
         </label>
       </div>
@@ -373,9 +373,9 @@ export default function ServiceForm() {
 
       <div className="text-xs text-gray-500 mt-2">
         By submitting you agree to our{" "}
-        <a className="underline" href="/privacy">
+        <Link className="underline" href="/privacy">
           Privacy Policy
-        </a>
+        </Link>
         . If you need immediate assistance email{" "}
         <a className="underline" href="mailto:resinaro@proton.me">
           resinaro@proton.me

@@ -1,7 +1,7 @@
-// src/components/CieForm.tsx
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
@@ -338,7 +338,7 @@ export default function CieForm() {
             <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
             <span>
               I consent to Resinaro storing and processing my documents strictly to deliver this service.{" "}
-              <a href="/privacy" className="underline">Privacy Policy</a>
+              <Link href="/privacy" className="underline">Privacy Policy</Link>
             </span>
           </label>
         </div>
@@ -348,7 +348,7 @@ export default function CieForm() {
       {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
 
       <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
-        <p className="text-[11px] text-gray-600">
+        <p className="text:[11px] text-gray-600">
           Questions first? Email <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
         </p>
         <button

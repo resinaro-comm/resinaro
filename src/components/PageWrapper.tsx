@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import type { ReactNode, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 interface PageWrapperProps {
   children: ReactNode;
@@ -107,7 +108,7 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
           >
             <div className="relative w-full border-b border-emerald-200/70 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 text-green-900 shadow-sm">
               {/* Clickable band */}
-              <a href="/advertise" className="block select-none">
+              <Link href="/advertise" className="block select-none">
                 <div className="relative flex items-center py-2 sm:py-2.5">
                   {/* Marquee track (full-bleed) */}
                   <div className="banner-track w-full overflow-hidden">
@@ -141,7 +142,7 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
 
               {/* Close button */}
               <button
