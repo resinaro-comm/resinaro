@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
+import { p, useLocaleFromPathname } from "@/lib/localePath";
 
 export default function ServicesTrust() {
+  const locale = useLocaleFromPathname();
   return (
     <section aria-labelledby="trust-title" className="mt-16 md:mt-20">
       <div className="container mx-auto max-w-5xl px-6">
@@ -127,10 +129,10 @@ export default function ServicesTrust() {
 
         <div className="mt-8">
           <Link
-            href="/contact"
+            href={p(locale, "/contact")}
             className="inline-flex items-center rounded-lg bg-green-900 text-white px-5 py-3 font-medium shadow hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-900"
           >
-            Talk to a real person — we’ll guide you step by step
+            Talk to a real person — we&apos;ll guide you step by step
           </Link>
         </div>
       </div>

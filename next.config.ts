@@ -1,9 +1,11 @@
-﻿import type { NextConfig } from "next";
+﻿// next.config.ts
+import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
+import createNextIntlPlugin from "next-intl/plugin";
 
-const withMDX = createMDX({
-  extension: /\.mdx?$/,
-});
+// Use your root-level next-intl.config.ts
+const withNextIntl = createNextIntlPlugin();
+const withMDX = createMDX({ extension: /\.mdx?$/ });
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
@@ -14,7 +16,8 @@ const nextConfig: NextConfig = {
       { source: "/community/blog/community-stories", destination: "/community/community-stories", permanent: true },
       { source: "/community/blog/mental-health", destination: "/community/mental-health", permanent: true }
     ];
-  },
+  }
 };
 
-export default withMDX(nextConfig);
+// Compose plugins (intl + MDX)
+export default withNextIntl(withMDX(nextConfig));

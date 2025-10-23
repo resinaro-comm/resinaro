@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "directory": "Directory",
+    "services": "Servizi",
+    "community": "Comunità",
+    "about": "Chi siamo",
+    "contact": "Contatti",
+    "advertise": "Pubblicità",
+    "searchPlaceholder": "Cerca nel sito…",
+    "menu": "Menu",
+    "openMenu": "Apri menu",
+    "closeMenu": "Chiudi menu",
+    "privacy": "Privacy",
+    "terms": "Termini",
+    "homeSr": "Home"
+  },
+  "cta": {
+    "unsureTitle": "Non sei sicuro di cosa ti serve?",
+    "unsureBody": "Raccontaci la tua situazione. Ti indicheremo la guida o il servizio giusto.",
+    "contact": "Contattaci",
+    "services": "Vedi servizi"
+  },
+  "home": {
+    "heroTitle": "Guide e community per italiani nel Regno Unito",
+    "heroSubtitle": "Consigli pratici e verificati, e selezioni per città — da chi l’ha già fatto.",
+    "ctaCommunity": "Esplora la Community",
+    "ctaDirectory": "Sfoglia la Directory",
+    "ctaAbout": "Su Resinaro",
+    "learnMoreShort": "Scopri di più",
+    "readMore": "Leggi di più",
+    "browseAllGuides": "Sfoglia tutte le guide",
+    "sayHello": "Scrivici",
+    "communityHeading": "Dalla Comunità",
+    "communitySub": "Contenuti pratici e gratuiti. Senza fronzoli: solo ciò che serve per andare avanti.",
+    "aboutChip": "Su Resinaro",
+    "aboutTitle": "Comunità prima. Chiarezza sempre.",
+    "aboutBody": "Resinaro è nato come progetto volontario per rendere la vita nel Regno Unito meno confusa per gli italiani. Oggi pubblichiamo guide verificate e selezioni locali, basate su esperienze reali e feedback.",
+    "howHeading": "Come lavora Resinaro",
+    "howSub": "Contenuti affidabili — ricercati, testati e scritti in linguaggio semplice.",
+    "whatReaders": "Cosa dicono i lettori",
+    "whatReadersSub": "Note brevi e sincere da chi ha usato le nostre guide e selezioni.",
+    "prev": "Testimonianza precedente",
+    "next": "Testimonianza successiva",
+    "trustedHeading": "Apprezzato dai lettori della comunità",
+    "trustedSub": "Lavoriamo insieme a gruppi locali e istituzioni.",
+    "faqHeading": "Domande frequenti",
+    "pillars": [
+      { "title": "Selezioni locali", "desc": "Guide a ristoranti e gastronomie curate da chi vive qui.", "href": "/directory" },
+      { "title": "Verificate a mano", "desc": "Ogni guida è verificata e aggiornata con i consigli della comunità.", "href": "/community" },
+      { "title": "Guidate dalla comunità", "desc": "Valorizziamo i posti e i passaggi che gli italiani usano davvero.", "href": "/about" }
+    ],
+    "process": [
+      { "title": "Research", "desc": "Mappiamo il problema (AIRE, CIE, registrazione dal GP, ecc.) e raccogliamo le regole più aggiornate.", "meta": "Fonti ufficiali + vita reale" },
+      { "title": "Verify", "desc": "Testiamo i passaggi con utenti reali, poi facciamo un sanity-check con esperti locali quando possibile.", "meta": "Niente fronzoli" },
+      { "title": "Scriviamo chiaro", "desc": "Guide brevi e pratiche in IT/EN che vanno dritte al punto.", "meta": "Linguaggio semplice" },
+      { "title": "Aggiorniamo", "desc": "Aggiorniamo quando le regole cambiano e aggiungiamo note della comunità.", "meta": "Aggiornate regolarmente" }
+    ],
+    "blog": [
+      {
+        "title": "Come richiedere il passaporto italiano nel Regno Unito",
+        "desc": "Documenti, minori, costi e consigli per la prenotazione in UK.",
+        "link": "/community/bureaucracy-guides/italian-passport-uk-docs-prep",
+        "img": "/images/italian-passport-uk-hero-3840x1280.png",
+        "alt": "Passaporto italiano e documenti su una scrivania",
+        "delay": 0.1
+      },
+      {
+        "title": "Le basi del NHS per i nuovi arrivati",
+        "desc": "Registrazione dal GP, interpreti, urgenze, ricette e GHIC.",
+        "link": "/community/life-in-uk/navigating-nhs-healthcare-italians-uk-2025",
+        "img": "/images/nhs-healthcare-italians-uk-hero-3840x1280.png",
+        "alt": "Immagine di copertina NHS",
+        "delay": 0.2
+      },
+      {
+        "title": "Cos’è l’AIRE e come registrarsi",
+        "desc": "FAST IT, prove, errori comuni, tempistiche e consigli locali.",
+        "link": "/community/bureaucracy-guides/aire-registration-uk",
+        "img": "/images/aire-registration.png",
+        "alt": "Documenti per registrazione AIRE",
+        "delay": 0.3
+      }
+    ],
+    "aboutCards": [
+      ["Guide bilingui", "Passi chiari in IT/EN per le pratiche che contano."],
+      ["Selezioni per città", "Ristoranti, gastronomie e negozi amati dagli italiani."],
+      ["Consigli della comunità", "Aggiungiamo note dei lettori per tenerle pratiche."],
+      ["Niente spam, niente drama", "Tono umano e adatto ai brand — sempre rispettoso."]
+    ],
+    "testimonials": [
+      { "name": "Giulia R.", "quote": "Ho trovato tutto per passaporto + AIRE in un unico posto. Passi chiari, niente fronzoli. Grazie!", "meta": "Lettrice guida comunità, Londra", "avatar": "/images/avatars/giulia.png" },
+      { "name": "Marco B.", "quote": "Le selezioni di Manchester erano azzeccatissime. Posti che consiglierei ad amici in visita.", "meta": "Lettore Directory, Manchester", "avatar": "/images/avatars/marco.png" },
+      { "name": "Elena S.", "quote": "Mi piace che le guide dicano cosa fare dopo, non solo link ai moduli. Mi ha salvato un weekend.", "meta": "Lettrice guida AIRE", "avatar": "/images/avatars/elena.png" }
+    ],
+    "faq": [
+      { "q": "Resinaro è solo per italiani?", "a": "No. Supportiamo italiani e tutti i migranti che vivono nel Regno Unito. Molte guide sono bilingui (IT/EN)." },
+      { "q": "Le guide sono gratuite?", "a": "Sì. Tutte le guide della community sono gratuite. Sostienici condividendole o segnalando ottimi posti locali." },
+      { "q": "Ogni quanto aggiornate i contenuti?", "a": "Rivediamo regolarmente le guide più lette e aggiorniamo quando le regole cambiano. Le selezioni della Directory si aggiornano con i contributi della comunità." },
+      { "q": "Come posso contribuire?", "a": "Invia suggerimenti o proposte di correzione dalla pagina contatti. Puoi anche raccomandare posti da inserire in Directory." }
+    ]
+  }
+}

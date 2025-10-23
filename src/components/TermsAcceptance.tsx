@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { p, useLocaleFromPathname } from "@/lib/localePath";
 
 const TERMS_COOKIE = "resinaro_terms_accepted";
 const COOKIE_EXPIRES_DAYS = 365;
@@ -20,6 +21,7 @@ function getCookie(name: string) {
 }
 
 export default function TermsAcceptance() {
+  const locale = useLocaleFromPathname();
   const [checked, setChecked] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
@@ -52,7 +54,7 @@ export default function TermsAcceptance() {
           <div className="text-gray-700">Saved locally. You can change cookies preferences any time.</div>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/cookies" className="text-green-800 underline text-sm">
+          <Link href={p(locale, "/cookies")} className="text-green-800 underline text-sm">
             Manage cookies
           </Link>
           <button
@@ -85,11 +87,11 @@ export default function TermsAcceptance() {
           </label>
           <div id="terms-accept-desc" className="text-gray-700">
             You may review the full Terms above or read the{" "}
-            <Link href="/terms" className="underline text-green-800">
+            <Link href={p(locale, "/terms")} className="underline text-green-800">
               full Terms page
             </Link>
             . We also use cookies to improve the site. Manage cookies{" "}
-            <Link href="/cookies" className="underline text-green-800">
+            <Link href={p(locale, "/cookies")} className="underline text-green-800">
               here
             </Link>
             .
@@ -113,7 +115,7 @@ export default function TermsAcceptance() {
           Accept and continue
         </button>
 
-        <Link href="/cookies" className="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 text-sm hover:bg-gray-50">
+        <Link href={p(locale, "/cookies")} className="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 text-sm hover:bg-gray-50">
           Manage cookies
         </Link>
       </div>

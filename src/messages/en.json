@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "directory": "Directory",
+    "services": "Services",
+    "community": "Community",
+    "about": "About",
+    "contact": "Contact",
+    "advertise": "Advertise",
+    "searchPlaceholder": "Search the site…",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "homeSr": "Home"
+  },
+  "cta": {
+    "unsureTitle": "Not sure what you need?",
+    "unsureBody": "Tell us your situation. We’ll point you to the right guide or service.",
+    "contact": "Contact us",
+    "services": "Browse services"
+  },
+  "home": {
+    "heroTitle": "Guides & community for Italians in the UK",
+    "heroSubtitle": "Practical, hand-checked advice and city picks — by people who’ve done it before.",
+    "ctaCommunity": "Explore the Community",
+    "ctaDirectory": "Browse the Directory",
+    "ctaAbout": "About Resinaro",
+    "learnMoreShort": "Learn more",
+    "readMore": "Read more",
+    "browseAllGuides": "Browse all guides",
+    "sayHello": "Say hello",
+    "communityHeading": "From the Community",
+    "communitySub": "Fresh, practical and free. No fluff—just what you need to move forward.",
+    "aboutChip": "About Resinaro",
+    "aboutTitle": "Community first. Clarity always.",
+    "aboutBody": "Resinaro started as a volunteer effort to make life in the UK less confusing for Italians. Today, we publish hand-checked guides and local picks, shaped by real experiences and feedback.",
+    "howHeading": "How Resinaro works",
+    "howSub": "Content you can rely on — researched, tested and written in plain language.",
+    "whatReaders": "What readers say",
+    "whatReadersSub": "Short and honest notes from people who used our guides and picks.",
+    "prev": "Previous testimonial",
+    "next": "Next testimonial",
+    "trustedHeading": "Trusted by community readers",
+    "trustedSub": "We work alongside local groups and institutions.",
+    "faqHeading": "Questions, answered",
+    "pillars": [
+      { "title": "Local picks", "desc": "Restaurant & deli guides curated by people who live here.", "href": "/directory" },
+      { "title": "Hand-checked", "desc": "Every guide is verified and updated with community tips.", "href": "/community" },
+      { "title": "Community-guided", "desc": "We highlight places and steps Italians actually use.", "href": "/about" }
+    ],
+    "process": [
+      { "title": "Research", "desc": "We map the problem (AIRE, CIE, GP registration, etc.) and gather the latest rules.", "meta": "Official sources + real world" },
+      { "title": "Verify", "desc": "We test steps with real users, then sanity-check with local experts where possible.", "meta": "No fluff" },
+      { "title": "Write clearly", "desc": "Short, practical guides in EN/IT that cut straight to what you need to do.", "meta": "Plain-language" },
+      { "title": "Keep it fresh", "desc": "We update when rules change and add community notes over time.", "meta": "Updated regularly" }
+    ],
+    "blog": [
+      {
+        "title": "How to apply for your Italian Passport",
+        "desc": "Docs, minor applications, fees and booking tips in the UK.",
+        "link": "/community/bureaucracy-guides/italian-passport-uk-docs-prep",
+        "img": "/images/italian-passport-uk-hero-3840x1280.png",
+        "alt": "Italian passport and documents on a desk",
+        "delay": 0.1
+      },
+      {
+        "title": "NHS Basics for newcomers",
+        "desc": "Register with a GP, interpreters, urgent care, prescriptions and GHIC.",
+        "link": "/community/life-in-uk/navigating-nhs-healthcare-italians-uk-2025",
+        "img": "/images/nhs-healthcare-italians-uk-hero-3840x1280.png",
+        "alt": "NHS healthcare hero",
+        "delay": 0.2
+      },
+      {
+        "title": "What is AIRE and how to register",
+        "desc": "FAST IT, proofs, common errors, timelines and local tips.",
+        "link": "/community/bureaucracy-guides/aire-registration-uk",
+        "img": "/images/aire-registration.png",
+        "alt": "AIRE registration documents",
+        "delay": 0.3
+      }
+    ],
+    "aboutCards": [
+      ["Bilingual guides", "Clear steps in EN/IT for life admin that matters."],
+      ["City picks", "Restaurants, delis and shops Italians love."],
+      ["Community tips", "We add notes from readers to keep things practical."],
+      ["No spam, no drama", "Brand-safe, human tone — always respectful."]
+    ],
+    "testimonials": [
+      { "name": "Giulia R.", "quote": "Found everything I needed for my passport + AIRE in one place. Clear steps, no waffle. Grazie!", "meta": "Community guide reader, London", "avatar": "/images/avatars/giulia.png" },
+      { "name": "Marco B.", "quote": "The Manchester picks were spot on. Places I’d actually recommend to friends visiting.", "meta": "Directory reader, Manchester", "avatar": "/images/avatars/marco.png" },
+      { "name": "Elena S.", "quote": "I like that guides explain what to do next, not just link to forms. Saved me a weekend.", "meta": "Reader, AIRE guide", "avatar": "/images/avatars/elena.png" }
+    ],
+    "faq": [
+      { "q": "Is Resinaro only for Italians?", "a": "No. We support Italians and all migrants living in the UK. Many guides are bilingual (EN/IT)." },
+      { "q": "Are your guides free?", "a": "Yes. All community guides are free. Support us by sharing them or recommending great local places." },
+      { "q": "How often do you update content?", "a": "We review popular guides regularly and update when rules change. Directory picks refresh with community input." },
+      { "q": "How can I contribute?", "a": "Share tips or suggest edits via the contact page. You can also recommend places to feature in the Directory." }
+    ]
+  }
+}

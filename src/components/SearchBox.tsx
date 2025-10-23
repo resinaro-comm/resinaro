@@ -6,6 +6,10 @@ import Fuse from "fuse.js";
 import type { SearchItem } from "@/types/search";
 import { getStaticSearchItems } from "@/data/search-static";
 
+/** Keep in sync with i18n config */
+const LOCALES = ["en", "it"] as const;
+type Locale = (typeof LOCALES)[number];
+
 type Props = {
   className?: string;
   placeholder?: string;
@@ -14,6 +18,18 @@ type Props = {
 const MAX_RESULTS = 10;
 
 /* ----------------------------- helpers ----------------------------- */
+
+function getActiveLocaleFromPath(pathname: string): Locale {
+  const seg = (pathname || "/").split("/")[1];
+  return (LOCALES as readonly string[]).includes(seg) ? (seg as Locale) : "en";
+}
+
+function ensureLocalePrefix(pathname: string, locale: Locale): string {
+  if (!pathname.startsWith("/")) pathname = `/${pathname}`;
+  const first = pathname.split("/")[1];
+  if ((LOCALES as readonly string[]).includes(first)) return pathname; // already /en or /it
+  return `/${locale}${pathname}`.replace(/\/{2,}/g, "/");
+}
 
 function slugToTitle(slug: string) {
   return slug
@@ -24,9 +40,11 @@ function slugToTitle(slug: string) {
     .replace(/\b\w/g, (m) => m.toUpperCase());
 }
 
-async function fetchSitemapUrls(): Promise<string[]> {
+async function fetchSitemapUrls(activeLocale: Locale): Promise<string[]> {
+  // Try both default Next sitemaps
   const endpoints = ["/sitemap.xml", "/sitemap-0.xml"];
   const urls: string[] = [];
+
   for (const path of endpoints) {
     try {
       const res = await fetch(path, { cache: "no-store" });
@@ -38,15 +56,17 @@ async function fetchSitemapUrls(): Promise<string[]> {
       /* ignore */
     }
   }
+
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   return urls
     .filter(Boolean)
     .map((u) => {
       try {
         const url = new URL(u);
-        return origin && u.startsWith(origin) ? url.pathname : url.pathname;
+        const pathname = origin && u.startsWith(origin) ? url.pathname : url.pathname;
+        return ensureLocalePrefix(pathname, activeLocale);
       } catch {
-        return u;
+        return ensureLocalePrefix(u, activeLocale);
       }
     });
 }
@@ -64,12 +84,18 @@ export default function SearchBox({
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Determine locale once on mount from the current URL
+  const [locale, setLocale] = useState<Locale>("en");
+  useEffect(() => {
+    setLocale(getActiveLocaleFromPath(window.location.pathname));
+  }, []);
+
   /* Build the index once (sitemap + static enrichers) */
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const staticItems = getStaticSearchItems();
-      const urlPaths = await fetchSitemapUrls();
+      const staticItems = getStaticSearchItems(locale); // <-- locale-aware
+      const urlPaths = await fetchSitemapUrls(locale);
 
       const pageItems: SearchItem[] = urlPaths.map((path) => {
         const type: SearchItem["type"] =
@@ -80,16 +106,16 @@ export default function SearchBox({
             : path.includes("/directory")
             ? "directory"
             : "page";
-        return { title: slugToTitle(path), url: path, type };
+        return { title: slugToTitle(path), url: ensureLocalePrefix(path, locale), type };
       });
 
       // De-dup by URL (prefer enriched static titles)
-  const map = new Map<string, SearchItem>();
-  for (const it of pageItems) map.set(it.url, it);
-  for (const it of staticItems) map.set(it.url, it);
+      const map = new Map<string, SearchItem>();
+      for (const it of pageItems) map.set(it.url, it);
+      for (const it of staticItems) map.set(it.url, it);
 
-  const final = Array.from(map.values());
-  if (!mounted) return;
+      const final = Array.from(map.values());
+      if (!mounted) return;
 
       const f = new Fuse(final, {
         keys: [
@@ -106,7 +132,7 @@ export default function SearchBox({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [locale]);
 
   const results = useMemo(() => {
     if (!fuse || !query.trim()) return [];
@@ -193,7 +219,7 @@ export default function SearchBox({
         <div
           className="
             absolute left-0 right-0 w-full
-            max-w-[calc(100vw-1rem)]  /* prevent tiny-screen spill */
+            max-w-[calc(100vw-1rem)]
             z-50 mt-2 overflow-hidden rounded-2xl border border-stone-200
             bg-white/95 backdrop-blur shadow-2xl
           "
@@ -204,7 +230,7 @@ export default function SearchBox({
               {results.map((r, i) => (
                 <li key={`${r.url}-${i}`} role="option" aria-selected={false}>
                   <Link
-                    href={r.url}
+                    href={ensureLocalePrefix(r.url, locale)}
                     onClick={() => setOpen(false)}
                     className="
                       group block px-4 py-3
@@ -220,7 +246,7 @@ export default function SearchBox({
                       </span>
                     </div>
                     <p className="mt-0.5 text-[12.5px] text-stone-500 truncate">
-                      {r.meta || r.url}
+                      {r.meta || ensureLocalePrefix(r.url, locale)}
                     </p>
                   </Link>
                   {i < results.length - 1 && (

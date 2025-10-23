@@ -1,4 +1,4 @@
-// src/data/directory.ts
+// src/data/directory.ts — PREMIUM single-source directory with image previews
 
 /**
  * Richer listing type. All new fields are optional so existing data stays valid.
@@ -29,6 +29,10 @@ export interface Listing {
   };
 }
 
+/**
+ * Directory content by city and category.
+ * Keep keys lowercased (e.g., "manchester", "london") for consistency.
+ */
 export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>> = {
   /* -------------------- MANCHESTER -------------------- */
   manchester: {
@@ -55,7 +59,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         address: "Unit 1, The Corn Exchange, Manchester M4 3TR",
         phone: "0161 222 8021",
         website: "https://www.salvismanchester.co.uk/mozzarella-bar",
-        mapsUrl: "https://maps.google.com/?q=Salvi%E2%80%99s+Mozzarella+Bar+Corn+Exchange+Manchester",
+        mapsUrl:
+          "https://maps.google.com/?q=Salvi%E2%80%99s+Mozzarella+Bar+Corn+Exchange+Manchester",
         menuUrl: "https://www.salvismanchester.co.uk/menu",
         image: "/images/corn-exchange.png",
         price: "££",
@@ -101,7 +106,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
       {
         slug: "roma-caffe-deli",
         name: "Roma Caffè & Deli (Whitefield)",
-        short: "Family-run Italian caffè, bakery and deli with imported groceries.",
+        short:
+          "Family-run Italian caffè, bakery and deli with imported groceries.",
         address: "268 Bury New Rd, Whitefield, Manchester M45 8QS",
         phone: "0161 766 2941",
         website: "https://roma.ltd.uk/",
@@ -120,7 +126,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         slug: "lupo-caffe-italiano",
         name: "Lupo Caffè Italiano (Prestwich)",
         short: "Roman pasticceria & café for pastries, pasta and espresso.",
-        address: "Unit 65 Ardent Way, Mountheath Trading Estate, Prestwich M25 9WE",
+        address:
+          "Unit 65 Ardent Way, Mountheath Trading Estate, Prestwich M25 9WE",
         phone: "07950 468333",
         website: "https://www.lupocaffe.co.uk/",
         mapsUrl: "https://maps.google.com/?q=Lupo+Caff%C3%A8+Italiano+Prestwich",
@@ -161,7 +168,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         mapsUrl: "https://maps.google.com/?q=Vino+Buono+Stockport",
         image: "/images/vino-buono.jpg",
         review: {
-          snippet: "Hidden gem serving wine from the barrel and delicious Roman pinsa.",
+          snippet:
+            "Hidden gem serving wine from the barrel and delicious Roman pinsa.",
           author: "Tripadvisor reviewer",
           source: "Tripadvisor",
         },
@@ -234,7 +242,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
       {
         slug: "salvos-salumeria",
         name: "Salvo’s Salumeria (Café & Deli)",
-        short: "Neighbouring deli-café for Italian produce, coffee and lunches.",
+        short:
+          "Neighbouring deli-café for Italian produce, coffee and lunches.",
         address: "107–109 Otley Road, Headingley, Leeds LS6 3PX",
         phone: "0113 275 8877",
         website: "https://salvos.co.uk/",
@@ -250,7 +259,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         address: "Arch Z, Granary Wharf, Wharf Approach, Leeds LS1 4BR",
         phone: "0113 243 0090",
         website: "https://livinitaly.com/",
-        mapsUrl: "https://maps.google.com/?q=LIVIN%27Italy+Granary+Wharf+Leeds",
+        mapsUrl:
+          "https://maps.google.com/?q=LIVIN%27Italy+Granary+Wharf+Leeds",
         image: "/images/leeds-livinitaly.jpg",
         price: "££",
         tags: ["Wine bar", "Canal"],
@@ -283,7 +293,8 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         name: "Veeno Leeds (Italian Wine Bar & Shop)",
         short: "Sicilian wines, platters and bottles to take home.",
         address: "5 Wellington Pl, Leeds LS1 4AP",
-        website: "https://www.theveenocompany.com/venues/veeno-leeds",
+        website:
+          "https://www.theveenocompany.com/venues/veeno-leeds",
         mapsUrl: "https://maps.google.com/?q=Veeno+Leeds",
         image: "/images/leeds-veeno.jpg",
         tags: ["Wine", "Platters"],
@@ -292,9 +303,10 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         slug: "livinitaly-bottega",
         name: "LIVIN’Italy (Bottega Retail)",
         short: "Take-home Italian goods from the Granary Wharf deli.",
-        address: "Arch Z, Granary Wharf, Leeds LS1 4BR",
+        address: "Arch Z, Granary Wharf, Wharf Approach, Leeds LS1 4BR",
         website: "https://livinitaly.com/",
-        mapsUrl: "https://maps.google.com/?q=LIVIN%27Italy+Granary+Wharf+Leeds",
+        mapsUrl:
+          "https://maps.google.com/?q=LIVIN%27Italy+Granary+Wharf+Leeds",
         image: "/images/leeds-livinitaly-bottega.jpg",
         tags: ["Groceries", "Wine"],
       },
@@ -438,7 +450,7 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         phone: "0191 232 4366",
         website: "https://www.squaremeal.co.uk/restaurants/panis-cafe_1867",
         mapsUrl: "https://maps.google.com/?q=Pani’s+Cafe+Newcastle+NE1",
-        image: "/images/landscape-image.png",
+        image: "/images/panis-cafe.png",
         price: "££",
         tags: ["Sardinian", "Homemade pasta"],
         badges: ["hand-checked", "community"],
@@ -451,9 +463,10 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
           "Long-running Italian on Dean Street for classic antipasti, pizza & pasta in a grand townhouse setting.",
         address: "33 Dean St, Newcastle upon Tyne NE1 1PQ",
         phone: "0191 232 5533",
-        website: "https://www.getintonewcastle.co.uk/business/marco-polo-restaurant",
+        website:
+          "https://www.getintonewcastle.co.uk/business/marco-polo-restaurant",
         mapsUrl: "https://maps.google.com/?q=Marco+Polo+Newcastle+NE1",
-        image: "/images/landscape-image.png",
+        image: "/images/marco-polo-newcastle.png",
         price: "£££",
         tags: ["Classic", "City centre"],
         badges: ["community"],
@@ -470,7 +483,7 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         phone: "0191 625 0683",
         website: "https://www.cafecorsaro.com/",
         mapsUrl: "https://mapquest.com/gb/newcastle-upon-tyne/381377911",
-        image: "/images/landscape-image.png",
+        image: "/images/cafe-corsaro.png",
         price: "££",
         tags: ["Deli counter", "Enoteca"],
         badges: ["community"],
@@ -484,9 +497,10 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         short:
           "Award-winning, fourth-generation Italian gelateria by the coast—fresh gelato made daily.",
         address: "9 Marine Avenue, Whitley Bay NE26 1QN",
-        website: "https://www.visitnorthtyneside.com/venues/venue/di-meos/",
+        website:
+          "https://www.visitnorthtyneside.com/venues/venue/di-meos/",
         mapsUrl: "https://maps.google.com/?q=Di+Meo’s+Whitley+Bay",
-        image: "/images/landscape-image.png",
+        image: "/images/di-meos-gelato.png",
         price: "£",
         tags: ["Gelato", "Family-run"],
         badges: ["community"],
@@ -495,7 +509,7 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
     ],
   },
 
-    /* -------------------- GLASGOW -------------------- */
+  /* -------------------- GLASGOW -------------------- */
   glasgow: {
     restaurants: [
       {
@@ -504,9 +518,10 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         short: "Neapolitan pizza specialists fired in wood-burning ovens.",
         address: "94 Miller St, Glasgow G1 1DT",
         phone: "0141 258 1212",
-        website: "https://paesanopizza.co.uk/locations/paesano-pizza-miller-street/",
+        website:
+          "https://paesanopizza.co.uk/locations/paesano-pizza-miller-street/",
         mapsUrl: "https://maps.google.com/?q=Paesano+Pizza+94+Miller+St+Glasgow",
-        image: "/images/landscape-image.png",
+        image: "/images/paesano-pizza.png",
         price: "££",
         tags: ["Neapolitan", "Casual"],
         badges: ["hand-checked", "community"],
@@ -520,7 +535,7 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         phone: "0141 221 9160",
         website: "https://lalanterna-glasgow.co.uk/locations/city-centre/",
         mapsUrl: "https://maps.google.com/?q=La+Lanterna+35+Queen+St+Glasgow",
-        image: "/images/landscape-image.png",
+        image: "/images/la-lanterna.png",
         price: "£££",
         tags: ["Classic", "Seafood", "Special occasions"],
         badges: ["editors-pick"],
@@ -537,7 +552,7 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         phone: "0141 648 9999",
         website: "https://eusebideli.com/",
         mapsUrl: "https://maps.google.com/?q=Eusebi+Deli+152+Park+Rd+Glasgow",
-        image: "/images/landscape-image.png",
+        image: "/images/eusebi-deli.png",
         price: "££",
         tags: ["Deli counter", "Fresh pasta", "Bakery"],
         badges: ["hand-checked"],
@@ -546,11 +561,13 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
       {
         slug: "celinos-partick",
         name: "Celino’s (Partick Deli & Café)",
-        short: "Neighbourhood Italian deli-café with retail shelves & espresso.",
+        short:
+          "Neighbourhood Italian deli-café with retail shelves & espresso.",
         address: "235 Dumbarton Rd, Glasgow G11 6AB",
         website: "https://celinos.com/partick/",
-        mapsUrl: "https://maps.google.com/?q=Celino%E2%80%99s+Partick+235+Dumbarton+Rd+Glasgow",
-        image: "/images/landscape-image.png",
+        mapsUrl:
+          "https://maps.google.com/?q=Celino%E2%80%99s+Partick+235+Dumbarton+Rd+Glasgow",
+        image: "/images/celinos-partick.png",
         price: "££",
         tags: ["Deli", "Espresso", "Panini"],
         badges: ["community"],
@@ -566,8 +583,9 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         address: "620 Alexandra Parade, Glasgow G31 3BT",
         phone: "0141 554 0523",
         website: "https://celinos.com/alexandra-parade/",
-        mapsUrl: "https://maps.google.com/?q=Celino%E2%80%99s+620+Alexandra+Parade+Glasgow",
-        image: "/images/landscape-image.png",
+        mapsUrl:
+          "https://maps.google.com/?q=Celino%E2%80%99s+620+Alexandra+Parade+Glasgow",
+        image: "/images/celinos-partick.png",
         price: "££",
         tags: ["Groceries", "Salumi", "Gifts"],
         badges: ["hand-checked"],
@@ -580,8 +598,9 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
         address: "221 Byres Rd, Glasgow G12 8UD",
         phone: "0141 341 0465",
         website: "https://crollasgelateria.com/", // brand site
-        mapsUrl: "https://maps.google.com/?q=Crolla%E2%80%99s+Gelateria+221+Byres+Rd+Glasgow",
-        image: "/images/landscape-image.png",
+        mapsUrl:
+          "https://maps.google.com/?q=Crolla%E2%80%99s+Gelateria+221+Byres+Rd+Glasgow",
+        image: "/images/crollas-glasgow.png",
         price: "£",
         tags: ["Gelato", "Family-run"],
         badges: ["community"],
@@ -590,447 +609,571 @@ export const listingsByCityAndCategory: Record<string, Record<string, Listing[]>
     ],
   },
 
+  /* -------------------- LONDON -------------------- */
+  london: {
+    restaurants: [
+      {
+        slug: "padella-borough-market",
+        name: "Padella (Borough Market)",
+        short:
+          "Fresh, hand-rolled pasta & a few perfect sauces — the London queue classic.",
+        address: "6 Southwark St, London SE1 1TQ",
+        website: "https://www.padella.co/locations/borough-market",
+        mapsUrl: "https://maps.google.com/?q=Padella+Borough+Market+SE1+1TQ",
+        image: "/images/london-padella.jpg",
+        price: "££",
+        tags: ["Fresh pasta", "Walk-in friendly", "Borough Market"],
+        badges: ["editors-pick", "hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "bocca-di-lupo-soho",
+        name: "Bocca di Lupo (Soho)",
+        short:
+          "Seasonal regional Italian small & large plates; a Soho institution.",
+        address: "12 Archer St, London W1D 7BB",
+        phone: "020 7734 2223",
+        website: "https://boccadilupo.com/",
+        mapsUrl: "https://maps.google.com/?q=12+Archer+Street+W1D+7BB",
+        image: "/images/london-bocca-di-lupo.jpg",
+        price: "£££",
+        tags: ["Regional Italian", "Soho", "Reservations"],
+        badges: ["community", "hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    delis: [
+      {
+        slug: "lina-stores-delicatessen-soho",
+        name: "Lina Stores (Delicatessen, Soho)",
+        short:
+          "Iconic 1944 Soho deli — fresh pasta, cured meats, dolci & Italian staples.",
+        address: "18 Brewer St, London W1F 0SH",
+        website: "https://www.linastores.co.uk/locations/",
+        mapsUrl: "https://maps.google.com/?q=18+Brewer+Street+W1F+0SH",
+        image: "/images/london-lina-stores-deli.jpg",
+        price: "££",
+        tags: ["Deli counter", "Fresh pasta", "Historic"],
+        badges: ["hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "giacobazzis-hampstead",
+        name: "Giacobazzi’s (Hampstead)",
+        short: "Beloved neighbourhood Italian deli & wine shop near the Heath.",
+        address: "1–3 Fleet Rd, London NW3 2ET",
+        phone: "020 7794 5370",
+        website:
+          "https://hampsteadvillagelondon.com/listing/giacobazzis-delicatessen/",
+        mapsUrl: "https://maps.google.com/?q=1-3+Fleet+Road+NW3+2ET",
+        image: "/images/london-giacobazzis.jpg",
+        price: "££",
+        tags: ["Deli", "Wine", "Neighbourhood"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    shops: [
+      {
+        slug: "eataly-london-bishopsgate",
+        name: "Eataly London (Bishopsgate)",
+        short:
+          "Huge Italian food hall & market: groceries, wine, bakeries, restaurants.",
+        address: "135 Bishopsgate, London EC2M 3YD",
+        phone: "020 3936 8100",
+        website: "https://eataly.co.uk/pages/eataly-london",
+        mapsUrl: "https://maps.google.com/?q=135+Bishopsgate+EC2M+3YD",
+        image: "/images/london-eataly.jpg",
+        price: "££",
+        tags: ["Market hall", "Groceries", "Wine"],
+        badges: ["hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "prezzemolo-vitale-notting-hill",
+        name: "Prezzemolo & Vitale (Notting Hill)",
+        short:
+          "Sicilian grocer — fresh counters, cheeses, charcuterie & pantry staples.",
+        address: "117-119 Portobello Rd, London W11 2DY",
+        phone: "020 8037 7025",
+        website:
+          "https://www.prezzemoloevitale.co.uk/pages/our-stores",
+        mapsUrl: "https://maps.google.com/?q=117-119+Portobello+Road+W11+2DY",
+        image: "/images/london-prezzemolo-vitale.jpg",
+        price: "££",
+        tags: ["Sicilian", "Groceries", "Counter"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+  },
 
-  /* -------------------- 15 NEW CITY STUBS (ready to backfill) -------------------- */
- /* -------------------- LONDON -------------------- */
-london: {
-  restaurants: [
-    {
-      slug: "padella-borough-market",
-      name: "Padella (Borough Market)",
-      short: "Fresh, hand-rolled pasta & a few perfect sauces — the London queue classic.",
-      address: "6 Southwark St, London SE1 1TQ",
-      website: "https://www.padella.co/locations/borough-market",
-      mapsUrl: "https://maps.google.com/?q=Padella+Borough+Market+SE1+1TQ",
-      image: "/images/london-padella.jpg", // TODO: add photo
-      price: "££",
-      tags: ["Fresh pasta", "Walk-in friendly", "Borough Market"],
-      badges: ["editors-pick", "hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "bocca-di-lupo-soho",
-      name: "Bocca di Lupo (Soho)",
-      short: "Seasonal regional Italian small & large plates; a Soho institution.",
-      address: "12 Archer St, London W1D 7BB",
-      phone: "020 7734 2223",
-      website: "https://boccadilupo.com/",
-      mapsUrl: "https://maps.google.com/?q=12+Archer+Street+W1D+7BB",
-      image: "/images/london-bocca-di-lupo.jpg", // TODO: add photo
-      price: "£££",
-      tags: ["Regional Italian", "Soho", "Reservations"],
-      badges: ["community", "hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  delis: [
-    {
-      slug: "lina-stores-delicatessen-soho",
-      name: "Lina Stores (Delicatessen, Soho)",
-      short: "Iconic 1944 Soho deli — fresh pasta, cured meats, dolci & Italian staples.",
-      address: "18 Brewer St, London W1F 0SH",
-      website: "https://www.linastores.co.uk/locations/",
-      mapsUrl: "https://maps.google.com/?q=18+Brewer+Street+W1F+0SH",
-      image: "/images/london-lina-stores-deli.jpg", // TODO
-      price: "££",
-      tags: ["Deli counter", "Fresh pasta", "Historic"],
-      badges: ["hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "giacobazzis-hampstead",
-      name: "Giacobazzi’s (Hampstead)",
-      short: "Beloved neighbourhood Italian deli & wine shop near the Heath.",
-      address: "1–3 Fleet Rd, London NW3 2ET",
-      phone: "020 7794 5370",
-      website: "https://hampsteadvillagelondon.com/listing/giacobazzis-delicatessen/",
-      mapsUrl: "https://maps.google.com/?q=1-3+Fleet+Road+NW3+2ET",
-      image: "/images/london-giacobazzis.jpg", // TODO
-      price: "££",
-      tags: ["Deli", "Wine", "Neighbourhood"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  shops: [
-    {
-      slug: "eataly-london-bishopsgate",
-      name: "Eataly London (Bishopsgate)",
-      short: "Huge Italian food hall & market: groceries, wine, bakeries, restaurants.",
-      address: "135 Bishopsgate, London EC2M 3YD",
-      phone: "020 3936 8100",
-      website: "https://eataly.co.uk/pages/eataly-london",
-      mapsUrl: "https://maps.google.com/?q=135+Bishopsgate+EC2M+3YD",
-      image: "/images/london-eataly.jpg", // TODO
-      price: "££",
-      tags: ["Market hall", "Groceries", "Wine"],
-      badges: ["hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "prezzemolo-vitale-notting-hill",
-      name: "Prezzemolo & Vitale (Notting Hill)",
-      short: "Sicilian grocer — fresh counters, cheeses, charcuterie & pantry staples.",
-      address: "117-119 Portobello Rd, London W11 2DY",
-      phone: "020 8037 7025",
-      website: "https://www.prezzemoloevitale.co.uk/pages/our-stores",
-      mapsUrl: "https://maps.google.com/?q=117-119+Portobello+Road+W11+2DY",
-      image: "/images/london-prezzemolo-vitale.jpg", // TODO
-      price: "££",
-      tags: ["Sicilian", "Groceries", "Counter"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-},
+  /* -------------------- BIRMINGHAM -------------------- */
+  birmingham: {
+    restaurants: [
+      {
+        slug: "san-carlo-birmingham",
+        name: "San Carlo (Temple Street)",
+        short:
+          "Flagship city-centre classic for seafood, pasta and white-tablecloth service.",
+        address: "4 Temple Street, Birmingham B2 5BN",
+        phone: "0121 633 0251",
+        website:
+          "https://sancarlo.co.uk/restaurants/san-carlo-birmingham/",
+        mapsUrl: "https://maps.google.com/?q=San+Carlo+Birmingham+B2+5BN",
+        image: "/images/San-Carlo.webp",
+        price: "£££",
+        tags: ["Classic", "Seafood", "Special occasions"],
+        badges: ["hand-checked", "community"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "tropea-harborne",
+        name: "Tropea (Harborne)",
+        short:
+          "Neighbourhood Italian with seasonal small plates and fresh pasta in Harborne.",
+        address: "27 Lordswood Rd, Birmingham B17 9RP",
+        phone: "0121 427 9777",
+        website: "https://tropeabirmingham.com/",
+        mapsUrl: "https://maps.google.com/?q=Tropea+27+Lordswood+Rd+B17+9RP",
+        image: "/images/landscape-image.png",
+        price: "£££",
+        tags: ["Seasonal", "Fresh pasta", "Neighbourhood"],
+        badges: ["editors-pick", "community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    delis: [
+      {
+        slug: "ciaro-italian-deli-bearwood",
+        name: "Ciaro Italian Deli (Bearwood)",
+        short:
+          "Independent Italian deli-café with espresso, panini and shelves of imports.",
+        address: "530 Bearwood Rd, Smethwick B66 4BX",
+        phone: "",
+        website: "https://www.instagram.com/ciaroitaliandeli/",
+        mapsUrl: "https://maps.google.com/?q=530+Bearwood+Rd+B66+4BX",
+        image: "/images/landscape-image.png",
+        price: "££",
+        tags: ["Deli counter", "Coffee"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+        review: {
+          snippet: "Proper Italian sandwiches, coffee and friendly service.",
+          source: "Community",
+        },
+      },
+    ],
+    shops: [],
+  },
 
-  // src/data/directory.ts  (append the new city into listingsByCityAndCategory)
+  /* -------------------- LIVERPOOL -------------------- */
+  liverpool: {
+    restaurants: [
+      {
+        slug: "il-forno-duke-st",
+        name: "Il Forno",
+        short:
+          "Long-standing independent for wood-fired pizza, fresh pasta and a lively dining room.",
+        address: "132 Duke St, Liverpool L1 5AG",
+        phone: "0151 709 4002",
+        website: "https://www.instagram.com/ilfornoliverpool/",
+        mapsUrl:
+          "https://maps.google.com/?q=Il+Forno+132+Duke+St+Liverpool+L1+5AG",
+        image: "/images/il-forno-liverpool.png",
+        price: "££",
+        tags: ["Wood-fired pizza", "Fresh pasta", "City centre"],
+        badges: ["community", "hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "casa-italia-stanley-st",
+        name: "Casa Italia",
+        short:
+          "Beloved Liverpool institution serving classic pizza & pasta in a bustling trattoria setting.",
+        address: "36–40 Stanley St, Liverpool L1 6AL",
+        phone: "0151 227 5774",
+        website: "https://www.casaitalialiverpool.co.uk/",
+        mapsUrl: "https://maps.google.com/?q=Casa+Italia+Liverpool+L1+6AL",
+        image: "/images/casa-italia-liverpool.png",
+        price: "££",
+        tags: ["Classic", "Family-friendly"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
 
-/* -------------------- BIRMINGHAM -------------------- */
-birmingham: {
-  restaurants: [
-    {
-      slug: "san-carlo-birmingham",
-      name: "San Carlo (Temple Street)",
-      short: "Flagship city-centre classic for seafood, pasta and white-tablecloth service.",
-      address: "4 Temple Street, Birmingham B2 5BN",
-      phone: "0121 633 0251",
-      website: "https://sancarlo.co.uk/restaurants/san-carlo-birmingham/",
-      mapsUrl: "https://maps.google.com/?q=San+Carlo+Birmingham+B2+5BN",
-      image: "/images/San-Carlo.webp",
-      price: "£££",
-      tags: ["Classic", "Seafood", "Special occasions"],
-      badges: ["hand-checked", "community"],
-      lastUpdated: "2025-10-19"
-    },
-    {
-      slug: "tropea-harborne",
-      name: "Tropea (Harborne)",
-      short: "Neighbourhood Italian with seasonal small plates and fresh pasta in Harborne.",
-      address: "27 Lordswood Rd, Birmingham B17 9RP",
-      phone: "0121 427 9777",
-      website: "https://tropeabirmingham.com/",
-      mapsUrl: "https://maps.google.com/?q=Tropea+27+Lordswood+Rd+B17+9RP",
-      image: "/images/landscape-image.png", // TODO: add venue photo to /public/images
-      price: "£££",
-      tags: ["Seasonal", "Fresh pasta", "Neighbourhood"],
-      badges: ["editors-pick", "community"],
-      lastUpdated: "2025-10-19"
-    }
-  ],
-  delis: [
-    {
-      slug: "ciaro-italian-deli-bearwood",
-      name: "Ciaro Italian Deli (Bearwood)",
-      short: "Independent Italian deli-café with espresso, panini and shelves of imports.",
-      address: "530 Bearwood Rd, Smethwick B66 4BX",
-      phone: "", // not published on their socials at time of writing
-      website: "https://www.instagram.com/ciaroitaliandeli/",
-      mapsUrl: "https://maps.google.com/?q=530+Bearwood+Rd+B66+4BX",
-      image: "/images/landscape-image.png", // TODO: add a deli photo
-      price: "££",
-      tags: ["Deli counter", "Coffee"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-      review: {
-        snippet: "Proper Italian sandwiches, coffee and friendly service.",
-        source: "Community"
-      }
-    }
-    // TODO: Add a second deli once verified (e.g., another Birmingham/Moseley option).
-  ],
-  shops: [
-    // TODO: Add 1–2 specialist Italian grocers/wine shops in Birmingham we’re confident to recommend.
-  ]
-},
+    delis: [
+      {
+        slug: "italian-club-bakery-bold-st",
+        name: "The Italian Club Bakery (Bold St)",
+        short:
+          "Proper Italian breads, pastries and coffee from the Italian Club team — perfect for a quick bite.",
+        address: "8 Bold St, Liverpool L1 4DS",
+        phone: "",
+        website:
+          "https://italianclubliverpool.co.uk/italian-club-bakery/",
+        mapsUrl: "https://maps.google.com/?q=8+Bold+St+Liverpool+L1+4DS",
+        image: "/images/the-italian-club-liverpool.png",
+        price: "£",
+        tags: ["Bakery", "Coffee", "Pasticceria"],
+        badges: ["community", "hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "in-tavola-italian-deli",
+        name: "In Tavola – Italian Deli",
+        short:
+          "Independent deli for cured meats, cheeses, fresh sandwiches and Italian pantry staples.",
+        address: "829 Prescot Rd, Liverpool L13 3BS",
+        phone: "0151 739 5800",
+        website: "https://www.intavola.uk/",
+        mapsUrl:
+          "https://maps.google.com/?q=829+Prescot+Road+Liverpool+L13+3BS",
+        image: "/images/in-tavola-liverpool.png",
+        price: "£",
+        tags: ["Deli counter", "Groceries"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
 
- /* -------------------- LIVERPOOL -------------------- */
-liverpool: {
-  restaurants: [
-    {
-      slug: "il-forno-duke-st",
-      name: "Il Forno",
-      short:
-        "Long-standing independent for wood-fired pizza, fresh pasta and a lively dining room.",
-      address: "132 Duke St, Liverpool L1 5AG",
-      phone: "0151 709 4002",
-      website: "https://www.instagram.com/ilfornoliverpool/",
-      mapsUrl: "https://maps.google.com/?q=Il+Forno+132+Duke+St+Liverpool+L1+5AG",
-      image: "/images/landscape-image.png", // TODO: swap for a real venue photo
-      price: "££",
-      tags: ["Wood-fired pizza", "Fresh pasta", "City centre"],
-      badges: ["community", "hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "casa-italia-stanley-st",
-      name: "Casa Italia",
-      short:
-        "Beloved Liverpool institution serving classic pizza & pasta in a bustling trattoria setting.",
-      address: "36–40 Stanley St, Liverpool L1 6AL",
-      phone: "0151 227 5774",
-      website: "https://www.casaitalialiverpool.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Casa+Italia+Liverpool+L1+6AL",
-      image: "/images/landscape-image.png", // TODO
-      price: "££",
-      tags: ["Classic", "Family-friendly"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
+    shops: [
+      {
+        slug: "pd-italian-bakery",
+        name: "P&D Italian Bakery (Italian Quarter)",
+        short:
+          "Artisanal breads, cakes and Italian treats from Paolo & Donato’s Italian Quarter.",
+        address: "Queens Sq / Williamson Sq area, Liverpool L1",
+        phone: "",
+        website:
+          "https://www.tripadvisor.co.uk/Restaurant_Review-g186337-d25823993-Reviews-P_D_Italian_Bakery-Liverpool_Merseyside_England.html",
+        mapsUrl: "https://maps.google.com/?q=P%26D+Italian+Bakery+Liverpool",
+        image: "/images/italian-quarter-p+d-liverpool.png",
+        price: "£",
+        tags: ["Bakery", "Dolci"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "in-tavola-italian-grocer",
+        name: "In Tavola (Grocer)",
+        short:
+          "Retail shelves of sauces, pasta, oils and regional Italian produce to stock your pantry.",
+        address: "829 Prescot Rd, Liverpool L13 3BS",
+        phone: "0151 739 5800",
+        website: "https://www.intavola.uk/",
+        mapsUrl:
+          "https://maps.google.com/?q=829+Prescot+Road+Liverpool+L13+3BS",
+        image: "/images/in-tavola-liverpool.png",
+        price: "£",
+        tags: ["Groceries", "Take-home"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+  },
 
-  delis: [
-    {
-      slug: "italian-club-bakery-bold-st",
-      name: "The Italian Club Bakery (Bold St)",
-      short:
-        "Proper Italian breads, pastries and coffee from the Italian Club team — perfect for a quick bite.",
-      address: "8 Bold St, Liverpool L1 4DS",
-      phone: "",
-      website: "https://italianclubliverpool.co.uk/italian-club-bakery/",
-      mapsUrl: "https://maps.google.com/?q=8+Bold+St+Liverpool+L1+4DS",
-      image: "/images/landscape-image.png", // TODO
-      price: "£",
-      tags: ["Bakery", "Coffee", "Pasticceria"],
-      badges: ["community", "hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "in-tavola-italian-deli",
-      name: "In Tavola – Italian Deli",
-      short:
-        "Independent deli for cured meats, cheeses, fresh sandwiches and Italian pantry staples.",
-      address: "829 Prescot Rd, Liverpool L13 3BS",
-      phone: "0151 739 5800",
-      website: "https://www.intavola.uk/",
-      mapsUrl: "https://maps.google.com/?q=829+Prescot+Road+Liverpool+L13+3BS",
-      image: "/images/landscape-image.png", // TODO
-      price: "£",
-      tags: ["Deli counter", "Groceries"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
 
-  shops: [
-    {
-      slug: "pd-italian-bakery",
-      name: "P&D Italian Bakery (Italian Quarter)",
-      short:
-        "Artisanal breads, cakes and Italian treats from Paolo & Donato’s Italian Quarter.",
-      address: "Queens Sq / Williamson Sq area, Liverpool L1",
-      phone: "",
-      website: "https://www.tripadvisor.co.uk/Restaurant_Review-g186337-d25823993-Reviews-P_D_Italian_Bakery-Liverpool_Merseyside_England.html",
-      mapsUrl: "https://maps.google.com/?q=P%26D+Italian+Bakery+Liverpool",
-      image: "/images/landscape-image.png", // TODO
-      price: "£",
-      tags: ["Bakery", "Dolci"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "in-tavola-italian-grocer",
-      name: "In Tavola (Grocer)",
-      short:
-        "Retail shelves of sauces, pasta, oils and regional Italian produce to stock your pantry.",
-      address: "829 Prescot Rd, Liverpool L13 3BS",
-      phone: "0151 739 5800",
-      website: "https://www.intavola.uk/",
-      mapsUrl: "https://maps.google.com/?q=829+Prescot+Road+Liverpool+L13+3BS",
-      image: "/images/landscape-image.png", // TODO
-      price: "£",
-      tags: ["Groceries", "Take-home"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-},
-
-  sheffield: {},
-  nottingham: {},
-  leicester: {},
-  bristol: {},
   /* -------------------- EDINBURGH -------------------- */
-edinburgh: {
-  restaurants: [
-    {
-      slug: "locanda-de-gusti",
-      name: "Locanda De Gusti",
-      short: "Beloved Dalry trattoria—Abruzzo/South Italian cooking, seafood & handmade pasta.",
-      address: "102 Dalry Rd, Edinburgh EH11 2DW",
-      phone: "",
-      website: "https://www.locandadegusti.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Locanda+De+Gusti+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "£££",
-      tags: ["Seafood", "Pasta", "Family-run"],
-      badges: ["hand-checked", "community"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "vittoria-on-the-bridge",
-      name: "Vittoria On The Bridge",
-      short: "Grand city-centre Italian—classic antipasti, pizza & pasta near the Old Town.",
-      address: "19 George IV Bridge, Edinburgh EH1 1EN",
-      phone: "",
-      website: "https://vittoriagroup.co.uk/restaurant/vittoria-on-the-bridge/",
-      mapsUrl: "https://maps.google.com/?q=Vittoria+On+The+Bridge+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Classic", "Family", "City centre"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  delis: [
-    {
-      slug: "valvona-and-crolla-elm-row",
-      name: "Valvona & Crolla (Elm Row)",
-      short: "Historic Italian deli & wine merchant—cheese, salumi, pasta, pastries and café.",
-      address: "19 Elm Row, Edinburgh EH7 4AA",
-      phone: "",
-      website: "https://www.valvonacrolla.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Valvona+%26+Crolla+Elm+Row+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Deli counter", "Wine merchant", "Café"],
-      badges: ["hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "sicilian-pastry-shop",
-      name: "The Sicilian Pastry Shop",
-      short: "Leith favourite for cannoli, arancini, celebration cakes & proper espresso.",
-      address: "11–15 Albert St, Edinburgh EH7 5NG",
-      phone: "",
-      website: "https://www.facebook.com/thesicilianpastryshop/",
-      mapsUrl: "https://maps.google.com/?q=Sicilian+Pastry+Shop+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "£",
-      tags: ["Sicilian", "Bakery", "Coffee"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  shops: [
-    {
-      slug: "little-italy-lothian-road",
-      name: "Little Italy (Espresso & Deli)",
-      short: "Lively espresso bar & Italian grocery—panini, biscotti, sauces, seasonal treats.",
-      address: "Earl Grey St (Lothian Rd), Edinburgh EH3 9BN",
-      phone: "",
-      website: "https://www.littleitalycoffee.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Little+Italy+Lothian+Road+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Coffee", "Groceries", "Panini"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "ciao-roma-gelateria",
-      name: "Ciao Roma Gelateria (South Bridge)",
-      short: "House-made Italian gelato & desserts next to the long-running trattoria.",
-      address: "64 South Bridge, Edinburgh EH1 1LS",
-      phone: "",
-      website: "https://www.ciaoroma.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Ciao+Roma+Gelateria+Edinburgh",
-      image: "/images/landscape-image.png",
-      price: "£",
-      tags: ["Gelato", "Desserts", "Family-run"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-},
+  edinburgh: {
+    restaurants: [
+      {
+        slug: "locanda-de-gusti",
+        name: "Locanda De Gusti",
+        short:
+          "Beloved Dalry trattoria—Abruzzo/South Italian cooking, seafood & handmade pasta.",
+        address: "102 Dalry Rd, Edinburgh EH11 2DW",
+        phone: "",
+        website: "https://www.locandadegusti.co.uk/",
+        mapsUrl: "https://maps.google.com/?q=Locanda+De+Gusti+Edinburgh",
+        image: "/images/locanda-de-gusti.png",
+        price: "£££",
+        tags: ["Seafood", "Pasta", "Family-run"],
+        badges: ["hand-checked", "community"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "vittoria-on-the-bridge",
+        name: "Vittoria On The Bridge",
+        short:
+          "Grand city-centre Italian—classic antipasti, pizza & pasta near the Old Town.",
+        address: "19 George IV Bridge, Edinburgh EH1 1EN",
+        phone: "",
+        website:
+          "https://vittoriagroup.co.uk/restaurant/vittoria-on-the-bridge/",
+        mapsUrl: "https://maps.google.com/?q=Vittoria+On+The+Bridge+Edinburgh",
+        image: "/images/vittoria-on-the-bridge.png",
+        price: "££",
+        tags: ["Classic", "Family", "City centre"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    delis: [
+      {
+        slug: "valvona-and-crolla-elm-row",
+        name: "Valvona & Crolla (Elm Row)",
+        short:
+          "Historic Italian deli & wine merchant—cheese, salumi, pasta, pastries and café.",
+        address: "19 Elm Row, Edinburgh EH7 4AA",
+        phone: "",
+        website: "https://www.valvonacrolla.co.uk/",
+        mapsUrl:
+          "https://maps.google.com/?q=Valvona+%26+Crolla+Elm+Row+Edinburgh",
+        image: "/images/valvona-and-crolla-elm-row.png",
+        price: "££",
+        tags: ["Deli counter", "Wine merchant", "Café"],
+        badges: ["hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "sicilian-pastry-shop",
+        name: "The Sicilian Pastry Shop",
+        short:
+          "Leith favourite for cannoli, arancini, celebration cakes & proper espresso.",
+        address: "11–15 Albert St, Edinburgh EH7 5NG",
+        phone: "",
+        website:
+          "https://www.facebook.com/thesicilianpastryshop/",
+        mapsUrl: "https://maps.google.com/?q=Sicilian+Pastry+Shop+Edinburgh",
+        image: "/images/sicilian-pastry-shop.png",
+        price: "£",
+        tags: ["Sicilian", "Bakery", "Coffee"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    shops: [
+      {
+        slug: "little-italy-lothian-road",
+        name: "Little Italy (Espresso & Deli)",
+        short:
+          "Lively espresso bar & Italian grocery—panini, biscotti, sauces, seasonal treats.",
+        address: "Earl Grey St (Lothian Rd), Edinburgh EH3 9BN",
+        phone: "",
+        website: "https://www.littleitalycoffee.co.uk/",
+        mapsUrl:
+          "https://maps.google.com/?q=Little+Italy+Lothian+Road+Edinburgh",
+        image: "/images/little-italy-lothian-road.png",
+        price: "££",
+        tags: ["Coffee", "Groceries", "Panini"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "ciao-roma-gelateria",
+        name: "Ciao Roma Gelateria (South Bridge)",
+        short:
+          "House-made Italian gelato & desserts next to the long-running trattoria.",
+        address: "64 South Bridge, Edinburgh EH1 1LS",
+        phone: "",
+        website: "https://www.ciaoroma.co.uk/",
+        mapsUrl: "https://maps.google.com/?q=Ciao+Roma+Gelateria+Edinburgh",
+        image: "/images/ciao-roma-gelateria.png",
+        price: "£",
+        tags: ["Gelato", "Desserts", "Family-run"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+  },
 
-  cardiff: {},
-  brighton: {},
-  oxford: {},
-  cambridge: {},
- /* -------------------- YORK -------------------- */
-york: {
-  restaurants: [
-    {
-      slug: "delrios-york",
-      name: "Delrio’s",
-      short: "Long-loved trattoria by Micklegate Bar—Sardinian specials, hearty pasta, warm hospitality.",
-      address: "10–12 Blossom Street, York YO24 1AE",
-      phone: "01904 622695",
-      website: "https://www.delriosrestaurant.com/",
-      mapsUrl: "https://maps.google.com/?q=Delrio%E2%80%99s+York",
-      image: "/images/landscape-image.png", // TODO: drop a venue photo in /public/images
-      price: "£££",
-      tags: ["Sardinian", "Pasta", "Classic"],
-      badges: ["community", "hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "cresci-pizzeria-york",
-      name: "Cresci Pizzeria",
-      short: "AVPN-certified Neapolitan pizza, spritz & friendly pace in the centre.",
-      address: "20 Piccadilly, York YO1 9NU",
-      phone: "01904 522666",
-      website: "https://www.crescigroup.co.uk/york",
-      mapsUrl: "https://maps.google.com/?q=Cresci+Pizzeria+York",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Neapolitan pizza", "Casual"],
-      badges: ["hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  delis: [
-    {
-      slug: "trinacria-sicilian-york",
-      name: "Trinacria – Sicilian Café & Deli",
-      short: "Neighbourhood Sicilian on Bishy Road—espresso, cannoli, arancini & shelves of Italian staples.",
-      address: "54 Bishopthorpe Rd, York YO23 1JJ",
-      phone: "01904 656566",
-      website: "https://www.trinacria.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Trinacria+54+Bishopthorpe+Rd+York",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Sicilian", "Deli counter", "Coffee"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-  shops: [
-    {
-      slug: "henshelwoods-delicatessen",
-      name: "Henshelwoods Delicatessen",
-      short: "Award-winning city-centre deli with Italian cheeses, salumi, antipasti & pantry goods.",
-      address: "10 Newgate, York YO1 7LA",
-      phone: "01904 673877",
-      website: "https://www.henshelwoods-delicatessen.co.uk/",
-      mapsUrl: "https://maps.google.com/?q=Henshelwoods+Delicatessen+York",
-      image: "/images/landscape-image.png",
-      price: "££",
-      tags: ["Cheese", "Salumi", "Pantry"],
-      badges: ["hand-checked"],
-      lastUpdated: "2025-10-19",
-    },
-    {
-      slug: "roberto-authentic-italian-gelato",
-      name: "Roberto – Authentic Italian Gelato",
-      short: "Italian gelato & desserts made daily; classic tiramisù and Sicilian cannoli.",
-      address: "York (city centre) — see site for current trading spot",
-      phone: "",
-      website: "https://www.facebook.com/robertoauthenticgelato/",
-      mapsUrl: "https://maps.google.com/?q=Roberto+Authentic+Italian+Gelato+York",
-      image: "/images/landscape-image.png",
-      price: "£",
-      tags: ["Gelato", "Desserts", "Family-run"],
-      badges: ["community"],
-      lastUpdated: "2025-10-19",
-    },
-  ],
-},
 
-  bath: {},
+  /* -------------------- YORK -------------------- */
+  york: {
+    restaurants: [
+      {
+        slug: "delrios-york",
+        name: "Delrio’s",
+        short:
+          "Long-loved trattoria by Micklegate Bar—Sardinian specials, hearty pasta, warm hospitality.",
+        address: "10–12 Blossom Street, York YO24 1AE",
+        phone: "01904 622695",
+        website: "https://www.delriosrestaurant.com/",
+        mapsUrl: "https://maps.google.com/?q=Delrio%E2%80%99s+York",
+        image: "/images/delrios-york.png",
+        price: "£££",
+        tags: ["Sardinian", "Pasta", "Classic"],
+        badges: ["community", "hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "cresci-pizzeria-york",
+        name: "Cresci Pizzeria",
+        short:
+          "AVPN-certified Neapolitan pizza, spritz & friendly pace in the centre.",
+        address: "20 Piccadilly, York YO1 9NU",
+        phone: "01904 522666",
+        website: "https://www.crescigroup.co.uk/york",
+        mapsUrl: "https://maps.google.com/?q=Cresci+Pizzeria+York",
+        image: "/images/cresci-pizzeria-york.png",
+        price: "££",
+        tags: ["Neapolitan pizza", "Casual"],
+        badges: ["hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    delis: [
+      {
+        slug: "trinacria-sicilian-york",
+        name: "Trinacria – Sicilian Café & Deli",
+        short:
+          "Neighbourhood Sicilian on Bishy Road—espresso, cannoli, arancini & shelves of Italian staples.",
+        address: "54 Bishopthorpe Rd, York YO23 1JJ",
+        phone: "01904 656566",
+        website: "https://www.trinacria.co.uk/",
+        mapsUrl: "https://maps.google.com/?q=Trinacria+54+Bishopthorpe+Rd+York",
+        image: "/images/trinacria-sicilian-york.png",
+        price: "££",
+        tags: ["Sicilian", "Deli counter", "Coffee"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+    shops: [
+      {
+        slug: "henshelwoods-delicatessen",
+        name: "Henshelwoods Delicatessen",
+        short:
+          "Award-winning city-centre deli with Italian cheeses, salumi, antipasti & pantry goods.",
+        address: "10 Newgate, York YO1 7LA",
+        phone: "01904 673877",
+        website:
+          "https://www.henshelwoods-delicatessen.co.uk/",
+        mapsUrl: "https://maps.google.com/?q=Henshelwoods+Delicatessen+York",
+        image: "/images/henshelwoods-delicatessen.png",
+        price: "££",
+        tags: ["Cheese", "Salumi", "Pantry"],
+        badges: ["hand-checked"],
+        lastUpdated: "2025-10-19",
+      },
+      {
+        slug: "roberto-authentic-italian-gelato",
+        name: "Roberto – Authentic Italian Gelato",
+        short:
+          "Italian gelato & desserts made daily; classic tiramisù and Sicilian cannoli.",
+        address: "York (city centre) — see site for current trading spot",
+        phone: "",
+        website:
+          "https://www.facebook.com/robertoauthenticgelato/",
+        mapsUrl:
+          "https://maps.google.com/?q=Roberto+Authentic+Italian+Gelato+York",
+        image: "/images/roberto-authentic-italian-gelato.png",
+        price: "£",
+        tags: ["Gelato", "Desserts", "Family-run"],
+        badges: ["community"],
+        lastUpdated: "2025-10-19",
+      },
+    ],
+  },
+
 };
 
+// City keys in the dataset (lowercase)
 export const cities = Object.keys(listingsByCityAndCategory);
-// Export Listing for consumers; keep a legacy alias just in case
+
+// Legacy alias (if any consumers import DefaultListing)
 export type { Listing as DefaultListing };
+
+// === City preview images & helpers (PREMIUM look) ==========================
+// Centralise all city images in one place so cards/heroes stay consistent.
+export type CityPreview = {
+  /** 4:3 image for cards/grids (landscape, no text). */
+  card: string;
+  /** Optional 21:9 hero if a city page needs a banner. */
+  hero?: string;
+  /** Accessible alt text for the image. */
+  alt: string;
+  /** Subtle UI tint for overlays/skeletons (hex). */
+  tint?: string;
+  /** Optional tiny base64 LQIP if you want blur placeholders. */
+  blurDataURL?: string;
+  /** (Optional) Credit if you want to show attribution somewhere. */
+  credit?: string;
+};
+
+export const cityPreviews: Record<string, CityPreview> = {
+  manchester: {
+    card: "/images/cities/manchester-4x3.jpg",
+    hero: "/images/cities/manchester-21x9.jpg",
+    alt: "Manchester city centre skyline with canals at dusk",
+    tint: "#0E7490",
+  },
+  leeds: {
+    card: "/images/cities/leeds-4x3.jpg",
+    hero: "/images/cities/leeds-21x9.jpg",
+    alt: "Leeds cityscape by the waterfront",
+    tint: "#1D4ED8",
+  },
+  bradford: {
+    card: "/images/cities/bradford-4x3.jpg",
+    hero: "/images/cities/bradford-21x9.jpg",
+    alt: "Bradford City Hall from Centenary Square",
+    tint: "#B45309",
+  },
+  newcastle: {
+    card: "/images/cities/newcastle-4x3.jpg",
+    hero: "/images/cities/newcastle-21x9.jpg",
+    alt: "Newcastle’s Tyne Bridge over the river",
+    tint: "#065F46",
+  },
+  glasgow: {
+    card: "/images/cities/glasgow-4x3.jpg",
+    hero: "/images/cities/glasgow-21x9.jpg",
+    alt: "Glasgow riverside and modern bridge",
+    tint: "#334155",
+  },
+  london: {
+    card: "/images/cities/london-4x3.jpg",
+    hero: "/images/cities/london-21x9.jpg",
+    alt: "London skyline with the Thames",
+    tint: "#111827",
+  },
+  birmingham: {
+    card: "/images/cities/birmingham-4x3.jpg",
+    hero: "/images/cities/birmingham-21x9.jpg",
+    alt: "Birmingham canals near Brindleyplace",
+    tint: "#7C3AED",
+  },
+  liverpool: {
+    card: "/images/cities/liverpool-4x3.jpg",
+    hero: "/images/cities/liverpool-21x9.jpg",
+    alt: "Liverpool waterfront and the Three Graces",
+    tint: "#DC2626",
+  },
+  edinburgh: {
+    card: "/images/cities/edinburgh-4x3.jpg",
+    hero: "/images/cities/edinburgh-21x9.jpg",
+    alt: "Edinburgh Castle and Old Town rooftops",
+    tint: "#0F766E",
+  },
+  york: {
+    card: "/images/cities/york-4x3.jpg",
+    hero: "/images/cities/york-21x9.jpg",
+    alt: "York Minster with historic streets",
+    tint: "#92400E",
+  },
+  sheffield: { card: "/images/cities/sheffield-4x3.jpg", alt: "Sheffield city centre", tint: "#2563EB" },
+  nottingham: { card: "/images/cities/nottingham-4x3.jpg", alt: "Nottingham city centre", tint: "#059669" },
+  leicester: { card: "/images/cities/leicester-4x3.jpg", alt: "Leicester city centre", tint: "#6B7280" },
+  bristol: { card: "/images/cities/bristol-4x3.jpg", alt: "Bristol harbourside", tint: "#EF4444" },
+  cardiff: { card: "/images/cities/cardiff-4x3.jpg", alt: "Cardiff city centre", tint: "#0EA5E9" },
+  brighton: { card: "/images/cities/brighton-4x3.jpg", alt: "Brighton seafront", tint: "#F97316" },
+  oxford: { card: "/images/cities/oxford-4x3.jpg", alt: "Oxford colleges skyline", tint: "#7C3AED" },
+  cambridge: { card: "/images/cities/cambridge-4x3.jpg", alt: "Cambridge colleges and river", tint: "#10B981" },
+  bath: { card: "/images/cities/bath-4x3.jpg", alt: "Bath Georgian architecture", tint: "#F59E0B" },
+};
+
+/**
+ * Helper: returns a city preview or a neutral fallback so UI never breaks.
+ */
+export function getCityPreview(key: string): CityPreview {
+  return (
+    cityPreviews[key] ?? {
+      card: "/images/cities/_fallback-4x3.jpg",
+      alt: "City preview",
+      tint: "#475569",
+    }
+  );
+}

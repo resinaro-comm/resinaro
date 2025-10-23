@@ -2,19 +2,22 @@
 
 import React, {useState, useId} from "react";
 import Link from "next/link";
+import { p, useLocaleFromPathname, type Locale } from "@/lib/localePath";
 
 type QA = {
   q: string;
   a: React.ReactElement;
 };
 
-const qa: QA[] = [
+// Generate QA array with locale-aware links
+function getQA(locale: Locale): QA[] {
+  return [
   {
     q: "What visa do I need to move from Italy to the UK?",
     a: (
       <>
         <p className="mb-2">
-          If you already hold <strong>pre-settled or settled status</strong> under the EU Settlement Scheme,
+          When in doubt, message us—we’ll sanity-check it for you at no cost.
           you can live and work in the UK under that status. New arrivals typically need a
           <em> points-based visa</em> (e.g., Skilled Worker), a Student visa, the Youth Mobility Scheme (if eligible),
           or a Family route. Use the official visa checker to confirm your best route
@@ -129,7 +132,7 @@ const qa: QA[] = [
           for Monzo, Starling, and Revolut on our blog.
         </p>
         <p className="text-sm">
-          See: <Link className="underline text-green-800" href="/community/life-in-uk/bank-account">Opening a UK bank account guide</Link>.
+          See: <Link className="underline text-green-800" href={p(locale, "/community/life-in-uk/bank-account")}>Opening a UK bank account guide</Link>.
         </p>
       </>
     ),
@@ -224,12 +227,13 @@ const qa: QA[] = [
           <li>Phishing messages claiming to be HMRC, DVLA, or your bank.</li>
         </ul>
         <p className="mt-2">
-          When in doubt, message us—we’ll sanity-check it for you at no cost.
+          When in doubt, message us—we&apos;ll sanity-check it for you at no cost.
         </p>
       </>
     ),
   },
-];
+  ];
+}
 
 function QAItem({ item }: { item: QA }) {
   const [open, setOpen] = useState(false);
@@ -260,6 +264,9 @@ function QAItem({ item }: { item: QA }) {
 }
 
 export default function ServicesFAQ() {
+  const locale = useLocaleFromPathname();
+  const qa = getQA(locale);
+  
   // Minimal JSON-LD for FAQ rich results
   const jsonLd = {
     "@context": "https://schema.org",
