@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode, MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface PageWrapperProps {
   children: ReactNode;
@@ -8,8 +9,8 @@ interface PageWrapperProps {
 }
 
 export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
-  // Ensure key is never null (handle usePathname possibly returning null)
-  const safeKey: string | undefined = routeKey ?? undefined;
+  // Always provide a stable key for framer-motion
+  const safeKey: string = routeKey ?? "page";
 
   // Banner visibility persisted in localStorage
   const [bannerHidden, setBannerHidden] = useState<boolean>(false);
@@ -54,11 +55,18 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
     };
     setVar();
 
+    // Guard ResizeObserver for older environments
     let ro: ResizeObserver | undefined;
+    const canObserve = typeof window !== "undefined" && "ResizeObserver" in window;
+
     if (el && !bannerHidden) {
       try {
-        ro = new ResizeObserver(setVar);
-        ro.observe(el);
+        if (canObserve) {
+          ro = new ResizeObserver(setVar);
+          ro.observe(el);
+        } else {
+          window.addEventListener("resize", setVar, { passive: true });
+        }
       } catch {
         window.addEventListener("resize", setVar, { passive: true });
       }
@@ -73,7 +81,7 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
     };
   }, [bannerHidden]);
 
-  function closeBanner(e?: React.MouseEvent) {
+  function closeBanner(e?: MouseEvent<HTMLButtonElement>) {
     e?.stopPropagation();
     try {
       window.localStorage.setItem("resinaro_ad_hidden_v2", "1");
@@ -107,7 +115,9 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
                       {/* ROW 1 */}
                       <div className="flex items-center gap-10">
                         <Chip>AD</Chip>
-                        <Item>Get featured on <strong>Resinaro</strong></Item>
+                        <Item>
+                          Get featured on <strong>Resinaro</strong>
+                        </Item>
                         <Dot />
                         <Item>City & category placements</Item>
                         <Dot />
@@ -116,9 +126,11 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
                         <Item>Apply to be featured →</Item>
                       </div>
                       {/* ROW 2 (duplicate for seamless loop) */}
-                      <div className="flex items-center gap-10" aria-hidden>
+                      <div className="flex items-center gap-10" aria-hidden="true">
                         <Chip>AD</Chip>
-                        <Item>Get featured on <strong>Resinaro</strong></Item>
+                        <Item>
+                          Get featured on <strong>Resinaro</strong>
+                        </Item>
                         <Dot />
                         <Item>City & category placements</Item>
                         <Dot />
@@ -138,7 +150,7 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
                 className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200/70 bg-white/80 text-green-900/80 hover:bg-white"
                 type="button"
               >
-                <span aria-hidden>✕</span>
+                <span aria-hidden="true">✕</span>
               </button>
             </div>
 
@@ -182,14 +194,14 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
 }
 
 /* --- tiny presentational helpers for banner items --- */
-function Chip({ children }: { children: React.ReactNode }) {
+function Chip({ children }: { children: ReactNode }) {
   return (
     <span className="inline-flex h-5 w-5 flex-none items-center justify-center rounded-full border border-emerald-500/50 bg-white text-[10px] font-semibold text-emerald-700">
       {children}
     </span>
   );
 }
-function Item({ children }: { children: React.ReactNode }) {
+function Item({ children }: { children: ReactNode }) {
   return <span className="text-[13px] sm:text-sm">{children}</span>;
 }
 function Dot() {

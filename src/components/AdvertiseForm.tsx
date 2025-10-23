@@ -1,5 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
+import Link from "next/link";
 
 type Sector =
   | "legal"
@@ -126,8 +127,41 @@ export default function AdvertiseForm() {
       return;
     }
 
-    // plain text/select fields
-    setForm((s) => ({ ...s, [name]: value } as FormState));
+    // select: sector (union)
+    if (name === "sector") {
+      setForm((s) => ({ ...s, sector: value as Sector }));
+      return;
+    }
+
+    // plain text/select fields (narrow to keys that truly take string values)
+    type StringKeys = Extract<
+      keyof FormState,
+      | "company"
+      | "website"
+      | "contact"
+      | "email"
+      | "phone"
+      | "goals"
+      | "message"
+      | "tier"
+      | "budget"
+    >;
+
+    if ([
+      "company",
+      "website",
+      "contact",
+      "email",
+      "phone",
+      "goals",
+      "message",
+      "tier",
+      "budget",
+    ].includes(name)) {
+      const key = name as StringKeys;
+      setForm((s) => ({ ...s, [key]: value }));
+      return;
+    }
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -403,7 +437,7 @@ export default function AdvertiseForm() {
           <input type="checkbox" name="consent" checked={form.consent} onChange={onChange} />
           <span>
             I agree to the processing of this data for advertising enquiries. See our{" "}
-            <a href="/privacy" className="underline">Privacy Policy</a>.
+            <Link href="/privacy-policy" className="underline">Privacy Policy</Link>.
           </span>
         </label>
       </div>
