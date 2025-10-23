@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 // Google Apps Script endpoint + token (same as other forms)
 const GAS_URL =
@@ -797,9 +798,9 @@ export default function AireForm() {
                 />
                 <span>
                   I have read and agree to the{" "}
-                  <a href="/refund-policy" className="underline text-green-900">
+                  <Link href="/refund-policy" className="underline text-green-900">
                     Refund & Credit Policy
-                  </a>
+                  </Link>
                   . I understand Resinaro’s default remedy is account credit valid for 12 months,
                   and cash refunds are only provided where legally required.
                 </span>
@@ -814,7 +815,9 @@ export default function AireForm() {
                 />
                 <span>
                   I consent to Resinaro storing and processing my information to deliver this service.{" "}
-                  <a href="/privacy" className="underline">Privacy Policy</a>
+                  <Link href="/privacy-policy" className="underline">
+                    Privacy Policy
+                  </Link>
                 </span>
               </label>
             </div>

@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
@@ -103,7 +104,8 @@ export default function NinForm() {
         <label className="flex items-start gap-2">
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
           <span>
-            I consent to Resinaro processing my data to deliver this service. <a href="/privacy" className="underline">Privacy Policy</a>
+            I consent to Resinaro processing my data to deliver this service.{" "}
+            <Link href="/privacy-policy" className="underline">Privacy Policy</Link>
           </span>
         </label>
       </div>
@@ -111,7 +113,11 @@ export default function NinForm() {
       {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
 
       <div className="pt-2">
-        <button type="submit" disabled={submitDisabled} className={`px-4 py-2 rounded text-white ${submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"}`}>
+        <button
+          type="submit"
+          disabled={submitDisabled}
+          className={`px-4 py-2 rounded text-white ${submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"}`}
+        >
           {submitting ? "Submitting..." : "Submit NIN request + Pay"}
         </button>
         <p className="text-xs text-gray-600 mt-2">You&apos;ll be redirected to payment after submitting.</p>

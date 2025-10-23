@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
@@ -48,9 +49,12 @@ export default function BenefitsForm() {
       });
       type GasResponse = { ok?: boolean; error?: string } | undefined;
       let r1json: GasResponse = undefined;
-      try { r1json = (await r1.json()) as GasResponse; } catch {}
+      try {
+        r1json = (await r1.json()) as GasResponse;
+      } catch {}
       if (!r1.ok || !(r1json && r1json.ok)) {
-        const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
+        const msg =
+          r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
         throw new Error(msg);
       }
 
@@ -84,22 +88,43 @@ export default function BenefitsForm() {
     <form onSubmit={handleSubmit} className="space-y-4" aria-live="polite">
       <div>
         <label className="block text-sm font-medium">Full name *</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="mt-1 block w-full rounded border px-3 py-2"
+          required
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Email *</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium">Telephone *</label>
-          <input value={telephone} onChange={(e) => setTelephone(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="+44..." required />
+          <input
+            value={telephone}
+            onChange={(e) => setTelephone(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            placeholder="+44..."
+            required
+          />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Benefit area</label>
-          <select value={benefitType} onChange={(e) => setBenefitType(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2">
+          <select
+            value={benefitType}
+            onChange={(e) => setBenefitType(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+          >
             <option>Universal Credit</option>
             <option>Housing Benefit</option>
             <option>Council Tax Support</option>
@@ -109,25 +134,49 @@ export default function BenefitsForm() {
         </div>
         <div>
           <label className="block text-sm font-medium">Notes</label>
-          <input value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 block w-full rounded border px-3 py-2" placeholder="Briefly describe your situation" />
+          <input
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="mt-1 block w-full rounded border px-3 py-2"
+            placeholder="Briefly describe your situation"
+          />
         </div>
       </div>
       <div className="text-sm">
         <label className="flex items-start gap-2">
-          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+          />
           <span>
-            I consent to Resinaro processing my data to deliver this service. <a href="/privacy" className="underline">Privacy Policy</a>
+            I consent to Resinaro processing my data to deliver this service.{" "}
+            <Link href="/privacy-policy" className="underline">
+              Privacy Policy
+            </Link>
           </span>
         </label>
       </div>
 
-      {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
+      {error && (
+        <div className="text-red-600 text-sm" role="alert">
+          {error}
+        </div>
+      )}
 
       <div className="pt-2">
-        <button type="submit" disabled={submitDisabled} className={`px-4 py-2 rounded text-white ${submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"}`}>
+        <button
+          type="submit"
+          disabled={submitDisabled}
+          className={`px-4 py-2 rounded text-white ${
+            submitDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 hover:bg-green-800"
+          }`}
+        >
           {submitting ? "Submitting..." : "Submit benefits request + Pay"}
         </button>
-        <p className="text-xs text-gray-600 mt-2">You&apos;ll be redirected to payment after submitting.</p>
+        <p className="text-xs text-gray-600 mt-2">
+          You&apos;ll be redirected to payment after submitting.
+        </p>
       </div>
     </form>
   );

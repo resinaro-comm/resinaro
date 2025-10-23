@@ -1,6 +1,8 @@
+// src/components/PassportForm.tsx
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 
 /** GAS endpoint **/
 const GAS_URL =
@@ -1224,9 +1226,9 @@ export default function PassportForm() {
                 />
                 <span>
                   I have read and agree to the{" "}
-                  <a href="/refund-policy" className="underline text-green-900">
+                  <Link href="/refund-policy" className="underline text-green-900">
                     Refund & Credit Policy
-                  </a>
+                  </Link>
                   . I understand Resinaro’s default remedy is account credit valid for 12 months,
                   and cash refunds are only provided where legally required.
                 </span>
@@ -1242,9 +1244,9 @@ export default function PassportForm() {
                 <span>
                   I consent to Resinaro handling my data and, if provided, using my Prenot@Mi
                   credentials solely to book.{" "}
-                  <a href="/privacy" className="underline text-green-900">
+                  <Link href="/privacy-policy" className="underline text-green-900">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </span>
               </label>
             </div>
