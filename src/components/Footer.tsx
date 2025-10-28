@@ -265,6 +265,14 @@ export default function Footer() {
             <a href="mailto:resinaro@proton.me" className="hover:underline">
               resinaro@proton.me
             </a>
+            <span aria-hidden className="hidden sm:inline text-white/40">·</span>
+            <a
+              href="https://alveriano.com"
+              className="hover:underline"
+              aria-label="This site was created by and is managed by alveriano.com"
+            >
+              This site was created by and is managed by alveriano.com
+            </a>
           </div>
         </div>
       </div>

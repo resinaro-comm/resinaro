@@ -1,3 +1,4 @@
+// src/app/[locale]/not-found.tsx
 "use client";
 
 import Link from "next/link";
@@ -63,23 +64,30 @@ export default function NotFound({
     }
   }, [locale]);
 
-  // Curated internal links (good crawl paths)
+  // Curated internal links (match existing routes in your tree)
   const popularLinks = useMemo(
     () =>
       locale === "it"
         ? [
+            { href: p("/nin-number"), label: "Numero NIN (UK)" },
+            { href: p("/utilities-and-internet"), label: "Utenze & Internet (UK)" },
+            { href: p("/education"), label: "Istruzione (UCAS, visti, diplomi)" },
+            { href: p("/tax-and-money"), label: "Tasse & Soldi (banche, credito, HMRC)" },
             { href: p("/community/bureaucracy-guides/italian-passport-uk-docs-prep"), label: "Passaporto italiano in UK" },
             { href: p("/community/bureaucracy-guides/aire-registration-uk"), label: "Cos’è l’AIRE e come registrarsi" },
-            { href: p("/community/life-in-uk/navigating-nhs-healthcare-italians-uk-2025"), label: "NHS: basi per nuovi arrivati" },
           ]
         : [
+            { href: p("/nin-number"), label: "National Insurance Number (NIN)" },
+            { href: p("/utilities-and-internet"), label: "Utilities & Internet (UK)" },
+            { href: p("/education"), label: "Education (UCAS, visas, diplomas)" },
+            { href: p("/tax-and-money"), label: "Tax & Money (banking, credit, HMRC)" },
             { href: p("/community/bureaucracy-guides/italian-passport-uk-docs-prep"), label: "Italian Passport in the UK" },
             { href: p("/community/bureaucracy-guides/aire-registration-uk"), label: "What is AIRE & how to register" },
-            { href: p("/community/life-in-uk/navigating-nhs-healthcare-italians-uk-2025"), label: "NHS basics for newcomers" },
           ],
     [locale]
   );
 
+  // Dynamic city pages exist under /directory/[city] — these are valid deep links
   const cityLinks = useMemo(
     () => [
       { href: p("/directory/london"), label: "London" },
@@ -97,7 +105,7 @@ export default function NotFound({
       { href: p("/privacy-policy"), label: locale === "it" ? "Privacy" : "Privacy" },
       { href: p("/terms"), label: locale === "it" ? "Termini" : "Terms" },
     ],
-    [copy.contact, copy.services, locale, p]
+    [copy.contact, copy.services, locale]
   );
 
   // JSON-LD: WebSite SearchAction (eligible for sitelinks search box)

@@ -86,6 +86,14 @@ export function getStaticSearchItems(locale: Locale): SearchItem[] {
     { title: "Settled Status", url: p(locale, "/services/settled-status"), type: "service" },
   ];
 
+  // NEW: High-intent top-level hubs (present in your tree under /[locale])
+  const hubs: SearchItem[] = [
+    { title: "National Insurance Number (NIN)", url: p(locale, "/nin-number"), type: "page", meta: "Eligibility, application, timelines, right to work" },
+    { title: "Utilities & Internet", url: p(locale, "/utilities-and-internet"), type: "page", meta: "Energy, water, broadband, mobile — setup & switching" },
+    { title: "Education (UCAS, visas, diplomas)", url: p(locale, "/education"), type: "page", meta: "UCAS, ENIC/Ecctis, visas, Student Finance, English tests" },
+    { title: "Tax & Money", url: p(locale, "/tax-and-money"), type: "page", meta: "Banking, credit score, self-assessment, NI, pensions, remittances" },
+  ];
+
   const topPages: SearchItem[] = [
     { title: "Home", url: p(locale, "/"), type: "page" },
     { title: "About Resinaro", url: p(locale, "/about"), type: "page" },
@@ -97,7 +105,8 @@ export function getStaticSearchItems(locale: Locale): SearchItem[] {
     { title: "Privacy Policy", url: p(locale, "/privacy-policy"), type: "page" },
     { title: "Refund Policy", url: p(locale, "/refund-policy"), type: "page" },
     { title: "Terms", url: p(locale, "/terms"), type: "page" },
+    { title: "Cookies", url: p(locale, "/cookies"), type: "page" },
   ];
 
-  return [...communityGuides, ...directory, ...services, ...topPages];
+  return [...communityGuides, ...directory, ...services, ...hubs, ...topPages];
 }
