@@ -23,6 +23,7 @@
 
 import type { Metadata } from "next";
 import Script from "next/script";
+import Link from "next/link";
 
 // -------------------------------------------------------------------------------------
 // Constants — tweak here if paths or copy change
@@ -397,12 +398,12 @@ export default function Page({ params }: { params: { locale: string } }) {
 
             {/* CTA block: primary action + secondary email link */}
             <div className="not-prose mt-10 flex flex-wrap items-center gap-3">
-              <a
-                href="/contact"
+              <Link
+                href={`/${locale}/contact`}
                 className="inline-flex items-center rounded-xl border border-[#121416] px-4 py-2 text-sm font-medium text-[#121416] transition hover:bg-[#121416] hover:text-[#F5F1EA]"
               >
                 Book a consultation
-              </a>
+              </Link>
               <a
                 href="mailto:resinaro@proton.me"
                 className="text-sm underline decoration-[#C9A86F] underline-offset-2"
