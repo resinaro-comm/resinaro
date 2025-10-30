@@ -1,13 +1,14 @@
 # *
 User-agent: *
 Allow: /
-
-# GPTBot
-User-agent: GPTBot
-Disallow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /drafts
+Disallow: /preview
+Disallow: /_next/
 
 # Host
-Host: http://localhost:3000
+Host: https://www.resinaro.com
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://www.resinaro.com/sitemap.xml
