@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "clean:sitemaps": "rimraf public/sitemap*.xml public/robots.txt",
-    "sitemap": "next-sitemap",
-    "postbuild": "npm run clean:sitemaps && next-sitemap && node ./scripts/ping-sitemaps.js",
+    "sitemap": "next-sitemap --config next-sitemap.config.mjs",
+    "postbuild": "npm run clean:sitemaps && next-sitemap --config next-sitemap.config.mjs && node ./scripts/ping-sitemaps.js",
     "start": "next start",
     "lint": "eslint"
   },
