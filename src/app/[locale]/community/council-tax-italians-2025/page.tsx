@@ -1,5 +1,6 @@
 // app/community/council-tax-italians-2025/page.tsx
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 /**
@@ -35,7 +36,11 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // =========================================================
   // JSON-LD: FAQ (rich results)
   // =========================================================
@@ -606,17 +611,17 @@ Thank you,
           </h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/community/uk-renting-for-italians-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/uk-renting-for-italians-2025")}>
                 UK Renting for Italians — Right to Rent, Referencing & Deposits
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/open-uk-bank-account-no-credit-italians-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/open-uk-bank-account-no-credit-italians-2025")}>
                 Rejected by UK Banks? Fix KYC & Open Your Account (Easy English)
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/uk-tax-code-for-italians-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/uk-tax-code-for-italians-2025")}>
                 UK Tax Code for Italians — Fix Emergency Tax (1257L, BR, 0T)
               </Link>
             </li>

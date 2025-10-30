@@ -1,31 +1,27 @@
-// scripts/ping-sitemaps.js
-// Notifies Google and Bing that the sitemap has changed.
-// Requires SITE_URL env to be set (e.g., https://www.resinaro.com)
-import https from 'node:https';
-import { URL } from 'node:url';
+// Pings Google & Bing after sitemap generation.
+// Runs in postbuild: node ./scripts/ping-sitemaps.js
+const https = require('https');
 
-const SITE_URL = process.env.SITE_URL || 'http://localhost:3000';
-const sitemapUrl = new URL('/sitemap.xml', SITE_URL).toString();
+const SITE_URL = 'https://www.resinaro.com';
+const SITEMAP_URL = `${SITE_URL}/sitemap.xml`;
 
-const endpoints = [
-  `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`,
-  `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`,
-];
-
-function ping(url) {
+function ping(host, path) {
   return new Promise((resolve) => {
+    const url = `https://${host}${path}${encodeURIComponent(SITEMAP_URL)}`;
     https
       .get(url, (res) => {
-        // consume and ignore body
-        res.on('data', () => {});
-        res.on('end', () => resolve({ url, status: res.statusCode }));
+        const ok = res.statusCode && res.statusCode >= 200 && res.statusCode < 400;
+        console.log(`[ping] ${host} -> ${res.statusCode} ${ok ? 'OK' : 'WARN'}`);
+        resolve(true);
       })
-      .on('error', () => resolve({ url, status: 0 }));
+      .on('error', (err) => {
+        console.warn(`[ping] ${host} error:`, err.message);
+        resolve(false);
+      });
   });
 }
 
-Promise.all(endpoints.map(ping)).then((results) => {
-  for (const r of results) {
-    console.log(`Pinged ${r.url} -> ${r.status}`);
-  }
-});
+(async () => {
+  await ping('www.google.com', '/ping?sitemap=');
+  await ping('www.bing.com', '/webmaster/ping.aspx?siteMap=');
+})();

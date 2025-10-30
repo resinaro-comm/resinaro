@@ -1,6 +1,7 @@
 // src/app/community/travel-to-italy-kit/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 /**
@@ -27,7 +28,11 @@ export const metadata: Metadata = {
 const PUBLISHED = "2025-10-11";
 const UPDATED = "2025-10-19";
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // ===== JSON-LD =====
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -334,7 +339,7 @@ export default function Page() {
           </ul>
           <p className="mt-3 text-sm">
             Need help with documents?{" "}
-            <Link className="text-emerald-900 underline underline-offset-4" href="/services">
+            <Link className="text-emerald-900 underline underline-offset-4" href={p(locale, "/services")}>
               View Resinaro Services →
             </Link>
           </p>
@@ -464,12 +469,12 @@ export default function Page() {
             <h2 className="text-xl font-bold text-gray-900">Related Resinaro guides</h2>
             <ul className="mt-3 list-disc pl-6 text-sm text-gray-800">
               <li>
-                <Link className="text-emerald-900 underline underline-offset-4 hover:text-emerald-700" href="/community/power-adapters-uk-italy">
+                <Link className="text-emerald-900 underline underline-offset-4 hover:text-emerald-700" href={p(locale, "/community/power-adapters-uk-italy")}>
                   Plugs, Adapters & Power: Italy ↔ UK Without the Sparks
                 </Link>
               </li>
               <li>
-                <Link className="text-emerald-900 underline underline-offset-4 hover:text-emerald-700" href="/services">
+                <Link className="text-emerald-900 underline underline-offset-4 hover:text-emerald-700" href={p(locale, "/services")}>
                   View Resinaro Services →
                 </Link>
               </li>

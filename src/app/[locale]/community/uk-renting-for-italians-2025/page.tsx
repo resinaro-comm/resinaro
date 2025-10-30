@@ -1,5 +1,6 @@
 // app/community/uk-renting-for-italians-2025/page.tsx
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 /**
@@ -18,7 +19,11 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // =========================================================
   // JSON-LD: FAQ
   // =========================================================
@@ -911,17 +916,17 @@ Kind regards,
           </h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/community/national-insurance-number-italians-uk-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/national-insurance-number-italians-uk-2025")}>
                 National Insurance Number (NIN) — 2025 Step-by-Step + Phone Script
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/life-in-uk">
+              <Link className="underline text-green-900" href={p(locale, "/community/life-in-uk")}>
                 Life in the UK: Bank Account, Credit & First Payslips
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/bureaucracy-guides/italian-cie-id-card-uk">
+              <Link className="underline text-green-900" href={p(locale, "/community/bureaucracy-guides/italian-cie-id-card-uk")}>
                 Italian CIE (ID card) in the UK — Documents & Appointments
               </Link>
             </li>

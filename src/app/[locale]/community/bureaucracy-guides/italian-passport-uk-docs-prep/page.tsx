@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 // --- SEO ---
@@ -12,7 +13,11 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -114,7 +119,7 @@ export default function Page() {
             <p className="leading-relaxed">
               This guide focuses on <strong>preparation and documents</strong> so your appointment goes smoothly. If you’d
               like us to help with booking or reviewing your file, we offer a simple, transparent service:&nbsp;
-              <Link href="/services" className="underline text-green-900 hover:text-green-800">
+              <Link href={p(locale, "/services")} className="underline text-green-900 hover:text-green-800">
                 View Resinaro Services →
               </Link>.
             </p>

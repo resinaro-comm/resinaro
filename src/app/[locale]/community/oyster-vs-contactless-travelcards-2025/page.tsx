@@ -1,6 +1,7 @@
 // app/community/oyster-vs-contactless-travelcards-2025/page.tsx
 import Link from "next/link";
 import Image from "next/image";
+import { p, type Locale } from "@/lib/localePath";
 
 /**
  * Oyster vs Contactless vs Travelcards (2025): Caps, Zones & “Which One Should I Use?”
@@ -34,7 +35,11 @@ export const metadata = {
   alternates: { canonical: "/community/oyster-vs-contactless-travelcards-2025" },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // =========================================================
   // JSON-LD: FAQ
   // =========================================================
@@ -700,17 +705,17 @@ Please review and adjust. My card/Oyster number: <xxxx>. Thank you.`}
           <h2 className="text-xl font-bold text-green-900 mb-2">Related Resinaro guides</h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/community/uk-renting-for-italians-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/uk-renting-for-italians-2025")}>
                 UK Renting for Italians — Right to Rent, Referencing & Deposits
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/proof-of-address-without-bills-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/proof-of-address-without-bills-2025")}>
                 Proof of Address Without Bills (2025) — 12 Accepted Docs + Templates
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/open-uk-bank-account-no-credit-italians-2025">
+              <Link className="underline text-green-900" href={p(locale, "/community/open-uk-bank-account-no-credit-italians-2025")}>
                 Rejected by UK Banks? Fix KYC & Open Your Account (Easy English)
               </Link>
             </li>

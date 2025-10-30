@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
@@ -6,7 +7,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchBox from "@/components/SearchBox";
 import { useTranslations } from "next-intl";
-import { p, useLocaleFromPathname } from "@/lib/localePath";
+import { p } from "@/lib/localePath"; // <-- keep your helper
+import { useLocale } from "next-intl"; // ✅ stable SSR/CSR locale
 
 const LOCALE_COOKIE = "NEXT_LOCALE";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
@@ -18,13 +20,15 @@ export default function Navbar() {
   const drawerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname() || "/";
   const router = useRouter();
-  const locale = useLocaleFromPathname();
 
-  // —— LOGS: see what’s closing it
+  // ✅ Use next-intl for a stable locale (fixes hydration)
+  const locale = (useLocale() as "en" | "it") || "en";
+
+  // Logs (client only)
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log("[NAV] isOpen:", isOpen, "pathname:", pathname);
-  }, [isOpen, pathname]);
+    console.log("[NAV] isOpen:", isOpen, "pathname:", pathname, "locale:", locale);
+  }, [isOpen, pathname, locale]);
 
   // Shrink on scroll
   useEffect(() => {
@@ -33,11 +37,6 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // ❌ TEMPORARILY DISABLE: close-on-route-change (can cause instant close if something navigates)
-  // useEffect(() => {
-  //   if (isOpen) setIsOpen(false);
-  // }, [pathname, isOpen]);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -51,7 +50,7 @@ export default function Navbar() {
     }
   }, [isOpen]);
 
-  // ESC to close only (no click listeners)
+  // Trap focus in drawer when open
   useEffect(() => {
     if (!isOpen) return;
     function onKey(e: KeyboardEvent) {
@@ -183,11 +182,11 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Drawer — DEBUG: no overlay click-to-close */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Overlay – no handlers */}
+            {/* Overlay */}
             <motion.div
               key="overlay"
               className="fixed inset-0 z-[80] bg-black/35 backdrop-blur-[2px]"

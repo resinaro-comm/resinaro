@@ -1,5 +1,6 @@
 // app/community/home-pharmacy-uk/page.tsx
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 export const metadata = {
@@ -9,7 +10,11 @@ export const metadata = {
   alternates: { canonical: "/community/home-pharmacy-uk" },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 py-12">
       <div className="container mx-auto max-w-4xl px-6">
@@ -73,7 +78,7 @@ export default function Page() {
           <h2 className="text-xl font-bold text-green-900 mb-2">Related reads</h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/services">
+              <Link className="underline text-green-900" href={p(locale, "/services")}>
                 View Resinaro Services →
               </Link>
             </li>

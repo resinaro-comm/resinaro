@@ -3,15 +3,44 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { ReactNode, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { p } from "@/lib/localePath";
+import type { Locale } from "@/i18n";
+
+function t(locale: Locale) {
+  const en = {
+    chip: "AD",
+    featuredOn: "Get featured on",
+    placements: "City & category placements",
+    curation: "Clean, human curation",
+    apply: "Apply to be featured →",
+    ariaLabel: "Resinaro sponsor banner",
+    dismiss: "Dismiss banner",
+  } as const;
+
+  const it = {
+    chip: "ADV",
+    featuredOn: "Fatti conoscere su",
+    placements: "Posizionamenti per città e categoria",
+    curation: "Selezione curata, umana",
+    apply: "Candidati per essere in evidenza →",
+    ariaLabel: "Banner sponsor Resinaro",
+    dismiss: "Chiudi banner",
+  } as const;
+
+  return locale === "it" ? it : en;
+}
 
 interface PageWrapperProps {
   children: ReactNode;
   routeKey?: string;
+  // Pass locale from server to avoid SSR/CSR mismatch
+  locale: Locale;
 }
 
-export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
+export default function PageWrapper({ children, routeKey, locale }: PageWrapperProps) {
   // Always provide a stable key for framer-motion
   const safeKey: string = routeKey ?? "page";
+  const tr = t(locale);
 
   // Banner visibility persisted in localStorage
   const [bannerHidden, setBannerHidden] = useState<boolean>(false);
@@ -104,40 +133,40 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
             exit={{ y: -18, opacity: 0 }}
             transition={{ duration: 0.28, ease: "easeOut" }}
             role="region"
-            aria-label="Resinaro sponsor banner"
+            aria-label={tr.ariaLabel}
           >
             <div className="relative w-full border-b border-emerald-200/70 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 text-green-900 shadow-sm">
               {/* Clickable band */}
-              <Link href="/advertise" className="block select-none">
+              <Link href={p(locale, "/advertise")} className="block select-none">
                 <div className="relative flex items-center py-2 sm:py-2.5">
                   {/* Marquee track (full-bleed) */}
                   <div className="banner-track w-full overflow-hidden">
                     <div className="banner-marquee flex gap-10 whitespace-nowrap">
                       {/* ROW 1 */}
                       <div className="flex items-center gap-10">
-                        <Chip>AD</Chip>
+                        <Chip>{tr.chip}</Chip>
                         <Item>
-                          Get featured on <strong>Resinaro</strong>
+                          {tr.featuredOn} <strong>Resinaro</strong>
                         </Item>
                         <Dot />
-                        <Item>City & category placements</Item>
+                        <Item>{tr.placements}</Item>
                         <Dot />
-                        <Item>Clean, human curation</Item>
+                        <Item>{tr.curation}</Item>
                         <Dot />
-                        <Item>Apply to be featured →</Item>
+                        <Item>{tr.apply}</Item>
                       </div>
                       {/* ROW 2 (duplicate for seamless loop) */}
                       <div className="flex items-center gap-10" aria-hidden="true">
-                        <Chip>AD</Chip>
+                        <Chip>{tr.chip}</Chip>
                         <Item>
-                          Get featured on <strong>Resinaro</strong>
+                          {tr.featuredOn} <strong>Resinaro</strong>
                         </Item>
                         <Dot />
-                        <Item>City & category placements</Item>
+                        <Item>{tr.placements}</Item>
                         <Dot />
-                        <Item>Clean, human curation</Item>
+                        <Item>{tr.curation}</Item>
                         <Dot />
-                        <Item>Apply to be featured →</Item>
+                        <Item>{tr.apply}</Item>
                       </div>
                     </div>
                   </div>
@@ -147,7 +176,7 @@ export default function PageWrapper({ children, routeKey }: PageWrapperProps) {
               {/* Close button */}
               <button
                 onClick={closeBanner}
-                aria-label="Dismiss banner"
+                aria-label={tr.dismiss}
                 className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200/70 bg-white/80 text-green-900/80 hover:bg-white"
                 type="button"
               >

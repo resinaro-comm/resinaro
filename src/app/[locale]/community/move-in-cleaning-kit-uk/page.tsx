@@ -1,6 +1,7 @@
 // app/community/move-in-cleaning-kit-uk/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 
 // ——— Meta ———
 export const metadata = {
@@ -16,7 +17,11 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // ——— JSON-LD (Article + FAQ + HowTo) ———
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -497,12 +502,12 @@ export default function Page() {
           <h2 className="text-xl font-bold text-emerald-900 mb-2">Related reads</h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-emerald-900" href="/community/warmth-energy-savers-uk">
+              <Link className="underline text-emerald-900" href={p(locale, "/community/warmth-energy-savers-uk")}>
                 Stay Warm, Spend Less: Energy-Saving Comfort Picks
               </Link>
             </li>
             <li>
-              <Link className="underline text-emerald-900" href="/community/power-adapters-uk-italy">
+              <Link className="underline text-emerald-900" href={p(locale, "/community/power-adapters-uk-italy")}>
                 Plugs, Adapters &amp; Power: Italy ↔ UK Without the Sparks
               </Link>
             </li>

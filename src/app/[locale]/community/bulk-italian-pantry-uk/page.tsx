@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 
 /**
  * Save Money: Bulk Italian Pantry Buys in the UK
@@ -32,7 +33,11 @@ export const metadata: Metadata = {
 const PUBLISHED = "2025-10-04";
 const UPDATED = "2025-10-19";
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // ===== JSON-LD =====
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -645,10 +650,10 @@ export default function Page() {
                   </button>
                 </form>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  <Link href="/directory" className="inline-flex h-10 items-center justify-center rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-900 hover:bg-gray-50">
+                  <Link href={p(locale, "/directory")} className="inline-flex h-10 items-center justify-center rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-900 hover:bg-gray-50">
                     Find Italian shops near you →
                   </Link>
-                  <Link href="/contact" className="inline-flex h-10 items-center justify-center rounded-xl border border-teal-200 bg-white px-4 text-sm font-semibold text-teal-900 hover:bg-teal-50">
+                  <Link href={p(locale, "/contact")} className="inline-flex h-10 items-center justify-center rounded-xl border border-teal-200 bg-white px-4 text-sm font-semibold text-teal-900 hover:bg-teal-50">
                     Ask a savings question
                   </Link>
                 </div>

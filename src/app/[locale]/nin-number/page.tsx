@@ -1,6 +1,7 @@
 // app/[locale]/nin-number/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 
 export const revalidate = 21600; // 6h
 
@@ -40,7 +41,11 @@ export const metadata: Metadata = {
 };
 
 // ---------- PAGE ----------
-export default function NinNumberPage() {
+export default function NinNumberPage({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // Outbound link helper
   const A = (props: { href: string; children: React.ReactNode }) => (
     <a
@@ -500,10 +505,10 @@ export default function NinNumberPage() {
                 We can’t give immigration advice, but we can help you prepare documents and stay on the official path.
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-                <Link href="/contact" className="inline-flex h-10 items-center justify-center rounded-xl bg-emerald-700 px-4 text-sm font-medium text-white hover:bg-emerald-800">
+                <Link href={p(locale, "/contact")} className="inline-flex h-10 items-center justify-center rounded-xl bg-emerald-700 px-4 text-sm font-medium text-white hover:bg-emerald-800">
                   Contact Resinaro
                 </Link>
-                <Link href="/tax-and-money" className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium hover:bg-emerald-50">
+                <Link href={p(locale, "/tax-and-money")} className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium hover:bg-emerald-50">
                   Read Tax & Money guide
                 </Link>
               </div>

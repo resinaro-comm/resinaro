@@ -1,6 +1,7 @@
 // app/community/power-adapters-uk-italy/page.tsx
 import Link from "next/link";
 import Image from "next/image";
+import { p, type Locale } from "@/lib/localePath";
 
 export const metadata = {
   title: "Plugs, Adapters & Power: Italy ↔ UK Without the Sparks",
@@ -9,7 +10,11 @@ export const metadata = {
   alternates: { canonical: "/community/power-adapters-uk-italy" },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // --- SEO: FAQ rich snippets ---
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -297,12 +302,12 @@ export default function Page() {
           <h2 className="text-xl font-bold text-green-900 mb-2">Related reads</h2>
           <ul className="list-disc pl-6">
             <li>
-              <Link className="underline text-green-900" href="/community/travel-to-italy-kit">
+              <Link className="underline text-green-900" href={p(locale, "/community/travel-to-italy-kit")}>
                 Quick Trip to Italy: Light Travel Kit from the UK
               </Link>
             </li>
             <li>
-              <Link className="underline text-green-900" href="/community/uk-desk-setup-newcomers">
+              <Link className="underline text-green-900" href={p(locale, "/community/uk-desk-setup-newcomers")}>
                 Work & Study: Compact UK Desk Setup That Feels Pro
               </Link>
             </li>

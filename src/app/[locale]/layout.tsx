@@ -99,7 +99,7 @@ export default async function RootLayout(props: {
           <Navbar />
 
           <main>
-            <ClientLayout>{children}</ClientLayout>
+            <ClientLayout locale={locale}>{children}</ClientLayout>
           </main>
 
           {/* Global CTA */}

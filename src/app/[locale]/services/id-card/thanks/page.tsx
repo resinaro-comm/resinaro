@@ -1,6 +1,7 @@
 // src/app/services/id-card/thanks/page.tsx
 import Link from "next/link";
 import Image from "next/image";
+import { p, type Locale } from "@/lib/localePath";
 
 export const metadata = {
   title: "Thanks — ID Card (CIE) Assistance | Resinaro",
@@ -31,7 +32,11 @@ const blog = [
   },
 ];
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   return (
     <main className="bg-neutral-50 text-green-900 min-h-screen pb-20 px-4">
       <div className="max-w-4xl mx-auto pt-14">
@@ -73,7 +78,7 @@ export default function Page() {
           <h3 className="text-xl font-semibold mb-3">Helpful reads while you wait</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {blog.map((b) => (
-              <Link key={b.link} href={b.link} className="group rounded-lg overflow-hidden border bg-white shadow-sm">
+              <Link key={b.link} href={p(locale, b.link)} className="group rounded-lg overflow-hidden border bg-white shadow-sm">
                 <div className="relative h-32 w-full">
                   <Image src={b.img} alt={b.alt} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover transition-transform group-hover:scale-[1.03]" />
                 </div>
@@ -90,14 +95,14 @@ export default function Page() {
           <h3 className="text-base font-semibold">Fairness & refunds</h3>
           <p>
             If we fail to deliver what we agreed due to our error, we’ll refund or credit you. Please review our
-            <Link href="/refund-policy" className="underline text-green-800"> refund policy</Link> and
-            <Link href="/terms" className="underline text-green-800 ml-1"> terms</Link>.
+            <Link href={p(locale, "/refund-policy")} className="underline text-green-800"> refund policy</Link> and
+            <Link href={p(locale, "/terms")} className="underline text-green-800 ml-1"> terms</Link>.
           </p>
-          <p className="text-gray-600">We process personal data in line with our <Link href="/privacy-policy" className="underline text-green-800">privacy policy</Link>.</p>
+          <p className="text-gray-600">We process personal data in line with our <Link href={p(locale, "/privacy-policy")} className="underline text-green-800">privacy policy</Link>.</p>
         </section>
 
         <div className="mt-10 text-center">
-          <Link href="/services/id-card" className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition">
+          <Link href={p(locale, "/services/id-card")} className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition">
             Back to ID Card support
             <span aria-hidden>→</span>
           </Link>

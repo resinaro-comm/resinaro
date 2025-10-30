@@ -211,7 +211,7 @@ function getQA(locale: Locale): QA[] {
           usually via official systems—avoid third-party “slots” sellers.
         </p>
         <p className="text-sm">
-          We can guide you through AIRE, passports, CIE, and more: see <Link className="underline text-green-800" href="/services/bureaucracy">Bureaucracy Help</Link>.
+          We can guide you through AIRE, passports, CIE, and more: see <Link className="underline text-green-800" href={p(locale, "/services/bureaucracy")}>Bureaucracy Help</Link>.
         </p>
       </>
     ),
@@ -294,7 +294,7 @@ export default function ServicesFAQ() {
         <p className="text-gray-700 mb-8">
           Practical answers for Italians and other migrants — with links to official guidance.
           If you need one-to-one help,{" "}
-          <Link className="underline text-green-800" href="/contact">contact us</Link>.
+          <Link className="underline text-green-800" href={p(locale, "/contact")}>contact us</Link>.
         </p>
 
         <div className="space-y-3">

@@ -1,7 +1,7 @@
-// app/community/page.tsx
+// src/app/[locale]/community/page.tsx
 import Link from "next/link";
 import Image from "next/image";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 // ---------- SEO ----------
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 type Post = {
   title: string;
   description: string;
-  slug: string;
+  slug: string; // expected to start with "/community/..."
   category: string;
   image?: string;
   minutes?: number; // read time
@@ -405,7 +405,7 @@ const posts: Post[] = [
   },
   {
     title:
-      "Utilities Setup (2025): Energy, Water, Council Tax & Broadband — Day‑1 Checklist",
+      "Utilities Setup (2025): Energy, Water, Council Tax & Broadband — Day-1 Checklist",
     description:
       "Move-in playbook: find your energy/water suppliers, submit opening readings, register Council Tax, pick broadband, and handle previous-tenant debt letters.",
     slug: "/community/utilities-setup-uk-2025",
@@ -431,7 +431,7 @@ const posts: Post[] = [
     title:
       "UK Mobile for Newcomers (2025): Best SIM & eSIM, PAYG vs Monthly, EU Roaming",
     description:
-      "Simple guide to UK mobile: SIM vs eSIM, PAYG vs monthly, no-credit-check options, porting and troubleshooting with copy‑paste scripts.",
+      "Simple guide to UK mobile: SIM vs eSIM, PAYG vs monthly, no-credit-check options, porting and troubleshooting with copy-paste scripts.",
     slug: "/community/uk-sim-esim-newcomers-2025",
     category: "life-in-uk",
     image: "/images/resinaro-general.png",
@@ -445,38 +445,70 @@ const posts: Post[] = [
 function unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
-function toBlogJSONLD(list: Post[]) {
+function toBlogJSONLD(list: Post[], locale: "en" | "it") {
+  const base = "https://www.resinaro.com";
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Resinaro Community Knowledge Hub",
-    "url": "https://www.resinaro.com/community",
-    "blogPost": list.slice(0, 20).map((p) => ({
+    name: "Resinaro Community Knowledge Hub",
+    url: `${base}/${locale}/community`,
+    blogPost: list.slice(0, 20).map((p) => ({
       "@type": "BlogPosting",
-      "headline": p.title,
-      "description": p.description,
-      "url": `https://www.resinaro.com${p.slug}`,
-      "image": p.image
-        ? `https://www.resinaro.com${p.image}`
-        : "https://www.resinaro.com/og-default.png",
-      "dateModified": p.updatedAt || undefined,
-      "author": { "@type": "Organization", "name": "Resinaro" },
+      headline: p.title,
+      description: p.description,
+      url: `${base}/${locale}${p.slug}`,
+      image: p.image ? `${base}${p.image}` : `${base}/og-default.png`,
+      dateModified: p.updatedAt || undefined,
+      author: { "@type": "Organization", name: "Resinaro" },
     })),
   };
 }
 
-// ---------- Page ----------
+// Localized category labels
+function catLabel(cat: string, isIt: boolean) {
+  if (!isIt) return cat;
+  switch (cat) {
+    case "lifestyle":
+      return "stile-di-vita";
+    case "travel":
+      return "viaggi";
+    case "housing":
+      return "casa";
+    case "family":
+      return "famiglia";
+    case "health":
+      return "salute";
+    case "banking":
+      return "banche";
+    case "bureaucracy-guides":
+      return "burocrazia";
+    case "life-in-uk":
+      return "vita-nel-regno-unito";
+    case "mental-health":
+      return "salute-mentale";
+    case "work":
+      return "lavoro";
+    default:
+      return cat;
+  }
+}
+
 export default async function CommunityHub({
+  params,
   searchParams,
 }: {
-  searchParams?: Promise<Record<string, string | undefined>>;
+  params: { locale: "en" | "it" };
+  searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const resolved = ((await Promise.resolve(searchParams)) ||
-    {}) as Record<string, string | undefined>;
-  const q = resolved.q?.toLowerCase().trim() || "";
-  const category = resolved.category || "";
-  const tag = resolved.tag || "";
-  const sort = resolved.sort || ""; // "title" | "category" | "recent" | "readtime"
+  const locale = params.locale;
+  const isIt = locale === "it";
+
+  const qRaw = searchParams?.q;
+  const q =
+    (Array.isArray(qRaw) ? qRaw[0] : qRaw)?.toLowerCase().trim() || "";
+  const category = (Array.isArray(searchParams?.category) ? searchParams?.category[0] : searchParams?.category) || "";
+  const tag = (Array.isArray(searchParams?.tag) ? searchParams?.tag[0] : searchParams?.tag) || "";
+  const sort = (Array.isArray(searchParams?.sort) ? searchParams?.sort[0] : searchParams?.sort) || "";
 
   // Filter
   let filtered = posts.slice();
@@ -488,7 +520,6 @@ export default async function CommunityHub({
     );
   if (category) filtered = filtered.filter((p) => p.category === category);
   if (tag) filtered = filtered.filter((p) => (p.tags || []).includes(tag));
-  // language filtering removed (site currently EN-only)
 
   // Sort
   if (sort === "title")
@@ -509,51 +540,53 @@ export default async function CommunityHub({
 
   const featured =
     filtered.find((p) => p.featured) ||
-    filtered[0]; // sensible fallback if filter trimmed result
+    filtered[0];
 
   const listWithoutFeatured = filtered.filter((p) => p !== featured);
 
-  const jsonLd = toBlogJSONLD(filtered);
+  const jsonLd = toBlogJSONLD(filtered, locale);
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800 pb-16">
       {/* HERO */}
       <section className="relative border-b">
-        <div className="absolute inset-0 w-full h-full bg-cover bg-center opacity-60" style={{ backgroundImage: 'url(/images/community-background.png)' }} aria-hidden="true"></div>
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-60"
+          style={{ backgroundImage: "url(/images/community-background.png)" }}
+          aria-hidden="true"
+        />
         <div className="relative z-10 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <h1 className="text-4xl md:text-5xl font-extrabold text-green-900 text-center drop-shadow-lg">
-            Community Knowledge Hub
+            {isIt ? "Hub di Conoscenza della Community" : "Community Knowledge Hub"}
           </h1>
           <p className="mt-3 text-center text-gray-800 max-w-3xl mx-auto drop-shadow">
-            Curated, hands-on guides written by and for Italians and migrants in
-            the UK. Practical steps, clear checklists, zero fluff.
+            {isIt
+              ? "Guide pratiche e senza giudizi per italiani e migranti nel Regno Unito. Passi concreti, checklist chiare, zero fuffa."
+              : "Curated, hands-on guides written by and for Italians and migrants in the UK. Practical steps, clear checklists, zero fluff."}
           </p>
         </div>
       </section>
 
       {/* FILTER BAR (non-sticky) */}
-      <form
-        className="bg-[#F9F6F1] border-b"
-        role="search"
-      >
+      <form className="bg-[#F9F6F1] border-b" role="search">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-3 items-center">
           <input
             name="q"
             defaultValue={q}
-            placeholder="Search guides…"
-            aria-label="Search community guides"
+            placeholder={isIt ? "Cerca guide…" : "Search guides…"}
+            aria-label={isIt ? "Cerca nelle guide della community" : "Search community guides"}
             className="flex-1 min-w-[220px] rounded-lg border border-gray-300 px-4 py-2"
           />
           <select
             name="category"
             defaultValue={category}
-            aria-label="Filter by category"
+            aria-label={isIt ? "Filtra per categoria" : "Filter by category"}
             className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
           >
-            <option value="">All categories</option>
+            <option value="">{isIt ? "Tutte le categorie" : "All categories"}</option>
             {categories.map((c) => (
               <option key={c} value={c}>
-                {c}
+                {catLabel(c, isIt)}
               </option>
             ))}
           </select>
@@ -561,10 +594,10 @@ export default async function CommunityHub({
           <select
             name="tag"
             defaultValue={tag}
-            aria-label="Filter by tag"
+            aria-label={isIt ? "Filtra per tag" : "Filter by tag"}
             className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
           >
-            <option value="">All tags</option>
+            <option value="">{isIt ? "Tutti i tag" : "All tags"}</option>
             {tags.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -575,29 +608,27 @@ export default async function CommunityHub({
           <select
             name="sort"
             defaultValue={sort}
-            aria-label="Sort results"
+            aria-label={isIt ? "Ordina risultati" : "Sort results"}
             className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
           >
-            <option value="">Sort</option>
-            <option value="recent">Recently updated</option>
-            <option value="title">Title A–Z</option>
-            <option value="category">Category</option>
-            <option value="readtime">Shortest read</option>
+            <option value="">{isIt ? "Ordina" : "Sort"}</option>
+            <option value="recent">{isIt ? "Aggiornati di recente" : "Recently updated"}</option>
+            <option value="title">{isIt ? "Titolo A–Z" : "Title A–Z"}</option>
+            <option value="category">{isIt ? "Categoria" : "Category"}</option>
+            <option value="readtime">{isIt ? "Lettura più breve" : "Shortest read"}</option>
           </select>
-
-          {/* Language filter removed: content is EN-only for now */}
 
           <button
             type="submit"
             className="rounded-lg bg-green-800 text-white px-5 py-2 font-medium hover:bg-green-900"
           >
-            Apply
+            {isIt ? "Applica" : "Apply"}
           </button>
           <Link
-            href="/community"
+            href={`/${locale}/community`}
             className="text-sm underline text-gray-600 hover:text-green-900"
           >
-            Reset
+            {isIt ? "Reimposta" : "Reset"}
           </Link>
         </div>
       </form>
@@ -606,12 +637,25 @@ export default async function CommunityHub({
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between border-b py-4">
           <h2 className="text-xl md:text-2xl font-semibold text-green-900">
-            {filtered.length} {filtered.length === 1 ? "guide" : "guides"}
-            {category ? ` in ${category}` : ""}
-            {tag ? ` · ${tag}` : ""}
-            {q ? ` · “${q}”` : ""}
+            {isIt ? (
+              <>
+                {filtered.length} {filtered.length === 1 ? "guida" : "guide"}
+                {category ? ` in ${catLabel(category, true)}` : ""}
+                {tag ? ` · ${tag}` : ""}
+                {q ? ` · “${q}”` : ""}
+              </>
+            ) : (
+              <>
+                {filtered.length} {filtered.length === 1 ? "guide" : "guides"}
+                {category ? ` in ${category}` : ""}
+                {tag ? ` · ${tag}` : ""}
+                {q ? ` · “${q}”` : ""}
+              </>
+            )}
           </h2>
-          <p className="text-sm text-gray-600">Fresh, practical and free.</p>
+          <p className="text-sm text-gray-600">
+            {isIt ? "Fresche, pratiche e gratuite." : "Fresh, practical and free."}
+          </p>
         </div>
       </div>
 
@@ -619,7 +663,7 @@ export default async function CommunityHub({
       {featured && (
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
           <Link
-            href={featured.slug}
+            href={`/${locale}${featured.slug}`}
             className="block rounded-2xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition"
           >
             <div className="relative h-64 md:h-80">
@@ -634,7 +678,7 @@ export default async function CommunityHub({
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-0 p-6 md:p-8 text-white">
                 <span className="inline-block text-[11px] bg-emerald-600/90 px-2 py-1 rounded">
-                  Featured
+                  {isIt ? "In evidenza" : "Featured"}
                 </span>
                 <h3 className="mt-2 text-2xl md:text-3xl font-bold">
                   {featured.title}
@@ -643,8 +687,8 @@ export default async function CommunityHub({
                   {featured.description}
                 </p>
                 <div className="mt-2 text-xs opacity-80">
-                  {featured.minutes ? `${featured.minutes} min read · ` : ""}
-                  {featured.updatedAt ? `Updated ${featured.updatedAt}` : ""}
+                  {featured.minutes ? (isIt ? `${featured.minutes} min di lettura · ` : `${featured.minutes} min read · `) : ""}
+                  {featured.updatedAt ? (isIt ? `Aggiornato ${featured.updatedAt}` : `Updated ${featured.updatedAt}`) : ""}
                 </div>
               </div>
             </div>
@@ -656,14 +700,16 @@ export default async function CommunityHub({
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
         {listWithoutFeatured.length === 0 ? (
           <div className="rounded-xl border bg-white p-10 text-center text-gray-500">
-            No posts match your filters. Try clearing some filters above.
+            {isIt
+              ? "Nessun articolo corrisponde ai filtri. Prova a rimuovere qualche filtro."
+              : "No posts match your filters. Try clearing some filters above."}
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {listWithoutFeatured.map((post, i) => (
               <Link
                 key={post.slug}
-                href={post.slug}
+                href={`/${locale}${post.slug}`}
                 className="group rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition"
               >
                 <div className="relative h-44">
@@ -679,16 +725,16 @@ export default async function CommunityHub({
                 <div className="p-4">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <span className="inline-flex text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      {post.category}
+                      {catLabel(post.category, isIt)}
                     </span>
                     {post.updatedAt && (
                       <span className="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
-                        Updated {post.updatedAt}
+                        {isIt ? `Aggiornato ${post.updatedAt}` : `Updated ${post.updatedAt}`}
                       </span>
                     )}
                     {post.minutes && (
                       <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                        {post.minutes} min
+                        {isIt ? `${post.minutes} min` : `${post.minutes} min`}
                       </span>
                     )}
                   </div>
@@ -697,7 +743,7 @@ export default async function CommunityHub({
                     {post.title}
                   </h3>
                   <p className="mt-1 text-sm text-gray-600 line-clamp-3">
-                    {post.description || "Read the full guide →"}
+                    {post.description || (isIt ? "Leggi la guida completa →" : "Read the full guide →")}
                   </p>
 
                   {post.tags && post.tags.length > 0 && (
@@ -714,7 +760,7 @@ export default async function CommunityHub({
                   )}
 
                   <div className="mt-3 text-sm font-medium text-green-800 group-hover:underline">
-                    Read more →
+                    {isIt ? "Leggi di più →" : "Read more →"}
                   </div>
                 </div>
               </Link>
@@ -727,38 +773,38 @@ export default async function CommunityHub({
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
         <div className="rounded-xl border bg-white p-5">
           <h3 className="text-lg font-semibold text-green-900">
-            Quick bundles
+            {isIt ? "Raccolte rapide" : "Quick bundles"}
           </h3>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
-              href="/community?tag=pantry"
+              href={`/${locale}/community?tag=pantry`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              Italian Kitchen
+              {isIt ? "Cucina italiana" : "Italian Kitchen"}
             </Link>
             <Link
-              href="/community?category=housing"
+              href={`/${locale}/community?category=housing`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              Housing & Utilities
+              {isIt ? "Casa & Utenze" : "Housing & Utilities"}
             </Link>
             <Link
-              href="/community?category=bureaucracy-guides"
+              href={`/${locale}/community?category=bureaucracy-guides`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              Consular & Documents
+              {isIt ? "Consolati & Documenti" : "Consular & Documents"}
             </Link>
             <Link
-              href="/community?category=banking"
+              href={`/${locale}/community?category=banking`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              Banking & Money
+              {isIt ? "Banche & Denaro" : "Banking & Money"}
             </Link>
             <Link
-              href="/community?category=health"
+              href={`/${locale}/community?category=health`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              Health & NHS
+              {isIt ? "Salute & NHS" : "Health & NHS"}
             </Link>
           </div>
         </div>
@@ -767,7 +813,6 @@ export default async function CommunityHub({
       {/* JSON-LD */}
       <script
         type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: SEO structured data
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </main>

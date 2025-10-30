@@ -3,6 +3,7 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { useLocaleFromPathname, p } from "@/lib/localePath";
 
 /** GAS endpoint **/
 const GAS_URL =
@@ -21,6 +22,7 @@ const FAST_IT_URL = "https://serviziconsolari.esteri.it/ScoFE/index.sco";
 type Service = "prenotami" | "under12";
 type Aire = "yes" | "no" | "unsure";
 type Marital = "single" | "married" | "divorced" | "widowed" | "other";
+type Locale = "en" | "it";
 
 type PersonDetails = {
   name: string;
@@ -29,6 +31,316 @@ type PersonDetails = {
   eyeColour: string;
   maritalStatus: Marital;
 };
+
+type ExtraAccount = {
+  email: string;
+  password: string;
+  show: boolean;
+};
+
+/* ---------- i18n ---------- */
+function t(locale: Locale) {
+  const en = {
+    steps: ["Service", "Contact", "AIRE", "Details", "Uploads"],
+    serviceQ: "What do you need?",
+    prenotamiTitle: "Prenot@Mi booking",
+    prenotamiAge: "(Age 12+/adults)",
+    prenotamiNote: "We use Prenot@Mi to book. The Consulate controls availability.",
+    under12Title: "Under-12 Passport Assistance",
+    under12Note: "We assist with the process.",
+    continue: "Continue",
+    back: "Back",
+    contact: {
+      first: "First name *",
+      last: "Last name *",
+      email: "Email *",
+      phone: "Phone *",
+      noteLabel: "Anything we should know?",
+      notePH: "Travel dates, lost/stolen, special circumstances…",
+      err: "Add your name, email and phone.",
+    },
+    aireQ: "Are you AIRE-registered in the correct district? *",
+    yes: "Yes",
+    noOpenFast: "No — open FAST.IT",
+    unsure: "Unsure",
+    stuck: "If you’re stuck, email",
+    beforePaying: "before paying.",
+    openFast: "Open FAST.IT",
+    aireErr: "You must be AIRE-registered. Tap FAST.IT for help, or email us.",
+    details: {
+      aboutYou: "About you (required for booking)",
+      height: "Height (cm) *",
+      heightPH: "e.g. 175",
+      eyes: "Eye colour *",
+      eyesPH: "e.g. Brown",
+      marital: "Marital status *",
+      mSingle: "Single",
+      mMarried: "Married",
+      mDivorced: "Divorced",
+      mWidowed: "Widowed",
+      mOther: "Other",
+      alsoBooking: "Also booking for another age 12+ / adult?",
+      howMany: "How many additional people?",
+      teensNote: "Teens aged 12–17 need the same details. Add each person below.",
+      person: "Person",
+      fullName: "Full name *",
+      fullNamePH: "As on ID",
+      dob: "DOB (dd/mm/yyyy) *",
+      dobPH: "dd/mm/yyyy",
+      extraAccountsTitle: "Additional Prenot@Mi accounts required",
+      extraAccountsHelp:
+        "Each person needs their own Prenot@Mi account. You already provided your account above, so you need one additional account for each extra person.",
+      accountEmail: "Prenot@Mi email *",
+      accountPassword: "Prenot@Mi password *",
+      show: "Show",
+      hide: "Hide",
+      mainAccCreate: "Create & manage a Prenot@Mi account for me",
+      plus20: "(+£20)",
+      mainAccEmail: "Prenot@Mi email *",
+      mainAccPassword: "Prenot@Mi password *",
+      usedOnlyToBook: "Used only to book. You can change it after.",
+      acceptFee: "I accept the £20 account creation fee.",
+      extraErrPrefix: "Extra person",
+      extraErrSuffix: "fill name, DOB, height, eye colour, marital status.",
+      mainTripleErr: "Add height (cm), eye colour and marital status.",
+      accChoiceErr: "Add Prenot@Mi email + password, or tick ‘Create account (+£20)’.",
+      accFeeErr: "Please accept the £20 account creation fee.",
+      extraAccErrPrefix: "Extra account",
+      extraAccErrSuffix: "needs email and password.",
+    },
+    u12: {
+      children: "Children under 12 *",
+      postalNote:
+        "Postal only. Note: we suggest not booking travel until passport arrives.",
+      childFullName: (i: number) => `Child ${i} full name *`,
+      childDob: (i: number) => `Child ${i} DOB (dd/mm/yyyy) *`,
+      bullets: [
+        "Parents’ IDs must be passport/ID card (no driving licences).",
+        "2 photos ≤6 months; one countersigned with authentication form.",
+        "Include Special Delivery return envelope (≤500g).",
+        "Note: First passport + birth registration cannot be sent together (since 28 May 2025).",
+      ],
+      childErr: (i: number) => `Child ${i}: name + DOB (dd/mm/yyyy).`,
+    },
+    uploads: {
+      proof: `Proof of UK address (≤3 months) — PDF/JPG/PNG, ≤${MAX_MB}MB`,
+      emailInstead: "I’ll email documents to",
+      instead2: "instead",
+    },
+    mini: {
+      identity: "Identity & consent",
+      photos: "Photos",
+      postage: "Postage & extras",
+      tips: "Tips",
+      tipsList: [
+        "IDs must be passport/ID card — no UK driving licences.",
+        "Signatures on the consent must match the ID.",
+      ],
+      photoChecklist: "Photo checklist",
+      photoList: [
+        "Recent (≤6 months), plain background, correct size.",
+        "Countersignatory not a relative; known 2+ years in UK/EU.",
+      ],
+      headsUp: "Heads-up",
+      headsUpList: [
+        "Include a prepaid Special Delivery return envelope (≤500g).",
+        "First passport + birth registration cannot be sent together (rule from 28 May 2025).",
+      ],
+      prev: "Prev section",
+      next: "Next section",
+      u12Fields: {
+        appForm: "U12 application form",
+        parentIDs: "Both parents’ IDs (no driving licences)",
+        consentForm: "Parents’ consent form",
+        photos: "Child photos (2)",
+        photoHelp: "One must be countersigned per ICAO/authentication rules.",
+        photoAuth: "Photo authentication form",
+        specDel: "Special Delivery (return) proof",
+        prevID: "Previous Italian passport / other ID (optional)",
+        lostForm: "Lost/Stolen form (if applicable)",
+        police: "Police report or Report My Loss (if applicable)",
+      },
+    },
+    agreements: {
+      title: "Agreements (required)",
+      startNow:
+        "I ask you to start work immediately. I understand I have a 14-day cooling-off period, but if I cancel after work has begun you may deduct a proportionate amount for work already completed; once the service is fully performed within 14 days, I will lose my right to cancel.",
+      refund1: "I have read and agree to the",
+      refund2:
+        "Refund & Credit Policy. I understand Resinaro’s default remedy is account credit valid for 12 months, and cash refunds are only provided where legally required.",
+      privacy1:
+        "I consent to Resinaro handling my data and, if provided, using my Prenot@Mi credentials solely to book.",
+      privacy2: "Privacy Policy",
+      errStart: "Please confirm you want us to start now and understand the cooling-off terms.",
+      errRefund: "Please confirm you agree to the Refund & Credit Policy.",
+      errConsent: "Please agree to data handling.",
+    },
+    submit: {
+      submit: "Submit & Pay",
+      submitting: "Submitting…",
+      foot:
+        "We are not the Consulate. Appointment supply and passport decisions are theirs. If unsure, email",
+      errFile: (label: string) => `${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`,
+      fail: "Submission failed. Try again or email us.",
+      proofLabel: "Proof of address",
+    },
+  } as const;
+
+  const it = {
+    steps: ["Servizio", "Contatti", "AIRE", "Dettagli", "Allegati"],
+    serviceQ: "Di cosa hai bisogno?",
+    prenotamiTitle: "Prenot@Mi (prenotazione)",
+    prenotamiAge: "(Età 12+ / adulti)",
+    prenotamiNote: "Usiamo Prenot@Mi per prenotare. La disponibilità dipende dal Consolato.",
+    under12Title: "Passaporto minori di 12 anni",
+    under12Note: "Ti assistiamo nella procedura.",
+    continue: "Continua",
+    back: "Indietro",
+    contact: {
+      first: "Nome *",
+      last: "Cognome *",
+      email: "Email *",
+      phone: "Telefono *",
+      noteLabel: "C’è qualcosa che dovremmo sapere?",
+      notePH: "Date di viaggio, smarrimento/furto, particolarità…",
+      err: "Aggiungi nome, email e telefono.",
+    },
+    aireQ: "Sei iscritto AIRE nel distretto corretto? *",
+    yes: "Sì",
+    noOpenFast: "No — apri FAST.IT",
+    unsure: "Non so",
+    stuck: "Se hai difficoltà, scrivi a",
+    beforePaying: "prima di pagare.",
+    openFast: "Apri FAST.IT",
+    aireErr: "Devi essere iscritto AIRE. Apri FAST.IT per aiuto oppure scrivici.",
+    details: {
+      aboutYou: "Dati obbligatori per la prenotazione",
+      height: "Altezza (cm) *",
+      heightPH: "es. 175",
+      eyes: "Colore occhi *",
+      eyesPH: "es. Marroni",
+      marital: "Stato civile *",
+      mSingle: "Celibe/Nubile",
+      mMarried: "Sposato/a",
+      mDivorced: "Divorziato/a",
+      mWidowed: "Vedovo/a",
+      mOther: "Altro",
+      alsoBooking: "Prenoti anche per altre persone 12+ / adulti?",
+      howMany: "Quante persone aggiuntive?",
+      teensNote:
+        "I ragazzi 12–17 richiedono gli stessi dati. Inseriscili qui sotto.",
+      person: "Persona",
+      fullName: "Nome e cognome *",
+      fullNamePH: "Come sul documento",
+      dob: "Data di nascita (gg/mm/aaaa) *",
+      dobPH: "gg/mm/aaaa",
+      extraAccountsTitle:
+        "Account Prenot@Mi aggiuntivi richiesti",
+      extraAccountsHelp:
+        "Ogni persona ha bisogno del proprio account Prenot@Mi. Hai già fornito il tuo account sopra, quindi serve un account aggiuntivo per ogni persona extra.",
+      accountEmail: "Email Prenot@Mi *",
+      accountPassword: "Password Prenot@Mi *",
+      show: "Mostra",
+      hide: "Nascondi",
+      mainAccCreate: "Create & manage a Prenot@Mi account for me",
+      plus20: "(+£20)",
+      mainAccEmail: "Email Prenot@Mi *",
+      mainAccPassword: "Password Prenot@Mi *",
+      usedOnlyToBook: "Usata solo per prenotare. Potrai cambiarla dopo.",
+      acceptFee: "Accetto il costo di £20 per la creazione dell’account.",
+      extraErrPrefix: "Persona aggiuntiva",
+      extraErrSuffix:
+        ": inserisci nome, data di nascita, altezza, colore occhi e stato civile.",
+      mainTripleErr:
+        "Inserisci altezza (cm), colore occhi e stato civile.",
+      accChoiceErr:
+        "Inserisci email + password Prenot@Mi, oppure spunta ‘Create account (+£20)’.",
+      accFeeErr:
+        "Accetta il costo di £20 per la creazione dell’account.",
+      extraAccErrPrefix: "Account aggiuntivo",
+      extraAccErrSuffix: ": inserisci email e password.",
+    },
+    u12: {
+      children: "Minori di 12 anni *",
+      postalNote:
+        "Solo per posta. Consigliamo di non prenotare viaggi finché il passaporto non arriva.",
+      childFullName: (i: number) => `Minore ${i} nome e cognome *`,
+      childDob: (i: number) => `Minore ${i} data di nascita (gg/mm/aaaa) *`,
+      bullets: [
+        "Documenti genitori: passaporto/CIE (no patenti).",
+        "2 foto ≤6 mesi; una controfirmata con modulo autenticazione.",
+        "Busta di ritorno Special Delivery (≤500g).",
+        "Nota: Primo passaporto + registrazione nascita non si inviano insieme (dal 28 maggio 2025).",
+      ],
+      childErr: (i: number) => `Minore ${i}: nome + data di nascita (gg/mm/aaaa).`,
+    },
+    uploads: {
+      proof: `Prova di indirizzo UK (≤3 mesi) — PDF/JPG/PNG, ≤${MAX_MB}MB`,
+      emailInstead: "Invierò i documenti a",
+      instead2: "via email",
+    },
+    mini: {
+      identity: "Identità & consenso",
+      photos: "Foto",
+      postage: "Spedizione & allegati",
+      tips: "Suggerimenti",
+      tipsList: [
+        "Documenti: passaporto/CIE — niente patenti UK.",
+        "Le firme nel consenso devono coincidere col documento.",
+      ],
+      photoChecklist: "Checklist foto",
+      photoList: [
+        "Recenti (≤6 mesi), sfondo uniforme, formato corretto.",
+        "Firmatario non parente; conoscenza 2+ anni in UK/UE.",
+      ],
+      headsUp: "Attenzione",
+      headsUpList: [
+        "Inserisci busta prepagata Special Delivery (≤500g).",
+        "Primo passaporto + registrazione nascita non insieme (regola dal 28/05/2025).",
+      ],
+      prev: "Sezione precedente",
+      next: "Sezione successiva",
+      u12Fields: {
+        appForm: "Modulo domanda U12",
+        parentIDs: "Documenti di entrambi i genitori (no patenti)",
+        consentForm: "Modulo consenso genitori",
+        photos: "Foto del minore (2)",
+        photoHelp: "Una deve essere controfirmata secondo le regole ICAO.",
+        photoAuth: "Modulo autenticazione foto",
+        specDel: "Prova Special Delivery (ritorno)",
+        prevID: "Precedente passaporto/ID italiano (opzionale)",
+        lostForm: "Modulo smarrimento/furto (se applicabile)",
+        police: "Rapporto di polizia / Report My Loss (se applicabile)",
+      },
+    },
+    agreements: {
+      title: "Consensi (obbligatori)",
+      startNow:
+        "Chiedo di iniziare subito il lavoro. Capisco il diritto di recesso di 14 giorni; se annullo dopo l’avvio potranno essere detratti costi proporzionati; se il servizio è completato entro 14 giorni perderò il diritto di recesso.",
+      refund1: "Ho letto e accetto la",
+      refund2:
+        "Politica Rimborsi & Crediti. Capisco che il rimedio predefinito è un credito valido 12 mesi; i rimborsi in denaro sono forniti solo ove previsti dalla legge.",
+      privacy1:
+        "Acconsento al trattamento dei miei dati e, se forniti, all’uso delle credenziali Prenot@Mi esclusivamente per prenotare.",
+      privacy2: "Privacy Policy",
+      errStart:
+        "Conferma che vuoi iniziare subito e di aver compreso i termini di recesso.",
+      errRefund: "Conferma di accettare la Politica Rimborsi & Crediti.",
+      errConsent: "Acconsenti al trattamento dei dati.",
+    },
+    submit: {
+      submit: "Invia e paga",
+      submitting: "Invio in corso…",
+      foot:
+        "Non siamo il Consolato. Disponibilità appuntamenti e decisioni sul passaporto dipendono da loro. In caso di dubbi, scrivi a",
+      errFile: (label: string) => `${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`,
+      fail: "Invio non riuscito. Riprova o scrivici.",
+      proofLabel: "Prova di indirizzo",
+    },
+  } as const;
+
+  return locale === "it" ? it : en;
+}
 
 /* ---------- Small helper components ---------- */
 
@@ -81,8 +393,11 @@ async function toB64(f: File) {
 /* ---------- Main component ---------- */
 
 export default function PassportForm() {
+  const locale = useLocaleFromPathname() as Locale;
+  const tr = t(locale);
+
   /** Wizard state */
-  const [step, setStep] = useState(1); // 1 Service → 2 Contact → 3 AIRE → 4 Details → 5 Uploads
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1); // 1 Service → 2 Contact → 3 AIRE → 4 Details → 5 Uploads
   const pct = [0, 20, 40, 60, 80, 100][step] || 0;
 
   /** Core selections */
@@ -101,7 +416,7 @@ export default function PassportForm() {
   const [eyeColour, setEyeColour] = useState("");
   const [maritalStatus, setMaritalStatus] = useState<Marital>("single");
 
-  /** Prenot@Mi — account choice */
+  /** Prenot@Mi — account choice (main applicant) */
   const [createAcc, setCreateAcc] = useState(false);
   const [acceptFee, setAcceptFee] = useState(false);
   const [pEmail, setPEmail] = useState("");
@@ -111,6 +426,7 @@ export default function PassportForm() {
   /** Prenot@Mi — additional 12+/adult applicants (e.g., teens 12–17) */
   const [extraCount, setExtraCount] = useState(0);
   const [extraPeople, setExtraPeople] = useState<PersonDetails[]>([]);
+  const [extraAccounts, setExtraAccounts] = useState<ExtraAccount[]>([]);
 
   /** Under-12 minimal (postal) */
   const [kids, setKids] = useState(1);
@@ -165,6 +481,7 @@ export default function PassportForm() {
   function setExtra(n: number) {
     const v = Math.max(0, n || 0);
     setExtraCount(v);
+    // details per person
     setExtraPeople((prev) => {
       const a = [...prev];
       while (a.length < v)
@@ -178,6 +495,13 @@ export default function PassportForm() {
       while (a.length > v) a.pop();
       return a;
     });
+    // one Prenot@Mi account per additional person
+    setExtraAccounts((prev) => {
+      const a = [...prev];
+      while (a.length < v) a.push({ email: "", password: "", show: false });
+      while (a.length > v) a.pop();
+      return a;
+    });
   }
 
   function pickOne(
@@ -188,7 +512,7 @@ export default function PassportForm() {
     const f = e.target.files?.[0] || null;
     if (!f) return setter(null);
     if (!okFile(f)) {
-      setErr(`${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`);
+      setErr(t(locale).submit.errFile(label));
       e.target.value = "";
       return;
     }
@@ -206,7 +530,7 @@ export default function PassportForm() {
     const arr = Array.from(sel);
     for (const f of arr) {
       if (!okFile(f)) {
-        setErr(`${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`);
+        setErr(t(locale).submit.errFile(label));
         e.target.value = "";
         return;
       }
@@ -224,14 +548,14 @@ export default function PassportForm() {
 
     if (step === 2) {
       if (!first.trim() || !last.trim() || !email.trim() || !phone.trim()) {
-        return setErr("Add your name, email and phone.");
+        return setErr(tr.contact.err);
       }
       return setStep(3);
     }
 
     if (step === 3) {
       if (aire !== "yes") {
-        return setErr("You must be AIRE-registered. Tap FAST.IT for help, or email us.");
+        return setErr(tr.aireErr);
       }
       return setStep(4);
     }
@@ -240,9 +564,9 @@ export default function PassportForm() {
       if (service === "prenotami") {
         // Main applicant requirements
         if (!heightCm.trim() || !eyeColour.trim() || !maritalStatus) {
-          return setErr("Add height (cm), eye colour and marital status.");
+          return setErr(tr.details.mainTripleErr);
         }
-        // Extra people (12+/adults) — each needs the same triple
+        // Extra people details
         for (let i = 0; i < extraCount; i++) {
           const p = extraPeople[i];
           if (
@@ -252,20 +576,31 @@ export default function PassportForm() {
             !p?.eyeColour.trim() ||
             !p?.maritalStatus
           ) {
-            return setErr(`Extra person ${i + 1}: fill name, DOB, height, eye colour, marital status.`);
+            return setErr(
+              `${tr.details.extraErrPrefix} ${i + 1}: ${tr.details.extraErrSuffix}`
+            );
           }
         }
-        // Account choice
+        // Main account choice
         if (!createAcc && (!pEmail.trim() || !pPass)) {
-          return setErr("Add Prenot@Mi email + password, or tick ‘Create account (+£20)’."); 
+          return setErr(tr.details.accChoiceErr);
         }
         if (createAcc && !acceptFee) {
-          return setErr("Please accept the £20 account creation fee.");
+          return setErr(tr.details.accFeeErr);
+        }
+        // Require one extra account per additional person
+        for (let i = 0; i < extraCount; i++) {
+          const acc = extraAccounts[i];
+          if (!acc?.email.trim() || !acc?.password) {
+            return setErr(
+              `${tr.details.extraAccErrPrefix} ${i + 1} ${tr.details.extraAccErrSuffix}`
+            );
+          }
         }
       } else if (service === "under12") {
         for (let i = 0; i < kids; i++) {
           if (!kidsData[i]?.name.trim() || !kidsData[i]?.dob.trim()) {
-            return setErr(`Child ${i + 1}: name + DOB (dd/mm/yyyy).`);
+            return setErr(t(locale).u12.childErr(i + 1));
           }
         }
       }
@@ -275,7 +610,7 @@ export default function PassportForm() {
 
   function back() {
     setErr(null);
-    setStep((s) => Math.max(1, s - 1));
+    setStep((s) => Math.max(1, s - 1) as 1 | 2 | 3 | 4 | 5);
   }
 
   /* ---------- Submit ---------- */
@@ -285,13 +620,13 @@ export default function PassportForm() {
     setErr(null);
 
     if (!startNowConsent) {
-      return setErr("Please confirm you want us to start now and understand the cooling-off terms.");
+      return setErr(tr.agreements.errStart);
     }
     if (!refundPolicyAgree) {
-      return setErr("Please confirm you agree to the Refund & Credit Policy.");
+      return setErr(tr.agreements.errRefund);
     }
     if (!consent) {
-      return setErr("Please agree to data handling.");
+      return setErr(tr.agreements.errConsent);
     }
 
     const bookingId = crypto.randomUUID();
@@ -329,12 +664,11 @@ export default function PassportForm() {
       telephone: phone.trim(),
       note: note.trim(),
       emailDocsLater: emailDocsLater ? "1" : "0",
-
-      // Agreements (for audit trail)
       startNowConsent: startNowConsent ? "1" : "0",
       refundPolicyAgree: refundPolicyAgree ? "1" : "0",
       privacyConsent: consent ? "1" : "0",
       policyVersion: "2025-10-18",
+      locale,
     };
 
     if (service === "prenotami") {
@@ -343,12 +677,12 @@ export default function PassportForm() {
       data.eyeColour = eyeColour.trim();
       data.maritalStatus = maritalStatus;
 
-      // Account
+      // Account (main)
       data.createPrenotami = createAcc ? "1" : "0";
       data.prenotamiEmail = pEmail.trim();
       if (!createAcc && pPass) {
         data.prenotamiPassword = pPass;
-        data.prenotami_password = pPass; // for legacy scripts
+        data.prenotami_password = pPass; // legacy
       }
 
       // Extra people (12+/adults)
@@ -360,6 +694,12 @@ export default function PassportForm() {
         data[`extra_${n}_heightCm`] = p.heightCm.trim();
         data[`extra_${n}_eyeColour`] = p.eyeColour.trim();
         data[`extra_${n}_maritalStatus`] = p.maritalStatus;
+      });
+      // Extra Prenot@Mi accounts
+      extraAccounts.forEach((a, i) => {
+        const n = i + 1;
+        data[`extra_${n}_prenotami_email`] = a.email.trim();
+        data[`extra_${n}_prenotami_password`] = a.password;
       });
     } else {
       // Under-12
@@ -420,7 +760,8 @@ export default function PassportForm() {
       if (!url) throw new Error("No payment link returned.");
       window.location.href = url;
     } catch (e) {
-      const errMsg = (e instanceof Error && e.message) ? e.message : "Submission failed. Try again or email us.";
+      const errMsg =
+        e instanceof Error && e.message ? e.message : t(locale).submit.fail;
       setErr(errMsg);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
@@ -445,11 +786,11 @@ export default function PassportForm() {
         />
       </div>
       <ol className="mt-3 grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
-        {["Service", "Contact", "AIRE", "Details", "Uploads"].map((t, i) => {
+        {tr.steps.map((tlabel, i) => {
           const active = step >= i + 1;
           return (
             <li
-              key={t}
+              key={tlabel}
               className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${
                 active
                   ? "border-green-300 bg-green-50 text-green-900"
@@ -463,7 +804,7 @@ export default function PassportForm() {
               >
                 {i + 1}
               </span>
-              <span className="truncate">{t}</span>
+              <span className="truncate">{tlabel}</span>
             </li>
           );
         })}
@@ -472,7 +813,7 @@ export default function PassportForm() {
       {/* STEP 1: service */}
       {step === 1 && (
         <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
-          <SectionTitle>What do you need?</SectionTitle>
+          <SectionTitle>{tr.serviceQ}</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label
               className={`border rounded-lg p-3 cursor-pointer ${
@@ -487,11 +828,9 @@ export default function PassportForm() {
                 onChange={() => setService("prenotami")}
               />
               <span className="text-sm">
-                <strong>Prenot@Mi booking</strong> (Age 12+/adults)
+                <strong>{tr.prenotamiTitle}</strong> {tr.prenotamiAge}
               </span>
-              <p className="text-xs text-gray-600 mt-1">
-                We use Prenot@Mi to book. The Consulate controls availability.
-              </p>
+              <p className="text-xs text-gray-600 mt-1">{tr.prenotamiNote}</p>
             </label>
             <label
               className={`border rounded-lg p-3 cursor-pointer ${
@@ -506,11 +845,9 @@ export default function PassportForm() {
                 onChange={() => setService("under12")}
               />
               <span className="text-sm">
-                <strong>Under-12 Passport Assistance</strong>
+                <strong>{tr.under12Title}</strong>
               </span>
-              <p className="text-xs text-gray-600 mt-1">
-                We assist with the process. 
-              </p>
+              <p className="text-xs text-gray-600 mt-1">{tr.under12Note}</p>
             </label>
           </div>
           {err && <div className="text-red-600 text-sm">{err}</div>}
@@ -520,7 +857,7 @@ export default function PassportForm() {
               onClick={next}
               className="px-4 py-2 rounded bg-green-900 text-white"
             >
-              Continue
+              {tr.continue}
             </button>
           </div>
         </div>
@@ -531,7 +868,7 @@ export default function PassportForm() {
         <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium">First name *</label>
+              <label className="block text-sm font-medium">{tr.contact.first}</label>
               <input
                 value={first}
                 onChange={(e) => setFirst(e.target.value)}
@@ -539,15 +876,15 @@ export default function PassportForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Last name *</label>
+              <label className="block text-sm font-medium">{tr.contact.last}</label>
               <input
                 value={last}
                 onChange={(e) => setLast(e.target.value)}
-                className="mt-1 block w-full rounded border px-3 py-2"
+                className="mt-1 block w_full rounded border px-3 py-2"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Email *</label>
+              <label className="block text-sm font-medium">{tr.contact.email}</label>
               <input
                 type="email"
                 value={email}
@@ -556,7 +893,7 @@ export default function PassportForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Phone *</label>
+              <label className="block text-sm font-medium">{tr.contact.phone}</label>
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -566,26 +903,26 @@ export default function PassportForm() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium">Anything we should know?</label>
+            <label className="block text-sm font-medium">{tr.contact.noteLabel}</label>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={3}
               className="mt-1 block w-full rounded border px-3 py-2"
-              placeholder="Travel dates, lost/stolen, special circumstances…"
+              placeholder={tr.contact.notePH}
             />
           </div>
           {err && <div className="text-red-600 text-sm">{err}</div>}
           <div className="flex justify-between">
             <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
+              {tr.back}
             </button>
             <button
               type="button"
               onClick={next}
               className="px-4 py-2 rounded bg-green-900 text-white"
             >
-              Continue
+              {tr.continue}
             </button>
           </div>
         </div>
@@ -594,7 +931,7 @@ export default function PassportForm() {
       {/* STEP 3: AIRE */}
       {step === 3 && (
         <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
-          <SectionTitle>Are you AIRE-registered in the correct district? *</SectionTitle>
+          <SectionTitle>{tr.aireQ}</SectionTitle>
           <div className="flex flex-wrap gap-5">
             <label className="inline-flex items-center gap-2">
               <input
@@ -603,7 +940,7 @@ export default function PassportForm() {
                 checked={aire === "yes"}
                 onChange={() => setAire("yes")}
               />
-              <span>Yes</span>
+              <span>{tr.yes}</span>
             </label>
             <label className="inline-flex items-center gap-2">
               <input
@@ -612,7 +949,7 @@ export default function PassportForm() {
                 checked={aire === "no"}
                 onChange={() => setAire("no")}
               />
-              <span>No — open FAST.IT</span>
+              <span>{tr.noOpenFast}</span>
             </label>
             <label className="inline-flex items-center gap-2">
               <input
@@ -621,7 +958,7 @@ export default function PassportForm() {
                 checked={aire === "unsure"}
                 onChange={() => setAire("unsure")}
               />
-              <span>Unsure</span>
+              <span>{tr.unsure}</span>
             </label>
           </div>
           {aire !== "yes" && (
@@ -631,28 +968,28 @@ export default function PassportForm() {
                 onClick={openFastIt}
                 className="px-3 py-1.5 rounded bg-amber-500 text-white"
               >
-                Open FAST.IT
+                {tr.openFast}
               </button>
               <p className="mt-1 text-gray-600">
-                If you’re stuck, email{" "}
+                {tr.stuck}{" "}
                 <a className="underline" href="mailto:resinaro@proton.me">
                   resinaro@proton.me
                 </a>{" "}
-                before paying.
+                {tr.beforePaying}
               </p>
             </div>
           )}
           {err && <div className="text-red-600 text-sm">{err}</div>}
           <div className="flex justify-between">
             <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
+              {tr.back}
             </button>
             <button
               type="button"
               onClick={next}
               className="px-4 py-2 rounded bg-green-900 text-white"
             >
-              Continue
+              {tr.continue}
             </button>
           </div>
         </div>
@@ -665,60 +1002,114 @@ export default function PassportForm() {
             <div className="space-y-6">
               {/* Main applicant required triple */}
               <div>
-                <SectionTitle>About you (required for booking)</SectionTitle>
+                <SectionTitle>{tr.details.aboutYou}</SectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
                   <div>
-                    <label className="block text-sm font-medium">Height (cm) *</label>
+                    <label className="block text-sm font-medium">{tr.details.height}</label>
                     <input
                       value={heightCm}
                       onChange={(e) => setHeightCm(e.target.value)}
                       className="mt-1 block w-full rounded border px-3 py-2"
-                      placeholder="e.g. 175"
+                      placeholder={tr.details.heightPH}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium">Eye colour *</label>
+                    <label className="block text-sm font-medium">{tr.details.eyes}</label>
                     <input
                       value={eyeColour}
                       onChange={(e) => setEyeColour(e.target.value)}
                       className="mt-1 block w-full rounded border px-3 py-2"
-                      placeholder="e.g. Brown"
+                      placeholder={tr.details.eyesPH}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium">Marital status *</label>
+                    <label className="block text-sm font-medium">{tr.details.marital}</label>
                     <select
                       value={maritalStatus}
-                      onChange={(e) =>
-                        setMaritalStatus(
-                          e.target.value as Marital
-                        )
-                      }
+                      onChange={(e) => setMaritalStatus(e.target.value as Marital)}
                       className="mt-1 block w-full rounded border px-3 py-2"
                     >
-                      <option value="single">Single</option>
-                      <option value="married">Married</option>
-                      <option value="divorced">Divorced</option>
-                      <option value="widowed">Widowed</option>
-                      <option value="other">Other</option>
+                      <option value="single">{tr.details.mSingle}</option>
+                      <option value="married">{tr.details.mMarried}</option>
+                      <option value="divorced">{tr.details.mDivorced}</option>
+                      <option value="widowed">{tr.details.mWidowed}</option>
+                      <option value="other">{tr.details.mOther}</option>
                     </select>
                   </div>
                 </div>
               </div>
 
+              {/* Main applicant Prenot@Mi account */}
+              <div>
+                <SectionTitle>{tr.details.mainAccCreate}</SectionTitle>
+                <div className="grid grid-cols-1 gap-3 mt-2">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={createAcc}
+                      onChange={(e) => setCreateAcc(e.target.checked)}
+                    />
+                    <span className="text-sm">
+                      {tr.details.mainAccCreate} {tr.details.plus20}
+                    </span>
+                  </label>
+                  
+                  {createAcc ? (
+                    <div className="space-y-3">
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={acceptFee}
+                          onChange={(e) => setAcceptFee(e.target.checked)}
+                        />
+                        <span className="text-sm">{tr.details.acceptFee}</span>
+                      </label>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium">{tr.details.mainAccEmail}</label>
+                        <input
+                          value={pEmail}
+                          onChange={(e) => setPEmail(e.target.value)}
+                          className="mt-1 block w-full rounded border px-3 py-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium">{tr.details.mainAccPassword}</label>
+                        <div className="relative">
+                          <input
+                            type={showPass ? "text" : "password"}
+                            value={pPass}
+                            onChange={(e) => setPPass(e.target.value)}
+                            className="mt-1 block w-full rounded border px-3 py-2 pr-16"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPass(!showPass)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 text-xs underline"
+                          >
+                            {showPass ? tr.details.hide : tr.details.show}
+                          </button>
+                        </div>
+                        <p className="text-xs text-gray-600 mt-1">{tr.details.usedOnlyToBook}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Extra 12+/adult applicants */}
               <div>
-                <SectionTitle>Also booking for another age 12+ / adult?</SectionTitle>
+                <SectionTitle>{tr.details.alsoBooking}</SectionTitle>
                 <div className="mt-2">
-                  <label className="block text-sm font-medium">
-                    How many additional people?
-                  </label>
+                  <label className="block text-sm font-medium">{tr.details.howMany}</label>
                   <input
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={extraCount === 0 ? "" : extraCount}
-                    onChange={e => {
+                    onChange={(e) => {
                       const val = e.target.value.replace(/[^0-9]/g, "");
                       setExtra(val === "" ? 0 : parseInt(val, 10));
                     }}
@@ -727,65 +1118,52 @@ export default function PassportForm() {
                     autoComplete="off"
                   />
                 </div>
-                <p className="text-xs text-gray-700 mt-2">
-                  Teens aged 12–17 need the same details. Add each person below.
-                </p>
+                <p className="text-xs text-gray-700 mt-2">{tr.details.teensNote}</p>
+
+                {/* Extra persons details */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                  {extraPeople.slice(0, extraCount).map((p, i) => (
-                    <div
-                      key={i}
-                      className="mt-3 rounded-xl border p-3 bg-gray-50 space-y-3"
-                    >
-                      <p className="text-sm font-medium">Person {i + 1}</p>
+                  {extraPeople.slice(0, extraCount).map((ppl, i) => (
+                    <div key={i} className="mt-3 rounded-xl border p-3 bg-gray-50 space-y-3">
+                      <p className="text-sm font-medium">
+                        {tr.details.person} {i + 1}
+                      </p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-sm font-medium">
-                            Full name *
-                          </label>
+                          <label className="block text-sm font-medium">{tr.details.fullName}</label>
                           <input
-                            value={p.name}
+                            value={ppl.name}
                             onChange={(e) =>
                               setExtraPeople((prev) =>
-                                prev.map((x, idx) =>
-                                  idx === i ? { ...x, name: e.target.value } : x
-                                )
+                                prev.map((x, idx) => (idx === i ? { ...x, name: e.target.value } : x))
                               )
                             }
                             className="mt-1 block w-full rounded border px-3 py-2"
-                            placeholder="As on ID"
+                            placeholder={tr.details.fullNamePH}
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium">
-                            DOB (dd/mm/yyyy) *
-                          </label>
+                          <label className="block text-sm font-medium">{tr.details.dob}</label>
                           <input
-                            value={p.dob}
+                            value={ppl.dob}
                             onChange={(e) =>
                               setExtraPeople((prev) =>
-                                prev.map((x, idx) =>
-                                  idx === i ? { ...x, dob: e.target.value } : x
-                                )
+                                prev.map((x, idx) => (idx === i ? { ...x, dob: e.target.value } : x))
                               )
                             }
                             className="mt-1 block w-full rounded border px-3 py-2"
-                            placeholder="dd/mm/yyyy"
+                            placeholder={tr.details.dobPH}
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-sm font-medium">
-                            Height (cm) *
-                          </label>
+                          <label className="block text-sm font-medium">{tr.details.height}</label>
                           <input
-                            value={p.heightCm}
+                            value={ppl.heightCm}
                             onChange={(e) =>
                               setExtraPeople((prev) =>
-                                prev.map((x, idx) =>
-                                  idx === i ? { ...x, heightCm: e.target.value } : x
-                                )
+                                prev.map((x, idx) => (idx === i ? { ...x, heightCm: e.target.value } : x))
                               )
                             }
                             className="mt-1 block w-full rounded border px-3 py-2"
@@ -793,16 +1171,12 @@ export default function PassportForm() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium">
-                            Eye colour *
-                          </label>
+                          <label className="block text-sm font-medium">{tr.details.eyes}</label>
                           <input
-                            value={p.eyeColour}
+                            value={ppl.eyeColour}
                             onChange={(e) =>
                               setExtraPeople((prev) =>
-                                prev.map((x, idx) =>
-                                  idx === i ? { ...x, eyeColour: e.target.value } : x
-                                )
+                                prev.map((x, idx) => (idx === i ? { ...x, eyeColour: e.target.value } : x))
                               )
                             }
                             className="mt-1 block w-full rounded border px-3 py-2"
@@ -810,97 +1184,85 @@ export default function PassportForm() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium">
-                            Marital status *
-                          </label>
+                          <label className="block text-sm font-medium">{tr.details.marital}</label>
                           <select
-                            value={p.maritalStatus}
+                            value={ppl.maritalStatus}
                             onChange={(e) =>
                               setExtraPeople((prev) =>
                                 prev.map((x, idx) =>
-                                  idx === i
-                                    ? { ...x, maritalStatus: e.target.value as Marital }
-                                    : x
+                                  idx === i ? { ...x, maritalStatus: e.target.value as Marital } : x
                                 )
                               )
                             }
                             className="mt-1 block w-full rounded border px-3 py-2"
                           >
-                            <option value="single">Single</option>
-                            <option value="married">Married</option>
-                            <option value="divorced">Divorced</option>
-                            <option value="widowed">Widowed</option>
-                            <option value="other">Other</option>
+                            <option value="single">{tr.details.mSingle}</option>
+                            <option value="married">{tr.details.mMarried}</option>
+                            <option value="divorced">{tr.details.mDivorced}</option>
+                            <option value="widowed">{tr.details.mWidowed}</option>
+                            <option value="other">{tr.details.mOther}</option>
                           </select>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
 
-              {/* Account choice */}
-              <div className="space-y-3">
-                <label className="inline-flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={createAcc}
-                    onChange={(e) => setCreateAcc(e.target.checked)}
-                  />
-                  <span className="text-sm">
-                    Create & manage a Prenot@Mi account for me <strong>(+£20)</strong>
-                  </span>
-                </label>
-
-                {!createAcc && (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium">
-                        Prenot@Mi email *
-                      </label>
-                      <input
-                        value={pEmail}
-                        onChange={(e) => setPEmail(e.target.value)}
-                        className="mt-1 block w-full rounded border px-3 py-2"
-                      />
+                {/* Extra Prenot@Mi accounts required */}
+                {extraCount > 0 && (
+                  <div className="mt-4 rounded-xl border p-3 bg-emerald-50/60">
+                    <p className="text-sm font-semibold text-emerald-900">
+                      {tr.details.extraAccountsTitle}
+                    </p>
+                    <p className="text-xs text-gray-700 mt-1">{tr.details.extraAccountsHelp}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                      {extraAccounts.slice(0, extraCount).map((acc, i) => (
+                        <div key={i} className="rounded-lg border bg-white p-3 space-y-2">
+                          <p className="text-sm font-medium">
+                            {tr.details.person} {i + 1} — Prenot@Mi
+                          </p>
+                          <div>
+                            <label className="block text-sm font-medium">{tr.details.accountEmail}</label>
+                            <input
+                              value={acc.email}
+                              onChange={(e) =>
+                                setExtraAccounts((prev) =>
+                                  prev.map((x, idx) => (idx === i ? { ...x, email: e.target.value } : x))
+                                )
+                              }
+                              className="mt-1 block w-full rounded border px-3 py-2"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium">{tr.details.accountPassword}</label>
+                            <div className="relative">
+                              <input
+                                type={acc.show ? "text" : "password"}
+                                value={acc.password}
+                                onChange={(e) =>
+                                  setExtraAccounts((prev) =>
+                                    prev.map((x, idx) => (idx === i ? { ...x, password: e.target.value } : x))
+                                  )
+                                }
+                                className="mt-1 block w-full rounded border px-3 py-2 pr-16"
+                              />
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setExtraAccounts((prev) =>
+                                    prev.map((x, idx) => (idx === i ? { ...x, show: !x.show } : x))
+                                  )
+                                }
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 text-xs underline"
+                              >
+                                {acc.show ? tr.details.hide : tr.details.show}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium">
-                        Prenot@Mi password *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPass ? "text" : "password"}
-                          value={pPass}
-                          onChange={(e) => setPPass(e.target.value)}
-                          className="mt-1 block w-full rounded border px-3 py-2 pr-12"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPass((s) => !s)}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 text-xs underline"
-                        >
-                          {showPass ? "Hide" : "Show"}
-                        </button>
-                      </div>
-                      <p className="text-xs text-gray-600 mt-1">
-                        Used only to book. You can change it after.
-                      </p>
-                    </div>
-                  </>
-                )}
-
-                {createAcc && (
-                  <label className="inline-flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={acceptFee}
-                      onChange={(e) => setAcceptFee(e.target.checked)}
-                    />
-                    <span className="text-sm">
-                      I accept the £20 account creation fee.
-                    </span>
-                  </label>
+                  </div>
                 )}
               </div>
             </div>
@@ -911,14 +1273,14 @@ export default function PassportForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium">
-                    Children under 12 *
+                    {tr.u12.children}
                   </label>
                   <input
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={kids === 1 ? "" : kids}
-                    onChange={e => {
+                    onChange={(e) => {
                       const val = e.target.value.replace(/[^0-9]/g, "");
                       setKidsCount(val === "" ? 1 : parseInt(val, 10));
                     }}
@@ -928,7 +1290,7 @@ export default function PassportForm() {
                   />
                 </div>
                 <p className="text-xs text-gray-700 self-end">
-                  Postal only. Note: we suggest not booking travel until passport arrives.
+                  {tr.u12.postalNote}
                 </p>
               </div>
 
@@ -936,7 +1298,7 @@ export default function PassportForm() {
                 <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-medium">
-                      Child {i + 1} full name *
+                      {tr.u12.childFullName(i + 1)}
                     </label>
                     <input
                       value={c.name}
@@ -952,7 +1314,7 @@ export default function PassportForm() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium">
-                      Child {i + 1} DOB (dd/mm/yyyy) *
+                      {tr.u12.childDob(i + 1)}
                     </label>
                     <input
                       value={c.dob}
@@ -964,24 +1326,16 @@ export default function PassportForm() {
                         )
                       }
                       className="mt-1 block w-full rounded border px-3 py-2"
-                      placeholder="dd/mm/yyyy"
+                      placeholder="gg/mm/aaaa"
                     />
                   </div>
                 </div>
               ))}
 
               <ul className="text-xs text-gray-700 list-disc list-inside">
-                <li>
-                  Parents’ IDs must be passport/ID card (no driving licences).
-                </li>
-                <li>
-                  2 photos ≤6 months; one countersigned with authentication form.
-                </li>
-                <li>Include Special Delivery return envelope (≤500g).</li>
-                <li>
-                  Note: First passport + birth registration cannot be sent together
-                  (since 28 May 2025).
-                </li>
+                {tr.u12.bullets.map((b, i) => (
+                  <li key={i}>{b}</li>
+                ))}
               </ul>
             </div>
           )}
@@ -989,14 +1343,14 @@ export default function PassportForm() {
           {err && <div className="text-red-600 text-sm">{err}</div>}
           <div className="flex justify-between">
             <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
+              {tr.back}
             </button>
             <button
               type="button"
               onClick={next}
               className="px-4 py-2 rounded bg-green-900 text-white"
             >
-              Continue
+              {tr.continue}
             </button>
           </div>
         </div>
@@ -1008,14 +1362,14 @@ export default function PassportForm() {
           {/* Always show proof + email-later */}
           <div className="bg-gray-50 border rounded-lg p-3">
             <label className="block text-sm font-medium">
-              Proof of UK address (≤3 months) — PDF/JPG/PNG, ≤{MAX_MB}MB
+              {tr.uploads.proof}
             </label>
             <input
               ref={proofRef}
               type="file"
               accept=".pdf,image/png,image/jpeg"
               className="mt-2 block w-full"
-              onChange={(e) => pickOne(e, setProof, "Proof of address")}
+              onChange={(e) => pickOne(e, setProof, t(locale).submit.proofLabel)}
               disabled={emailDocsLater}
             />
             <label className="inline-flex items-center gap-2 mt-2">
@@ -1025,11 +1379,11 @@ export default function PassportForm() {
                 onChange={(e) => setEmailDocsLater(e.target.checked)}
               />
               <span className="text-xs text-gray-700">
-                I’ll email documents to{" "}
+                {tr.uploads.emailInstead}{" "}
                 <a className="underline" href="mailto:resinaro@proton.me">
                   resinaro@proton.me
                 </a>{" "}
-                instead
+                {tr.uploads.instead2}
               </span>
             </label>
           </div>
@@ -1046,32 +1400,28 @@ export default function PassportForm() {
                   />
                 </div>
                 <ol className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-                  {["Identity & consent", "Photos", "Postage & extras"].map(
-                    (t, i) => {
-                      const active = u12UploadStep >= ((i + 1) as 1 | 2 | 3);
-                      return (
-                        <li
-                          key={t}
-                          className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${
-                            active
-                              ? "border-green-300 bg-green-50 text-green-900"
-                              : "border-gray-200 bg-white text-gray-600"
+                  {[tr.mini.identity, tr.mini.photos, tr.mini.postage].map((tlabel, i) => {
+                    const active = u12UploadStep >= ((i + 1) as 1 | 2 | 3);
+                    return (
+                      <li
+                        key={tlabel}
+                        className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${
+                          active
+                            ? "border-green-300 bg-green-50 text-green-900"
+                            : "border-gray-200 bg-white text-gray-600"
+                        }`}
+                      >
+                        <span
+                          className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold ${
+                            active ? "bg-green-800 text-white" : "bg-gray-300 text-gray-700"
                           }`}
                         >
-                          <span
-                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold ${
-                              active
-                                ? "bg-green-800 text-white"
-                                : "bg-gray-300 text-gray-700"
-                            }`}
-                          >
-                            {i + 1}
-                          </span>
-                          <span className="truncate">{t}</span>
-                        </li>
-                      );
-                    }
-                  )}
+                          {i + 1}
+                        </span>
+                        <span className="truncate">{tlabel}</span>
+                      </li>
+                    );
+                  })}
                 </ol>
               </div>
 
@@ -1079,28 +1429,27 @@ export default function PassportForm() {
               {u12UploadStep === 1 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <UploadCard
-                    title="U12 application form"
+                    title={tr.mini.u12Fields.appForm}
                     onChange={(e) => pickOne(e, setU12AppForm, "Application form")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <UploadCard
-                    title="Both parents’ IDs (no driving licences)"
+                    title={tr.mini.u12Fields.parentIDs}
                     onChange={(e) => pickMany(e, setU12ParentIDs, "Parents' IDs")}
                     accept=".pdf,image/png,image/jpeg"
                     multiple
                   />
                   <UploadCard
-                    title="Parents’ consent form"
+                    title={tr.mini.u12Fields.consentForm}
                     onChange={(e) => pickOne(e, setU12Consent, "Parents' consent")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <div className="rounded-lg border p-3 text-xs text-gray-700 md:col-span-2">
-                    <p className="font-medium">Tips</p>
+                    <p className="font-medium">{tr.mini.tips}</p>
                     <ul className="list-disc list-inside">
-                      <li>
-                        IDs must be passport/ID card — <em>no UK driving licences</em>.
-                      </li>
-                      <li>Signatures on the consent must match the ID.</li>
+                      {tr.mini.tipsList.map((x, i) => (
+                        <li key={i}>{x}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -1110,22 +1459,23 @@ export default function PassportForm() {
               {u12UploadStep === 2 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <UploadCard
-                    title="Child photos (2)"
-                    help="One must be countersigned per ICAO/authentication rules."
+                    title={tr.mini.u12Fields.photos}
+                    help={tr.mini.u12Fields.photoHelp}
                     onChange={(e) => pickMany(e, setU12Photos, "Photos")}
                     accept=".jpg,.jpeg,.png"
                     multiple
                   />
                   <UploadCard
-                    title="Photo authentication form"
+                    title={tr.mini.u12Fields.photoAuth}
                     onChange={(e) => pickOne(e, setU12PhotoAuth, "Photo authentication")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <div className="rounded-lg border p-3 text-xs text-gray-700 md:col-span-2">
-                    <p className="font-medium">Photo checklist</p>
+                    <p className="font-medium">{tr.mini.photoChecklist}</p>
                     <ul className="list-disc list-inside">
-                      <li>Recent (≤6 months), plain background, correct size.</li>
-                      <li>Countersignatory not a relative; known 2+ years in UK/EU.</li>
+                      {tr.mini.photoList.map((x, i) => (
+                        <li key={i}>{x}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -1135,38 +1485,31 @@ export default function PassportForm() {
               {u12UploadStep === 3 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <UploadCard
-                    title="Special Delivery (return) proof"
-                    onChange={(e) =>
-                      pickOne(e, setU12SpecDel, "Special Delivery proof")
-                    }
+                    title={tr.mini.u12Fields.specDel}
+                    onChange={(e) => pickOne(e, setU12SpecDel, "Special Delivery proof")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <UploadCard
-                    title="Previous Italian passport / other ID (optional)"
+                    title={tr.mini.u12Fields.prevID}
                     onChange={(e) => pickOne(e, setU12PrevID, "Previous ID")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <UploadCard
-                    title="Lost/Stolen form (if applicable)"
+                    title={tr.mini.u12Fields.lostForm}
                     onChange={(e) => pickOne(e, setU12LostForm, "Lost/Stolen form")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <UploadCard
-                    title="Police report or Report My Loss (if applicable)"
+                    title={tr.mini.u12Fields.police}
                     onChange={(e) => pickOne(e, setU12Police, "Police/ReportMyLoss")}
                     accept=".pdf,image/png,image/jpeg"
                   />
                   <div className="rounded-lg border p-3 text-xs text-gray-700 md:col-span-2">
-                    <p className="font-medium">Heads-up</p>
+                    <p className="font-medium">{tr.mini.headsUp}</p>
                     <ul className="list-disc list-inside">
-                      <li>
-                        Include a prepaid <strong>Special Delivery</strong> return
-                        envelope (≤500g).
-                      </li>
-                      <li>
-                        First passport + birth registration <strong>cannot</strong> be
-                        sent together (rule from 28 May 2025).
-                      </li>
+                      {tr.mini.headsUpList.map((x, i) => (
+                        <li key={i}>{x}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -1182,7 +1525,7 @@ export default function PassportForm() {
                     }
                     className="px-3 py-2 rounded border w-full sm:w-auto"
                   >
-                    Prev section
+                    {tr.mini.prev}
                   </button>
                   <button
                     type="button"
@@ -1191,7 +1534,7 @@ export default function PassportForm() {
                     }
                     className="px-3 py-2 rounded border w-full sm:w-auto"
                   >
-                    Next section
+                    {tr.mini.next}
                   </button>
                 </div>
               </div>
@@ -1200,7 +1543,7 @@ export default function PassportForm() {
 
           {/* Agreements (required) */}
           <div className="rounded-xl border border-green-200 bg-green-50 p-3">
-            <p className="text-sm font-semibold text-green-900">Agreements (required)</p>
+            <p className="text-sm font-semibold text-green-900">{tr.agreements.title}</p>
             <div className="mt-2 space-y-3 text-sm text-gray-800">
               <label className="flex items-start gap-2">
                 <input
@@ -1209,12 +1552,7 @@ export default function PassportForm() {
                   onChange={(e) => setStartNowConsent(e.target.checked)}
                   className="mt-1"
                 />
-                <span>
-                  I ask you to <strong>start work immediately</strong>. I understand I have a 14-day
-                  cooling-off period, but if I cancel after work has begun you may deduct a
-                  proportionate amount for work already completed; once the service is <strong>fully
-                  performed</strong> within 14 days, I will <strong>lose my right to cancel</strong>.
-                </span>
+                <span>{tr.agreements.startNow}</span>
               </label>
 
               <label className="flex items-start gap-2">
@@ -1225,12 +1563,11 @@ export default function PassportForm() {
                   className="mt-1"
                 />
                 <span>
-                  I have read and agree to the{" "}
-                  <Link href="/refund-policy" className="underline text-green-900">
-                    Refund & Credit Policy
+                  {tr.agreements.refund1}{" "}
+                  <Link href={p(locale, "/refund-policy")} className="underline text-green-900">
+                    {locale === "it" ? "Politica Rimborsi & Crediti" : "Refund & Credit Policy"}
                   </Link>
-                  . I understand Resinaro’s default remedy is account credit valid for 12 months,
-                  and cash refunds are only provided where legally required.
+                  . {tr.agreements.refund2}
                 </span>
               </label>
 
@@ -1242,10 +1579,9 @@ export default function PassportForm() {
                   className="mt-1"
                 />
                 <span>
-                  I consent to Resinaro handling my data and, if provided, using my Prenot@Mi
-                  credentials solely to book.{" "}
-                  <Link href="/privacy-policy" className="underline text-green-900">
-                    Privacy Policy
+                  {tr.agreements.privacy1}{" "}
+                  <Link href={p(locale, "/privacy-policy")} className="underline text-green-900">
+                    {tr.agreements.privacy2}
                   </Link>
                 </span>
               </label>
@@ -1260,38 +1596,29 @@ export default function PassportForm() {
               onClick={back}
               className="px-3 py-2 rounded border w-full sm:w-auto"
             >
-              Back
+              {tr.back}
             </button>
             <button
               type="submit"
               disabled={
-                submitting ||
-                aire !== "yes" ||
-                !startNowConsent ||
-                !refundPolicyAgree ||
-                !consent
+                submitting || aire !== "yes" || !startNowConsent || !refundPolicyAgree || !consent
               }
               className={`px-4 py-2 rounded text-white w-full sm:w-auto ${
-                submitting ||
-                aire !== "yes" ||
-                !startNowConsent ||
-                !refundPolicyAgree ||
-                !consent
+                submitting || aire !== "yes" || !startNowConsent || !refundPolicyAgree || !consent
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-green-900 hover:bg-green-800"
               }`}
             >
-              {submitting ? "Submitting…" : "Submit & Pay"}
+              {submitting ? tr.submit.submitting : tr.submit.submit}
             </button>
           </div>
 
           <p className="text-[11px] text-gray-600">
-            We are not the Consulate. Appointment supply and passport decisions are theirs. If unsure,
-            email{" "}
+            {tr.submit.foot}{" "}
             <a className="underline" href="mailto:resinaro@proton.me">
               resinaro@proton.me
-            </a>{" "}
-            before paying.
+            </a>
+            .
           </p>
         </div>
       )}

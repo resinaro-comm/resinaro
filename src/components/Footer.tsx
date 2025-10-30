@@ -4,8 +4,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
-import { p, useLocaleFromPathname } from "@/lib/localePath";
+import { p } from "@/lib/localePath"; // keep your prefix helper
 import TrustpilotReviewButton from "@/components/TrustpilotReviewButton";
+import { useLocale } from "next-intl"; // <-- use Next-Intl locale (SSR/CSR-safe)
 
 /* ----------------------------- base data ----------------------------- */
 
@@ -22,12 +23,13 @@ const baseCities = [
   { title: "Bradford", href: "/directory/bradford" },
 ];
 
+// NOTE: .com domain
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Resinaro",
-  url: "https://resinaro.org",
-  logo: "https://resinaro.org/images/logo.png",
+  url: "https://www.resinaro.com",
+  logo: "https://www.resinaro.com/images/logo.png",
   sameAs: [
     "https://www.instagram.com/resinarouk/",
     "https://www.youtube.com/@resinaroUK",
@@ -50,7 +52,8 @@ const structuredData = {
 export default function Footer() {
   const [submitted, setSubmitted] = useState(false);
 
-  const locale = useLocaleFromPathname();
+  // ✅ Locale now comes from next-intl provider (stable SSR/CSR)
+  const locale = (useLocale() as "en" | "it") || "en";
   const isIt = locale === "it";
 
   const copy = useMemo(
@@ -59,7 +62,7 @@ export default function Footer() {
         ? "Supporto pratico per gli italiani nel Regno Unito. Guide chiare. Posti che amerai."
         : "Practical support for Italians in the UK. Clear guides. Places you’ll love.",
       emailPh: isIt ? "tua@email.com" : "your@email.com",
-      subscribe: isIt ? "Subscribe" : "Subscribe",
+      subscribe: isIt ? "Iscriviti" : "Subscribe",
       thanks: isIt ? "Grazie!" : "Thanks!",
       lowVolume: isIt
         ? "Aggiornamenti rari, disiscrizione in ogni momento."
@@ -84,6 +87,14 @@ export default function Footer() {
       hours: isIt ? "Lun–Ven · 9:00–17:00 (UK)" : "Mon–Fri · 9:00–17:00 (UK)",
       reviewCta: isIt ? "Hai trovato utile Resinaro?" : "Found Resinaro helpful?",
       reviewSub: isIt ? "Lascia una recensione su Trustpilot." : "Leave a Trustpilot review.",
+      newsletterAria: isIt ? "Iscriviti agli aggiornamenti" : "Subscribe to updates",
+      emailLabel: isIt ? "Email" : "Email",
+      builtByAria: isIt
+        ? "Questo sito è stato creato e viene gestito da alveriano.com"
+        : "This site was created by and is managed by alveriano.com",
+      builtByText: isIt
+        ? "Questo sito è stato creato e viene gestito da alveriano.com"
+        : "This site was created by and is managed by alveriano.com",
       svc: {
         passport: isIt ? "Passaporto" : "Passport",
         nin: isIt ? "Supporto NIN" : "NIN Support",
@@ -161,13 +172,13 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* newsletter + trustpilot (desktop: expanded; mobile: same as before) */}
+          {/* newsletter + trustpilot */}
           <div className="flex w-full md:w-auto flex-col items-center gap-3 md:flex-row md:items-center md:justify-end md:flex-1 md:pl-8 md:gap-4">
             <form
               method="post"
               action="/api/newsletter"
               onSubmit={() => setSubmitted(true)}
-              aria-label={isIt ? "Iscriviti agli aggiornamenti" : "Subscribe to updates"}
+              aria-label={copy.newsletterAria}
               className="
                 w-full md:flex-1
                 overflow-hidden rounded-full border border-emerald-900/15 bg-white
@@ -184,7 +195,7 @@ export default function Footer() {
                 required
                 placeholder={copy.emailPh}
                 className="flex-1 min-w-[14rem] md:min-w-[28rem] px-4 py-2.5 text-[14px] outline-none"
-                aria-label="Email"
+                aria-label={copy.emailLabel}
               />
               <button
                 type="submit"
@@ -209,7 +220,7 @@ export default function Footer() {
       {/* thin divider */}
       <div className="mx-auto max-w-7xl border-t border-black/5" />
 
-      {/* ROW 2: nav — desktop always visible (no hiding); mobile collapsible */}
+      {/* ROW 2: nav — desktop always visible; mobile collapsible */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-4 md:gap-6">
           <FooterSection title={copy.explore}>
@@ -258,7 +269,9 @@ export default function Footer() {
       {/* bottom meta bar */}
       <div className="bg-green-900 text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 text-[12px] flex flex-col items-center gap-1 md:flex-row md:justify-between md:gap-0">
-          <div>© {new Date().getFullYear()} Resinaro · {copy.rights}</div>
+          <div>
+            © {new Date().getFullYear()} Resinaro · {copy.rights}
+          </div>
           <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-3">
             <span className="text-white/70">{copy.hours}</span>
             <span aria-hidden className="hidden sm:inline text-white/40">·</span>
@@ -269,9 +282,11 @@ export default function Footer() {
             <a
               href="https://alveriano.com"
               className="hover:underline"
-              aria-label="This site was created by and is managed by alveriano.com"
+              aria-label={copy.builtByAria}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              This site was created by and is managed by alveriano.com
+              {copy.builtByText}
             </a>
           </div>
         </div>
@@ -333,7 +348,7 @@ function FooterItem({
     <li>
       <Link
         href={href}
-        className={`inline-flex items-center justify-center md:justify-start gap-1 text-gray-700 hover:text-green-900 ${
+        className={`group inline-flex items-center justify-center md:justify-start gap-1 text-gray-700 hover:text-green-900 ${
           subtle ? "text-gray-600" : ""
         }`}
       >

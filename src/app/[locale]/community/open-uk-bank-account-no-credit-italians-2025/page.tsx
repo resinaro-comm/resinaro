@@ -1,5 +1,6 @@
 // app/community/open-uk-bank-account-no-credit-italians-2025/page.tsx
 import Link from "next/link";
+import { p, type Locale } from "@/lib/localePath";
 import Image from "next/image";
 
 export const metadata = {
@@ -16,7 +17,11 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
   // —— JSON-LD (unchanged) ——
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -148,7 +153,7 @@ export default function Page() {
       <div className="bg-gradient-to-b from-transparent to-[#F4EEE4]">
         <div className="container mx-auto max-w-6xl px-6 py-4 text-[13px] text-gray-600">
           <nav className="flex items-center gap-2">
-            <Link href="/community" className="hover:underline">Community</Link>
+            <Link href={p(locale, "/community")} className="hover:underline">Community</Link>
             <span>·</span>
             <span className="text-gray-800">Banking & KYC</span>
             <span className="ml-auto">~10 min read</span>
@@ -482,10 +487,10 @@ Thank you,
                   We check your documents, address format, and app steps — plus a custom script for chat or branch.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Link href="/checkout/banking-credit-starter" className="inline-flex items-center px-5 py-2.5 rounded-full bg-emerald-700 text-white font-semibold hover:bg-emerald-800 transition">
+                  <Link href={p(locale, "/checkout/banking-credit-starter")} className="inline-flex items-center px-5 py-2.5 rounded-full bg-emerald-700 text-white font-semibold hover:bg-emerald-800 transition">
                     Banking &amp; Credit Starter (+£20)
                   </Link>
-                  <Link href="/services" className="inline-flex items-center px-5 py-2.5 rounded-full bg-white text-emerald-900 font-semibold border hover:bg-emerald-50 transition">
+                  <Link href={p(locale, "/services")} className="inline-flex items-center px-5 py-2.5 rounded-full bg-white text-emerald-900 font-semibold border hover:bg-emerald-50 transition">
                     View Resinaro Services →
                   </Link>
                 </div>

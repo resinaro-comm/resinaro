@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 
 export default function DirectoryIndexPage({
   params
-}: { params: { locale: 'en' | 'it' } }) {
+}: { params: { locale: "en" | "it" } }) {
   const locale = params.locale;
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <Header />
+      <Header locale={locale} />
       <Suspense>
         <DirectoryIndexContent locale={locale} />
       </Suspense>
@@ -30,6 +30,8 @@ export default function DirectoryIndexPage({
 }
 
 function DirectoryIndexContent({ locale }: { locale: string }) {
+  const isIt = locale === "it";
+
   const cityKeys = Object.keys(listingsByCityAndCategory || {});
   const cities = cityKeys.map((key) => ({
     key,
@@ -48,13 +50,23 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
     })),
   };
 
+  // Category labels (EN/IT)
+  const catLabel = (cat: "restaurants" | "delis" | "shops") =>
+    isIt
+      ? cat === "restaurants"
+        ? "Ristoranti"
+        : cat === "delis"
+        ? "Gastronomie"
+        : "Negozi"
+      : capitalize(cat);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(cityItemListSchema) }}
       />
-      <FilterBar />
+      <FilterBar locale={locale} />
       <ul className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
         {cities.map((city) => {
           const cityData = listingsByCityAndCategory[city.key] as Record<string, Listing[]>;
@@ -76,7 +88,11 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
                 <div className="relative aspect-[16/9]">
                   <Image
                     src={firstImage}
-                    alt={`${city.label} Italian directory`}
+                    alt={
+                      isIt
+                        ? `Directory italiana: ${city.label}`
+                        : `${city.label} Italian directory`
+                    }
                     fill
                     className="rounded-t-2xl object-cover"
                     sizes="(min-width: 768px) 33vw, 100vw"
@@ -91,13 +107,24 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
                     href={`/${locale}/directory/${city.key}`}
                     className="text-sm underline underline-offset-4 hover:text-foreground"
                   >
-                    Open guide
+                    {isIt ? "Apri guida" : "Open guide"}
                   </Link>
                 </div>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  The best Italian places in {city.label}. Restaurants for nights
-                  out, delis for fresh counters, and shops for your pantry.
+                  {isIt ? (
+                    <>
+                      I migliori posti italiani a {city.label}. <strong>Ristoranti</strong> per le
+                      serate fuori, <strong>gastronomie</strong> per i banchi freschi e{" "}
+                      <strong>negozi</strong> per la tua dispensa.
+                    </>
+                  ) : (
+                    <>
+                      The best Italian places in {city.label}. <strong>Restaurants</strong> for nights
+                      out, <strong>delis</strong> for fresh counters, and <strong>shops</strong> for
+                      your pantry.
+                    </>
+                  )}
                 </p>
 
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -113,7 +140,7 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
                         }`}
                         aria-disabled={!has}
                       >
-                        {capitalize(cat)}
+                        {catLabel(cat)}
                         {count ? <span className="ml-1 opacity-70">({count})</span> : null}
                       </Link>
                     );
@@ -126,7 +153,7 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
                     if (!list.length) return null;
                     return (
                       <div key={cat} className="text-sm">
-                        <p className="mb-1 font-medium">{capitalize(cat)}:</p>
+                        <p className="mb-1 font-medium">{catLabel(cat)}:</p>
                         <ul className="flex flex-wrap gap-x-3 text-muted-foreground">
                           {list.map((l) => (
                             <li key={l.slug} className="truncate">
@@ -151,7 +178,7 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
                     href={`/${locale}/directory/${city.key}`}
                     className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm hover:bg-emerald-50"
                   >
-                    View {city.label} picks
+                    {isIt ? `Vedi i posti di ${city.label}` : `View ${city.label} picks`}
                   </Link>
                 </div>
               </div>
@@ -163,40 +190,59 @@ function DirectoryIndexContent({ locale }: { locale: string }) {
   );
 }
 
-function Header() {
+function Header({ locale }: { locale: string }) {
+  const isIt = locale === "it";
   return (
     <>
       <nav aria-label="Breadcrumb">
         <ol className="mb-3 flex flex-wrap gap-1 text-sm text-muted-foreground">
           <li className="flex items-center">
+            {/* Keep "Directory" as a brand section name (same on the homepage example) */}
             <span className="hover:text-foreground">Directory</span>
           </li>
         </ol>
       </nav>
       <header className="mb-6 text-center">
-        <h1 className="text-3xl font-bold tracking-tight">Find anything Italian in the UK</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {isIt ? "Trova tutto l’italiano nel Regno Unito" : "Find anything Italian in the UK"}
+        </h1>
         <p className="mx-auto mt-3 max-w-3xl text-sm text-muted-foreground">
-          Looking for real Italian flavour—wherever you are? You’re in the right
-          place. Our city guides highlight the <strong>best-reviewed restaurants</strong>, authentic{" "}
-          <strong>delis</strong>, and stocked <strong>Italian shops</strong>.
-          Updated regularly with community tips and links to menus, maps and
-          contact details.
+          {isIt ? (
+            <>
+              Cerchi il vero sapore italiano ovunque tu sia? Sei nel posto giusto. Le nostre guide
+              per città evidenziano i <strong>ristoranti meglio recensiti</strong>,{" "}
+              <strong>gastronomie autentiche</strong> e <strong>negozi italiani</strong> ben forniti.
+              Aggiornate regolarmente con consigli della community e link a menu, mappe e contatti.
+            </>
+          ) : (
+            <>
+              Looking for real Italian flavour—wherever you are? You’re in the right place. Our city
+              guides highlight the <strong>best-reviewed restaurants</strong>, authentic{" "}
+              <strong>delis</strong>, and stocked <strong>Italian shops</strong>. Updated regularly
+              with community tips and links to menus, maps and contact details.
+            </>
+          )}
         </p>
         <div className="mt-3 inline-flex items-center gap-2 rounded-full border bg-white/60 px-3 py-1 text-xs">
           <span className="rounded-full bg-emerald-600/90 px-2 py-0.5 font-semibold text-white">
-            Local Picks
+            {isIt ? "Scelte locali" : "Local Picks"}
           </span>
-          <span className="text-muted-foreground">Hand-checked • Community-guided</span>
+          <span className="text-muted-foreground">
+            {isIt ? "Verificate a mano • Guidate dalla comunità" : "Hand-checked • Community-guided"}
+          </span>
         </div>
       </header>
     </>
   );
 }
 
-function FilterBar() {
+function FilterBar({ locale }: { locale: string }) {
+  const isIt = locale === "it";
   return (
     <form className="mx-auto max-w-3xl">
-      <label className="sr-only" htmlFor="q">Search cities</label>
+      <label className="sr-only" htmlFor="q">
+        {isIt ? "Cerca città" : "Search cities"}
+      </label>
       <div className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2">
         <svg aria-hidden className="h-4 w-4 opacity-60" viewBox="0 0 24 24" fill="none">
           <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" strokeWidth="2" />
@@ -205,38 +251,64 @@ function FilterBar() {
         <input
           id="q"
           name="q"
-          placeholder="Search cities (e.g., Leeds, Manchester)…"
+          placeholder={
+            isIt
+              ? "Cerca città (es. Leeds, Manchester)…"
+              : "Search cities (e.g., Leeds, Manchester)…"
+          }
           className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
         />
-        <button className="rounded-lg border px-3 py-1 text-xs hover:bg-emerald-50">Search</button>
+        <button className="rounded-lg border px-3 py-1 text-xs hover:bg-emerald-50">
+          {isIt ? "Cerca" : "Search"}
+        </button>
       </div>
       <p className="mt-2 text-center text-xs text-muted-foreground">
-        Tip: use the global search in the top navbar to find <em>specific places</em>, guides and services across the site.
+        {isIt ? (
+          <>
+            Suggerimento: usa la ricerca globale nella barra superiore per trovare{" "}
+            <em>luoghi specifici</em>, guide e servizi in tutto il sito.
+          </>
+        ) : (
+          <>
+            Tip: use the global search in the top navbar to find <em>specific places</em>, guides and
+            services across the site.
+          </>
+        )}
       </p>
     </form>
   );
 }
 
 function SubmitCta({ locale }: { locale: string }) {
+  const isIt = locale === "it";
   return (
     <section className="mt-12 rounded-2xl border bg-gradient-to-br from-emerald-50 to-white p-6">
-      <h3 className="text-2xl font-semibold">Can’t find your city—or want to be featured?</h3>
+      <h3 className="text-2xl font-semibold">
+        {isIt
+          ? "Non trovi la tua città — o vuoi essere inserito?"
+          : "Can’t find your city—or want to be featured?"}
+      </h3>
       <p className="mt-1 text-muted-foreground">
-        We’re adding new areas and businesses all the time. Tell us what’s
-        missing or apply for a feature slot.
+        {isIt
+          ? "Aggiungiamo nuove zone e attività continuamente. Dicci cosa manca o invia una richiesta per essere inserito."
+          : "We’re adding new areas and businesses all the time. Tell us what’s missing or apply for a feature slot."}
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         <a
           className="inline-flex h-11 items-center justify-center rounded-xl border px-5 text-sm hover:bg-emerald-50"
-          href={`mailto:resinaro@proton.me?subject=Add my city to Resinaro Directory&body=City:%0D%0AWhat Italian places should we include:`}
+          href={
+            isIt
+              ? `mailto:resinaro@proton.me?subject=Aggiungi la mia città alla Directory Resinaro&body=Città:%0D%0ALuoghi italiani da includere:`
+              : `mailto:resinaro@proton.me?subject=Add my city to Resinaro Directory&body=City:%0D%0AWhat Italian places should we include:`
+          }
         >
-          Request a city
+          {isIt ? "Richiedi una città" : "Request a city"}
         </a>
         <Link
           href={`/${locale}/advertise`}
           className="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-700"
         >
-          Feature my business
+          {isIt ? "Metti in evidenza la tua attività" : "Feature my business"}
         </Link>
       </div>
     </section>
