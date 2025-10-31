@@ -754,6 +754,20 @@ export default function PassportForm() {
         window.location.href = "https://buy.stripe.com/dRmdR9gVU3td9Ut6AOaMU0c";
         return;
       }
+      // Special pricing links for multi-person Prenot@Mi assistance
+      if (service === "prenotami") {
+        const totalPeople = 1 + (extraCount || 0);
+        if (totalPeople === 2) {
+          // £70 total for 2 people
+          window.location.href = "https://buy.stripe.com/7sYdR98pofbVc2B1guaMU0g";
+          return;
+        }
+        if (totalPeople === 3) {
+          // £105 total for 3 people
+          window.location.href = "https://buy.stripe.com/4gMcN58poe7R4A9cZcaMU0f";
+          return;
+        }
+      }
       const pay = await fetch("/api/services/book", { method: "POST", body: fd });
       if (!pay.ok) throw new Error(await pay.text().catch(() => "Checkout error."));
       const { url } = await pay.json();
