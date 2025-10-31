@@ -1,459 +1,236 @@
+// src/components/AdvertiseForm.tsx
 "use client";
-import React, { useMemo, useState } from "react";
+
+import React, { useState } from "react";
 import Link from "next/link";
+import { useLocaleFromPathname, p } from "@/lib/localePath";
 
-type Sector =
-  | "legal"
-  | "tax"
-  | "property"
-  | "banking"
-  | "recruitment"
-  | "education"
-  | "hospitality"
-  | "retail"
-  | "other";
+/** === SAME GAS MECHANISM AS PASSPORT FORM === **/
+const GAS_URL =
+  "https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOY_URL/exec";
+const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532";
 
-type Placement = "featured" | "category-highlight" | "city-partner" | "not-sure";
+/** i18n **/
+type Locale = "en" | "it";
+function t(locale: Locale) {
+  const en = {
+    aria: "Advertiser quick contact form",
+    title: "Let’s keep this easy",
+    blurb:
+      "Pop your email (and phone/WhatsApp if you like). We’ll reply with a simple plan—no pressure.",
+    email: "Email *",
+    phone: "Phone / WhatsApp (optional)",
+    phonePh: "+44…",
+    msg: "Anything we should know? (optional)",
+    msgPh: "e.g. “Italian deli in Leeds, want more weekday lunch traffic.”",
+    consent1:
+      "I agree to the processing of this data for advertising enquiries. See our",
+    privacy: "Privacy Policy",
+    submit: "Send",
+    sending: "Sending…",
+    hint: "Kind, human follow-up within 2 business days.",
+    ok: "Thanks! We’ve got your details. We’ll be in touch shortly.",
+    errEmail: "Please enter a valid email.",
+    errConsent: "Please agree to data processing.",
+    fail: "Submission failed. Try again or email us.",
+  } as const;
 
-// Kept for backend compatibility but hidden in the UI
-type Tier = "starter" | "pro" | "exclusive" | "unsure";
-type Budget = "<1000" | "1000-3000" | "3000-7000" | ">7000" | "unsure";
+  const it = {
+    aria: "Modulo rapido inserzionisti",
+    title: "Facciamola semplice",
+    blurb:
+      "Inserisci la tua email (e telefono/WhatsApp se vuoi). Ti rispondiamo con una proposta semplice—senza impegno.",
+    email: "Email *",
+    phone: "Telefono / WhatsApp (facoltativo)",
+    phonePh: "+44…",
+    msg: "Qualcosa da aggiungere? (facoltativo)",
+    msgPh: "es. “Gastronomia a Leeds, vogliamo più pranzi in settimana.”",
+    consent1:
+      "Acconsento al trattamento dei dati per richieste pubblicitarie. Vedi la",
+    privacy: "Privacy Policy",
+    submit: "Invia",
+    sending: "Invio…",
+    hint: "Risposta umana e gentile entro 2 giorni lavorativi.",
+    ok: "Grazie! Ricevuto. Ti ricontatteremo a breve.",
+    errEmail: "Inserisci una email valida.",
+    errConsent: "Acconsenti al trattamento dei dati.",
+    fail: "Invio non riuscito. Riprova o scrivici.",
+  } as const;
 
-type FormState = {
-  company: string;
-  website: string;
-  sector: Sector;
-  contact: string;
-  email: string;
-  phone: string;
-  goals: string;
-  // new friendly fields
-  placement: Placement;
-  categories: string[]; // restaurants, delis, shops, services
-  regions: string[];
-  message: string;
-  consent: boolean;
-  hp_field: string; // honeypot
-
-  // hidden legacy fields (not shown, just sent)
-  tier: Tier;
-  budget: Budget;
-};
-
-function pushDL(evt: Record<string, unknown>) {
-  try {
-    const w = window as unknown as { dataLayer?: { push?: (e: Record<string, unknown>) => void } };
-    w.dataLayer?.push?.(evt);
-  } catch {
-    // no-op
-  }
+  return locale === "it" ? it : en;
 }
 
-// Lightweight anti-spam (honeypot + human math)
-function useCaptcha() {
-  const [a, b] = useMemo(() => {
-    const x = Math.floor(1 + Math.random() * 8);
-    const y = Math.floor(1 + Math.random() * 8);
-    return [x, y];
-  }, []);
-  const [answer, setAnswer] = useState<number | "">("");
-  const valid = a + b === Number(answer);
-  return { a, b, answer, setAnswer, valid };
+/** Optional GTM/analytics */
+function pushDL(evt: Record<string, unknown>) {
+  try {
+    (window as unknown as {
+      dataLayer?: { push?: (e: Record<string, unknown>) => void };
+    }).dataLayer?.push?.(evt);
+  } catch {}
 }
 
 export default function AdvertiseForm() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const locale = (useLocaleFromPathname() as Locale) || "en";
+  const i = t(locale);
+
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [hp, setHp] = useState(""); // honeypot
+
+  const [busy, setBusy] = useState(false);
   const [ok, setOk] = useState(false);
-  const { a, b, answer, setAnswer, valid } = useCaptcha();
-
-  const [form, setForm] = useState<FormState>({
-    company: "",
-    website: "",
-    sector: "legal",
-    contact: "",
-    email: "",
-    phone: "",
-    goals: "",
-    placement: "not-sure",
-    categories: [],
-    regions: [],
-    message: "",
-    consent: false,
-    hp_field: "",
-    // hidden legacy defaults (no pricing shown to users)
-    tier: "unsure",
-    budget: "unsure",
-  });
-
-  function onChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
-    const target = e.target as HTMLInputElement;
-    const { name, value, type, checked } = target;
-
-    // checkboxes (regions/categories/consent)
-    if (type === "checkbox") {
-      if (name === "consent") {
-        setForm((s) => ({ ...s, consent: checked }));
-        return;
-      }
-      if (name.startsWith("region:")) {
-        const region = name.split(":")[1];
-        setForm((s) => ({
-          ...s,
-          regions: checked ? Array.from(new Set([...s.regions, region])) : s.regions.filter((r) => r !== region),
-        }));
-        return;
-      }
-      if (name.startsWith("cat:")) {
-        const cat = name.split(":")[1];
-        setForm((s) => ({
-          ...s,
-          categories: checked ? Array.from(new Set([...s.categories, cat])) : s.categories.filter((c) => c !== cat),
-        }));
-        return;
-      }
-    }
-
-    if (name === "hp_field") {
-      setForm((s) => ({ ...s, hp_field: value }));
-      return;
-    }
-
-    // radio (placement)
-    if (name === "placement") {
-      setForm((s) => ({ ...s, placement: value as Placement }));
-      return;
-    }
-
-    // select: sector (union)
-    if (name === "sector") {
-      setForm((s) => ({ ...s, sector: value as Sector }));
-      return;
-    }
-
-    // plain text/select fields (narrow to keys that truly take string values)
-    type StringKeys = Extract<
-      keyof FormState,
-      | "company"
-      | "website"
-      | "contact"
-      | "email"
-      | "phone"
-      | "goals"
-      | "message"
-      | "tier"
-      | "budget"
-    >;
-
-    if ([
-      "company",
-      "website",
-      "contact",
-      "email",
-      "phone",
-      "goals",
-      "message",
-      "tier",
-      "budget",
-    ].includes(name)) {
-      const key = name as StringKeys;
-      setForm((s) => ({ ...s, [key]: value }));
-      return;
-    }
-  }
+  const [err, setErr] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
+    setErr(null);
     setOk(false);
 
-    if (!form.company.trim() || !form.contact.trim() || !form.email.trim()) {
-      setError("Please complete company, contact and email.");
-      return;
-    }
-    if (!form.consent) {
-      setError("Please provide GDPR consent to continue.");
-      return;
-    }
-    if (!valid) {
-      setError("Please solve the human check.");
-      return;
-    }
+    const emailOk = /\S+@\S+\.\S+/.test(email);
+    if (!emailOk) return setErr(i.errEmail);
+    if (!consent) return setErr(i.errConsent);
 
     try {
-      setLoading(true);
-      pushDL({ event: "ad_lead_started" });
+      setBusy(true);
+      pushDL({ event: "ad_lead_started", method: "GAS" });
 
-      const res = await fetch("/api/ads/apply", {
+      const r = await fetch(GAS_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          token: GAS_TOKEN,
+          action: "ad-lead",
+          locale,
+          hp_field: hp, // ignored server-side if empty; used to drop bots
+          data: {
+            email: email.trim(),
+            telephone: phone.trim(),
+            message: message.trim(),
+            source: "advertise-form",
+            path: typeof window !== "undefined" ? window.location.pathname : "",
+            userAgent:
+              typeof navigator !== "undefined" ? navigator.userAgent : "",
+          },
+        }),
       });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Submission failed");
-      }
+      const js = await r.json().catch(() => ({}));
+      if (!r.ok || !js?.ok) throw new Error(js?.error || "Error");
+
+      pushDL({ event: "ad_lead_submitted", method: "GAS" });
       setOk(true);
-      pushDL({ event: "ad_lead_submitted" });
-      // soft reset (keep company/email so they can resubmit tweaks)
-      setForm((s) => ({ ...s, goals: "", message: "" }));
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Submission failed";
-      setError(message);
+      setMessage("");
+    } catch {
+      setErr(i.fail);
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   }
 
-  const regionOptions: [string, string][] = [
-    ["London", "london"],
-    ["Manchester", "manchester"],
-    ["Birmingham", "birmingham"],
-    ["Leeds", "leeds"],
-    ["Bradford", "bradford"],
-    ["Liverpool", "liverpool"],
-    ["Glasgow", "glasgow"],
-    ["Edinburgh", "edinburgh"],
-    ["Bristol", "bristol"],
-    ["Other / UK-wide", "other"],
-  ];
-
-  const categoryOptions: [string, string][] = [
-    ["Restaurants", "restaurants"],
-    ["Delis", "delis"],
-    ["Shops", "shops"],
-    ["Services (law, tax, moving…)", "services"],
-  ];
-
   return (
-    <form onSubmit={onSubmit} className="space-y-5" noValidate aria-label="Advertiser application form">
-      {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800" role="alert">
-          {error}
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      aria-label={i.aria}
+      className="space-y-5 rounded-2xl border p-4 sm:p-6"
+    >
+      <div>
+        <h3 className="text-lg font-semibold">{i.title}</h3>
+        <p className="mt-1 text-sm text-neutral-700">{i.blurb}</p>
+      </div>
+
+      {err && (
+        <div
+          className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          role="alert"
+        >
+          {err}
         </div>
       )}
       {ok && (
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
-          Thanks! We’ve received your application. We’ll reply within 2 business days with a simple plan.
+          {i.ok}
         </div>
       )}
 
-      {/* Your business */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="block text-sm font-medium">Company *</label>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <label className="block text-sm font-medium">{i.email}</label>
           <input
-            name="company"
-            value={form.company}
-            onChange={onChange}
-            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Website</label>
-          <input
-            name="website"
-            value={form.website}
-            onChange={onChange}
-            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-            placeholder="https://"
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="block text-sm font-medium">What do you do?</label>
-          <select
-            name="sector"
-            value={form.sector}
-            onChange={onChange}
-            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-          >
-            <option value="legal">Legal</option>
-            <option value="tax">Tax / accounting</option>
-            <option value="property">Property / lettings</option>
-            <option value="banking">Banking / fintech</option>
-            <option value="recruitment">Recruitment</option>
-            <option value="education">Education</option>
-            <option value="hospitality">Hospitality</option>
-            <option value="retail">Retail / e-commerce</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Contact name *</label>
-          <input
-            name="contact"
-            value={form.contact}
-            onChange={onChange}
-            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <div>
-          <label className="block text-sm font-medium">Email *</label>
-          <input
-            name="email"
             type="email"
-            value={form.email}
-            onChange={onChange}
-            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Phone / WhatsApp</label>
-          <input
-            name="phone"
-            value={form.phone}
-            onChange={onChange}
             className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-            placeholder="+44…"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium">Human check *</label>
-          <div className="mt-1 flex items-center gap-2">
-            <span className="rounded-lg bg-neutral-100 px-2 py-1">{a} + {b} =</span>
-            <input
-              type="number"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value === "" ? "" : Number(e.target.value))}
-              className="w-24 rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-              required
-            />
-          </div>
-          <p className="mt-1 text-xs text-green-700">Just making sure you’re human.</p>
+
+        <div className="sm:col-span-2">
+          <label className="block text-sm font-medium">{i.phone}</label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder={i.phonePh}
+            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
+          />
+        </div>
+
+        <div className="sm:col-span-2">
+          <label className="block text-sm font-medium">{i.msg}</label>
+          <textarea
+            rows={3}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={i.msgPh}
+            className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
+          />
         </div>
       </div>
 
-      {/* Goals */}
-      <div>
-        <label className="block text-sm font-medium">What would you like to achieve?</label>
-        <textarea
-          name="goals"
-          rows={3}
-          value={form.goals}
-          onChange={onChange}
-          className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-          placeholder="e.g. More table bookings in Leeds; enquiries for student visas; sell gift hampers UK-wide."
-        />
-      </div>
-
-      {/* Placement (radio chips) */}
-      <div>
-        <label className="block text-sm font-medium">Where should we feature you?</label>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {[
-            ["Featured listing", "featured"],
-            ["Category highlight", "category-highlight"],
-            ["City partner", "city-partner"],
-            ["Help me choose", "not-sure"],
-          ].map(([label, value]) => {
-            const active = form.placement === (value as Placement);
-            return (
-              <label
-                key={value}
-                className={`cursor-pointer rounded-full border px-3 py-1 text-sm ${
-                  active ? "bg-emerald-600 text-white border-emerald-600" : "hover:bg-emerald-50"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="placement"
-                  value={value}
-                  checked={active}
-                  onChange={onChange}
-                  className="hidden"
-                />
-                {label}
-              </label>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Categories (only relevant for directory placements) */}
-      <div>
-        <label className="block text-sm font-medium">Which areas fit you best? (optional)</label>
-        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {categoryOptions.map(([label, key]) => (
-            <label key={key} className="inline-flex items-center gap-2 rounded-xl border bg-white p-2 hover:bg-stone-50">
-              <input type="checkbox" name={`cat:${key}`} onChange={onChange} />
-              <span className="text-sm">{label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Regions */}
-      <div>
-        <label className="block text-sm font-medium">Cities / regions (select any)</label>
-        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-3">
-          {regionOptions.map(([label, key]) => (
-            <label key={key} className="inline-flex items-center gap-2 rounded-xl border bg-white p-2 hover:bg-stone-50">
-              <input type="checkbox" name={`region:${key}`} onChange={onChange} />
-              <span className="text-sm">{label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Message */}
-      <div>
-        <label className="block text-sm font-medium">Anything else?</label>
-        <textarea
-          name="message"
-          rows={4}
-          value={form.message}
-          onChange={onChange}
-          className="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400"
-          placeholder="Timelines, notes, or links we should see."
-        />
-      </div>
-
-      {/* Honeypot */}
+      {/* Honeypot (kept invisible) */}
       <input
         type="text"
-        name="hp_field"
-        value={form.hp_field}
-        onChange={onChange}
-        className="hidden"
-        tabIndex={-1}
+        value={hp}
+        onChange={(e) => setHp(e.target.value)}
         autoComplete="off"
+        tabIndex={-1}
+        className="hidden"
       />
 
       {/* Consent */}
       <div className="text-sm">
         <label className="inline-flex items-start gap-2">
-          <input type="checkbox" name="consent" checked={form.consent} onChange={onChange} />
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+          />
           <span>
-            I agree to the processing of this data for advertising enquiries. See our{" "}
-            <Link href="/privacy-policy" className="underline">Privacy Policy</Link>.
+            {i.consent1}{" "}
+            <Link
+              href={p(locale, "/privacy-policy")}
+              className="underline text-green-900"
+            >
+              {i.privacy}
+            </Link>
+            .
           </span>
         </label>
       </div>
 
-      {/* Submit */}
       <div className="flex flex-col gap-3 pt-1 sm:flex-row">
         <button
           type="submit"
-          disabled={loading}
-          className={`px-5 py-2 rounded-xl text-white ${
-            loading ? "bg-gray-400" : "bg-green-800 hover:bg-green-900"
+          disabled={busy}
+          className={`rounded-xl px-5 py-2 text-white ${
+            busy ? "bg-gray-400" : "bg-green-800 hover:bg-green-900"
           }`}
         >
-          {loading ? "Submitting…" : "Start the conversation"}
+          {busy ? i.sending : i.submit}
         </button>
-        <p className="text-xs text-green-700">Kind, human onboarding. No pressure.</p>
+        <p className="text-xs text-green-700">{i.hint}</p>
       </div>
     </form>
   );

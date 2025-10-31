@@ -167,7 +167,7 @@ export default function Page({
         ========================================================= */}
         <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-xl">
           <Image
-            src="/images/oyster-contactless-hero.png"
+            src="/images/travel-cards-in-uk.png"
             alt="Oyster vs Contactless vs Travelcards — which one to use in 2025"
             fill
             priority

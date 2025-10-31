@@ -172,7 +172,7 @@ export default function Page() {
         ========================================================= */}
         <div className="relative w-full h-72 md:h-96 mb-8 overflow-hidden rounded-xl">
           <Image
-            src="/images/uk-mobile-sim-esim-hero.png"
+            src="/images/mobile-sim-esim.png"
             alt="UK mobile guide: best SIM & eSIM, PAYG vs monthly, EU roaming, no credit check — 2025"
             fill
             priority

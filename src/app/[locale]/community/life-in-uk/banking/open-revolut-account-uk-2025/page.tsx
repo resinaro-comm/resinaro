@@ -101,7 +101,7 @@ export default function Page() {
         {/* Hero Image */}
         <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
           <Image
-            src="/images/revolut-hero-3840x1280.png"
+            src="/images/revolut-cover.png"
             alt="Revolut banking app on smartphone with UK account details and verification documents"
             width={3840}
             height={1280}

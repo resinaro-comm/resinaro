@@ -30,6 +30,8 @@ type Post = {
   tags?: string[];
   updatedAt?: string; // ISO date
   featured?: boolean;
+  itTitle?: string; // Italian preview title
+  itDescription?: string; // Italian preview intro
 };
 
 // Your existing list (kept) + optional fields for nicer UI
@@ -46,6 +48,9 @@ const posts: Post[] = [
     tags: ["moka", "kitchen"],
     updatedAt: "2025-10-04",
     featured: true,
+    itTitle: "Kit caffè italiano senza macchina (Edizione UK)",
+    itDescription:
+      "Tutto il necessario per il caffè moka in una cucina UK: misure della moka, macinatura giusta, guarnizioni di ricambio e un mini montalatte effetto cappuccino.",
   },
   {
     title: "Tiny UK Kitchen, Big Italian Flavour: Starter Kit",
@@ -57,6 +62,9 @@ const posts: Post[] = [
     minutes: 12,
     tags: ["kitchen", "budget"],
     updatedAt: "2025-10-07",
+    itTitle: "Piccola cucina UK, grande sapore italiano: starter kit",
+    itDescription:
+      "Strumenti compatti e scelte dispensa per cucinare all’italiana in stanza o monolocale. Una padella, una pentola, contenitori ermetici e ingredienti jolly.",
   },
   {
     title: "Save Money: Bulk Italian Pantry Buys in the UK",
@@ -64,9 +72,12 @@ const posts: Post[] = [
       "Cut weekly costs by buying Italian staples in bulk: pasta, tomatoes, olive oil, beans and coffee — what to bulk, what not to.",
     slug: "/community/bulk-italian-pantry-uk",
     category: "lifestyle",
-    image: "/images/resinaro-general.png",
+    image: "/images/bulkessentials.png",
     minutes: 7,
     tags: ["bulk", "pantry", "saving"],
+    itTitle: "Risparmia: scorte italiane in UK (acquisti in stock)",
+    itDescription:
+      "Riduci i costi settimanali facendo scorta di basi italiane: pasta, pomodori, olio, legumi e caffè — cosa conviene e cosa no.",
   },
   {
     title: "Stay Warm, Spend Less: Energy-Saving Comfort Picks",
@@ -77,6 +88,9 @@ const posts: Post[] = [
     image: "/images/warmth-energy-hero-3840x1280.png",
     minutes: 9,
     tags: ["housing", "winter"],
+    itTitle: "Stai al caldo, spendi meno: scelte comfort a risparmio energia",
+    itDescription:
+      "Acquisti semplici che bloccano gli spifferi e tengono caldo negli affitti UK: guarnizioni, tende termiche, borse dell’acqua calda e stufette a basso consumo.",
   },
   {
     title: "Work & Study: Compact UK Desk Setup That Feels Pro",
@@ -84,9 +98,12 @@ const posts: Post[] = [
       "Laptop stand, keyboard, lighting and cable basics that turn a rented room into a focused workspace.",
     slug: "/community/uk-desk-setup-newcomers",
     category: "lifestyle",
-    image: "/images/resinaro-general.png",
+    image: "/images/desk-hero.jpg",
     minutes: 8,
     tags: ["work", "study", "setup"],
+    itTitle: "Lavoro & studio: postazione compatta che sembra pro",
+    itDescription:
+      "Supporto laptop, tastiera, luci e gestione cavi per trasformare una stanza in affitto in uno spazio di lavoro concentrato.",
   },
   {
     title: "Quick Trip to Italy: Light Travel Kit from the UK",
@@ -97,6 +114,9 @@ const posts: Post[] = [
     image: "/images/quicktrip.png",
     minutes: 10,
     tags: ["travel", "airlines"],
+    itTitle: "Viaggio lampo in Italia: kit leggero dal Regno Unito",
+    itDescription:
+      "Misure bagaglio a mano UE, packing cubes, adattatori UK→EU, porta-documenti e consigli di sicurezza per rientri veloci.",
   },
   {
     title: "Move-In Day: Cleaning & Fix-It Kit for UK Rentals",
@@ -107,6 +127,9 @@ const posts: Post[] = [
     image: "/images/cleaning.png",
     minutes: 11,
     tags: ["deposit", "cleaning"],
+    itTitle: "Giorno del trasloco: kit pulizie & piccole riparazioni (affitti UK)",
+    itDescription:
+      "Pulizie e micro‑riparazioni a prova di appartamento: microfibre, mocio, ganci adesivi, WD‑40 e controllo umidità.",
   },
   {
     title: "Raising Bilingual Kids: Italian at Home Starter Pack",
@@ -117,6 +140,9 @@ const posts: Post[] = [
     image: "/images/raising-bilingual-kids.jpg",
     minutes: 9,
     tags: ["family", "language"],
+    itTitle: "Bimbi bilingui: starter pack per l’italiano in casa",
+    itDescription:
+      "Giochi, libri e strumenti per tenere vivo l’italiano nel Regno Unito: dizionari illustrati, letture, etichette e musica.",
   },
   {
     title: "Home Pharmacy Basics (UK): Be Ready, Spend Less",
@@ -127,6 +153,9 @@ const posts: Post[] = [
     image: "/images/home-pharmacy-basics.png",
     minutes: 7,
     tags: ["health", "first aid"],
+    itTitle: "Farmacia di casa (UK): pronti spendendo meno",
+    itDescription:
+      "Prodotti base senza ricetta che molte famiglie tengono a portata: termometro, cerotti, sali reidratanti e altro.",
   },
   {
     title: "Plugs, Adapters & Power: Italy ↔ UK Without the Sparks",
@@ -137,6 +166,9 @@ const posts: Post[] = [
     image: "/images/desk-chargers-adapter.jpg",
     minutes: 8,
     tags: ["power", "adapters"],
+    itTitle: "Prese, adattatori & corrente: Italia ↔ UK senza scintille",
+    itDescription:
+      "Adattatori EU→UK e UK→EU con terra, caricabatterie multi‑porta e ciabatte sicure con protezione da sovratensioni.",
   },
 
   // Full length
@@ -150,6 +182,10 @@ const posts: Post[] = [
     image: "/images/bulkessentials.png",
     minutes: 18,
     tags: ["bulk", "pantry", "saving"],
+    itTitle:
+      "Risparmia nel Regno Unito: scorte italiane all’ingrosso (spazio furbo, prezzi reali, zero sprechi)",
+    itDescription:
+      "Guida pratica agli acquisti in stock di basi italiane in UK — cosa comprare, come sistemare in spazi piccoli e come dividere i costi con gli amici. Prezzi obiettivo, durata e soluzioni di stoccaggio.",
   },
   {
     title: "New in the UK? 12 Italian Cupboard Essentials (No Fridge Needed)",
@@ -160,6 +196,10 @@ const posts: Post[] = [
     image: "/images/italian-essentials.png",
     minutes: 14,
     tags: ["pantry", "newcomers"],
+    itTitle:
+      "Nuovo nel Regno Unito? 12 essenziali di dispensa italiana (senza frigo)",
+    itDescription:
+      "Basi di dispensa per vivere in UK — ingredienti a lunga conservazione, senza frigorifero. Perfetti per cucine condivise, alloggi temporanei o mini‑appartamenti.",
   },
   {
     title: "Open a Revolut Account in the UK (2025) — Quick Guide",
@@ -167,9 +207,12 @@ const posts: Post[] = [
       "Step-by-step guide to opening a Revolut account in the UK for migrants: verification, proof-of-address, payroll, fees and troubleshooting (2025).",
     slug: "/community/life-in-uk/banking/open-revolut-account-uk-2025",
     category: "banking",
-    image: "/images/revolut-hero-3840x1280.png",
+    image: "/images/revolut-cover.png",
     minutes: 9,
     tags: ["banking"],
+    itTitle: "Aprire un conto Revolut in UK (2025) — guida rapida",
+    itDescription:
+      "Passaggi per aprire Revolut dal Regno Unito: verifica, prova d’indirizzo, stipendio, costi e risoluzione problemi (2025).",
   },
   {
     title: "Open a Monzo Account in the UK (2025) — Guide for Migrants",
@@ -180,6 +223,9 @@ const posts: Post[] = [
     image: "/images/monzo-account-uk-hero-3840x1280.png",
     minutes: 9,
     tags: ["banking"],
+    itTitle: "Aprire un conto Monzo in UK (2025) — guida per migranti",
+    itDescription:
+      "Iscrizione a Monzo dal Regno Unito: controlli ID & liveness, consegna carta, alternative per la prova d’indirizzo e problemi comuni.",
   },
   {
     title: "Open a Starling Account in the UK (2025) — Guide for Migrants",
@@ -187,9 +233,12 @@ const posts: Post[] = [
       "Starling Bank walkthrough for migrants: setup, FSCS protection, card delivery, business options and troubleshooting (2025).",
     slug: "/community/life-in-uk/banking/open-starling-account-uk-2025",
     category: "banking",
-    image: "/images/starling-hero-3840x1280.png",
+    image: "/images/open-starling-bank.png",
     minutes: 9,
     tags: ["banking"],
+    itTitle: "Aprire un conto Starling in UK (2025) — guida per migranti",
+    itDescription:
+      "Percorso Starling Bank per migranti: configurazione, protezione FSCS, consegna carta, opzioni business e troubleshooting (2025).",
   },
   {
     title: "Finding Affordable Housing in London (2025): Guide for New Arrivals",
@@ -197,9 +246,12 @@ const posts: Post[] = [
       "Practical advice for finding safe, affordable housing in London: where to search, referencing, deposit protection, avoiding scams and emergency help.",
     slug: "/community/life-in-uk/finding-affordable-housing-london-2025",
     category: "housing",
-    image: "/images/housing-london-hero-3840x1280.png",
+    image: "/images/housing-london-hero.png",
     minutes: 16,
     tags: ["housing", "london"],
+    itTitle: "Casa accessibile a Londra (2025): guida per nuovi arrivati",
+    itDescription:
+      "Consigli pratici per trovare casa sicura e accessibile a Londra: dove cercare, referenze, deposito e tutela, truffe da evitare e aiuti d’emergenza.",
   },
   {
     title: "Navigating NHS Healthcare as an Italian in the UK (2025)",
@@ -210,6 +262,9 @@ const posts: Post[] = [
     image: "/images/nhs-healthcare-italians-uk-hero-3840x1280.png",
     minutes: 15,
     tags: ["health", "NHS"],
+    itTitle: "Sanità NHS per italiani nel Regno Unito (2025)",
+    itDescription:
+      "Come registrarsi dal GP, ottenere l’NHS number, interpreti, cure urgenti, ricette e tessera GHIC.",
   },
   {
     title:
@@ -221,6 +276,10 @@ const posts: Post[] = [
     image: "/images/italian-passport-uk-hero-3840x1280.png",
     minutes: 17,
     tags: ["passport", "consulate"],
+    itTitle:
+      "Passaporto italiano nel Regno Unito (2025): documenti, preparazione e cosa aspettarsi",
+    itDescription:
+      "Checklist chiara e aggiornata per rinnovare o richiedere il passaporto italiano in UK. Documenti, minori, costi, consigli di prenotazione e opzioni di aiuto.",
   },
   {
     title:
@@ -232,6 +291,10 @@ const posts: Post[] = [
     image: "/images/cie-hero-3840x1280.png",
     minutes: 18,
     tags: ["CIE", "AIRE", "SPID"],
+    itTitle:
+      "Carta d’identità elettronica italiana (CIE) nel Regno Unito (2025): requisiti, documenti, prenotazione & usi",
+    itDescription:
+      "Guida completa alla CIE dal Regno Unito: chi può richiederla, documenti necessari, appuntamento, impronte, minori, costi e uso per SPID/CIE ID.",
   },
   {
     title:
@@ -242,6 +305,9 @@ const posts: Post[] = [
     image: "/images/register-events-hero-3840x1280.png",
     minutes: 12,
     tags: ["apostille", "consulate"],
+    itTitle:
+      "Trascrivere nascita/matrimonio/divorzio UK in Italia (2025): documenti, apostille & trascrizioni consolari",
+    itDescription: "",
   },
   {
     title:
@@ -252,6 +318,9 @@ const posts: Post[] = [
     image: "/images/italian-licence-exchange-hero-3840x1280.png",
     minutes: 10,
     tags: ["DVLA"],
+    itTitle:
+      "Convertire patente italiana in patente UK (2025): passaggi DVLA, documenti & tempi",
+    itDescription: "",
   },
   {
     title:
@@ -262,6 +331,9 @@ const posts: Post[] = [
     image: "/images/nationalinsurance.png",
     minutes: 9,
     tags: ["NIN", "work"],
+    itTitle:
+      "National Insurance Number (NIN) per italiani nel Regno Unito: domanda, recupero & tempi (2025)",
+    itDescription: "",
   },
   {
     title:
@@ -272,6 +344,9 @@ const posts: Post[] = [
     image: "/images/loneliness-belonging-uk-30day-hero-3840x1280.png",
     minutes: 13,
     tags: ["community", "mental health"],
+    itTitle:
+      "Dalla solitudine all’appartenenza (2025): piano di 30 giorni per migranti nel Regno Unito",
+    itDescription: "",
   },
   {
     title:
@@ -282,6 +357,9 @@ const posts: Post[] = [
     image: "/images/nhs-mental-health-access-hero-3840x1280.png",
     minutes: 15,
     tags: ["NHS", "mental health"],
+    itTitle:
+      "Supporto salute mentale NHS nel Regno Unito (2025): come accedere, auto‑invio & cosa aspettarsi",
+    itDescription: "",
   },
   {
     title:
@@ -292,6 +370,9 @@ const posts: Post[] = [
     image: "/images/aire-updates-hero-3840x1280.png",
     minutes: 12,
     tags: ["AIRE", "FAST IT"],
+    itTitle:
+      "Aggiornare l’AIRE dal Regno Unito (2025): cambio indirizzo, matrimonio, nascita, nome — guida FAST IT",
+    itDescription: "",
   },
   {
     title:
@@ -302,6 +383,9 @@ const posts: Post[] = [
     image: "/images/aire-registration-hero-3840x1280.png",
     minutes: 14,
     tags: ["AIRE", "FAST IT"],
+    itTitle:
+      "Iscrizione AIRE dal Regno Unito (2025): passaggi FAST IT, prove & errori comuni",
+    itDescription: "",
   },
 
   // New long-form 2025 guides
@@ -316,6 +400,10 @@ const posts: Post[] = [
     minutes: 22,
     tags: ["housing", "renting", "tenancy"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Affittare in UK per italiani (2025): Right to Rent, referenze, depositi & modelli",
+    itDescription:
+      "Guida passo‑passo in inglese semplice: Right to Rent (UE), superare le referenze senza storico UK, depositi e tutela, checklist visite e truffe.",
   },
   {
     title:
@@ -328,6 +416,10 @@ const posts: Post[] = [
     minutes: 18,
     tags: ["tax", "payslip", "HMRC"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Codice fiscale UK per italiani (2025): correggere Emergency Tax (1257L, BR, 0T, W1/M1) + modelli",
+    itDescription:
+      "Decifra i codici fiscali UK e risolvi in fretta: 1257L, BR, 0T, W1/M1, moduli iniziali, contatti HMRC e modelli payroll.",
   },
   {
     title:
@@ -340,6 +432,10 @@ const posts: Post[] = [
     minutes: 20,
     tags: ["identity", "address", "DVLA"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Prova di indirizzo senza bollette (2025): 12 documenti accettati + modelli",
+    itDescription:
+      "Niente bollette? Costruisci un pacchetto rapido: contratto, lettere datore/GP, lettera banca, dicitura C/O e script per banca/GP/DVLA.",
   },
   {
     title:
@@ -348,10 +444,14 @@ const posts: Post[] = [
       "Pass KYC without a UK credit file: documents that work, C/O wording, branch scripts, and which banks to try first.",
     slug: "/community/open-uk-bank-account-no-credit-italians-2025",
     category: "banking",
-    image: "/images/revolut-hero-3840x1280.png",
+    image: "/images/uk-bank-kyc-italians-hero.png",
     minutes: 19,
     tags: ["banking", "KYC", "credit"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Rifiutato dalle banche UK? Apri un conto senza storia di credito (italiani, 2025)",
+    itDescription:
+      "Passa il KYC senza credit file UK: documenti che funzionano, dicitura C/O, script in filiale e banche da provare per prime.",
   },
   {
     title:
@@ -364,6 +464,10 @@ const posts: Post[] = [
     minutes: 16,
     tags: ["work", "payslip", "tax"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Primo cedolino spiegato (UK, 2025): tax code, lettera NI, YTD e modelli",
+    itDescription:
+      "Capisci il primo payslip UK: significato dei codici, lettera NI, lordo→netto, YTD e come risolvere problemi comuni con modelli pronti.",
   },
   {
     title:
@@ -376,6 +480,10 @@ const posts: Post[] = [
     minutes: 17,
     tags: ["council tax", "housing"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Council Tax per italiani (2025): fasce, sconti & passi di ingresso",
+    itDescription:
+      "Cos’è il Council Tax, come trovare la fascia, impostare sconti (single/student), checklist di ingresso e pagamento.",
   },
   {
     title:
@@ -388,6 +496,10 @@ const posts: Post[] = [
     minutes: 15,
     tags: ["NIN", "work"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "National Insurance Number (NIN) per italiani (2025): domanda, recupero & tempi",
+    itDescription:
+      "Come richiedere o recuperare il NIN nel 2025: documenti, passaggi online, script telefonico, tempi e follow‑up.",
   },
 
   // Newly added 2025 guides
@@ -402,6 +514,10 @@ const posts: Post[] = [
     minutes: 20,
     tags: ["EUSS", "work", "rent"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "EU Settlement Scheme (EUSS) per italiani (2025): share code, aggiornare passaporto, viaggi & soluzioni",
+    itDescription:
+      "Guida semplice: crea il giusto share code, aggiorna il passaporto nel tuo record EUSS, risolvi problemi di accesso e capisci i controlli di viaggio.",
   },
   {
     title:
@@ -410,10 +526,14 @@ const posts: Post[] = [
       "Move-in playbook: find your energy/water suppliers, submit opening readings, register Council Tax, pick broadband, and handle previous-tenant debt letters.",
     slug: "/community/utilities-setup-uk-2025",
     category: "housing",
-    image: "/images/housing-london-hero-3840x1280.png",
+    image: "/images/utilities-setup-hero.png",
     minutes: 20,
     tags: ["utilities", "council tax", "broadband"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Utenze (2025): energia, acqua, Council Tax & broadband — checklist giorno 1",
+    itDescription:
+      "Playbook di ingresso: identifica i fornitori, invia le letture iniziali, registra il Council Tax, scegli il broadband e gestisci lettere di debito del precedente inquilino.",
   },
   {
     title:
@@ -422,10 +542,14 @@ const posts: Post[] = [
       "Definitive London transport explainer: daily/weekly caps, zones, Hopper fare and the best option by use-case—plus setup and tips.",
     slug: "/community/oyster-vs-contactless-travelcards-2025",
     category: "travel",
-    image: "/images/landscape-image.png",
+    image: "/images/travel-cards-in-uk.png",
     minutes: 18,
     tags: ["transport", "London"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Oyster vs contactless vs travelcard (2025): tetti, zone & quale usare",
+    itDescription:
+      "Spiegazione definitiva del trasporto londinese: tetti giornalieri/settimanali, zone, Hopper fare e opzione migliore per caso d’uso — con setup e consigli.",
   },
   {
     title:
@@ -434,10 +558,61 @@ const posts: Post[] = [
       "Simple guide to UK mobile: SIM vs eSIM, PAYG vs monthly, no-credit-check options, porting and troubleshooting with copy-paste scripts.",
     slug: "/community/uk-sim-esim-newcomers-2025",
     category: "life-in-uk",
-    image: "/images/resinaro-general.png",
+    image: "/images/mobile-sim-esim.png",
     minutes: 18,
     tags: ["mobile", "SIM", "eSIM"],
     updatedAt: "2025-10-10",
+    itTitle:
+      "Mobile UK per chi arriva (2025): miglior SIM & eSIM, PAYG vs abbonamento, roaming UE",
+    itDescription:
+      "Guida semplice al mobile UK: SIM vs eSIM, ricaricabile vs mensile, opzioni senza controllo credito, portabilità e troubleshooting con script copia‑incolla.",
+  },
+
+  // Blog articles
+  {
+    title: "Do I Have Military Obligations if I Apply for Italian Citizenship?",
+    description:
+      "Worried about military service as a new or dual Italian citizen? Here’s what the law says, why conscription was abolished, and what a reinstatement would mean for residents abroad.",
+    slug: "/blog/do-i-have-military-obligations-italian-citizenship",
+    category: "bureaucracy-guides",
+    image: "/images/military-service-resinaro.png",
+    minutes: 3,
+    tags: ["citizenship", "law"],
+    updatedAt: "2025-09-03",
+    itTitle:
+      "Ho obblighi militari se richiedo la cittadinanza italiana?",
+    itDescription:
+      "Ti preoccupa la leva come nuovo o doppio cittadino italiano? Ecco cosa dice la legge, perché la coscrizione è stata abolita e cosa significherebbe un eventuale ritorno per chi vive all’estero.",
+  },
+  {
+    title: "Do You Need to Speak Italian for Citizenship by Descent? (2025)",
+    description:
+      "B1 Italian isn’t required for citizenship by descent (jure sanguinis). Learn who the B1 rule applies to and why you’re exempt — plus why learning Italian still helps.",
+    slug: "/blog/do-you-need-italian-for-citizenship-by-descent",
+    category: "bureaucracy-guides",
+    image: "/images/speak-italian-citizenship.png",
+    minutes: 4,
+    tags: ["citizenship", "B1"],
+    updatedAt: "2025-08-14",
+    itTitle:
+      "Serve parlare italiano per la cittadinanza per discendenza? (2025)",
+    itDescription:
+      "Il livello B1 non è richiesto per la cittadinanza per discendenza (iure sanguinis). Scopri a chi si applica la regola del B1 e perché tu sei esente — e perché imparare l’italiano aiuta comunque.",
+  },
+  {
+    title: "Top 7 Benefits of Having Italian Citizenship in 2025",
+    description:
+      "From EU freedom of movement to healthcare, education, and multigenerational rights—discover the top 7 advantages of holding Italian citizenship in 2025.",
+    slug: "/blog/top-7-benefits-of-italian-citizenship-2025",
+    category: "bureaucracy-guides",
+    image: "/images/seven-principles.png",
+    minutes: 4,
+    tags: ["citizenship", "EU"],
+    updatedAt: "2025-07-05",
+    itTitle:
+      "I 7 principali vantaggi della cittadinanza italiana nel 2025",
+    itDescription:
+      "Dalla libertà di movimento nell’UE a sanità, istruzione e diritti multigenerazionali — scopri i 7 benefici principali dell’avere la cittadinanza italiana nel 2025.",
   },
 ];
 
@@ -447,6 +622,7 @@ function unique<T>(arr: T[]): T[] {
 }
 function toBlogJSONLD(list: Post[], locale: "en" | "it") {
   const base = "https://www.resinaro.com";
+  const isIt = locale === "it";
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -454,8 +630,8 @@ function toBlogJSONLD(list: Post[], locale: "en" | "it") {
     url: `${base}/${locale}/community`,
     blogPost: list.slice(0, 20).map((p) => ({
       "@type": "BlogPosting",
-      headline: p.title,
-      description: p.description,
+      headline: isIt && p.itTitle ? p.itTitle : p.title,
+      description: isIt && p.itDescription ? p.itDescription : p.description,
       url: `${base}/${locale}${p.slug}`,
       image: p.image ? `${base}${p.image}` : `${base}/og-default.png`,
       dateModified: p.updatedAt || undefined,
@@ -513,11 +689,11 @@ export default async function CommunityHub({
   // Filter
   let filtered = posts.slice();
   if (q)
-    filtered = filtered.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
-    );
+    filtered = filtered.filter((p) => {
+      const t = isIt && p.itTitle ? p.itTitle : p.title;
+      const d = isIt && p.itDescription ? p.itDescription : p.description;
+      return t.toLowerCase().includes(q) || d.toLowerCase().includes(q);
+    });
   if (category) filtered = filtered.filter((p) => p.category === category);
   if (tag) filtered = filtered.filter((p) => (p.tags || []).includes(tag));
 
@@ -681,10 +857,10 @@ export default async function CommunityHub({
                   {isIt ? "In evidenza" : "Featured"}
                 </span>
                 <h3 className="mt-2 text-2xl md:text-3xl font-bold">
-                  {featured.title}
+                  {isIt && featured.itTitle ? featured.itTitle : featured.title}
                 </h3>
                 <p className="mt-1 max-w-3xl text-sm md:text-base opacity-95 line-clamp-2">
-                  {featured.description}
+                  {isIt && featured.itDescription ? featured.itDescription : featured.description}
                 </p>
                 <div className="mt-2 text-xs opacity-80">
                   {featured.minutes ? (isIt ? `${featured.minutes} min di lettura · ` : `${featured.minutes} min read · `) : ""}
@@ -740,10 +916,11 @@ export default async function CommunityHub({
                   </div>
 
                   <h3 className="text-lg font-semibold text-green-900 line-clamp-2">
-                    {post.title}
+                    {isIt && post.itTitle ? post.itTitle : post.title}
                   </h3>
                   <p className="mt-1 text-sm text-gray-600 line-clamp-3">
-                    {post.description || (isIt ? "Leggi la guida completa →" : "Read the full guide →")}
+                    {(isIt && post.itDescription ? post.itDescription : post.description) ||
+                      (isIt ? "Leggi la guida completa →" : "Read the full guide →")}
                   </p>
 
                   {post.tags && post.tags.length > 0 && (

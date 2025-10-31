@@ -110,7 +110,7 @@ export default function Page() {
         {/* Hero Image */}
         <figure className="mb-6 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
           <Image
-            src="/images/housing-london-hero-3840x1280.png"
+            src="/images/housing-london-hero.png"
             alt="London housing search with rental listings and viewing appointments for affordable accommodation"
             width={3840}
             height={1280}
