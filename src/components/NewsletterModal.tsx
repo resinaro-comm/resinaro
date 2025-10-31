@@ -167,9 +167,31 @@ export default function NewsletterModal() {
       return;
     }
 
+    // robust UUID generator with fallbacks
+    function safeUUID(): string {
+      try {
+        if (typeof crypto !== "undefined") {
+          // Some TS lib versions may not type randomUUID
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if (typeof (crypto as any).randomUUID === "function") return (crypto as any).randomUUID();
+          if (typeof crypto.getRandomValues === "function") {
+            const buf = new Uint8Array(16);
+            crypto.getRandomValues(buf);
+            buf[6] = (buf[6] & 0x0f) | 0x40;
+            buf[8] = (buf[8] & 0x3f) | 0x80;
+            const h = Array.from(buf, (b) => b.toString(16).padStart(2, "0"));
+            return `${h.slice(0, 4).join("")}-${h.slice(4, 6).join("")}-${h
+              .slice(6, 8)
+              .join("")}-${h.slice(8, 10).join("")}-${h.slice(10, 16).join("")}`;
+          }
+        }
+      } catch {}
+      return `rsr-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    }
+
     try {
       setLoading(true);
-      const bookingId = crypto.randomUUID();
+      const bookingId = safeUUID();
       const r = await fetch(GAS_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
