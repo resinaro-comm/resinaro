@@ -568,6 +568,52 @@ const posts: Post[] = [
       "Guida semplice al mobile UK: SIM vs eSIM, ricaricabile vs mensile, opzioni senza controllo credito, portabilità e troubleshooting con script copia‑incolla.",
   },
 
+  // Community guides added Nov 2025
+  {
+    title: "Welfare & Benefits in the UK: Universal Credit, Child Benefit, Council Tax Reduction, Housing Support",
+    description:
+      "Clear overview of UK benefits: who can claim, how to apply, and official links — with key differences vs Italy and where to get help.",
+    slug: "/community/uk-welfare-benefits",
+    category: "family",
+    image: "/images/uk-welfare-benefits-hero.jpg",
+    minutes: 12,
+    tags: ["benefits", "welfare", "family"],
+    updatedAt: "2025-11-05",
+  },
+  {
+    title: "Start a Business in the UK: Legal Forms, Business Bank Accounts, Visas & Taxes",
+    description:
+      "Sole trader vs LTD, opening a business account, visas for non-UK nationals and baseline taxes (Income Tax, Corporation Tax, VAT).",
+    slug: "/community/start-a-business-uk",
+    category: "work",
+    image: "/images/start-a-business-uk-hero.jpg",
+    minutes: 12,
+    tags: ["business", "tax", "visa"],
+    updatedAt: "2025-11-05",
+  },
+  {
+    title: "Importing a Car from Italy to the UK: DVLA, VED, Insurance, Plates & Technical Requirements",
+    description:
+      "Step-by-step process to import a car from Italy to the UK: HMRC/NOVA, DVLA registration, VED, MOT, insurance, plates and common adjustments.",
+    slug: "/community/import-car-italy-to-uk",
+    category: "travel",
+    image: "/images/import-car-italy-to-uk-hero.jpg",
+    minutes: 10,
+    tags: ["DVLA", "car", "import"],
+    updatedAt: "2025-11-05",
+  },
+  {
+    title: "Private Healthcare in the UK: Insurance, Dental & Preventive Care",
+    description:
+      "How to navigate private healthcare in the UK: choosing a policy, typical costs, international add-ons, dental plans and preventive check-ups.",
+    slug: "/community/healthcare-private-insurance-uk",
+    category: "health",
+    image: "/images/healthcare-private-insurance-uk-hero.jpg",
+    minutes: 12,
+    tags: ["health", "insurance", "dental"],
+    updatedAt: "2025-11-05",
+  },
+
   // Blog articles
   {
     title: "Do I Have Military Obligations if I Apply for Italian Citizenship?",

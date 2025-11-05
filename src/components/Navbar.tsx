@@ -265,7 +265,8 @@ export default function Navbar() {
                 </ul>
               </nav>
 
-              <div className="mt-auto px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-1 text-[11px] text-stone-500">
+              {/* Moved up: Language and legal links directly below the menu list for better mobile visibility */}
+              <div className="px-3 pt-2 pb-2 border-t text-[11px] text-stone-500">
                 <div className="flex items-center justify-between">
                   <span>© {new Date().getFullYear()} Resinaro</span>
                   <div className="flex gap-2">
