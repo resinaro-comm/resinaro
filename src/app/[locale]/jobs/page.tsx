@@ -17,7 +17,13 @@ export default function JobsPage() {
       {/* ---------- HERO (ads-only) ---------- */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-20 bg-gradient-to-r from-[#0B5D3B] via-[#0B5D3B] to-[#B22222]" />
-        <div className="absolute inset-0 -z-10 opacity-35 mix-blend-multiply bg-[url('/images/landscape-image.png')] bg-cover bg-center" />
+        <div
+          className="absolute inset-0 -z-10 opacity-35 mix-blend-multiply bg-[url('/images/landscape-image.png')] bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "image-set(url('/images/landscape-image.avif') type('image/avif'), url('/images/landscape-image.webp') type('image/webp'), url('/images/landscape-image.png') type('image/png'))",
+          }}
+        />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_20%,rgba(0,0,0,0.55),rgba(0,0,0,0.35)_55%,rgba(0,0,0,0.25))]" />
 
         <div className="mx-auto max-w-4xl px-4 py-14 sm:py-16 text-center">

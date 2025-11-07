@@ -9,6 +9,10 @@ const withMDX = createMDX({ extension: /\.mdx?$/ });
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
+  images: {
+    // Prefer AVIF, then WebP; browsers without support fall back to the original
+    formats: ["image/avif", "image/webp"],
+  },
   async redirects() {
     return [
       { source: "/community/blog/bureaucracy-guides", destination: "/community/bureaucracy-guides", permanent: true },

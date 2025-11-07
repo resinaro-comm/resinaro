@@ -46,33 +46,13 @@ export default function PageWrapper({ children, routeKey, locale }: PageWrapperP
   const [bannerHidden, setBannerHidden] = useState<boolean>(false);
   const bannerRef = useRef<HTMLDivElement>(null);
 
-  /* ---------- initial show/hide logic (with URL overrides) ---------- */
+  /* ---------- Always show banner (no dismissal, no URL/localStorage overrides) ---------- */
   useEffect(() => {
+    setBannerHidden(false);
     try {
-      const params = new URLSearchParams(window.location.search);
-      const showParam = params.get("showBanner") === "1" || params.get("banner") === "on";
-      const hideParam = params.get("hideBanner") === "1" || params.get("banner") === "off";
-
-      // In dev, default to showing the banner to aid iteration
-      if (process.env.NODE_ENV === "development" && !hideParam) {
-        setBannerHidden(false);
-        return;
-      }
-      if (showParam) {
-        window.localStorage.removeItem("resinaro_ad_hidden_v2");
-        setBannerHidden(false);
-        return;
-      }
-      if (hideParam) {
-        window.localStorage.setItem("resinaro_ad_hidden_v2", "1");
-        setBannerHidden(true);
-        return;
-      }
-      const v = window.localStorage.getItem("resinaro_ad_hidden_v2");
-      setBannerHidden(v === "1");
-    } catch {
-      // ignore
-    }
+      // Ensure any past dismissals are ignored going forward
+      window.localStorage.removeItem("resinaro_ad_hidden_v2");
+    } catch {}
   }, []);
 
   /* ---------- expose banner height for navbar offset ---------- */
@@ -111,13 +91,7 @@ export default function PageWrapper({ children, routeKey, locale }: PageWrapperP
     };
   }, [bannerHidden]);
 
-  function closeBanner(e?: MouseEvent<HTMLButtonElement>) {
-    e?.stopPropagation();
-    try {
-      window.localStorage.setItem("resinaro_ad_hidden_v2", "1");
-    } catch {}
-    setBannerHidden(true);
-  }
+  // Banner is permanent; no close handler.
 
   return (
     <>
@@ -173,15 +147,7 @@ export default function PageWrapper({ children, routeKey, locale }: PageWrapperP
                 </div>
               </Link>
 
-              {/* Close button */}
-              <button
-                onClick={closeBanner}
-                aria-label={tr.dismiss}
-                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200/70 bg-white/80 text-green-900/80 hover:bg-white"
-                type="button"
-              >
-                <span aria-hidden="true">✕</span>
-              </button>
+              {/* No close button: banner is always visible */}
             </div>
 
             {/* Inline styles for marquee */}

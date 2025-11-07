@@ -248,7 +248,13 @@ export default function NinNumberPage({
 
       {/* ---------- HERO (high-contrast, brand hairline) ---------- */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[url('/images/landscape-image.png')] bg-cover bg-center" />
+        <div
+          className="absolute inset-0 -z-10 bg-[url('/images/landscape-image.png')] bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "image-set(url('/images/landscape-image.avif') type('image/avif'), url('/images/landscape-image.webp') type('image/webp'), url('/images/landscape-image.png') type('image/png'))",
+          }}
+        />
         <div className="absolute inset-0 -z-10 bg-white/88 backdrop-blur-[1px]" />
         <div className="absolute left-1/2 top-0 -translate-x-1/2 grid h-1 w-40 grid-cols-3 rounded-b">
           <div className="bg-[#0B5D3B]" />

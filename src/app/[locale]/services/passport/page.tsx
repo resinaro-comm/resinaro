@@ -174,7 +174,7 @@ export default function PassportServicePage({
   return (
     <main className="bg-neutral-50 text-green-900 min-h-screen">
       {/* Full-bleed hero (decorative image; content follows) */}
-      <section className="relative w-full">
+      <section className="relative w-full pb-6 sm:pb-8 md:pb-10">
         <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
           <Image
             src="/images/service-passport.png"
@@ -195,6 +195,9 @@ export default function PassportServicePage({
             <p className="mt-2 text-green-800">
               {copy.introP1}
             </p>
+            <a href="#book" className="mt-2 inline-block text-sm underline text-green-900">
+              {locale === "it" ? "Clicca per vedere il modulo" : "Click to view the form"}
+            </a>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="bg-green-50 border border-green-200 rounded-xl p-3">
@@ -221,7 +224,7 @@ export default function PassportServicePage({
         </div>
       </section>
 
-      {/* FORM FIRST for mobile (SEO: keep concise heading + form above fold) */}
+  {/* FORM SECTION */}
       <section id="book" className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 py-6 md:py-8">
         <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm">
           <h2 className="text-xl font-semibold">{copy.formH}</h2>

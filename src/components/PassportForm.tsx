@@ -342,6 +342,33 @@ function t(locale: Locale) {
   return locale === "it" ? it : en;
 }
 
+/* ---------- tiny i18n for Simple (Easy) Form ---------- */
+function tq(locale: Locale) {
+  const it = locale === "it";
+  return {
+    toggleQuick: it ? "Modulo facile (≈1 min)" : "Easy form (≈1 min)",
+    toggleFull: it ? "Modulo avanzato (≈10 min)" : "Advanced form (≈10 min)",
+    qTitle: it ? "Passaporto — Modulo facile" : "Passport — Easy Form",
+    qDesc: it
+      ? "Inserisci i contatti, scegli quante persone e vai al pagamento sicuro su Stripe."
+      : "Enter contact details, choose how many people, and go to secure payment on Stripe.",
+    fullName: it ? "Nome e cognome *" : "Full name *",
+    email: it ? "Email *" : "Email *",
+    phone: it ? "Telefono (WhatsApp ok) *" : "Phone (WhatsApp ok) *",
+    qty: it ? "Quante persone? *" : "How many people? *",
+    priceHint: it ? "1 = £35 • 2 = £70 • 3 = £105" : "1 = £35 • 2 = £70 • 3 = £105",
+    consent: it
+      ? "Acconsento al trattamento dati come descritto nella Privacy Policy."
+      : "I consent to data processing as described in the Privacy Policy.",
+    refund: it ? "Ho letto e accetto la" : "I have read and accept the",
+    pay: it ? "Vai al pagamento" : "Continue to payment",
+    redirecting: it ? "Reindirizzamento…" : "Redirecting…",
+    errorConsent: it ? "Accetta il consenso privacy." : "Please accept the privacy consent.",
+    errorRefund: it ? "Accetta la policy di rimborso." : "Please accept the refund policy.",
+    err: it ? "Si è verificato un errore." : "Something went wrong.",
+  } as const;
+}
+
 /* ---------- Small helper components ---------- */
 
 function UploadCard({
@@ -414,13 +441,181 @@ function safeUUID(): string {
     .slice(2, 10)}`;
 }
 
+/* ---------- Easy (Simple) Form component ---------- */
+function EasyForm({ locale }: { locale: Locale }) {
+  const trq = tq(locale);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [qty, setQty] = useState(1);
+  const [refundAgree, setRefundAgree] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    if (!refundAgree) return setErr(trq.errorRefund);
+    if (!consent) return setErr(trq.errorConsent);
+
+    try {
+      setLoading(true);
+      const bookingId = safeUUID();
+
+      // 1) Persist a lightweight submission to GAS (Google Sheet)
+      const data: Record<string, string> = {
+        mode: "easy",
+        qty: String(qty),
+        refundPolicyAgree: refundAgree ? "1" : "0",
+        privacyConsent: consent ? "1" : "0",
+        policyVersion: "2025-10-18",
+        locale,
+      };
+      await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          token: GAS_TOKEN,
+          action: "submit",
+          bookingId,
+          service: `passport-simple-${qty}`,
+          name: fullName.trim(),
+          email: email.trim(),
+          telephone: phone.trim(),
+          files: [],
+          data,
+        }),
+      }).catch(() => {}); // Non-blocking; continue even if GAS fails
+
+      // 2) Direct Stripe links for 1/2/3 people
+      let base = "";
+      if (qty === 1) base = "https://buy.stripe.com/7sY14n354bZJ9Ut6AOaMU01"; // £35
+      else if (qty === 2) base = "https://buy.stripe.com/7sYdR98pofbVc2B1guaMU0g"; // £70
+      else base = "https://buy.stripe.com/4gMcN58poe7R4A9cZcaMU0f"; // £105
+
+      const url = new URL(base);
+      if (email) url.searchParams.set("prefilled_email", email.trim());
+      url.searchParams.set("client_reference_id", bookingId);
+      window.location.href = url.toString();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : trq.err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="rounded-2xl border border-zinc-200 p-6 space-y-4 bg-white shadow-sm">
+      <h2 className="text-lg font-semibold">{trq.qTitle}</h2>
+      <p className="text-sm text-zinc-700">{trq.qDesc}</p>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="text-sm">{trq.fullName}</span>
+          <input
+            className="mt-1 w-full rounded-xl border px-3 py-2"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </label>
+        <label className="block">
+          <span className="text-sm">{trq.email}</span>
+          <input
+            type="email"
+            className="mt-1 w-full rounded-xl border px-3 py-2"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <label className="block">
+        <span className="text-sm">{trq.phone}</span>
+        <input
+          className="mt-1 w-full rounded-xl border px-3 py-2"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+          placeholder="+44…"
+        />
+      </label>
+
+      <label className="block">
+        <span className="text-sm">{trq.qty}</span>
+        <select
+          className="mt-1 w-full rounded-xl border px-3 py-2"
+          value={qty}
+          onChange={(e) => setQty(parseInt(e.target.value))}
+          required
+        >
+          <option value={1}>1 — £35</option>
+          <option value={2}>2 — £70</option>
+          <option value={3}>3 — £105</option>
+        </select>
+        <p className="text-xs text-zinc-600 mt-1">{trq.priceHint}</p>
+        <p className="text-[11px] text-zinc-600 mt-2">
+          {locale === "it"
+            ? "Opzioni disponibili: Klarna (paga in 3), Clearpay (paga in 4), bonifico bancario, apple pay, google pay, etc."
+            : "payment options available: Klarna (pay in 3), Clearpay (pay in 4), bank transfer, apple pay, google pay etc."}
+        </p>
+      </label>
+
+      <label className="flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={refundAgree}
+          onChange={(e) => setRefundAgree(e.target.checked)}
+        />
+        <span>
+          {trq.refund} {" "}
+          <a className="underline" href={p(locale, "/refund-policy")} target="_blank" rel="noreferrer">
+            {locale === "it" ? "Politica di rimborso" : "Refund Policy"}
+          </a>.
+        </span>
+      </label>
+
+      <label className="flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+        />
+        <span>
+          {trq.consent} {" "}
+          <a className="underline" href={p(locale, "/privacy-policy")} target="_blank" rel="noreferrer">
+            Privacy Policy
+          </a>.
+        </span>
+      </label>
+
+      {err && <p className="text-sm text-red-600">{err}</p>}
+
+      <button
+        disabled={loading}
+        className="inline-flex items-center rounded-xl border px-4 py-2 disabled:opacity-60"
+      >
+        {loading ? trq.redirecting : trq.pay}
+      </button>
+    </form>
+  );
+}
+
 /* ---------- Main component ---------- */
 
 export default function PassportForm() {
   const locale = useLocaleFromPathname() as Locale;
   const tr = t(locale);
+  const trq = tq(locale);
 
-  /** Wizard state */
+  /** Mode: easy vs advanced */
+  const [mode, setMode] = useState<"easy" | "advanced">("easy");
+
+  /** Wizard state (advanced only) */
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1); // 1 Service → 2 Contact → 3 AIRE → 4 Details → 5 Uploads
   const pct = [0, 20, 40, 60, 80, 100][step] || 0;
 
@@ -810,12 +1005,46 @@ export default function PassportForm() {
   /* ---------- UI ---------- */
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4"
-      encType="multipart/form-data"
-      aria-live="polite"
-    >
+    <div className="space-y-6" aria-live="polite">
+      {/* Mode toggle */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => setMode("easy")}
+          className={`rounded-2xl border p-3 text-left ${
+            mode === "easy" ? "border-black" : "border-zinc-300"
+          }`}
+        >
+          <div className="text-sm font-medium">{trq.toggleQuick}</div>
+          <p className="text-xs text-zinc-600">
+            {locale === "it"
+              ? "Nome, email, telefono, persone → paga"
+              : "Name, email, phone, people → pay"}
+          </p>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("advanced")}
+          className={`rounded-2xl border p-3 text-left ${
+            mode === "advanced" ? "border-black" : "border-zinc-300"
+          }`}
+        >
+          <div className="text-sm font-medium">{trq.toggleFull}</div>
+          <p className="text-xs text-zinc-600">
+            {locale === "it" ? "Modulo completo con dettagli" : "Full detailed wizard"}
+          </p>
+        </button>
+      </div>
+
+      {mode === "easy" ? (
+        <EasyForm locale={locale} />
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+          encType="multipart/form-data"
+          aria-live="polite"
+        >
       {/* Progress */}
       <div className="w-full bg-gray-200/70 h-2 rounded-full">
         <div
@@ -1395,7 +1624,7 @@ export default function PassportForm() {
       )}
 
       {/* STEP 5: uploads (includes U12 mini-steps) */}
-      {step === 5 && (
+  {step === 5 && (
         <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-sm">
           {/* Always show proof + email-later */}
           <div className="bg-gray-50 border rounded-lg p-3">
@@ -1626,6 +1855,13 @@ export default function PassportForm() {
             </div>
           </div>
 
+          {/* Payment options note */}
+          <div className="text-[11px] text-gray-600">
+            {locale === "it"
+              ? "Opzioni di pagamento aggiuntive disponibili: Klarna (paga in 3), Clearpay, bonifico bancario etc."
+              : "Additional payment options available: Klarna (Pay in 3), Clearpay, bank transfer etc."}
+          </div>
+
           {err && <div className="text-red-600 text-sm">{err}</div>}
 
           <div className="flex flex-col sm:flex-row gap-2 sm:justify-between">
@@ -1660,6 +1896,8 @@ export default function PassportForm() {
           </p>
         </div>
       )}
-    </form>
+        </form>
+      )}
+    </div>
   );
 }
