@@ -172,7 +172,7 @@ function getServices(locale: "en" | "it"): Service[] {
       bullets: isIt
         ? ["Guida alla prenotazione consolare", "Requisiti biometrici & foto", "Minori/consenso genitori"]
         : ["Consular booking guidance", "Biometric & photo requirements", "Minor/consent guidance"],
-      fee: "£35",
+      fee: "£50",
       path: "/services/id-card",
       turnaround: "1–3 weeks",
       image: "/images/cie-hero-3840x1280.png",

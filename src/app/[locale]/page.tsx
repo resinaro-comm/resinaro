@@ -244,7 +244,7 @@ export default function Home() {
 
       {/* -------------------- HERO -------------------- */}
       <motion.section aria-label="Welcome" className="relative overflow-hidden" initial="initial" animate="animate">
-        <div className="relative h-[68vh] md:h-[72vh] lg:h-[78vh] w-full">
+  <div className="relative h-[74vh] md:h-[72vh] lg:h-[78vh] w-full">
           <Image
             src="/images/landscape-image.png"
             alt={isIt ? "Skyline combinato Italia-Regno Unito" : "Italy and UK combined skyline"}
@@ -320,7 +320,7 @@ export default function Home() {
 
       {/* -------------------- PILLARS -------------------- */}
       <section className="relative">
-        <div className="container mx-auto px-6 -mt-8 md:-mt-10">
+  <div className="container mx-auto px-6 -mt-4 md:-mt-10">
           <motion.ul
             role="list"
             className="mx-auto max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-5 text-center"

@@ -14,8 +14,8 @@ function t(locale: Locale) {
       ? "Carta d’Identità Elettronica (CIE) — Prenotazioni & Documenti | Resinaro"
       : "Italian CIE (ID Card) Help — Booking & Documents | Resinaro",
     metaDescription: it
-      ? "Assistenza amichevole per richiedere o rinnovare la Carta d’Identità Elettronica (CIE) dall’UK. £35 supporto amministrativo. Tasse consolari/governative separate. Nessuna garanzia."
-      : "Friendly help to apply for or renew the Italian Electronic ID Card (CIE) from the UK. £35 admin support. Consulate/government fees paid separately. No guarantees.",
+      ? "Assistenza amichevole per richiedere o rinnovare la Carta d’Identità Elettronica (CIE) dall’UK. £50 supporto amministrativo. Tasse consolari/governative separate. Nessuna garanzia."
+      : "Friendly help to apply for or renew the Italian Electronic ID Card (CIE) from the UK. £50 admin support. Consulate/government fees paid separately. No guarantees.",
 
     // Hero
     heroAlt: it
@@ -24,12 +24,12 @@ function t(locale: Locale) {
 
     // Intro card
     h1: it
-      ? "CIE (Carta d’Identità) — Prenotazione & Documenti (£35)"
-      : "Italian CIE (ID Card) — Booking & Document Help (£35)",
+      ? "CIE (Carta d’Identità) — Prenotazione & Documenti (£50)"
+      : "Italian CIE (ID Card) — Booking & Document Help (£50)",
     introP1_a: it
       ? "Rendiamo semplice il percorso CIE: prepariamo i documenti, spieghiamo le biometrie e prenotiamo lo slot al consolato corretto. Il nostro compenso è "
       : "We make the CIE process simple: prepare documents, understand biometrics, and book the correct consulate slot. Our fee is ",
-    introP1_bold: "£35",
+  introP1_bold: "£50",
     introP1_b: it
       ? " per il solo supporto amministrativo. "
       : " for admin support only. ",
@@ -149,8 +149,8 @@ function t(locale: Locale) {
       ? "Assistenza consolare, prenotazioni e preparazione documenti"
       : "Consular assistance, appointment booking and document preparation",
     ld_service_desc: it
-      ? "Supporto calmo e passo-passo per ottenere o rinnovare la CIE dall’UK: controlli documentali, aiuto prenotazione, guida biometrie e follow-up. £35 compenso amministrativo; tasse consolari ufficiali a parte. Nessuna garanzia."
-      : "Calm, step-by-step help to obtain or renew the Italian Electronic ID Card (CIE) from the UK: document checks, booking support, biometric guidance and follow-up. £35 admin fee; official consulate fees separate. No guarantees.",
+      ? "Supporto calmo e passo-passo per ottenere o rinnovare la CIE dall’UK: controlli documentali, aiuto prenotazione, guida biometrie e follow-up. £50 compenso amministrativo; tasse consolari ufficiali a parte. Nessuna garanzia."
+      : "Calm, step-by-step help to obtain or renew the Italian Electronic ID Card (CIE) from the UK: document checks, booking support, biometric guidance and follow-up. £50 admin fee; official consulate fees separate. No guarantees.",
     inLanguage: it ? "it-IT" : "en-GB",
   };
 }
@@ -199,7 +199,7 @@ function buildServiceJsonLd(locale: Locale) {
     offers: {
       "@type": "Offer",
       priceCurrency: "GBP",
-      price: "35",
+  price: "50",
       availability: "https://schema.org/InStock",
     },
     inLanguage: c.inLanguage,

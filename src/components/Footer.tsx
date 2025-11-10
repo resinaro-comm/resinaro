@@ -89,17 +89,44 @@ export default function Footer() {
       reviewSub: isIt ? "Lascia una recensione su Trustpilot." : "Leave a Trustpilot review.",
       newsletterAria: isIt ? "Iscriviti agli aggiornamenti" : "Subscribe to updates",
       emailLabel: isIt ? "Email" : "Email",
-      builtByAria: isIt
-        ? "Questo sito è stato creato e viene gestito da alveriano.com"
-        : "This site was created by and is managed by alveriano.com",
-      builtByText: isIt
-        ? "Questo sito è stato creato e viene gestito da alveriano.com"
-        : "This site was created by and is managed by alveriano.com",
+      builtByText: isIt ? "Costruito da Alveriano" : "Built by Alveriano",
+      builtByAria: isIt ? "Apri il sito di Alveriano" : "Open Alveriano website",
       svc: {
         passport: isIt ? "Passaporto" : "Passport",
         nin: isIt ? "Supporto NIN" : "NIN Support",
         bureaucracy: isIt ? "Burocrazia" : "Bureaucracy",
         housing: isIt ? "Casa" : "Housing",
+      },
+
+      /* ---- Alveriano footer promo ---- */
+      alv: {
+        heading: isIt
+          ? "Costruito da Alveriano — web & funnel studio"
+          : "Built by Alveriano — web & funnel studio",
+        sub: isIt
+          ? "Siti web veloci, SEO, funnel con AI e contenuti che portano clienti. Creato per aziende di servizi."
+          : "Fast websites, SEO, AI funnels and content that brings leads — built for service businesses.",
+        bullets: isIt
+          ? [
+              "Next.js, prestazioni A+ e accessibilità.",
+              "SEO tecnico + content engine che scala.",
+              "Funnel conversazionali con AI (chatbot sui tuoi contenuti).",
+              "Integrazioni Stripe, Calendly, CRM e automazioni.",
+              "Design pulito, copy chiaro, tracciamento serio.",
+            ]
+          : [
+              "Next.js builds with A+ performance & accessibility.",
+              "Technical SEO + scalable content engine.",
+              "AI conversational funnels (chatbot on your content).",
+              "Stripe, Calendly, CRM integrations & automations.",
+              "Clean design, clear copy, real analytics.",
+            ],
+        ctaPrimary: isIt ? "Scopri Alveriano" : "Explore Alveriano",
+        ctaSecondary: isIt ? "Richiedi un audit gratuito (15 min)" : "Request a free 15-min audit",
+        foot: isIt
+          ? "Pronto a far crescere il tuo sito come Resinaro? Parla con noi: risultati misurabili, senza fronzoli."
+          : "Want results like Resinaro? Talk to us — measurable growth, no fluff.",
+        email: "hello@alveriano.com",
       },
     }),
     [isIt]
@@ -292,10 +319,92 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* JSON-LD */}
+      {/* --- Alveriano Promo Band (SEO + Leads) --- */}
+      <div className="relative bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/50 p-6 md:p-8 shadow-sm">
+            <h2 className="text-xl md:text-2xl font-semibold tracking-[-0.01em] text-emerald-900 text-center">
+              {copy.alv.heading}
+            </h2>
+            <p className="mt-2 text-sm md:text-base text-emerald-900/90 text-center max-w-3xl mx-auto">
+              {copy.alv.sub}
+            </p>
+
+            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-emerald-900/90 max-w-4xl mx-auto">
+              {copy.alv.bullets.map((b, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <svg
+                    className="mt-1 h-4 w-4 text-emerald-700"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href="https://alveriano.com/?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-5 py-2.5 text-white text-sm font-semibold hover:bg-emerald-800 shadow-md hover:shadow-lg"
+              >
+                {copy.alv.ctaPrimary}
+              </a>
+              <a
+                href={`mailto:${copy.alv.email}?subject=Resinaro%20site%20audit%20request&body=Hi%20Alveriano,%0D%0A%0D%0AWe%27d%20like%20a%2015-minute%20audit.%20Website:%20_____%0D%0AGoals:%20_____%0D%0A`}
+                className="inline-flex items-center justify-center rounded-lg border border-emerald-700 px-5 py-2.5 text-emerald-800 text-sm font-semibold hover:bg-emerald-100"
+              >
+                {copy.alv.ctaSecondary}
+              </a>
+            </div>
+
+            <p className="mt-4 text-center text-[13px] text-emerald-900/80 max-w-3xl mx-auto">
+              {copy.alv.foot}{" "}
+              <a
+                href="https://alveriano.com/case-studies?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-emerald-600 decoration-2 underline-offset-2 hover:text-emerald-800"
+              >
+                alveriano.com
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* JSON-LD (Resinaro) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
+      {/* JSON-LD (Alveriano) */}
+      <script
+        type="application/ld+json"
+        // Minimal, safe Organization block to help Alveriano’s SEO
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://alveriano.com/#organization",
+            name: "Alveriano",
+            url: "https://alveriano.com",
+            sameAs: ["https://alveriano.com"],
+            description:
+              "Alveriano is a web & funnel studio building fast Next.js sites, SEO systems and AI-driven conversion funnels for service businesses.",
+          }),
+        }}
       />
     </footer>
   );
