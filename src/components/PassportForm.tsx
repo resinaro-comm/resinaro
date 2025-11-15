@@ -151,7 +151,6 @@ function AppointmentForm({ locale }: { locale: Locale }) {
   const trq = tq(locale);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   // Selection combines kind (waiting list vs appointment) and quantity
   type Choice = "wl-1" | "wl-2" | "wl-3" | "ap-1" | "ap-2" | "ap-3";
   const [choice, setChoice] = useState<Choice>("wl-1");
@@ -209,7 +208,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           service: sel.kind === "appointment" ? `passport-appointment-prenotami-${sel.qty}` : `passport-waiting-list-${sel.qty}`,
           name: fullName.trim(),
           email: email.trim(),
-          telephone: phone.trim(),
+          telephone: "", // phone field removed
           files: [],
           data,
         }),
@@ -252,16 +251,6 @@ function AppointmentForm({ locale }: { locale: Locale }) {
         </label>
       </div>
 
-      <label className="block">
-        <span className="text-sm">{trq.phone}</span>
-        <input
-          className="mt-1 w-full rounded-xl border px-3 py-2"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-          placeholder="+44…"
-        />
-      </label>
 
       <label className="block">
         <span className="text-sm">{trq.qty}</span>
