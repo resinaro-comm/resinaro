@@ -74,8 +74,8 @@ function tq(locale: Locale) {
   const it = locale === "it";
   return {
     qTitle: it
-      ? "Appuntamento passaporto con Prenot@Mi"
-      : "Passport appointment with Prenot@Mi",
+      ? "Assistenza passaporto — appuntamento o lista d’attesa"
+      : "Passport support — appointment or waiting list",
     qDesc: it
       ? "Inserisci i contatti, scegli quante persone e paga in modo sicuro."
       : "Enter your details, choose how many people, and pay securely.",
@@ -83,7 +83,9 @@ function tq(locale: Locale) {
     email: it ? "Email *" : "Email *",
     phone: it ? "Telefono (WhatsApp ok) *" : "Phone (WhatsApp ok) *",
     qty: it ? "Quante persone? *" : "How many people? *",
-    priceHint: it ? "1 = £35 • 2 = £70 • 3 = £105" : "1 = £35 • 2 = £70 • 3 = £105",
+    priceHint: it
+      ? "Lista d’attesa: 1 £30 • 2 £58 • 3 £85 — Appuntamento: 1 £40 • 2 £78 • 3 £115"
+      : "Waiting list: 1 £30 • 2 £58 • 3 £85 — Appointment: 1 £40 • 2 £78 • 3 £115",
 
     // Agreements
     startNowLabel: it
@@ -95,7 +97,7 @@ function tq(locale: Locale) {
       : "I consent to data processing as described in the Privacy Policy.",
 
     // Buttons / states
-    pay: it ? "paga ora - solo £35" : "pay now - only £35",
+  pay: it ? "paga ora" : "pay now",
     redirecting: it ? "Reindirizzamento…" : "Redirecting…",
 
     // Errors
@@ -150,7 +152,20 @@ function AppointmentForm({ locale }: { locale: Locale }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [qty, setQty] = useState(1);
+  // Selection combines kind (waiting list vs appointment) and quantity
+  type Choice = "wl-1" | "wl-2" | "wl-3" | "ap-1" | "ap-2" | "ap-3";
+  const [choice, setChoice] = useState<Choice>("wl-1");
+
+  const CHOICES: Record<Choice, { qty: 1 | 2 | 3; kind: "waiting" | "appointment"; amount: number; link: string }> = {
+    "wl-1": { qty: 1, kind: "waiting", amount: 30, link: "https://buy.stripe.com/4gMcN5cFE4xhfeN2kyaMU0l" },
+    "wl-2": { qty: 2, kind: "waiting", amount: 58, link: "https://buy.stripe.com/28EeVd0WW2p96Ih2kyaMU0n" },
+    "wl-3": { qty: 3, kind: "waiting", amount: 85, link: "https://buy.stripe.com/7sY5kDcFE8Nx5Ede3gaMU0o" },
+    "ap-1": { qty: 1, kind: "appointment", amount: 40, link: "https://buy.stripe.com/8x24gz7lkgfZc2BcZcaMU0p" },
+    "ap-2": { qty: 2, kind: "appointment", amount: 78, link: "https://buy.stripe.com/28E3cveNMd3N1nXbV8aMU0q" },
+    "ap-3": { qty: 3, kind: "appointment", amount: 115, link: "https://buy.stripe.com/00w3cvbBAe7R7Ml6AOaMU0r" },
+  };
+
+  const sel = CHOICES[choice];
 
   const [startNowAgree, setStartNowAgree] = useState(false);
   const [refundAgree, setRefundAgree] = useState(false);
@@ -170,12 +185,13 @@ function AppointmentForm({ locale }: { locale: Locale }) {
 
     try {
       setLoading(true);
-      const bookingId = safeUUID();
+  const bookingId = safeUUID();
 
       // Persist lightweight submission to GAS (non-blocking downstream)
       const data: Record<string, string> = {
         mode: "single",
-        qty: String(qty),
+        qty: String(sel.qty),
+        kind: sel.kind,
         startNowAgree: startNowAgree ? "1" : "0",
         refundPolicyAgree: refundAgree ? "1" : "0",
         privacyConsent: consent ? "1" : "0",
@@ -190,7 +206,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           token: GAS_TOKEN,
           action: "submit",
           bookingId,
-          service: `passport-appointment-prenotami-${qty}`,
+          service: sel.kind === "appointment" ? `passport-appointment-prenotami-${sel.qty}` : `passport-waiting-list-${sel.qty}`,
           name: fullName.trim(),
           email: email.trim(),
           telephone: phone.trim(),
@@ -198,14 +214,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           data,
         }),
       }).catch(() => {});
-
-      // Stripe links for 1/2/3 people
-      let base = "";
-      if (qty === 1) base = "https://buy.stripe.com/7sY14n354bZJ9Ut6AOaMU01"; // £35
-      else if (qty === 2) base = "https://buy.stripe.com/7sYdR98pofbVc2B1guaMU0g"; // £70
-      else base = "https://buy.stripe.com/4gMcN58poe7R4A9cZcaMU0f"; // £105
-
-      const url = new URL(base);
+      const url = new URL(sel.link);
       if (email) url.searchParams.set("prefilled_email", email.trim());
       url.searchParams.set("client_reference_id", bookingId);
       window.location.href = url.toString();
@@ -258,13 +267,16 @@ function AppointmentForm({ locale }: { locale: Locale }) {
         <span className="text-sm">{trq.qty}</span>
         <select
           className="mt-1 w-full rounded-xl border px-3 py-2"
-          value={qty}
-          onChange={(e) => setQty(parseInt(e.target.value))}
+          value={choice}
+          onChange={(e) => setChoice(e.target.value as Choice)}
           required
         >
-          <option value={1}>1 — £35</option>
-          <option value={2}>2 — £70</option>
-          <option value={3}>3 — £105</option>
+          <option value="wl-1">{locale === "it" ? "1 × lista d’attesa - £30" : "1 × waiting list - £30"}</option>
+          <option value="wl-2">{locale === "it" ? "2 × lista d’attesa - £58" : "2 × waiting list - £58"}</option>
+          <option value="wl-3">{locale === "it" ? "3 × lista d’attesa - £85" : "3 × waiting list - £85"}</option>
+          <option value="ap-1">{locale === "it" ? "1 × appuntamento - £40" : "1 × appointment - £40"}</option>
+          <option value="ap-2">{locale === "it" ? "2 × appuntamento - £78" : "2 × appointment - £78"}</option>
+          <option value="ap-3">{locale === "it" ? "3 × appuntamento - £115" : "3 × appointment - £115"}</option>
         </select>
         <p className="text-xs text-zinc-600 mt-1">{trq.priceHint}</p>
         <p className="text-[11px] text-zinc-600 mt-2">
@@ -325,7 +337,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           loading || !allChecked ? "opacity-60 cursor-not-allowed" : ""
         }`}
       >
-        {loading ? trq.redirecting : trq.pay}
+        {loading ? trq.redirecting : `${trq.pay} — £${sel.amount}`}
       </button>
     </form>
   );
