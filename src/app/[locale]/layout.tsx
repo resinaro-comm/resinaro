@@ -23,8 +23,29 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Resinaro – Italian Roots, UK Support",
   description:
-    "Resinaro helps Italians in the UK with bureaucracy, housing, mental health, and community support.",
+    "Guides and community for Italians in the UK — clear steps for AIRE, CIE & passports, NHS, housing and life admin.",
   metadataBase: new URL("https://www.resinaro.com"),
+  openGraph: {
+    title: "Resinaro — Guides & community for Italians in the UK",
+    description:
+      "Clear, hand-checked guides and community picks — AIRE, CIE & passports, NHS, housing and life admin.",
+    url: "/",
+    siteName: "Resinaro",
+    type: "website",
+    images: [
+      {
+        url: "/images/resinaro-general.png",
+        alt: "Resinaro — Guides for Italians in the UK",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Resinaro — Guides & community for Italians in the UK",
+    description:
+      "AIRE, CIE & passports, NHS, housing and more — practical guides and local picks.",
+    images: ["/images/resinaro-general.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
