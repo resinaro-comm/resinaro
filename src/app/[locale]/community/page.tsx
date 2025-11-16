@@ -52,6 +52,52 @@ const posts: Post[] = [
     itDescription:
       "Tutto il necessario per il caffè moka in una cucina UK: misure della moka, macinatura giusta, guarnizioni di ricambio e un mini montalatte effetto cappuccino.",
   },
+  // Featured bureaucracy guides (added Nov 2025)
+  {
+    title: "AIRE from the UK (2025): Registration & FAST IT Guide",
+    description:
+      "Registration, updates, FAST IT issues, transcriptions and realistic timelines for Italians in the UK.",
+    slug: "/community/aire-uk",
+    category: "bureaucracy-guides",
+    image: "/images/aire-fastit-hero.jpg",
+    minutes: 16,
+    tags: ["AIRE", "FAST IT"],
+    updatedAt: "2025-11-16",
+    itTitle: "AIRE dal Regno Unito (2025): iscrizione, aggiornamenti & problemi",
+    itDescription:
+      "Iscrizione, aggiornamenti, FAST IT, trascrizioni ed errori ricorrenti con tempi realistici per chi vive nel Regno Unito.",
+    featured: false,
+  },
+  {
+    title: "Italian Passport & ID Card in the UK (2025): Complete Guide",
+    description:
+      "AIRE, documents, minors, costs, timelines and booking tactics when Prenot@Mi slots disappear.",
+    slug: "/community/passport-id-uk",
+    category: "bureaucracy-guides",
+    image: "/images/passport-cie-hero.jpg",
+    minutes: 18,
+    tags: ["passport", "CIE", "AIRE"],
+    updatedAt: "2025-11-15",
+    itTitle: "Passaporto e Carta d’Identità italiana nel Regno Unito (2025)",
+    itDescription:
+      "Documenti, AIRE, minori, costi reali, tempi e strategie di prenotazione quando gli slot Prenot@Mi non si trovano.",
+    featured: false,
+  },
+  {
+    title: "Prenot@Mi & Italian Consular Appointments UK (2025) Guide",
+    description:
+      "Consulate coverage, slot-release patterns, avoiding blocked accounts and appointment-day preparation.",
+    slug: "/community/prenotami-uk-guide",
+    category: "bureaucracy-guides",
+    image: "/images/prenotami-hero.jpg",
+    minutes: 14,
+    tags: ["Prenot@Mi", "consulate", "passport"],
+    updatedAt: "2025-11-16",
+    itTitle: "Prenot@Mi & appuntamenti consolari Regno Unito (2025): guida di sopravvivenza",
+    itDescription:
+      "Copertura consolare, pattern di rilascio slot, evitare account bloccati e preparazione al giorno dell’appuntamento.",
+    featured: false,
+  },
   {
     title: "Tiny UK Kitchen, Big Italian Flavour: Starter Kit",
     description:
