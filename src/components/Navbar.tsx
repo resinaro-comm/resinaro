@@ -140,6 +140,36 @@ export default function Navbar() {
                 {l.label}
               </Link>
             ))}
+            {/* Socials (desktop) */}
+            <div className="ml-1 flex items-center gap-2">
+              <a
+                href="https://www.instagram.com/resinaroUK"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-green-800 text-green-900 hover:bg-emerald-50"
+              >
+                {/* Instagram icon */}
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="4"/>
+                  <circle cx="12" cy="12" r="4.2"/>
+                  <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+                </svg>
+              </a>
+              <a
+                href="https://www.youtube.com/@resinaroUK"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-green-800 text-green-900 hover:bg-emerald-50"
+              >
+                {/* YouTube icon */}
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M22.54 6.42a3 3 0 0 0-2.12-2.12C18.9 3.9 12 3.9 12 3.9s-6.9 0-8.42.4A3 3 0 0 0 1.46 6.42 31.7 31.7 0 0 0 1.1 12c-.01 1.89.14 3.78.36 5.58a3 3 0 0 0 2.12 2.12c1.52.4 8.42.4 8.42.4s6.9 0 8.42-.4a3 3 0 0 0 2.12-2.12c.22-1.8.37-3.69.36-5.58a31.7 31.7 0 0 0-.36-5.58Z"/>
+                  <path d="M10 15.5v-7l6 3.5-6 3.5Z" fill="#fff"/>
+                </svg>
+              </a>
+            </div>
             <div className="flex items-center gap-1 ml-1">
               <button
                 type="button"
@@ -203,23 +233,35 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Mobile menu"
-              className="fixed right-0 top-[var(--ad-banner-offset,0px)] z-[90] h-[calc(100vh-var(--ad-banner-offset,0px))] w-[min(14.5rem,70vw)] rounded-l-[2rem] bg-white/95 backdrop-blur-md shadow-2xl ring-1 ring-black/5 overflow-hidden flex flex-col"
+              className="fixed right-0 top-0 z-[90] max-h-screen w-[min(15.5rem,82vw)] rounded-l-[2rem] bg-[#F2EDE5]/95 backdrop-blur-md shadow-2xl ring-1 ring-black/10 overflow-y-auto flex flex-col pt-4 pb-4"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 420, damping: 38 }}
             >
-              <div className="h-1.5 w-full flex">
-                <div className="flex-1 bg-green-600" />
-                <div className="flex-1 bg-white" />
-                <div className="flex-1 bg-red-600" />
-              </div>
-
-              <div className="px-3 pt-2 pb-2 border-b">
-                <div className="flex items-center justify-between">
+              <div className="px-3 pt-4 pb-3 border-b">
+                <div className="flex items-center justify-between gap-2">
                   <span className="text-[13px] font-semibold text-green-900 tracking-wide">
                     {tNav("menu")}
                   </span>
+                  <div className="ml-auto mr-1 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => switchTo("en")}
+                      className={`px-2 py-1 rounded text-sm ${locale === "en" ? "bg-black text-white" : "border text-green-900"}`}
+                      aria-pressed={locale === "en"}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => switchTo("it")}
+                      className={`px-2 py-1 rounded text-sm ${locale === "it" ? "bg-black text-white" : "border text-green-900"}`}
+                      aria-pressed={locale === "it"}
+                    >
+                      IT
+                    </button>
+                  </div>
                   <button
                     type="button"
                     className="rounded p-1.5 focus:outline-none focus:ring-2 focus:ring-green-900"
@@ -235,14 +277,14 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <nav className="px-1.5 py-2 overflow-y-auto">
-                <ul className="space-y-1">
+              <nav className="px-2 py-3 flex flex-col">
+                <ul className="space-y-2.5">
                   {links.map((l) => (
                     <li key={l.href}>
                       <Link
                         href={p(locale, l.href)}
                         onClick={() => setIsOpen(false)}
-                        className={`group flex items-center justify-between rounded-2xl px-3 py-2 text-[15px] leading-none truncate ${
+                        className={`group flex items-center justify-between rounded-2xl px-3 py-3 text-[15px] leading-none truncate ${
                           isActive(l.href)
                             ? "bg-emerald-50 text-green-900"
                             : "text-green-900/90 hover:bg-stone-50 hover:text-green-900"
@@ -263,41 +305,43 @@ export default function Navbar() {
                     </li>
                   ))}
                 </ul>
-              </nav>
 
-              {/* Moved up: Language and legal links directly below the menu list for better mobile visibility */}
-              <div className="px-3 pt-2 pb-2 border-t text-[11px] text-stone-500">
-                <div className="flex items-center justify-between">
-                  <span>© {new Date().getFullYear()} Resinaro</span>
-                  <div className="flex gap-2">
-                    <Link href={p(locale, "/privacy-policy")} className="hover:text-stone-700">
-                      {tNav("privacy")}
-                    </Link>
-                    <Link href={p(locale, "/terms")} className="hover:text-stone-700">
-                      {tNav("terms")}
-                    </Link>
+                {/* Socials (mobile drawer) */}
+                <div className="mt-4 px-1.5">
+                  <div className="text-[11px] uppercase tracking-wide text-stone-500 mb-1">Follow</div>
+                  <div className="flex flex-col gap-2">
+                    <a
+                      href="https://www.instagram.com/resinaroUK"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-full items-center gap-2 rounded-xl border px-3 py-2 text-sm text-green-900 hover:bg-emerald-50 justify-start bg-white/80"
+                      aria-label="Instagram"
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                        <rect x="3.5" y="3.5" width="17" height="17" rx="4"/>
+                        <circle cx="12" cy="12" r="4.2"/>
+                        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+                      </svg>
+                      <span>Instagram</span>
+                    </a>
+                    <a
+                      href="https://www.youtube.com/@resinaroUK"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-full items-center gap-2 rounded-xl border px-3 py-2 text-sm text-green-900 hover:bg-emerald-50 justify-start bg-white/80"
+                      aria-label="YouTube"
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                        <path d="M22.54 6.42a3 3 0 0 0-2.12-2.12C18.9 3.9 12 3.9 12 3.9s-6.9 0-8.42.4A3 3 0 0 0 1.46 6.42 31.7 31.7 0 0 0 1.1 12c-.01 1.89.14 3.78.36 5.58a3 3 0 0 0 2.12 2.12c1.52.4 8.42.4 8.42.4s6.9 0 8.42-.4a3 3 0 0 0 2.12-2.12c.22-1.8.37-3.69.36-5.58a31.7 31.7 0 0 0-.36-5.58Z"/>
+                        <path d="M10 15.5v-7l6 3.5-6 3.5Z" fill="#fff"/>
+                      </svg>
+                      <span>YouTube</span>
+                    </a>
                   </div>
                 </div>
+              </nav>
 
-                <div className="mt-2 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => switchTo("en")}
-                    className={`px-2 py-1 rounded text-sm ${locale === "en" ? "bg-black text-white" : "border text-green-900"}`}
-                    aria-pressed={locale === "en"}
-                  >
-                    EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => switchTo("it")}
-                    className={`px-2 py-1 rounded text-sm ${locale === "it" ? "bg-black text-white" : "border text-green-900"}`}
-                    aria-pressed={locale === "it"}
-                  >
-                    IT
-                  </button>
-                </div>
-              </div>
+              {/* Footer section removed per request (drawer ends after social links) */}
             </motion.aside>
           </>
         )}

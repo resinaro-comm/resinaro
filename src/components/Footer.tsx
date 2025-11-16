@@ -319,18 +319,27 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* --- Alveriano Promo Band (SEO + Leads) --- */}
+      {/* --- Alveriano Promo Band (refined to blend with brand) --- */}
       <div className="relative bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/50 p-6 md:p-8 shadow-sm">
-            <h2 className="text-xl md:text-2xl font-semibold tracking-[-0.01em] text-emerald-900 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+          <div className="relative rounded-3xl ring-1 ring-black/5 bg-white/80 backdrop-blur-sm supports-[backdrop-filter]:bg-white/70 p-6 md:p-8 shadow-[0_12px_48px_rgba(0,0,0,.06)]">
+            {/* subtle brand hairline */}
+            <div className="absolute -top-px left-4 right-4 h-[3px] rounded-full overflow-hidden" aria-hidden>
+              <div className="grid grid-cols-3 h-full">
+                <div className="bg-[#0B5D3B]" />
+                <div className="bg-white" />
+                <div className="bg-[#B22222]" />
+              </div>
+            </div>
+
+            <h2 className="text-2xl md:text-[28px] font-extrabold tracking-tight text-emerald-900 text-center">
               {copy.alv.heading}
             </h2>
-            <p className="mt-2 text-sm md:text-base text-emerald-900/90 text-center max-w-3xl mx-auto">
+            <p className="mt-2 text-[15px] md:text-base text-gray-700 text-center max-w-3xl mx-auto">
               {copy.alv.sub}
             </p>
 
-            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-emerald-900/90 max-w-4xl mx-auto">
+            <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[15px] text-gray-800 max-w-4xl mx-auto">
               {copy.alv.bullets.map((b, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <svg
@@ -355,19 +364,19 @@ export default function Footer() {
                 href="https://alveriano.com/?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-5 py-2.5 text-white text-sm font-semibold hover:bg-emerald-800 shadow-md hover:shadow-lg"
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-700 px-5 py-2.5 text-white text-sm font-semibold hover:bg-emerald-800 shadow-sm hover:shadow-md"
               >
                 {copy.alv.ctaPrimary}
               </a>
               <a
                 href={`mailto:${copy.alv.email}?subject=Resinaro%20site%20audit%20request&body=Hi%20Alveriano,%0D%0A%0D%0AWe%27d%20like%20a%2015-minute%20audit.%20Website:%20_____%0D%0AGoals:%20_____%0D%0A`}
-                className="inline-flex items-center justify-center rounded-lg border border-emerald-700 px-5 py-2.5 text-emerald-800 text-sm font-semibold hover:bg-emerald-100"
+                className="inline-flex items-center justify-center rounded-xl border border-emerald-700 px-5 py-2.5 text-emerald-800 text-sm font-semibold hover:bg-emerald-50"
               >
                 {copy.alv.ctaSecondary}
               </a>
             </div>
 
-            <p className="mt-4 text-center text-[13px] text-emerald-900/80 max-w-3xl mx-auto">
+            <p className="mt-4 text-center text-[13px] text-gray-700 max-w-3xl mx-auto">
               {copy.alv.foot}{" "}
               <a
                 href="https://alveriano.com/case-studies?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"

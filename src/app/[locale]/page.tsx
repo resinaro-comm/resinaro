@@ -243,8 +243,8 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* -------------------- HERO -------------------- */}
-      <motion.section aria-label="Welcome" className="relative overflow-hidden" initial="initial" animate="animate">
-  <div className="relative h-[74vh] md:h-[72vh] lg:h-[78vh] w-full">
+    <motion.section aria-label="Welcome" className="relative overflow-hidden" initial="initial" animate="animate">
+  <div className="relative h-[88vh] md:h-[86vh] lg:h-[90vh] w-full">
           <Image
             src="/images/landscape-image.png"
             alt={isIt ? "Skyline combinato Italia-Regno Unito" : "Italy and UK combined skyline"}
@@ -257,13 +257,18 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-black/20" />
             <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_40%,rgba(0,0,0,0.38),transparent)]" />
           </div>
+          {/* Soft blend into page background */}
+          <div className="absolute inset-x-0 bottom-0 h-20 sm:h-24 pointer-events-none">
+            <div className="absolute inset-0 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F9F6F1]/70 to-[#F9F6F1]" />
+          </div>
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="relative max-w-4xl text-center">
-            <div className="mx-auto max-w-4xl rounded-3xl bg-black/25 backdrop-blur-sm px-6 py-5 sm:px-8 sm:py-6 shadow-[0_20px_60px_rgba(0,0,0,.35)]">
+            <div className="mx-auto max-w-4xl rounded-3xl bg-black/25 backdrop-blur-sm px-7 py-6 sm:px-10 sm:py-7 shadow-[0_20px_60px_rgba(0,0,0,.35)]">
               <motion.h1
-                className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-white [text-shadow:0_10px_28px_rgba(0,0,0,.55),0_2px_8px_rgba(0,0,0,.45)]"
+                className="text-4xl md:text-6xl font-extrabold leading-[1.15] tracking-tight text-white [text-shadow:0_10px_28px_rgba(0,0,0,.55),0_2px_8px_rgba(0,0,0,.45)]"
                 {...fadeUp(0.05)}
               >
                 {isIt ? "Guide & community per italiani nel Regno Unito" : "Guides & community for Italians in the UK"}
@@ -318,35 +323,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* -------------------- PILLARS -------------------- */}
-      <section className="relative">
-  <div className="container mx-auto px-6 -mt-4 md:-mt-10">
-          <motion.ul
-            role="list"
-            className="mx-auto max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-5 text-center"
-            variants={staggerChildren}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {pillars.map((f, i) => (
-              <motion.li
-                key={f.title}
-                className="rounded-xl bg-white/90 backdrop-blur border border-gray-200 shadow-sm p-5"
-                {...blurIn(0.05 * i)}
-              >
-                <h3 className="font-semibold text-green-900 text-base">{f.title}</h3>
-                <p className="mt-1 text-sm text-gray-700">{f.desc}</p>
-                {f.href && (
-                  <Link href={p(f.href)} className="mt-2 inline-flex items-center gap-1 text-green-900 underline underline-offset-4">
-                    {isIt ? "Scopri di più" : "Learn more"} <span aria-hidden>→</span>
-                  </Link>
-                )}
-              </motion.li>
-            ))}
-          </motion.ul>
-        </div>
-      </section>
+      {/* PILLARS removed per request */}
 
       {/* -------------------- BLOG FIRST -------------------- */}
       <section className="relative overflow-hidden">
