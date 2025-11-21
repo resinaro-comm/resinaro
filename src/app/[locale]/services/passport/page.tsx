@@ -205,49 +205,49 @@ const imageObjectsJsonLd = {
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_1",
+      contentUrl: "https://www.resinaro.com/proof/proof_1.webp",
       name: "Appointment confirmed — November 2025",
       width: 1284,
       height: 1336,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_2",
+      contentUrl: "https://www.resinaro.com/proof/proof_2.webp",
       name: "Waiting list confirmation — November 2025",
       width: 1234,
       height: 2290,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_3",
+      contentUrl: "https://www.resinaro.com/proof/proof_3.webp",
       name: "Appointment booking confirmed",
       width: 1216,
       height: 1968,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_4",
+      contentUrl: "https://www.resinaro.com/proof/proof_4.webp",
       name: "Recent successful booking",
       width: 1134,
       height: 598,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_5",
+      contentUrl: "https://www.resinaro.com/proof/proof_5.webp",
       name: "Passport appointment secured",
       width: 1242,
       height: 1574,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_6",
+      contentUrl: "https://www.resinaro.com/proof/proof_6.webp",
       name: "Confirmed appointment details",
       width: 1184,
       height: 733,
     },
     {
       "@type": "ImageObject",
-      contentUrl: "https://www.resinaro.com/proof/proof_7",
+      contentUrl: "https://www.resinaro.com/proof/proof_7.webp",
       name: "Latest booking confirmation",
       width: 1284,
       height: 904,
@@ -618,7 +618,7 @@ export default function PassportServicePage({
               {/* Slide 4 */}
               <figure id="s4" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_1" alt="Appointment confirmed — November 2025" width={1284} height={1336} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_1.webp" alt="Appointment confirmed — November 2025" width={1284} height={1336} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -632,7 +632,7 @@ export default function PassportServicePage({
               {/* Slide 5 */}
               <figure id="s5" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_2" alt="Waiting list confirmation — November 2025" width={1234} height={2290} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_2.webp" alt="Waiting list confirmation — November 2025" width={1234} height={2290} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -646,7 +646,7 @@ export default function PassportServicePage({
               {/* Slide 6 */}
               <figure id="s6" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_3" alt="Appointment booking confirmed" width={1216} height={1968} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_3.webp" alt="Appointment booking confirmed" width={1216} height={1968} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -660,7 +660,7 @@ export default function PassportServicePage({
               {/* Slide 7 */}
               <figure id="s7" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_4" alt="Recent successful booking" width={1134} height={598} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_4.webp" alt="Recent successful booking" width={1134} height={598} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -674,7 +674,7 @@ export default function PassportServicePage({
               {/* Slide 8 */}
               <figure id="s8" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_5" alt="Passport appointment secured" width={1242} height={1574} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_5.webp" alt="Passport appointment secured" width={1242} height={1574} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -688,7 +688,7 @@ export default function PassportServicePage({
               {/* Slide 9 */}
               <figure id="s9" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_6" alt="Confirmed appointment details" width={1184} height={733} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_6.webp" alt="Confirmed appointment details" width={1184} height={733} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -702,7 +702,7 @@ export default function PassportServicePage({
               {/* Slide 10 */}
               <figure id="s10" className="relative snap-center shrink-0 w-full bg-neutral-100">
                 <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
-                  <Image src="/proof/proof_7" alt="Latest booking confirmation" width={1284} height={904} className="w-full h-full object-contain" />
+                  <Image src="/proof/proof_7.webp" alt="Latest booking confirmation" width={1284} height={904} className="w-full h-full object-contain" />
                 </div>
                 <button type="button" data-prev aria-label={locale === "it" ? "Precedente" : "Previous"} className="absolute left-3 top-1/2 -translate-y-1/2 grid place-items-center h-11 w-11 rounded-full bg-white/95 border shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-600/30">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
