@@ -84,32 +84,7 @@ export default function Home() {
     },
   ];
 
-  const testimonials: Testimonial[] = [
-    {
-      name: "Giulia R.",
-      quote: isIt
-        ? "Ho trovato tutto per passaporto + AIRE in un unico posto. Passi chiari, niente fronzoli. Grazie!"
-        : "Found everything I needed for my passport + AIRE in one place. Clear steps, no waffle. Grazie!",
-      meta: isIt ? "Lettrice guide, Londra" : "Community guide reader, London",
-      
-    },
-    {
-      name: "Marco B.",
-      quote: isIt
-        ? "Le scelte su Manchester erano perfette. Posti che consiglierei davvero agli amici in visita."
-        : "The Manchester picks were spot on. Places I’d actually recommend to friends visiting.",
-      meta: isIt ? "Lettore directory, Manchester" : "Directory reader, Manchester",
-      
-    },
-    {
-      name: "Elena S.",
-      quote: isIt
-        ? "Mi piace che le guide spieghino i prossimi passi, non solo i link. Mi ha risparmiato un weekend."
-        : "I like that guides explain what to do next, not just link to forms. Saved me a weekend.",
-      meta: isIt ? "Lettrice, guida AIRE" : "Reader, AIRE guide",
-      
-    },
-  ];
+  
 
   const blog = [
     {
