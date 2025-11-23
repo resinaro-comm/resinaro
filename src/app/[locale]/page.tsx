@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Typewriter from "@/components/Typewriter";
 import { usePathname } from "next/navigation";
 
@@ -19,7 +19,6 @@ const blurIn = (delay = 0) => ({
 });
 
 /* ---------- Types ---------- */
-type Testimonial = { name: string; quote: string; meta?: string; avatar?: string };
 type Pillar = { title: string; desc: string; href?: string };
 type Faq = { q: string; a: React.ReactNode };
 
@@ -195,10 +194,6 @@ export default function Home() {
     [isIt ? "Consigli della comunità" : "Community tips", isIt ? "Aggiungiamo note dei lettori per tenerle pratiche." : "We add notes from readers to keep things practical."],
     [isIt ? "No spam, no drama" : "No spam, no drama", isIt ? "Tono sicuro per i brand, sempre rispettoso." : "Brand-safe, human tone — always respectful."],
   ];
-
-  const [index, setIndex] = useState(0);
-  const next = () => setIndex((i) => (i + 1) % testimonials.length);
-  const prev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);
 
   /* ---------- JSON-LD ---------- */
   const jsonLd = useMemo(
@@ -441,96 +436,6 @@ export default function Home() {
                 {s.meta && <div className="mt-3 text-center text-xs text-gray-500">{s.meta}</div>}
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------- TESTIMONIALS -------------------- */}
-      <section className="relative py-16">
-        <div className="container mx-auto px-6">
-          <motion.h2 className="text-3xl font-extrabold text-green-900 text-center" {...fadeUp(0)}>
-            {isIt ? "Cosa dicono i lettori" : "What readers say"}
-          </motion.h2>
-          <motion.p className="mt-2 text-gray-700 text-center max-w-2xl mx-auto" {...fadeUp(0.15)}>
-            {isIt
-              ? "Note brevi e sincere da chi ha usato le nostre guide e selezioni."
-              : "Short and honest notes from people who used our guides and picks."}
-          </motion.p>
-
-          <div className="mt-8 relative mx-auto max-w-3xl">
-            <div className="rounded-2xl bg-white border border-gray-200 shadow-sm p-6 min-h-[180px]">
-              <AnimatePresence mode="wait">
-                <motion.blockquote
-                  key={index}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <p className="text-lg text-gray-800 text-center">&ldquo;{testimonials[index].quote}&rdquo;</p>
-                  <footer className="mt-4 flex items-center justify-center gap-3 text-sm text-gray-600">
-                    <div className="relative h-8 w-8 overflow-hidden rounded-full bg-emerald-100">
-                      <Image
-                        src={testimonials[index].avatar || "/images/resinaro-general.png"}
-                        alt={testimonials[index].name}
-                        fill
-                        sizes="32px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-medium text-gray-800 text-center">{testimonials[index].name}</div>
-                      {testimonials[index].meta && <div className="text-xs text-center">{testimonials[index].meta}</div>}
-                    </div>
-                  </footer>
-                </motion.blockquote>
-              </AnimatePresence>
-            </div>
-
-            <div className="mt-4 flex items-center justify-center gap-3">
-              <button aria-label={isIt ? "Testimonianza precedente" : "Previous testimonial"} onClick={prev} className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50">←</button>
-              <div className="text-xs text-gray-600">{index + 1} / {testimonials.length}</div>
-              <button aria-label={isIt ? "Testimonianza successiva" : "Next testimonial"} onClick={next} className="rounded-full border bg-white px-3 py-2 text-sm hover:bg-gray-50">→</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------- TRUST BAND -------------------- */}
-      <section className="relative py-16">
-        <div className="absolute inset-0 -z-10">
-          <Image src="/images/hero/uk-italy-composite.png" alt="" fill className="object-cover opacity-40" sizes="100vw" aria-hidden />
-          <div className="absolute inset-0 mix-blend-multiply pointer-events-none" aria-hidden>
-            <div className="absolute inset-0 grid grid-cols-3">
-              <div className="bg-[#0B5D3B]/15" />
-              <div className="bg-white/15" />
-              <div className="bg-[#B22222]/15" />
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-2xl font-extrabold text-green-900">
-            {isIt ? "Apprezzato dai lettori della comunità" : "Trusted by community readers"}
-          </h2>
-          <p className="text-gray-700 mt-2">
-            {isIt ? "Lavoriamo insieme a gruppi locali e istituzioni." : "We work alongside local groups and institutions."}
-          </p>
-
-          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-8 place-items-center">
-            <a href="https://amblondra.esteri.it/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              <Image src="/Emblem_of_Italy.svg.png" alt="Italian Embassy - Emblem of Italy" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
-            </a>
-            <a href="https://www.nhs.uk/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              <Image src="/nhs-logo.svg" alt="NHS logo" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
-            </a>
-            <a href={p("/community")} className="flex flex-col items-center">
-              <Image src="/handshake-solid-full.svg" alt="Community organisation" width={80} height={80} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition" />
-            </a>
-            <a href="https://www.gov.uk/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              <Image src="/trust/govuk.png" alt="GOV.UK logo" width={140} height={50} className="w-auto h-12 object-contain grayscale hover:grayscale-0 transition" />
-              <span className="mt-2 text-sm font-semibold text-gray-800">GOV.UK</span>
-            </a>
           </div>
         </div>
       </section>
