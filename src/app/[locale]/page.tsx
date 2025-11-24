@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Typewriter from "@/components/Typewriter";
 import { usePathname } from "next/navigation";
 
 /* ---------- Anim helpers ---------- */
@@ -84,8 +83,6 @@ export default function Home() {
     },
   ];
 
-  
-
   const blog = [
     {
       title: isIt ? "Come richiedere il Passaporto italiano" : "How to apply for your Italian Passport",
@@ -117,6 +114,12 @@ export default function Home() {
       alt: isIt ? "Documenti per registrazione AIRE" : "AIRE registration documents",
       delay: 0.3,
     },
+  ];
+
+  const blogMeta = [
+    isIt ? "Guida più letta · passaporto" : "Most used guide · passports",
+    isIt ? "Guida pratica · 5 minuti" : "Practical guide · 5 min read",
+    isIt ? "Guida pratica · 6 minuti" : "Practical guide · 6 min read",
   ];
 
   const faqs: Faq[] = [
@@ -164,10 +167,22 @@ export default function Home() {
   ];
 
   const aboutCards: [string, string][] = [
-    [isIt ? "Guide bilingui" : "Bilingual guides", isIt ? "Passi chiari in IT/EN per le pratiche che contano." : "Clear steps in EN/IT for life admin that matters."],
-    [isIt ? "Selezioni per città" : "City picks", isIt ? "Ristoranti, gastronomie e negozi amati dagli italiani." : "Restaurants, delis and shops Italians love."],
-    [isIt ? "Consigli della comunità" : "Community tips", isIt ? "Aggiungiamo note dei lettori per tenerle pratiche." : "We add notes from readers to keep things practical."],
-    [isIt ? "No spam, no drama" : "No spam, no drama", isIt ? "Tono sicuro per i brand, sempre rispettoso." : "Brand-safe, human tone — always respectful."],
+    [
+      isIt ? "Guide bilingui" : "Bilingual guides",
+      isIt ? "Passi chiari in IT/EN per le pratiche che contano." : "Clear steps in EN/IT for life admin that matters.",
+    ],
+    [
+      isIt ? "Selezioni per città" : "City picks",
+      isIt ? "Ristoranti, gastronomie e negozi amati dagli italiani." : "Restaurants, delis and shops Italians love.",
+    ],
+    [
+      isIt ? "Consigli della comunità" : "Community tips",
+      isIt ? "Aggiungiamo note dei lettori per tenerle pratiche." : "We add notes from readers to keep things practical.",
+    ],
+    [
+      isIt ? "No spam, no drama" : "No spam, no drama",
+      isIt ? "Tono sicuro per i brand, sempre rispettoso." : "Brand-safe, human tone — always respectful.",
+    ],
   ];
 
   /* ---------- JSON-LD ---------- */
@@ -208,13 +223,36 @@ export default function Home() {
     []
   );
 
+  const heroPill = isIt
+    ? "Piattaforma pratica per italiani nel Regno Unito"
+    : "Practical platform for Italians in the UK";
+
+  const heroTitle = isIt
+    ? "La guida di riferimento per italiani nel Regno Unito"
+    : "The go-to guide & community for Italians in the UK";
+
+  const heroSub = isIt
+    ? "Da AIRE e passaporto a NHS e casa — passi chiari e tranquilli, in italiano e inglese."
+    : "From AIRE and passports to NHS and housing — calm, step-by-step help in Italian and English.";
+
+  const heroReassure = isIt
+    ? "Guide gratuite, senza pubblicità invadente. E umani veri se ti blocchi."
+    : "Free guides, no noisy ads. And real humans if you get stuck.";
+
+  const aboutIcons = ["📘", "📍", "💬", "🕊️"];
+
   return (
     <main className="bg-[#F9F6F1] text-gray-800 [--brand:#0B5D3B]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* -------------------- HERO -------------------- */}
-    <motion.section aria-label="Welcome" className="relative overflow-hidden" initial="initial" animate="animate">
-  <div className="relative h-[88vh] md:h-[86vh] lg:h-[90vh] w-full">
+      <motion.section
+        aria-label={isIt ? "Benvenuto su Resinaro" : "Welcome to Resinaro"}
+        className="relative overflow-hidden"
+        initial="initial"
+        animate="animate"
+      >
+        <div className="relative h-[76vh] md:h-[78vh] lg:h-[80vh] w-full">
           <Image
             src="/images/landscape-image.png"
             alt={isIt ? "Skyline combinato Italia-Regno Unito" : "Italy and UK combined skyline"}
@@ -224,71 +262,66 @@ export default function Home() {
             sizes="100vw"
           />
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-black/20" />
-            <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_40%,rgba(0,0,0,0.38),transparent)]" />
+            {/* Warmer, softer overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020c08]/80 via-black/45 to-black/20" />
+            <div className="absolute inset-0 bg-[radial-gradient(65%_50%_at_50%_35%,rgba(5,54,31,0.55),transparent)]" />
           </div>
           {/* Soft blend into page background */}
-          <div className="absolute inset-x-0 bottom-0 h-20 sm:h-24 pointer-events-none">
+          <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 pointer-events-none">
             <div className="absolute inset-0 backdrop-blur-sm" />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F9F6F1]/70 to-[#F9F6F1]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F9F6F1]/75 to-[#F9F6F1]" />
           </div>
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="relative max-w-4xl text-center">
-            <div className="mx-auto max-w-4xl rounded-3xl bg-black/25 backdrop-blur-sm px-7 py-6 sm:px-10 sm:py-7 shadow-[0_20px_60px_rgba(0,0,0,.35)]">
-              <motion.h1
-                className="text-4xl md:text-6xl font-extrabold leading-[1.15] tracking-tight text-white [text-shadow:0_10px_28px_rgba(0,0,0,.55),0_2px_8px_rgba(0,0,0,.45)]"
-                {...fadeUp(0.05)}
+          <div className="relative max-w-3xl text-center">
+            <div className="mx-auto max-w-3xl rounded-3xl bg-black/22 backdrop-blur-sm px-6 py-6 sm:px-9 sm:py-7 shadow-[0_18px_50px_rgba(0,0,0,.45)]">
+              <motion.div
+                className="inline-flex items-center justify-center rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-50"
+                {...fadeUp(0.02)}
               >
-                {isIt ? "Guide & community per italiani nel Regno Unito" : "Guides & community for Italians in the UK"}
+                {heroPill}
+              </motion.div>
+
+              <motion.h1
+                className="mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white [text-shadow:0_10px_28px_rgba(0,0,0,.55),0_2px_8px_rgba(0,0,0,.45)]"
+                {...fadeUp(0.08)}
+              >
+                {heroTitle}
               </motion.h1>
 
-              <motion.p className="mt-3 text-base md:text-xl/relaxed mx-auto max-w-3xl text-white/95" {...fadeUp(0.2)}>
-                {isIt
-                  ? "Consigli pratici e verificati, e selezioni per città — da chi l’ha già fatto."
-                  : "Practical, hand-checked advice and city picks — by people who’ve done it before."}
+              <motion.p
+                className="mt-3 text-sm md:text-lg/relaxed mx-auto max-w-2xl text-white/95"
+                {...fadeUp(0.16)}
+              >
+                {heroSub}
               </motion.p>
             </div>
 
-            <motion.div className="mt-6" {...fadeUp(0.35)}>
-              <Typewriter
-                texts={[
-                  isIt ? "Passi chiari per AIRE, CIE e passaporto" : "Clear steps for AIRE, CIE & passports",
-                  isIt ? "NHS, casa e basi per vivere nel Regno Unito" : "NHS, housing & life-in-the-UK basics",
-                  isIt ? "I migliori posti italiani per città" : "Best Italian spots by city",
-                  isIt ? "Aggiornato con i consigli della comunità" : "Updated with community tips",
-                ]}
-                typingSpeed={34}
-                deletingSpeed={20}
-                pause={1400}
-                loop
-                className="text-2xl md:text-3xl font-semibold text-white"
-                cursorClassName="ml-2"
-                ariaLive="polite"
-              />
-            </motion.div>
-
-            <motion.div className="mt-8 flex flex-wrap items-center justify-center gap-3" {...fadeUp(0.45)}>
+            <motion.div
+              className="mt-7 flex flex-wrap items-center justify-center gap-3"
+              {...fadeUp(0.26)}
+            >
               <Link
                 href={p("/community")}
-                className="inline-flex whitespace-nowrap rounded-lg bg-emerald-600 text-white font-semibold px-5 py-3 hover:bg-emerald-700 transition shadow"
+                className="inline-flex whitespace-nowrap rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-emerald-800/50 transition hover:bg-emerald-700"
               >
-                {isIt ? "Esplora la Community" : "Explore the Community"}
+                {isIt ? "Inizia da una guida" : "Start with a guide"}
               </Link>
               <Link
                 href={p("/directory")}
-                className="inline-flex whitespace-nowrap rounded-lg bg-white/90 text-green-900 font-semibold px-5 py-3 hover:bg-white transition shadow"
+                className="inline-flex whitespace-nowrap rounded-xl border border-white/80 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/90 hover:text-emerald-900"
               >
-                {isIt ? "Sfoglia la Directory" : "Browse the Directory"}
-              </Link>
-              <Link
-                href={p("/about")}
-                className="inline-flex whitespace-nowrap rounded-lg bg-white/10 text-white backdrop-blur px-5 py-3 hover:bg-white/20 transition"
-              >
-                {isIt ? "Su Resinaro" : "About Resinaro"}
+                {isIt ? "Scopri i posti italiani per città" : "Browse Italian places by city"}
               </Link>
             </motion.div>
+
+            <motion.p
+              className="mt-4 text-xs md:text-sm text-white/80"
+              {...fadeUp(0.36)}
+            >
+              {heroReassure}
+            </motion.p>
           </div>
         </div>
       </motion.section>
@@ -297,65 +330,89 @@ export default function Home() {
 
       {/* -------------------- BLOG FIRST -------------------- */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/70 pointer-events-none -z-10" aria-hidden="true" />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-[#F9F6F1] via-[#FFFDF7] to-[#F3EFE6]"
+          aria-hidden="true"
+        />
         <motion.div className="py-16" initial="initial" whileInView="animate" viewport={{ once: true }}>
-          <div className="container mx-auto px-6 text-center">
-            <motion.h2 className="text-3xl font-extrabold text-green-900" {...fadeUp(0)}>
+          <div className="container mx-auto px-6">
+            <motion.h2 className="text-3xl font-extrabold text-green-900 text-center" {...fadeUp(0)}>
               {isIt ? "Dalla Comunità" : "From the Community"}
             </motion.h2>
-            <motion.p className="mt-2 text-gray-700" {...fadeUp(0.15)}>
+            <motion.p className="mt-2 text-gray-700 text-center max-w-2xl mx-auto" {...fadeUp(0.15)}>
               {isIt
-                ? "Contenuti pratici e gratuiti. Senza fronzoli: solo ciò che serve per andare avanti."
-                : "Fresh, practical and free. No fluff—just what you need to move forward."}
+                ? "Contenuti pratici e gratuiti, scritti da italiani nel Regno Unito e verificati dal team Resinaro."
+                : "Practical, free guides written by Italians in the UK and double-checked by the Resinaro team."}
             </motion.p>
 
-            <div className="mt-8 grid md:grid-cols-3 gap-6">
-              {blog.map((b) => (
+            <div className="mt-8 grid gap-6 md:grid-cols-3 lg:gap-7">
+              {blog.map((b, idx) => (
                 <motion.article
                   key={b.title}
-                  className="border rounded-2xl shadow-sm hover:shadow-md transition bg-white text-left overflow-hidden flex flex-col"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-emerald-50 bg-white/95 shadow-[0_14px_34px_rgba(15,68,41,0.12)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(15,68,41,0.18)]"
                   {...blurIn(b.delay ?? 0)}
                 >
-                  <div className="w-full aspect-[3/1] relative">
-                    <Image src={b.img} alt={b.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                  <div className="relative w-full aspect-[4/3] lg:aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={b.img}
+                      alt={b.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                    <div className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-emerald-900 shadow-sm">
+                      <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
+                      {blogMeta[idx]}
+                    </div>
                   </div>
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-lg font-bold text-green-900">{b.title}</h3>
-                    <p className="text-sm text-gray-700 mt-1">{b.desc}</p>
-                    <Link href={p(b.link)} className="inline-flex items-center gap-1 text-green-900 underline mt-2 hover:decoration-4">
-                      {isIt ? "Leggi di più" : "Read more"} <span aria-hidden>→</span>
-                    </Link>
+
+                  <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-700">
+                      {isIt ? "Guida della community" : "Community guide"}
+                    </p>
+                    <h3 className="mt-1 text-lg font-semibold text-emerald-950">
+                      {b.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-800">
+                      {b.desc}
+                    </p>
+                    <div className="mt-4">
+                      <Link
+                        href={p(b.link)}
+                        className="inline-flex items-center gap-1 rounded-full border border-emerald-700 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-700 hover:text-white"
+                      >
+                        {isIt ? "Apri la guida" : "Open the guide"} <span aria-hidden>→</span>
+                      </Link>
+                    </div>
                   </div>
                 </motion.article>
               ))}
             </div>
 
-            <div className="mt-8 flex justify-center">
+            <div className="mt-10 flex justify-center">
               <Link
                 href={p("/community")}
-                className="inline-flex items-center gap-2 rounded-lg border border-green-900 text-green-900 px-5 py-2 hover:bg-green-900 hover:text-white transition"
+                className="inline-flex items-center gap-2 rounded-full border border-green-900 px-5 py-2.5 text-sm font-semibold text-green-900 transition hover:bg-green-900 hover:text-white"
               >
-                {isIt ? "Sfoglia tutte le guide" : "Browse all guides"} <span aria-hidden>→</span>
+                {isIt ? "Sfoglia tutte le guide della community" : "Browse all community guides"}{" "}
+                <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* -------------------- ABOUT -------------------- */}
-      <section className="relative py-16">
+      {/* -------------------- ABOUT / VALUE PROPS -------------------- */}
+      <section className="relative py-16 md:py-20">
         <div className="absolute inset-0 -z-10">
-          <div className="grid h-full w-full grid-cols-3">
-            <div className="bg-[#0B5D3B]/15" />
-            <div className="bg-white/70" />
-            <div className="bg-[#B22222]/15" />
-          </div>
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_500px_at_50%_0%,rgba(0,0,0,0.08),transparent)]" />
+          <div className="h-full w-full bg-gradient-to-b from-[#F8F3E9] via-[#FFFDF7] to-[#F9F6F1]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_400px_at_50%_0%,rgba(0,0,0,0.06),transparent)]" />
         </div>
 
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/70 px-3 py-1 text-xs text-emerald-900">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1 text-xs font-medium text-emerald-900">
               {isIt ? "Su Resinaro" : "About Resinaro"}
             </div>
             <h2 className="mt-3 text-3xl font-extrabold text-green-900">
@@ -366,24 +423,55 @@ export default function Home() {
                 ? "Resinaro è nato come progetto volontario per rendere la vita nel Regno Unito meno confusa per gli italiani. Oggi pubblichiamo guide verificate e selezioni locali, basate su esperienze reali e feedback."
                 : "Resinaro started as a volunteer effort to make life in the UK less confusing for Italians. Today, we publish hand-checked guides and local picks, shaped by real experiences and feedback."}
             </p>
+          </div>
 
-            <div className="mx-auto mt-6 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-2">
-              {aboutCards.map(([t1, d1], i) => (
-                <motion.div key={`${t1}-${i}`} className="rounded-2xl border bg-white/90 p-4 shadow-sm backdrop-blur" {...blurIn(0.04 * i)}>
-                  <div className="font-semibold text-green-900">{t1}</div>
-                  <div className="mt-1 text-sm text-gray-700">{d1}</div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="mx-auto mt-8 max-w-4xl grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {aboutCards.map(([t1, d1], i) => (
+              <motion.div
+                key={`${t1}-${i}`}
+                className="rounded-2xl border border-emerald-50 bg-white/95 p-4 shadow-[0_10px_26px_rgba(15,68,41,0.10)] backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(15,68,41,0.16)]"
+                {...blurIn(0.04 * i)}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-50 text-lg">
+                    <span aria-hidden>{aboutIcons[i]}</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-green-900">{t1}</div>
+                    <div className="mt-1 text-sm text-gray-700">{d1}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link href={p("/about")} className="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 font-medium text-white hover:bg-emerald-700">
-                {isIt ? "Scopri di più" : "Learn more"}
-              </Link>
-              <Link href={p("/contact")} className="inline-flex h-11 items-center justify-center rounded-xl border border-green-900 px-5 font-medium text-green-900 hover:bg-emerald-50">
-                {isIt ? "Scrivici" : "Say hello"}
-              </Link>
-            </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm text-gray-600">
+            <span>
+              {isIt
+                ? "Scritto da italiani che vivono nel Regno Unito."
+                : "Written by Italians living in the UK."}
+            </span>
+            <span className="hidden sm:inline">•</span>
+            <span>
+              {isIt
+                ? "Aggiornato con feedback reale della community."
+                : "Updated regularly with real community feedback."}
+            </span>
+          </div>
+
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link
+              href={p("/about")}
+              className="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 px-6 text-sm font-medium text-white shadow-sm hover:bg-emerald-700"
+            >
+              {isIt ? "Scopri di più" : "Learn more"}
+            </Link>
+            <Link
+              href={p("/contact")}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-green-900 px-6 text-sm font-medium text-green-900 hover:bg-emerald-50"
+            >
+              {isIt ? "Scrivici" : "Say hello"}
+            </Link>
           </div>
         </div>
       </section>
@@ -402,7 +490,11 @@ export default function Home() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-4">
             {process.map((s, i) => (
-              <motion.div key={s.title} className="relative rounded-2xl bg-white border border-gray-200 shadow-sm p-6" {...blurIn(0.05 * i)}>
+              <motion.div
+                key={s.title}
+                className="relative rounded-2xl bg-white border border-gray-200 shadow-sm p-6"
+                {...blurIn(0.05 * i)}
+              >
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white text-sm font-bold shadow">
                   {i + 1}
                 </div>
@@ -425,12 +517,18 @@ export default function Home() {
             {isIt ? (
               <>
                 Risposte rapide alle domande più comuni. Per tutto il resto,{" "}
-                <Link href={p("/contact")} className="underline text-green-900">contattaci</Link>.
+                <Link href={p("/contact")} className="underline text-green-900">
+                  contattaci
+                </Link>
+                .
               </>
             ) : (
               <>
                 Short answers to common questions. For anything else,{" "}
-                <Link href={p("/contact")} className="underline text-green-900">contact us</Link>.
+                <Link href={p("/contact")} className="underline text-green-900">
+                  contact us
+                </Link>
+                .
               </>
             )}
           </p>
@@ -442,11 +540,16 @@ export default function Home() {
                   <details className="group">
                     <summary className="marker-none list-none cursor-pointer font-semibold text-green-900 flex items-center justify-between">
                       <span>{f.q}</span>
-                      <span className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border text-sm group-open:rotate-45 transition" aria-hidden>
+                      <span
+                        className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border text-sm group-open:rotate-45 transition"
+                        aria-hidden
+                      >
                         +
                       </span>
                     </summary>
-                    <div className="mt-2 text-sm text-gray-700">{typeof f.a === "string" ? <>{f.a}</> : f.a}</div>
+                    <div className="mt-2 text-sm text-gray-700">
+                      {typeof f.a === "string" ? <>{f.a}</> : f.a}
+                    </div>
                   </details>
                 </li>
               ))}

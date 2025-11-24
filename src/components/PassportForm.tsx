@@ -11,7 +11,7 @@ const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
 const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532";
 
-/** Files **/
+/** Files (kept for future use, not used in this simplified form) **/
 const ALLOWED = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
 const MAX_MB = 5;
 const MAX = MAX_MB * 1024 * 1024;
@@ -74,18 +74,26 @@ function tq(locale: Locale) {
   const it = locale === "it";
   return {
     qTitle: it
-      ? "Assistenza passaporto — appuntamento o lista d’attesa"
-      : "Passport support — appointment or waiting list",
+      ? "Assistenza appuntamento passaporto (Prenot@Mi 12+)"
+      : "Passport appointment support (Prenot@Mi 12+)",
     qDesc: it
-      ? "Inserisci i contatti, scegli quante persone e paga in modo sicuro."
-      : "Enter your details, choose how many people, and pay securely.",
+      ? "Inserisci i tuoi dati, scegli per quante persone vuoi l’appuntamento e paga in modo sicuro."
+      : "Enter your details, choose how many people need an appointment, and pay securely.",
     fullName: it ? "Nome e cognome *" : "Full name *",
     email: it ? "Email *" : "Email *",
-    phone: it ? "Telefono (WhatsApp ok) *" : "Phone (WhatsApp ok) *",
-    qty: it ? "Quante persone? *" : "How many people? *",
+    qty: it
+      ? "Quante persone servono l’appuntamento? *"
+      : "How many people need an appointment? *",
     priceHint: it
-      ? "Lista d’attesa: 1 £30 • 2 £58 • 3 £85 — Appuntamento: 1 £40 • 2 £78 • 3 £115"
-      : "Waiting list: 1 £30 • 2 £58 • 3 £85 — Appointment: 1 £40 • 2 £78 • 3 £115",
+      ? "Prezzi appuntamento Prenot@Mi (12+ / adulti): 1 persona £40 • 2 persone £78 • 3 persone £115."
+      : "Appointment pricing (Prenot@Mi, 12+ / adults): 1 person £40 • 2 people £78 • 3 people £115.",
+
+    multiPayTitle: it
+      ? "Pagamenti flessibili disponibili"
+      : "Flexible payments available",
+    multiPayLine: it
+      ? "Puoi pagare con carta, Apple Pay / Google Pay, bonifico, oppure a rate tramite Klarna (paga in 3) e Clearpay (paga in 4), se mostrati alla cassa."
+      : "You can pay by card, Apple Pay / Google Pay, bank transfer, or in instalments via Klarna (pay in 3) and Clearpay (pay in 4) where shown at checkout.",
 
     // Agreements
     startNowLabel: it
@@ -96,16 +104,24 @@ function tq(locale: Locale) {
       ? "Acconsento al trattamento dei dati come descritto nella Privacy Policy."
       : "I consent to data processing as described in the Privacy Policy.",
 
-    // Buttons / states
-  pay: it ? "paga ora" : "pay now",
-    redirecting: it ? "Reindirizzamento…" : "Redirecting…",
+    // Buttons / states (UPDATED)
+    pay: it
+      ? "paga ora con checkout sicuro Stripe"
+      : "pay now with secure Stripe checkout",
+    redirecting: it
+      ? "Reindirizzamento a Stripe…"
+      : "Redirecting to Stripe…",
 
     // Errors
     errorStartNow: it
       ? "Conferma che possiamo iniziare subito."
       : "Please confirm you agree we can start immediately.",
-    errorRefund: it ? "Accetta la policy di rimborso." : "Please accept the refund policy.",
-    errorConsent: it ? "Accetta il consenso privacy." : "Please accept the privacy consent.",
+    errorRefund: it
+      ? "Accetta la policy di rimborso."
+      : "Please accept the refund policy.",
+    errorConsent: it
+      ? "Accetta il consenso privacy."
+      : "Please accept the privacy consent.",
     err: it ? "Si è verificato un errore." : "Something went wrong.",
   } as const;
 }
@@ -126,14 +142,22 @@ async function toB64(f: File) {
 }
 
 /** Robust UUID (v4) with fallbacks for older browsers */
+type CryptoWithRandomUUID = Crypto & {
+  randomUUID?: () => string;
+};
+
 function safeUUID(): string {
   try {
     if (typeof crypto !== "undefined") {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (typeof (crypto as any).randomUUID === "function") return (crypto as any).randomUUID();
-      if (typeof crypto.getRandomValues === "function") {
+      const c = crypto as CryptoWithRandomUUID;
+
+      if (typeof c.randomUUID === "function") {
+        return c.randomUUID();
+      }
+
+      if (typeof c.getRandomValues === "function") {
         const buf = new Uint8Array(16);
-        crypto.getRandomValues(buf);
+        c.getRandomValues(buf);
         buf[6] = (buf[6] & 0x0f) | 0x40; // version 4
         buf[8] = (buf[8] & 0x3f) | 0x80; // variant 10
         const h = Array.from(buf, (b) => b.toString(16).padStart(2, "0"));
@@ -142,26 +166,48 @@ function safeUUID(): string {
           .join("")}-${h.slice(8, 10).join("")}-${h.slice(10, 16).join("")}`;
       }
     }
-  } catch {}
-  return `rsr-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  } catch {
+    // fall through to simple fallback
+  }
+
+  return `rsr-${Date.now().toString(36)}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}`;
 }
 
-/* ---------- Single (upgraded) Form component ---------- */
+/* ---------- Single (upgraded) Form component: APPOINTMENTS ONLY ---------- */
 function AppointmentForm({ locale }: { locale: Locale }) {
   const trq = tq(locale);
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  // Selection combines kind (waiting list vs appointment) and quantity
-  type Choice = "wl-1" | "wl-2" | "wl-3" | "ap-1" | "ap-2" | "ap-3";
-  const [choice, setChoice] = useState<Choice>("wl-1");
 
-  const CHOICES: Record<Choice, { qty: 1 | 2 | 3; kind: "waiting" | "appointment"; amount: number; link: string }> = {
-    "wl-1": { qty: 1, kind: "waiting", amount: 30, link: "https://buy.stripe.com/4gMcN5cFE4xhfeN2kyaMU0l" },
-    "wl-2": { qty: 2, kind: "waiting", amount: 58, link: "https://buy.stripe.com/28EeVd0WW2p96Ih2kyaMU0n" },
-    "wl-3": { qty: 3, kind: "waiting", amount: 85, link: "https://buy.stripe.com/7sY5kDcFE8Nx5Ede3gaMU0o" },
-    "ap-1": { qty: 1, kind: "appointment", amount: 40, link: "https://buy.stripe.com/8x24gz7lkgfZc2BcZcaMU0p" },
-    "ap-2": { qty: 2, kind: "appointment", amount: 78, link: "https://buy.stripe.com/28E3cveNMd3N1nXbV8aMU0q" },
-    "ap-3": { qty: 3, kind: "appointment", amount: 115, link: "https://buy.stripe.com/00w3cvbBAe7R7Ml6AOaMU0r" },
+  // Only appointment choices now
+  type Choice = "ap-1" | "ap-2" | "ap-3";
+  const [choice, setChoice] = useState<Choice>("ap-1");
+
+  const CHOICES: Record<
+    Choice,
+    { qty: 1 | 2 | 3; kind: "appointment"; amount: number; link: string }
+  > = {
+    "ap-1": {
+      qty: 1,
+      kind: "appointment",
+      amount: 40,
+      link: "https://buy.stripe.com/8x24gz7lkgfZc2BcZcaMU0p",
+    },
+    "ap-2": {
+      qty: 2,
+      kind: "appointment",
+      amount: 78,
+      link: "https://buy.stripe.com/28E3cveNMd3N1nXbV8aMU0q",
+    },
+    "ap-3": {
+      qty: 3,
+      kind: "appointment",
+      amount: 115,
+      link: "https://buy.stripe.com/00w3cvbBAe7R7Ml6AOaMU0r",
+    },
   };
 
   const sel = CHOICES[choice];
@@ -184,7 +230,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
 
     try {
       setLoading(true);
-  const bookingId = safeUUID();
+      const bookingId = safeUUID();
 
       // Persist lightweight submission to GAS (non-blocking downstream)
       const data: Record<string, string> = {
@@ -205,14 +251,15 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           token: GAS_TOKEN,
           action: "submit",
           bookingId,
-          service: sel.kind === "appointment" ? `passport-appointment-prenotami-${sel.qty}` : `passport-waiting-list-${sel.qty}`,
+          service: `passport-appointment-prenotami-${sel.qty}`,
           name: fullName.trim(),
           email: email.trim(),
-          telephone: "", // phone field removed
+          telephone: "", // phone field removed in this simplified form
           files: [],
           data,
         }),
       }).catch(() => {});
+
       const url = new URL(sel.link);
       if (email) url.searchParams.set("prefilled_email", email.trim());
       url.searchParams.set("client_reference_id", bookingId);
@@ -225,25 +272,32 @@ function AppointmentForm({ locale }: { locale: Locale }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-2xl border border-zinc-200 p-6 space-y-4 bg-white shadow-sm">
-      <h2 className="text-lg font-semibold">{trq.qTitle}</h2>
-      <p className="text-sm text-zinc-700">{trq.qDesc}</p>
+    <form
+      onSubmit={onSubmit}
+      className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+    >
+      <div>
+        <h2 className="text-lg font-semibold text-emerald-950">
+          {trq.qTitle}
+        </h2>
+        <p className="mt-1 text-sm text-zinc-700">{trq.qDesc}</p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="text-sm">{trq.fullName}</span>
+          <span className="text-sm text-zinc-900">{trq.fullName}</span>
           <input
-            className="mt-1 w-full rounded-xl border px-3 py-2"
+            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
           />
         </label>
         <label className="block">
-          <span className="text-sm">{trq.email}</span>
+          <span className="text-sm text-zinc-900">{trq.email}</span>
           <input
             type="email"
-            className="mt-1 w-full rounded-xl border px-3 py-2"
+            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -251,33 +305,46 @@ function AppointmentForm({ locale }: { locale: Locale }) {
         </label>
       </div>
 
+      {/* Quantity + clear pricing */}
+      <div>
+        <label className="block">
+          <span className="text-sm text-zinc-900">{trq.qty}</span>
+          <select
+            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+            value={choice}
+            onChange={(e) => setChoice(e.target.value as Choice)}
+            required
+          >
+            <option value="ap-1">
+              {locale === "it"
+                ? "1 × appuntamento — £40"
+                : "1 × appointment — £40"}
+            </option>
+            <option value="ap-2">
+              {locale === "it"
+                ? "2 × appuntamenti — £78"
+                : "2 × appointments — £78"}
+            </option>
+            <option value="ap-3">
+              {locale === "it"
+                ? "3 × appuntamenti — £115"
+                : "3 × appointments — £115"}
+            </option>
+          </select>
+        </label>
 
-      <label className="block">
-        <span className="text-sm">{trq.qty}</span>
-        <select
-          className="mt-1 w-full rounded-xl border px-3 py-2"
-          value={choice}
-          onChange={(e) => setChoice(e.target.value as Choice)}
-          required
-        >
-          <option value="wl-1">{locale === "it" ? "1 × lista d’attesa - £30" : "1 × waiting list - £30"}</option>
-          <option value="wl-2">{locale === "it" ? "2 × lista d’attesa - £58" : "2 × waiting list - £58"}</option>
-          <option value="wl-3">{locale === "it" ? "3 × lista d’attesa - £85" : "3 × waiting list - £85"}</option>
-          <option value="ap-1">{locale === "it" ? "1 × appuntamento - £40" : "1 × appointment - £40"}</option>
-          <option value="ap-2">{locale === "it" ? "2 × appuntamento - £78" : "2 × appointment - £78"}</option>
-          <option value="ap-3">{locale === "it" ? "3 × appuntamento - £115" : "3 × appointment - £115"}</option>
-        </select>
-        <p className="text-xs text-zinc-600 mt-1">{trq.priceHint}</p>
-        <p className="text-[11px] text-zinc-600 mt-2">
-          {locale === "it"
-            ? "Opzioni disponibili: Klarna (paga in 3), Clearpay (paga in 4), bonifico bancario, Apple Pay, Google Pay, ecc."
-            : "Payment options available: Klarna (pay in 3), Clearpay (pay in 4), bank transfer, Apple Pay, Google Pay, etc."}
-        </p>
-      </label>
+        <p className="mt-2 text-xs text-zinc-700">{trq.priceHint}</p>
+
+        {/* Big, visible multi-pay box */}
+        <div className="mt-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-xs text-emerald-950">
+          <p className="font-semibold">{trq.multiPayTitle}</p>
+          <p className="mt-1">{trq.multiPayLine}</p>
+        </div>
+      </div>
 
       {/* Agreements — all three required */}
-      <div className="rounded-xl border border-green-200 bg-green-50 p-3 space-y-3">
-        <label className="flex items-start gap-2 text-sm">
+      <div className="space-y-3 rounded-xl border border-green-200 bg-green-50 p-3">
+        <label className="flex items-start gap-2 text-sm text-emerald-950">
           <input
             type="checkbox"
             className="mt-1"
@@ -287,7 +354,7 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           <span>{trq.startNowLabel}</span>
         </label>
 
-        <label className="flex items-start gap-2 text-sm">
+        <label className="flex items-start gap-2 text-sm text-emerald-950">
           <input
             type="checkbox"
             className="mt-1"
@@ -296,13 +363,19 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           />
           <span>
             {trq.refundPrefix}{" "}
-            <a className="underline" href={p(locale, "/refund-policy")} target="_blank" rel="noreferrer">
+            <a
+              className="underline"
+              href={p(locale, "/refund-policy")}
+              target="_blank"
+              rel="noreferrer"
+            >
               {locale === "it" ? "Politica di rimborso" : "Refund Policy"}
-            </a>.
+            </a>
+            .
           </span>
         </label>
 
-        <label className="flex items-start gap-2 text-sm">
+        <label className="flex items-start gap-2 text-sm text-emerald-950">
           <input
             type="checkbox"
             className="mt-1"
@@ -311,30 +384,46 @@ function AppointmentForm({ locale }: { locale: Locale }) {
           />
           <span>
             {trq.consent}{" "}
-            <a className="underline" href={p(locale, "/privacy-policy")} target="_blank" rel="noreferrer">
+            <a
+              className="underline"
+              href={p(locale, "/privacy-policy")}
+              target="_blank"
+              rel="noreferrer"
+            >
               Privacy Policy
-            </a>.
+            </a>
+            .
           </span>
         </label>
       </div>
 
       {err && <p className="text-sm text-red-600">{err}</p>}
 
-      <button
-        disabled={loading || !allChecked}
-        className={`inline-flex items-center rounded-xl border px-4 py-2 ${
-          loading || !allChecked ? "opacity-60 cursor-not-allowed" : ""
-        }`}
-      >
-        {loading ? trq.redirecting : `${trq.pay} — £${sel.amount}`}
-      </button>
+      <div>
+        <button
+          type="submit"
+          disabled={loading || !allChecked}
+          className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+            loading || !allChecked
+              ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
+              : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
+          }`}
+        >
+          {loading ? trq.redirecting : `${trq.pay} — £${sel.amount}`}
+        </button>
+        <p className="mt-1 text-[11px] text-zinc-500">
+          {locale === "it"
+            ? "Verrai reindirizzato a una pagina di pagamento Stripe protetta. Resinaro non vede né memorizza mai i dati della tua carta."
+            : "You’ll be redirected to a secure Stripe payment page. Resinaro never sees or stores your card details."}
+        </p>
+      </div>
     </form>
   );
 }
 
-/* ---------- Main export: ONLY the upgraded simple form ---------- */
+/* ---------- Main export: ONLY the upgraded appointments form ---------- */
 export default function PassportForm() {
-  const locale = useSafeLocale(); // ← fixed: derives from path correctly
+  const locale = useSafeLocale(); // ← derives from path correctly
   return (
     <div className="space-y-6" aria-live="polite">
       <AppointmentForm locale={locale} />
