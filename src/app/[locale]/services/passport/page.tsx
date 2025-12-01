@@ -244,18 +244,21 @@ function t(locale: "en" | "it") {
       : "Italian passport appointment help (Prenot@Mi, 12+)",
     heroSub: it ? (
       <>
-        Ti aiutiamo a ottenere un appuntamento passaporto{" "}
-        <strong>su Prenot@Mi</strong> per{" "}
+        Ti aiutiamo a ottenere un {""}
+        <span className="underline underline-offset-4 decoration-emerald-700">appuntamento</span>{" "}
+        passaporto {""}
+        <strong>su Prenot@Mi</strong> per {""}
         <strong>12+ / adulti nel Regno Unito</strong>. Monitoriamo noi gli
-        slot, con aspettative oneste.{" "}
+        slot, con aspettative oneste. {""}
         <strong>Non siamo il Consolato.</strong>
       </>
     ) : (
       <>
-        We help you get an Italian passport appointment{" "}
-        <strong>on Prenot@Mi</strong> for{" "}
+        We help you get an Italian passport {""}
+        <span className="underline underline-offset-4 decoration-emerald-700">appointment</span>{" "}
+        <strong>on Prenot@Mi</strong> for {""}
         <strong>12+ / adults in the UK</strong>. We do the monitoring and
-        clicking, with honest expectations.{" "}
+        clicking, with honest expectations. {""}
         <strong>We are not the Consulate.</strong>
       </>
     ),

@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     "About Resinaro | Fair, transparent support for Italians & migrants in the UK",
   description:
     "Resinaro helps migrants with passports, ID cards, NIN, AIRE, housing guidance and mental health signposting — clear pricing, humane support and community-first values.",
-  // Note: canonical is localized at runtime via JSON-LD; static metadata stays generic.
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Resinaro",
@@ -38,128 +37,325 @@ export default async function Page({
   const it = locale === "it";
   const prefix = `/${locale}`;
 
-  // ——— Copy (EN/IT) ————————————————————————————————————————————————
+  // ---------- Localised copy ----------
   const copy = {
     heroTitle: it ? "Chi è Resinaro" : "About Resinaro",
     heroTagline: it
-      ? "Supporto professionale con valori di comunità — prezzi equi, trasparenza e risultati concreti. Noi pensiamo alla burocrazia; tu alla vita."
-      : "Professional support with community values — fair pricing, transparency, and real outcomes. We do admin; you do life.",
-    ctaServices: it ? "Scopri i servizi" : "Explore services",
-    ctaContact: it ? "Contattaci" : "Contact us",
+      ? "Un piccolo team di italiani nel Regno Unito che ti aiuta a sopravvivere a consolati, burocrazia UK e moduli infiniti — con prezzi chiari e zero giudizi."
+      : "A small team of Italians in the UK helping you survive consulates, UK bureaucracy and endless forms — with clear pricing and zero judgement.",
+    heroBadgeMain: it ? "Italiani nel Regno Unito" : "Italians in the UK",
+    heroBadgeSub: it
+      ? "Creato da italiani all’estero"
+      : "Built by Italians abroad",
+    heroNoteTitle: it ? "Non siamo il consolato" : "We’re not the consulate",
+    heroNoteBody: it
+      ? "Non possiamo “saltare la fila” o decidere al posto dei consolati o dell’Home Office. Ti aiutiamo a capire il percorso, preparare i documenti e usare al meglio i canali ufficiali."
+      : "We can’t “skip the queue” or decide on behalf of consulates or the Home Office. We help you understand the route, prepare documents, and use official channels properly.",
+    ctaServices: it ? "Vedi i servizi" : "View services",
+    ctaContact: it ? "Scrivici" : "Contact us",
 
     whyTitle: it ? "Perché esistiamo (e perché ci teniamo)" : "Why we exist (and why we care)",
     whyBody: it
-      ? "Trasferirsi all’estero ha un livello bonus chiamato “burocrazia”. È una missione secondaria infinita: hai fatto l’AIRE, ma ora il consolato chiede una prova che non sapevi esistesse, in un formato che nessuna stampante accetta. Resinaro è nato dopo aver aiutato amici e familiari e aver capito che tantissimi vivevano lo stesso labirinto. La nostra promessa è semplice: passi chiari, costi onesti, supporto umano. E zero giudizi se lo scanner è… la fotocamera del telefono."
-      : "Moving countries comes with a bonus level called “paperwork”. It’s like a side-quest that never ends: you just unlocked AIRE, but now the consulate wants a proof you didn’t know existed, in a format no printer accepts. We started Resinaro after helping friends and family and realising how many people were dealing with the same maze. Our promise is simple: clear steps, fair fees, human support. Also, no judgement if your scanner is just your phone camera.",
-    whyBul1: it ? "Trasformiamo la confusione in checklist." : "We turn confusion into checklists.",
-    whyBul2: it
-      ? "Tempi realistici (con caveat quando dipende dal consolato)."
-      : "We give realistic timelines (with caveats when it’s the consulate).",
-    whyBul3: it
-      ? "Ti teniamo aggiornato: mai più “e adesso?”"
-      : "We keep you informed so you’re never guessing “what now?”",
-    fairTitle: it ? "Cosa significa “equo” per noi" : "What “fair” means to us",
-    fair1: it ? "Prezzi trasparenti: sai tutto in anticipo." : "Transparent fees: you see costs upfront.",
-    fair2: it ? "Ambito onesto: diciamo no se non siamo adatti." : "Honest scope: we say no when we’re not the right fit.",
-    fair3: it
-      ? "Comunità prima: molte guide sono gratuite; il supporto a pagamento le mantiene tali."
-      : "Community first: many guides are free; paid support keeps them free.",
-    fairPs: it
-      ? "PS: niente PDF da 37 pagine. Preferiamo checklist ordinate e schermate con “clicca qui”."
-      : "PS: We don’t do 37-page PDFs. We do tidy checklists and “here’s exactly what to click” screenshots.",
+      ? "Trasferirsi all’estero ha un livello bonus chiamato “burocrazia”. Hai fatto l’AIRE, ma ora il consolato chiede una prova che non sapevi esistesse, in un formato che nessuna stampante accetta. Resinaro è nato dopo aver aiutato amici e familiari e aver capito che tantissimi vivevano lo stesso labirinto."
+      : "Moving countries comes with a bonus level called “paperwork”. You finally sort AIRE, then the consulate asks for a proof you didn’t know existed, in a format no printer accepts. Resinaro started after helping friends and family and realising how many people were stuck in the same maze.",
+    whyBullet1: it
+      ? "Trasformiamo la confusione in checklist semplici."
+      : "We turn confusion into simple checklists.",
+    whyBullet2: it
+      ? "Ti diciamo in anticipo cosa è realistico (soprattutto quando decide il consolato)."
+      : "We tell you up front what’s realistic (especially when the consulate is in charge).",
+    whyBullet3: it
+      ? "Rimani sempre aggiornato — niente più “e adesso?”."
+      : "You stay in the loop — no more “what now?” silence.",
 
-    whatTitle: it ? "Di cosa ci occupiamo" : "What we help with",
-    thService: it ? "Servizio" : "Service",
-    thTurn: it ? "Tempistica tipica" : "Typical Turnaround",
-    thGet: it ? "Cosa ricevi" : "What You Get",
-    thFee: it ? "Prezzo di partenza" : "Starting Fee",
-    row1s: it ? "Passaporto & Consolari" : "Passport & Consular",
-    row1t: it ? "1–3 settimane (slot variabili)" : "1–3 weeks (slots vary)",
-    row1g: it
-      ? "Aiuto prenotazione, controllo documenti, preparazione passo-passo"
-      : "Booking help, document check, step-by-step prep",
-    row1f: it ? "Da £35" : "From £35",
-    row2s: "ID Card (CIE)",
-    row2t: it ? "1–2 settimane" : "1–2 weeks",
-    row2g: it
-      ? "Checklist, guida biometrici, follow-up post-appuntamento"
-      : "Checklist, biometric guidance, post-visit follow-up",
-    row2f: it ? "Da £35" : "From £35",
-    row3s: it ? "National Insurance (NIN)" : "National Insurance (NIN)",
-    row3t: it ? "2–4 settimane" : "2–4 weeks",
-    row3g: it
-      ? "Supporto domanda, passaggi HMRC, consigli per il tracking"
-      : "Application support, HMRC steps, tracking tips",
-    row3f: it ? "Da £35" : "From £35",
-    row4s: it ? "AIRE (iscrizione/aggiornamento)" : "AIRE (register/update)",
-    row4t: it ? "2–6 settimane" : "2–6 weeks",
-    row4g: it
-      ? "Verifica circoscrizione, pacchetto documenti, guida FAST-IT"
-      : "Jurisdiction check, docs pack, FAST-IT guidance",
-    row4f: it ? "Da £35" : "From £35",
-    needDetails: it ? "Vuoi i dettagli? Guarda tutti i" : "Need details? Browse the full list on",
-    servicesLink: it ? "Servizi" : "Services",
+    whoTitle: it ? "Per chi è Resinaro" : "Who Resinaro is for",
+    whoLead: it
+      ? "Se ti riconosci in una di queste situazioni, sei nel posto giusto:"
+      : "If any of these feel like you, you’re in the right place:",
+    whoPoints: it
+      ? [
+          "Famiglie italiane che cercano di incastrare scuola, lavoro e appuntamenti consolari.",
+          "Studenti e lavoratori che hanno bisogno di NIN, passaporto o CIE ma non sanno da dove iniziare.",
+          "Persone italo-qualcosa (mezzi italiani, italiani-per-amore) che cercano di capire quali diritti hanno.",
+        ]
+      : [
+          "Italian families juggling school, work and consular appointments.",
+          "Students and workers who need an NIN, passport or CIE and don’t know where to start.",
+          "Half-Italian / Italian-by-love people trying to understand what they’re entitled to.",
+        ],
+    whoNotTitle: it ? "Cosa non facciamo" : "What we don’t do",
+    whoNotPoints: it
+      ? [
+          "Non vendiamo appuntamenti consolari “magici”.",
+          "Non promettiamo risultati che dipendono da enti pubblici.",
+          "Non usiamo linguaggio legale per spaventarti in servizi più costosi.",
+        ]
+      : [
+          "We don’t sell “magic” consular appointments.",
+          "We don’t promise outcomes that depend on public authorities.",
+          "We don’t hide behind legal jargon to upsell you.",
+        ],
+
+    whatTitle: it ? "In cosa possiamo aiutarti" : "What we help with",
+    whatIntro: it
+      ? "Questa è una panoramica veloce. I dettagli completi, con prezzi e tempistiche aggiornati, sono nella pagina Servizi."
+      : "This is a quick overview. Full details, with up-to-date pricing and timelines, live on the Services page.",
 
     howTitle: it ? "Come lavoriamo" : "How we work",
-    step1: it ? "Raccontaci la situazione" : "Tell us the situation",
-    step1txt: it
-      ? "Condividi esigenza e tempi. Qualche foto dei documenti ci aiuta a rispondere velocemente."
-      : "Share what you need and your timeline. A few photos of documents help us answer fast.",
-    step1hint: it ? "Email o modulo: entrambi vanno bene." : "Email or form; both work.",
-    step2: it ? "Rivediamo e confermiamo" : "We review & confirm",
-    step2txt: it
-      ? "Ricevi una checklist chiara, un prezzo equo e tempi realistici. Se non siamo il servizio giusto, lo diciamo e indirizziamo."
-      : "You receive a clear checklist, fair price, and realistic timings. If we’re not a fit, we’ll say so and signpost.",
-    step2hint: it ? "Niente pressioni, niente sorprese." : "No pressure, no surprises.",
-    step3: it ? "Consegna & follow-up" : "Delivery & follow-up",
-    step3txt: it
-      ? "Ti guidiamo nelle prenotazioni o nell’invio delle pratiche, poi restiamo disponibili per un periodo definito."
-      : "We prepare and guide you through bookings or submissions, then stay available for a defined period.",
-    step3hint: it ? "Riepilogo scritto incluso." : "Written summary included.",
+    step1Title: it ? "1. Raccontaci la situazione" : "1. Tell us what’s going on",
+    step1Body: it
+      ? "Ci mandi un messaggio o compili il form di contatto con città, scadenze e una foto (anche dal telefono) dei documenti che hai."
+      : "You send us a message or fill in the contact form with your city, deadlines and phone photos of any documents you already have.",
+    step1Hint: it ? "Non serve essere “in ordine” prima di scriverci." : "You don’t need everything perfectly organised first.",
+    step2Title: it ? "2. Facciamo ordine insieme" : "2. We bring order to it",
+    step2Body: it
+      ? "Rivediamo il caso, prepariamo una checklist, ti diamo tempi realistici e un preventivo chiaro se serve un servizio a pagamento."
+      : "We review your case, build a checklist, give realistic timings and a clear quote if a paid service makes sense.",
+    step2Hint: it ? "Se non siamo il servizio giusto, lo diciamo e ti indirizziamo." : "If we’re not the right fit, we say so and signpost you.",
+    step3Title: it ? "3. Passi concreti e follow-up" : "3. Concrete steps & follow-up",
+    step3Body: it
+      ? "Ti accompagniamo nelle prenotazioni o nelle domande, e restiamo disponibili per chiarimenti per un periodo definito."
+      : "We guide you through bookings or applications, and stay available for clarifications for a defined follow-up period.",
+    step3Hint: it ? "Con un riepilogo scritto che puoi sempre ritrovare." : "With a written summary you can come back to.",
 
-    values: it ? "I nostri valori" : "Our values",
-    clarity: it ? "Chiarezza: il tuo tempo conta; spieghiamo semplice." : "Clarity: your time matters; we explain in plain language.",
-    fairness: it ? "Correttezza: prezzi pubblici e ambito chiaro. Zero 'spese amministrative' a sorpresa." : "Fairness: pricing is posted and scoped. No “admin fee” ambushes.",
-    care: it ? "Cura: non sei un ticket. Teniamo memoria del contesto." : "Care: you’re more than a ticket number. We keep track of context.",
-    privacy: it ? "Privacy: dati minimi; archiviazione sicura; cancellazione su richiesta." : "Privacy: minimal data; secure storage; delete on request.",
+    valuesTitle: it ? "I valori che ci guidano" : "The values behind Resinaro",
+    values: it
+      ? [
+          {
+            label: "Chiarezza",
+            text: "Il tuo tempo conta: spieghiamo in modo semplice e pratico.",
+          },
+          {
+            label: "Correttezza",
+            text: "Prezzi pubblici e ambito chiaro. Nessuna “spesa amministrativa” a sorpresa.",
+          },
+          {
+            label: "Cura",
+            text: "Non sei un ticket. Ricordiamo il contesto e lo storico della tua situazione.",
+          },
+          {
+            label: "Privacy",
+            text: "Raccogliamo il minimo indispensabile, lo conserviamo in modo sicuro e lo cancelliamo su richiesta.",
+          },
+        ]
+      : [
+          {
+            label: "Clarity",
+            text: "Your time matters: we explain things in plain, practical language.",
+          },
+          {
+            label: "Fairness",
+            text: "Pricing is public and scoped. No surprise “admin fees”.",
+          },
+          {
+            label: "Care",
+            text: "You’re more than a ticket number. We keep context and history in mind.",
+          },
+          {
+            label: "Privacy",
+            text: "We collect the bare minimum, store it securely and delete on request.",
+          },
+        ],
 
-    inclusion: it ? "Inclusione (sul serio)" : "Inclusion (for real)",
-    inclusionP: it
-      ? "Resinaro è per chiunque stia navigando la vita nel Regno Unito. Italiano, mezzo italiano, italiano-per-amore o semplicemente amante della pasta fatta bene: sei il benvenuto."
-      : "Resinaro is for anyone navigating UK life. Whether you’re Italian, half-Italian, Italian-by-love, or simply someone who appreciates a proper plate of pasta — you’re welcome.",
-    incl1: it ? "Supporto per tutti (scrivici!)" : "Support for everyone (just contact us!)",
-    incl2: it ? "Guide in italiano e inglese chiaro" : "Guides in clear, simple English",
+    inclusionTitle: it ? "Inclusione (sul serio)" : "Inclusion (for real)",
+    inclusionBody: it
+      ? "Resinaro è per chiunque stia navigando la vita nel Regno Unito. Italiano, mezzo italiano, italiano-per-amore o semplicemente amante della pasta fatta bene: sei il benvenuto. Non facciamo domande sul tuo status che non servano al caso."
+      : "Resinaro is for anyone navigating life in the UK. Italian, half-Italian, Italian-by-love or simply someone who cares about good pasta: you’re welcome here. We don’t ask about your status unless it’s genuinely needed for your case.",
+    inclusionPoints: it
+      ? [
+          "Supporto in italiano e in inglese semplice.",
+          "Guide gratuite accessibili anche da chi non può permettersi un servizio a pagamento.",
+        ]
+      : [
+          "Support in Italian and clear, simple English.",
+          "Free guides so people who can’t afford support still get help.",
+        ],
 
-    glossary: it ? "Glossario (linguaggio semplice)" : "Glossary (plain English)",
-    faqs: it ? "Domande frequenti" : "FAQs",
-    faqContact: it ? "Per casi specifici, " : "For case-specific questions, ",
-    contactUs: it ? "contattaci" : "contact us",
+    glossaryTitle: it ? "Glossario (linguaggio semplice)" : "Glossary (plain language)",
+    faqsTitle: it ? "Domande frequenti" : "Common questions",
+
+    faqContactLead: it
+      ? "Per domande specifiche sul tuo caso, "
+      : "For questions about your specific situation, ",
+    faqContactLink: it ? "scrivici qui" : "contact us here",
 
     accessTitle: it ? "Accessibilità & protezione dati" : "Accessibility & data protection",
-    accessP1: it
-      ? "Il sito è costruito con HTML semantico, componenti navigabili da tastiera e colori ad alto contrasto. Conserviamo solo ciò che serve per erogare il servizio, e cancelliamo i dati su richiesta."
-      : "Our site is built with semantic HTML, keyboard-navigable components and high-contrast colours. We store only what we must to deliver the service, and we delete data on request.",
-    accessP2: it ? "Vedi la nostra " : "See our ",
-    privacyPolicy: it ? "Informativa Privacy" : "Privacy Policy",
+    accessBody1: it
+      ? "Il sito è costruito con HTML semantico, componenti navigabili da tastiera e combinazioni di colori ad alto contrasto. Continueremo a migliorare accessibilità e compatibilità con lettori di schermo."
+      : "The site uses semantic HTML, keyboard-navigable components and high-contrast colour combinations. We’re still improving accessibility and screen-reader compatibility over time.",
+    accessBody2: it
+      ? "Conserviamo solo i dati strettamente necessari per erogare il servizio richiesto. Puoi chiederci in qualsiasi momento di correggere o cancellare i tuoi dati."
+      : "We only keep the data we genuinely need to deliver the service you ask for. You can ask us at any time to correct or delete your data.",
+    accessSeePolicy: it ? "Leggi l’Informativa Privacy completa" : "Read the full Privacy Policy",
   };
 
-  // ——— Config / assets ————————————————————————————————————————————————
+  // ---------- Config / assets ----------
   const heroSrc = "/images/about/hero-bluehour.png";
+
   const stats = it
     ? [
         { kpi: "4.000+", label: "Richieste risposte", hint: "Community + email dal 2023" },
         { kpi: "72%", label: "Casi risolti", hint: "Entro i primi 14 giorni" },
         { kpi: "48h", label: "Risposta tipica", hint: "Lun–Ven, 10:00–18:00" },
-        { kpi: "£0", label: "Costi nascosti", hint: "Mai. Odio anche noi le sorprese." },
+        { kpi: "£0", label: "Costi nascosti", hint: "Mai. Le odiamo anche noi." },
       ]
     : [
         { kpi: "4,000+", label: "Queries answered", hint: "Community + email since 2023" },
         { kpi: "72%", label: "Cases resolved", hint: "Within the first 14 days" },
         { kpi: "48h", label: "Typical reply", hint: "Mon–Fri, 10:00–18:00" },
-        { kpi: "£0", label: "Hidden charges", hint: "Ever. We hate surprises too." },
+        { kpi: "£0", label: "Hidden fees", hint: "Ever. We hate them too." },
       ];
 
-  // ——— JSON-LD (localized where it matters) ————————————————————————————
+  const serviceOverview = [
+    {
+      icon: "🛂",
+      title: it ? "Passaporti & appuntamenti consolari" : "Passports & consular appointments",
+      body: it
+        ? "Rinnovi passaporto, slot Prenot@Mi (es. Manchester), preparazione documenti e checklist per il giorno dell’appuntamento."
+        : "Passport renewals, Prenot@Mi slots (e.g. Manchester), document prep and checklists for appointment day.",
+      meta: it ? "Da £35 • 1–3 settimane" : "From £35 • 1–3 weeks",
+    },
+    {
+      icon: "💳",
+      title: it ? "CIE & AIRE" : "CIE & AIRE",
+      body: it
+        ? "Iscrizioni/aggiornamenti AIRE, supporto CIE, portali FAST-IT spiegati in modo umano."
+        : "AIRE registrations/updates, CIE support, FAST-IT explained in human language.",
+      meta: it ? "Da £35 • 1–6 settimane" : "From £35 • 1–6 weeks",
+    },
+    {
+      icon: "🧾",
+      title: it ? "Vita pratica in UK" : "Day-to-day UK life admin",
+      body: it
+        ? "National Insurance (NIN), lettere per landlord o datori di lavoro, primo orientamento su benefici e housing."
+        : "National Insurance (NIN), letters to landlords/employers, first-step guidance on benefits and housing.",
+      meta: it ? "Da £35 • tempistiche variabili" : "From £35 • timings vary",
+    },
+  ];
+
+  const miniStories = it
+    ? [
+        {
+          title: "Famiglia a Leeds",
+          text: "Due genitori e due figli con AIRE bloccata e passaporti in scadenza. Checklist, FAST-IT sistemato e appuntamenti a Manchester confermati in poche settimane.",
+        },
+        {
+          title: "Lavoratore a Manchester",
+          text: "Arrivato in UK senza NIN né idea da dove iniziare. Insieme abbiamo preparato documenti, domanda e tracking dei passaggi HMRC.",
+        },
+      ]
+    : [
+        {
+          title: "Family in Leeds",
+          text: "Two parents and two kids with stuck AIRE and expiring passports. We untangled FAST-IT, built a checklist and confirmed Manchester appointments in a few weeks.",
+        },
+        {
+          title: "Worker in Manchester",
+          text: "Arrived in the UK with no NIN and no idea where to start. We prepared documents together, supported the application and explained each HMRC step.",
+        },
+      ];
+
+  const glossaryItems = it
+    ? [
+        {
+          term: "AIRE",
+          def: "Anagrafe degli Italiani Residenti all’Estero: l’anagrafe degli italiani all’estero. Va tenuta aggiornata per accedere ai servizi consolari.",
+        },
+        {
+          term: "CIE",
+          def: "Carta d’Identità Elettronica. Documento di identità italiano in formato tessera, spesso usato per servizi digitali.",
+        },
+        {
+          term: "SPID",
+          def: "Identità digitale per i servizi pubblici italiani. In pratica: login sicuro per i portali della Pubblica Amministrazione.",
+        },
+        {
+          term: "NIN",
+          def: "National Insurance Number (UK). Serve per lavorare e pagare i contributi/tasse in Regno Unito.",
+        },
+        {
+          term: "FAST-IT",
+          def: "Portale online dei servizi consolari italiani (es. AIRE). Non sempre “fast”, ma ti guidiamo noi.",
+        },
+        {
+          term: "GHIC",
+          def: "UK Global Health Insurance Card per accedere a cure necessarie nei Paesi UE.",
+        },
+      ]
+    : [
+        {
+          term: "AIRE",
+          def: "Registry of Italians living abroad. You need it up to date to use many consular services.",
+        },
+        {
+          term: "CIE",
+          def: "Italian electronic ID card. Often needed for ID checks and some online services.",
+        },
+        {
+          term: "SPID",
+          def: "Digital identity login for Italian public services. Think “secure login” for government portals.",
+        },
+        {
+          term: "NIN",
+          def: "National Insurance Number (UK). Needed to work and pay contributions/tax.",
+        },
+        {
+          term: "FAST-IT",
+          def: "Italian consular online portal (e.g. for AIRE). Not always fast in practice — we walk you through it.",
+        },
+        {
+          term: "GHIC",
+          def: "UK Global Health Insurance Card for medically necessary treatment in the EU.",
+        },
+      ];
+
+  const inlineFaqs = it
+    ? [
+        {
+          q: "Quali servizi offre Resinaro?",
+          a: "Supporto pratico su passaporti italiani, CIE, AIRE, NIN, housing e primo orientamento su benefici, più segnalazione a servizi di salute mentale.",
+        },
+        {
+          q: "Aiutate solo gli italiani?",
+          a: "No. Supportiamo italiani e chiunque viva nel Regno Unito e abbia bisogno di questo tipo di supporto.",
+        },
+        {
+          q: "I prezzi sono trasparenti?",
+          a: "Sì. Pubblicheremo sempre prezzi chiari e spiegheremo cosa è incluso prima che tu decida.",
+        },
+        {
+          q: "Posso usare solo le guide gratuite?",
+          a: "Certo. Le guide sono pensate per aiutarti anche se non puoi permetterti un servizio a pagamento.",
+        },
+        {
+          q: "Quanto è veloce “veloce”?",
+          a: "Di solito rispondiamo entro 48 ore lavorative. Se il collo di bottiglia è il consolato o un ente pubblico, te lo diciamo chiaramente.",
+        },
+      ]
+    : [
+        {
+          q: "What services does Resinaro provide?",
+          a: "Hands-on support with Italian passports, CIE, AIRE, NIN, housing and first-step benefits guidance, plus mental health signposting.",
+        },
+        {
+          q: "Do you only help Italians?",
+          a: "No. We support Italians and anyone living in the UK who needs help with these kinds of tasks.",
+        },
+        {
+          q: "Are your prices transparent?",
+          a: "Yes. We publish clear prices and explain what’s included before you decide.",
+        },
+        {
+          q: "Can I just use the free guides?",
+          a: "Absolutely. The guides are designed to help even if you can’t afford paid support.",
+        },
+        {
+          q: "How fast is “fast”?",
+          a: "We usually reply within 48 business hours. If the bottleneck is the consulate or another public body, we’ll say so clearly.",
+        },
+      ];
+
+  // ---------- JSON-LD ----------
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -249,7 +445,7 @@ export default async function Page({
           "@type": "Answer",
           text: it
             ? "Siamo una social business: valori di comunità e consegna professionale. Alcuni servizi sono gratuiti; quelli a pagamento sono chiaramente prezzati per sostenere il progetto."
-            : "We are a social business: community values with professional delivery. Some services are free; paid services are clearly priced to keep the lights on and the help flowing.",
+            : "We are a social business: community values with professional delivery. Some services are free; paid services are clearly priced to keep the project sustainable.",
         },
       },
     ],
@@ -265,24 +461,24 @@ export default async function Page({
     step: [
       {
         "@type": "HowToStep",
-        name: it ? "Raccontaci la situazione" : "Tell us the situation",
+        name: it ? "Raccontaci la situazione" : "Tell us what’s going on",
         text: it
           ? "Compila un breve modulo o scrivi a resinaro@proton.me indicando città, documenti e scadenze."
-          : "Submit a short form or email resinaro@proton.me with your location, documents and deadlines.",
+          : "Fill out a short form or email resinaro@proton.me with your location, documents and deadlines.",
       },
       {
         "@type": "HowToStep",
         name: it ? "Revisione e conferma" : "We review and confirm",
         text: it
           ? "Ricevi una checklist, tempistiche realistiche e un preventivo se il servizio è a pagamento."
-          : "You receive a checklist, realistic timeline and a quote if the service is paid.",
+          : "You receive a checklist, realistic timeline and a quote if a paid service is needed.",
       },
       {
         "@type": "HowToStep",
         name: it ? "Consegna e follow-up" : "Delivery & follow-up",
         text: it
           ? "Ti aiutiamo a preparare domanda/appuntamento e offriamo un periodo di supporto successivo."
-          : "We help prepare the application/appointment and support for a defined follow-up period.",
+          : "We help prepare the application/appointment and offer a defined follow-up period.",
       },
     ],
   };
@@ -298,9 +494,9 @@ export default async function Page({
     },
   };
 
-  // ——— UI ————————————————————————————————————————————————————————————————
+  // ---------- UI ----------
   return (
-    <main className="bg-[#F9F6F1] text-gray-800">
+    <main className="bg-[#F6F3EA] text-slate-900">
       {/* Structured data */}
       <Script
         id="org-jsonld"
@@ -328,59 +524,90 @@ export default async function Page({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ratingJsonLd) }}
       />
 
-      {/* Hero */}
+      {/* HERO */}
       <section className="relative">
-        <div className="relative h-[44vh] md:h-[56vh] w-full overflow-hidden">
+        <div className="relative h-[260px] w-full overflow-hidden md:h-[340px]">
           <Image
             src={heroSrc}
             alt={
               it
-                ? "Italia e Regno Unito: colori caldi di comunità, skyline moderno e tricolore in sovrimpressione"
-                : "Italy meets UK: warm community colours, modern city skyline and Italian tricolore overlay"
+                ? "Skyline del Regno Unito con colori caldi e tricolore italiano in sovrimpressione"
+                : "UK skyline with warm colours and Italian tricolore overlay"
             }
             fill
             priority
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/30 pointer-events-none" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
         </div>
 
-        <div className="relative -mt-20 md:-mt-28">
-          <div className="container mx-auto max-w-6xl px-6">
-            <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl border border-gray-200 p-6 md:p-10">
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                <div>
-                  <h1 className="text-3xl md:text-5xl font-extrabold text-green-900">
+        <div className="relative -mt-16 pb-10 md:-mt-24 md:pb-14">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="rounded-3xl bg-white/95 p-6 shadow-xl ring-1 ring-black/5 backdrop-blur md:p-8 lg:p-10">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                <div className="flex-1 space-y-4">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-medium text-emerald-900 ring-1 ring-emerald-200">
+                    <span>🇮🇹 {copy.heroBadgeMain}</span>
+                    <span className="h-1 w-1 rounded-full bg-emerald-400" />
+                    <span>{copy.heroBadgeSub}</span>
+                  </div>
+                  <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950 md:text-4xl lg:text-5xl">
                     {copy.heroTitle}
                   </h1>
-                  <p className="mt-3 text-gray-700 max-w-2xl">{copy.heroTagline}</p>
+                  <p className="max-w-2xl text-sm leading-relaxed text-slate-700 md:text-base">
+                    {copy.heroTagline}
+                  </p>
+                  <div className="flex flex-wrap gap-3 pt-1">
+                    <Link
+                      href={`${prefix}/services`}
+                      className="inline-flex h-10 items-center justify-center rounded-xl bg-emerald-800 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900"
+                    >
+                      {copy.ctaServices}
+                      <span className="ml-1" aria-hidden>
+                        →
+                      </span>
+                    </Link>
+                    <Link
+                      href={`${prefix}/contact`}
+                      className="inline-flex h-10 items-center justify-center rounded-xl bg-white px-4 text-sm font-semibold text-emerald-900 ring-1 ring-slate-200 transition hover:ring-emerald-600"
+                    >
+                      {copy.ctaContact}
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex gap-3">
-                  <Link
-                    href={`${prefix}/services`}
-                    className="inline-flex items-center gap-2 bg-green-900 hover:bg-green-800 text-white px-5 py-3 rounded-lg font-medium"
-                  >
-                    {copy.ctaServices} <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href={`${prefix}/contact`}
-                    className="inline-flex items-center gap-2 border border-gray-300 hover:border-green-700 text-green-900 px-5 py-3 rounded-lg font-medium bg-white"
-                  >
-                    {copy.ctaContact}
-                  </Link>
-                </div>
+
+                <aside className="w-full max-w-sm rounded-2xl bg-emerald-950/90 p-4 text-xs text-emerald-50 shadow-md lg:w-80">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
+                    {copy.heroNoteTitle}
+                  </p>
+                  <p className="mt-2 text-[13px] leading-relaxed">
+                    {copy.heroNoteBody}
+                  </p>
+                  <p className="mt-3 text-[11px] text-emerald-100">
+                    {it
+                      ? "Quando un canale gratuito è la scelta migliore, ti mandiamo lì per primi."
+                      : "When an official free route is the best option, we’ll always send you there first."}
+                  </p>
+                </aside>
               </div>
 
-              {/* quick stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              {/* Stats */}
+              <div className="mt-6 grid gap-3 rounded-2xl bg-[#FFFCF5] p-4 text-xs sm:grid-cols-2 md:grid-cols-4">
                 {stats.map((s) => (
-                  <div key={s.kpi} className="rounded-xl border bg-neutral-50 p-4">
-                    <div className="text-2xl md:text-3xl font-extrabold text-green-900">
+                  <div
+                    key={s.kpi}
+                    className="rounded-xl border border-emerald-50 bg-white/70 p-3"
+                  >
+                    <div className="text-xl font-extrabold text-emerald-900 md:text-2xl">
                       {s.kpi}
                     </div>
-                    <div className="text-sm font-medium text-gray-800">{s.label}</div>
-                    <div className="text-xs text-gray-500 mt-1">{s.hint}</div>
+                    <div className="text-[12px] font-medium text-slate-800">
+                      {s.label}
+                    </div>
+                    <div className="mt-1 text-[11px] text-slate-500">
+                      {s.hint}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -389,326 +616,317 @@ export default async function Page({
         </div>
       </section>
 
-      {/* Why we exist */}
-      <section className="container mx-auto max-w-6xl px-6 py-14">
-        <div className="grid lg:grid-cols-3 gap-6 items-stretch">
-          <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">
-              {copy.whyTitle}
-            </h2>
-            <p className="leading-relaxed">{copy.whyBody}</p>
-            <ul className="list-disc list-inside mt-4 space-y-1">
-              <li>{copy.whyBul1}</li>
-              <li>{copy.whyBul2}</li>
-              <li>{copy.whyBul3}</li>
-            </ul>
-          </div>
-
-          <aside className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
-            <h3 className="text-xl font-semibold text-green-900">{copy.fairTitle}</h3>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li>
-                <strong>{it ? "Prezzi trasparenti:" : "Transparent fees:"}</strong>{" "}
-                {copy.fair1.replace(/.*:\s*/,"")}
-              </li>
-              <li>
-                <strong>{it ? "Ambito onesto:" : "Honest scope:"}</strong>{" "}
-                {copy.fair2.replace(/.*:\s*/,"")}
-              </li>
-              <li>
-                <strong>{it ? "Comunità prima:" : "Community first:"}</strong>{" "}
-                {copy.fair3.replace(/.*:\s*/,"")}
-              </li>
-            </ul>
-            <div className="mt-4 text-sm text-gray-600">{copy.fairPs}</div>
-          </aside>
-        </div>
-      </section>
-
-      {/* What we help with (table) */}
-      <section className="container mx-auto max-w-6xl px-6 pb-6">
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-4">
-            {copy.whatTitle}
-          </h2>
-          <div className="overflow-x-auto rounded-xl border border-neutral-200">
-            <table className="min-w-full text-sm">
-              <thead className="bg-neutral-50 text-neutral-700">
-                <tr className="text-left">
-                  <th className="px-4 py-3 font-semibold">{copy.thService}</th>
-                  <th className="px-4 py-3 font-semibold">{copy.thTurn}</th>
-                  <th className="px-4 py-3 font-semibold">{copy.thGet}</th>
-                  <th className="px-4 py-3 font-semibold">{copy.thFee}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-200">
-                <tr>
-                  <td className="px-4 py-3">{copy.row1s}</td>
-                  <td className="px-4 py-3">{copy.row1t}</td>
-                  <td className="px-4 py-3">{copy.row1g}</td>
-                  <td className="px-4 py-3">{copy.row1f}</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3">{copy.row2s}</td>
-                  <td className="px-4 py-3">{copy.row2t}</td>
-                  <td className="px-4 py-3">{copy.row2g}</td>
-                  <td className="px-4 py-3">{copy.row2f}</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3">{copy.row3s}</td>
-                  <td className="px-4 py-3">{copy.row3t}</td>
-                  <td className="px-4 py-3">{copy.row3g}</td>
-                  <td className="px-4 py-3">{copy.row3f}</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3">{copy.row4s}</td>
-                  <td className="px-4 py-3">{copy.row4t}</td>
-                  <td className="px-4 py-3">{copy.row4g}</td>
-                  <td className="px-4 py-3">{copy.row4f}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-6 text-sm text-gray-600">
-            {copy.needDetails}{" "}
-            <Link className="text-green-900 underline" href={`${prefix}/services`}>
-              {copy.servicesLink}
-            </Link>
-            .
-          </div>
-        </div>
-      </section>
-
-      {/* How we work */}
-      <section className="container mx-auto max-w-6xl px-6 py-10">
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              step: "1",
-              title: copy.step1,
-              text: copy.step1txt,
-              hint: copy.step1hint,
-            },
-            {
-              step: "2",
-              title: copy.step2,
-              text: copy.step2txt,
-              hint: copy.step2hint,
-            },
-            {
-              step: "3",
-              title: copy.step3,
-              text: copy.step3txt,
-              hint: copy.step3hint,
-            },
-          ].map((b) => (
-            <div
-              key={b.step}
-              className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6"
-            >
-              <div className="text-green-900 font-extrabold text-3xl">{b.step}</div>
-              <h3 className="text-xl font-semibold mt-2">{b.title}</h3>
-              <p className="mt-2 text-gray-700">{b.text}</p>
-              <div className="mt-3 text-xs text-gray-500">{b.hint}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Values + Inclusion */}
-      <section className="bg-white border-y">
-        <div className="container mx-auto max-w-6xl px-6 py-12">
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-green-900">
-                {copy.values}
+      {/* WHY WE EXIST + WHO WE ARE */}
+      <section className="pb-10 pt-4 md:pb-14 md:pt-2">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
+            <article className="rounded-3xl bg-[#FFFCF5] p-6 text-sm shadow-sm ring-1 ring-slate-200 md:p-8">
+              <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+                {copy.whyTitle}
               </h2>
-              <ul className="mt-4 space-y-3">
-                <li>
-                  <strong>{it ? "Chiarezza:" : "Clarity:"}</strong> {copy.clarity.replace(/.*:\s*/,"")}
+              <p className="mt-4 leading-relaxed text-slate-800">
+                {copy.whyBody}
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-800">
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span>{copy.whyBullet1}</span>
                 </li>
-                <li>
-                  <strong>{it ? "Correttezza:" : "Fairness:"}</strong>{" "}
-                  {copy.fairness.replace(/.*:\s*/,"")}
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span>{copy.whyBullet2}</span>
                 </li>
-                <li>
-                  <strong>{it ? "Cura:" : "Care:"}</strong> {copy.care.replace(/.*:\s*/,"")}
-                </li>
-                <li>
-                  <strong>{it ? "Privacy:" : "Privacy:"}</strong>{" "}
-                  {copy.privacy.replace(/.*:\s*/,"")}
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span>{copy.whyBullet3}</span>
                 </li>
               </ul>
-            </div>
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-green-900">
-                {copy.inclusion}
-              </h2>
-              <p className="mt-4">{copy.inclusionP}</p>
-              <ul className="list-disc list-inside mt-3 space-y-1">
-                <li>{copy.incl1}</li>
-                <li>{copy.incl2}</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+            </article>
 
-      {/* Glossary */}
-      <section className="bg-white border-y">
-        <div className="container mx-auto max-w-6xl px-6 py-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-green-900">
-            {copy.glossary}
-          </h2>
-          <div className="mt-5 grid md:grid-cols-2 gap-6">
-            {(it
-              ? [
-                  {
-                    term: "AIRE",
-                    def: "Anagrafe degli Italiani Residenti all’Estero — l’anagrafe degli italiani all’estero. Tienila aggiornata per accedere ai servizi consolari.",
-                  },
-                  {
-                    term: "CIE",
-                    def: "Carta d’Identità Elettronica. Usata per l’identificazione e alcuni servizi digitali.",
-                  },
-                  {
-                    term: "SPID",
-                    def: "Identità digitale per i servizi pubblici italiani. In pratica: login sicuro per i portali della PA.",
-                  },
-                  {
-                    term: "NIN",
-                    def: "National Insurance Number (UK). Serve per lavorare e pagare tasse.",
-                  },
-                  {
-                    term: "FAST-IT",
-                    def: "Portale consolare per AIRE e altri servizi. Non sempre “fast”, ma ti aiutiamo noi.",
-                  },
-                  {
-                    term: "GHIC",
-                    def: "UK Global Health Insurance Card per cure necessarie nell’UE.",
-                  },
-                ]
-              : [
-                  {
-                    term: "AIRE",
-                    def: "Anagrafe degli Italiani Residenti all’Estero — the registry of Italians living abroad. Keep it updated to access consular services.",
-                  },
-                  {
-                    term: "CIE",
-                    def: "Carta d’Identità Elettronica — Italian electronic ID card. Often used for ID and some digital services.",
-                  },
-                  {
-                    term: "SPID",
-                    def: "Digital identity login for Italian public services. Think ‘secure login’ for government portals.",
-                  },
-                  {
-                    term: "NIN",
-                    def: "National Insurance Number (UK). Needed for work/taxes. It’s like a tax ID.",
-                  },
-                  {
-                    term: "FAST-IT",
-                    def: "Italian consular online portal for AIRE and other services. Not fast by name only — we’ll help you through it.",
-                  },
-                  {
-                    term: "GHIC",
-                    def: "UK Global Health Insurance Card for state-provided medically necessary healthcare in the EU.",
-                  },
-                ]
-            ).map((g) => (
-              <div key={g.term} className="rounded-2xl border border-gray-200 p-5">
-                <div className="font-semibold text-green-900">{g.term}</div>
-                <div className="text-gray-700 mt-1">{g.def}</div>
+            <aside className="space-y-6">
+              <div className="rounded-3xl bg-white p-6 text-sm shadow-sm ring-1 ring-slate-200">
+                <h3 className="text-lg font-semibold text-emerald-950">
+                  {copy.whoTitle}
+                </h3>
+                <p className="mt-2 text-slate-800">{copy.whoLead}</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-800">
+                  {copy.whoPoints.map((p) => (
+                    <li key={p} className="flex gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
+
+              <div className="rounded-3xl bg-emerald-900 p-6 text-sm text-emerald-50 shadow-sm">
+                <h3 className="text-lg font-semibold">{copy.whoNotTitle}</h3>
+                <ul className="mt-3 space-y-2 text-[13px]">
+                  {copy.whoNotPoints.map((p) => (
+                    <li key={p} className="flex gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-[11px] text-emerald-100">
+                  {it
+                    ? "Se qualcuno ti promette risultati garantiti con consolati o visti, fai attenzione. Noi preferiamo essere onesti."
+                    : "If someone guarantees outcomes with consulates or visas, be careful. We prefer to be honest about limits."}
+                </p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT WE HELP WITH */}
+      <section className="pb-10 md:pb-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 md:p-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <div>
+                <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+                  {copy.whatTitle}
+                </h2>
+                <p className="mt-2 text-sm text-slate-700">{copy.whatIntro}</p>
+              </div>
+              <Link
+                href={`${prefix}/services`}
+                className="inline-flex h-9 items-center justify-center rounded-xl bg-emerald-800 px-4 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-900"
+              >
+                {copy.ctaServices}
+                <span className="ml-1" aria-hidden>
+                  →
+                </span>
+              </Link>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {serviceOverview.map((s) => (
+                <article
+                  key={s.title}
+                  className="flex flex-col rounded-2xl bg-[#FFFCF5] p-4 text-sm ring-1 ring-slate-200"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-lg">
+                      {s.icon}
+                    </span>
+                    <h3 className="text-sm font-semibold text-emerald-950">
+                      {s.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2 flex-1 text-sm text-slate-800">
+                    {s.body}
+                  </p>
+                  <p className="mt-3 text-xs font-medium text-emerald-800">
+                    {s.meta}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            {/* Mini stories */}
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {miniStories.map((story) => (
+                <div
+                  key={story.title}
+                  className="rounded-2xl bg-white p-4 text-sm ring-1 ring-emerald-50"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                    {story.title}
+                  </p>
+                  <p className="mt-2 text-slate-800">{story.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW WE WORK */}
+      <section className="pb-10 md:pb-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+            {copy.howTitle}
+          </h2>
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
+            {[
+              {
+                step: "1",
+                title: copy.step1Title,
+                text: copy.step1Body,
+                hint: copy.step1Hint,
+              },
+              {
+                step: "2",
+                title: copy.step2Title,
+                text: copy.step2Body,
+                hint: copy.step2Hint,
+              },
+              {
+                step: "3",
+                title: copy.step3Title,
+                text: copy.step3Body,
+                hint: copy.step3Hint,
+              },
+            ].map((s) => (
+              <article
+                key={s.step}
+                className="rounded-3xl bg-white p-5 text-sm shadow-sm ring-1 ring-slate-200"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-800 text-sm font-semibold text-white">
+                    {s.step}
+                  </span>
+                  <h3 className="text-sm font-semibold text-emerald-950">
+                    {s.title}
+                  </h3>
+                </div>
+                <p className="mt-3 text-sm text-slate-800">{s.text}</p>
+                <p className="mt-3 text-xs text-slate-500">{s.hint}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FAQs (visible content) */}
-      <section className="container mx-auto max-w-6xl px-6 py-10">
-        <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-4">
-          {copy.faqs}
-        </h2>
+      {/* VALUES + INCLUSION */}
+      <section className="border-y border-slate-200 bg-[#FFFCF5] py-12">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <section>
+              <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+                {copy.valuesTitle}
+              </h2>
+              <ul className="mt-4 space-y-3 text-sm text-slate-800">
+                {copy.values.map((v) => (
+                  <li key={v.label} className="flex gap-3">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <div>
+                      <p className="font-semibold">
+                        {v.label}
+                        {":"}
+                      </p>
+                      <p className="text-sm text-slate-800">{v.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-        {(it
-          ? [
-              {
-                q: "Quali servizi offre Resinaro?",
-                a: "Passaporti italiani, CIE, National Insurance Number, iscrizione AIRE, orientamento casa e segnalazione servizi di salute mentale.",
-              },
-              {
-                q: "Aiutate solo gli italiani?",
-                a: "No. Supportiamo italiani e tutte le persone migranti che vivono nel Regno Unito.",
-              },
-              {
-                q: "I prezzi sono trasparenti?",
-                a: "Sì. Tariffe chiare senza costi nascosti, e spieghiamo cosa è incluso prima.",
-              },
-              {
-                q: "Sostituite consolati o NHS?",
-                a: "No. Ti aiutiamo a preparare e orientarti. Decisioni e appuntamenti sono degli enti competenti.",
-              },
-              {
-                q: "Quanto è veloce 'veloce'?",
-                a: "Di solito rispondiamo entro 48 ore; se i tempi del consolato sono il collo di bottiglia, te lo diciamo.",
-              },
-            ]
-          : [
-              {
-                q: "What services does Resinaro provide?",
-                a: "Italian passports, CIE, National Insurance numbers, AIRE, housing guidance, and mental health signposting.",
-              },
-              {
-                q: "Do you only help Italians?",
-                a: "No. We support Italians and all migrants living in the UK.",
-              },
-              {
-                q: "Are your prices transparent?",
-                a: "Yes. Clear rates, no hidden fees, and we explain what's included.",
-              },
-              {
-                q: "Do you replace consulates or the NHS?",
-                a: "No. We help you navigate and prepare. Decisions and appointments are made by the authority.",
-              },
-              {
-                q: "How fast is ‘fast’?",
-                a: "We typically reply within 48 hours and will call out external bottlenecks.",
-              },
-            ]
-        ).map((item, i) => (
-          <details
-            key={i}
-            className="mb-3 bg-white rounded-lg border border-neutral-200 p-4"
-          >
-            <summary className="font-semibold cursor-pointer">{item.q}</summary>
-            <p className="mt-2 text-sm text-gray-700">{item.a}</p>
-          </details>
-        ))}
-
-        <div className="mt-6 text-sm text-gray-600">
-          {copy.faqContact}
-          <Link href={`${prefix}/contact`} className="text-green-900 underline">
-            {copy.contactUs}
-          </Link>
-          .
+            <section>
+              <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+                {copy.inclusionTitle}
+              </h2>
+              <p className="mt-4 text-sm text-slate-800">
+                {copy.inclusionBody}
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-800">
+                {copy.inclusionPoints.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
         </div>
       </section>
 
-      {/* Accessibility & compliance footnote */}
-      <section className="container mx-auto max-w-6xl px-6 py-10">
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
-          <h3 className="text-xl font-semibold text-green-900">
-            {copy.accessTitle}
-          </h3>
-          <p className="mt-2 text-gray-700">{copy.accessP1}</p>
-          <p className="mt-2 text-sm text-gray-600">
-            {copy.accessP2}
-            <Link href={`${prefix}/privacy-policy`} className="text-green-900 underline">
-              {copy.privacyPolicy}
+      {/* GLOSSARY */}
+      <section className="pb-10 pt-10 md:pb-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+            {copy.glossaryTitle}
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {glossaryItems.map((g) => (
+              <article
+                key={g.term}
+                className="rounded-3xl bg-white p-5 text-sm shadow-sm ring-1 ring-slate-200"
+              >
+                <h3 className="text-sm font-semibold text-emerald-950">
+                  {g.term}
+                </h3>
+                <p className="mt-2 text-sm text-slate-800">{g.def}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INLINE FAQS + CTA */}
+      <section className="pb-10 md:pb-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl font-bold text-emerald-950 md:text-3xl">
+            {copy.faqsTitle}
+          </h2>
+          <div className="mt-4 space-y-3">
+            {inlineFaqs.map((f, i) => (
+              <details
+                key={i}
+                className="group rounded-2xl bg-white p-4 text-sm shadow-sm ring-1 ring-slate-200"
+              >
+                <summary className="cursor-pointer list-none font-semibold text-emerald-950">
+                  <span className="flex items-center justify-between gap-3">
+                    <span>{f.q}</span>
+                    <span className="text-xs text-slate-400 group-open:hidden">
+                      +
+                    </span>
+                    <span className="hidden text-xs text-slate-400 group-open:inline">
+                      –
+                    </span>
+                  </span>
+                </summary>
+                <p className="mt-2 text-sm text-slate-800">{f.a}</p>
+              </details>
+            ))}
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-3xl bg-[#FFFCF5] p-4 text-sm ring-1 ring-emerald-100 md:p-5">
+            <p className="text-slate-800">
+              {copy.faqContactLead}
+              <Link
+                href={`${prefix}/contact`}
+                className="font-semibold text-emerald-900 underline underline-offset-2"
+              >
+                {copy.faqContactLink}
+              </Link>
+              .
+            </p>
+            <Link
+              href={`${prefix}/community/prenotami-uk-guide`}
+              className="inline-flex h-9 items-center justify-center rounded-xl bg-white px-3 text-xs font-semibold text-emerald-900 ring-1 ring-slate-200 transition hover:ring-emerald-700"
+            >
+              {it
+                ? "Apri la guida Prenot@Mi"
+                : "Open the Prenot@Mi guide"}
             </Link>
-            .
-          </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ACCESSIBILITY & DATA */}
+      <section className="pb-12">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="rounded-3xl bg-white p-6 text-sm shadow-sm ring-1 ring-slate-200 md:p-8">
+            <h3 className="text-xl font-semibold text-emerald-950">
+              {copy.accessTitle}
+            </h3>
+            <p className="mt-3 text-sm text-slate-800">{copy.accessBody1}</p>
+            <p className="mt-3 text-sm text-slate-800">{copy.accessBody2}</p>
+            <p className="mt-3 text-sm text-emerald-900">
+              <Link
+                href={`${prefix}/privacy-policy`}
+                className="font-semibold underline underline-offset-2"
+              >
+                {copy.accessSeePolicy}
+              </Link>
+              .
+            </p>
+          </div>
         </div>
       </section>
     </main>

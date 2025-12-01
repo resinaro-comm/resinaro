@@ -2,24 +2,58 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-
-type Locale = "en" | "it";
-
-export const metadata: Metadata = {
-  title: "AIRE from the UK (2025): Registration & FAST IT Guide",
-  description:
-    "2025 guide for Italians in the UK: how to register or update AIRE via FAST IT, transcribe UK records, fix errors, and understand what AIRE does (and doesn’t) change.",
-  alternates: { canonical: "/community/aire-uk" },
-  openGraph: {
-    title: "AIRE from the UK (2025): Registration & FAST IT Guide",
-    description:
-      "Step-by-step guide to AIRE from the UK: registration, address updates, family changes, UK certificates, FAST IT errors and realistic timelines.",
-    type: "article",
-  },
-};
+import { p, type Locale } from "@/lib/localePath";
 
 const PUBLISHED = "2025-11-16";
 const UPDATED = "2025-11-16";
+
+const DESCRIPTION_EN =
+  "2025 guide for Italians in the UK: how to register or update AIRE via FAST IT, transcribe UK records, fix errors, and understand what AIRE does (and doesn’t) change.";
+const DESCRIPTION_IT =
+  "Guida 2025 per italiani nel Regno Unito: come iscriversi o aggiornare AIRE via FAST IT, trascrivere atti UK, correggere errori e capire cosa AIRE cambia (e cosa no).";
+
+const TITLE_EN = "AIRE from the UK (2025): Registration & FAST IT Guide";
+const TITLE_IT = "AIRE dal Regno Unito (2025): guida AIRE & FAST IT";
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}): Promise<Metadata> {
+  const isIt = locale === "it";
+  const title = isIt ? TITLE_IT : TITLE_EN;
+  const description = isIt ? DESCRIPTION_IT : DESCRIPTION_EN;
+  const url = `https://www.resinaro.com/${locale}/community/aire-uk`;
+  const ogImage = "/images/aire-fastit-hero.jpg";
+
+  return {
+    title,
+    description,
+    metadataBase: new URL("https://www.resinaro.com"),
+    alternates: {
+      canonical: "/community/aire-uk",
+      languages: {
+        "en-GB": "/en/community/aire-uk",
+        "it-IT": "/it/community/aire-uk",
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      images: [ogImage],
+      locale: isIt ? "it_IT" : "en_GB",
+      alternateLocale: isIt ? ["en_GB"] : ["it_IT"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 /* ----------------------------- i18n strings ---------------------------- */
 function t(locale: Locale) {
@@ -33,10 +67,10 @@ function t(locale: Locale) {
       ? "Schermo con FAST IT aperto e documenti italiani e britannici sul tavolo"
       : "Laptop showing FAST IT with Italian and UK documents on a desk",
     heroBadge: it ? "AIRE • FAST IT • Consolati UK" : "AIRE • FAST IT • UK Consulates",
-    heroTitleA: it
-      ? "AIRE dal Regno Unito"
-      : "AIRE from the UK",
-    heroTitleB: it ? "(2025): iscrizione, aggiornamenti & problemi" : "(2025): registration, updates & issues",
+    heroTitleA: it ? "AIRE dal Regno Unito" : "AIRE from the UK",
+    heroTitleB: it
+      ? "(2025): iscrizione, aggiornamenti & problemi"
+      : "(2025): registration, updates & issues",
     heroLead: it
       ? "Una guida unica per capire se devi iscriverti ad AIRE, come farlo da FAST IT, come aggiornare indirizzo/famiglia e cosa fare quando il sistema si blocca."
       : "One clear guide to understand if you need AIRE, how to register from the UK, update address/family via FAST IT, and what to do when the system blocks you.",
@@ -446,43 +480,32 @@ function t(locale: Locale) {
 
     // Related + footer CTA
     relatedH: it ? "Guide correlate" : "Related guides",
-    relatedItems: it
-      ? [
-          {
-            href: "/community/passport-id-uk",
-            label: "Passaporto e CIE italiana nel Regno Unito (2025): guida completa",
-          },
-          {
-            href: "/community/bureaucracy-guides/aire-registration-uk",
-            label: "Iscrizione AIRE passo-passo dal Regno Unito",
-          },
-          {
-            href: "/community/bureaucracy-guides/uk-birth-transcription",
-            label: "Trascrivere una nascita avvenuta nel Regno Unito in Italia",
-          },
-          {
-            href: "/community/bureaucracy-guides/address-proof-uk",
-            label: "Prova di indirizzo UK senza bollette a tuo nome",
-          },
-        ]
-      : [
-          {
-            href: "/community/passport-id-uk",
-            label: "Italian Passport & CIE in the UK (2025): complete guide",
-          },
-          {
-            href: "/community/bureaucracy-guides/aire-registration-uk",
-            label: "Step-by-step AIRE registration from the UK",
-          },
-          {
-            href: "/community/bureaucracy-guides/uk-birth-transcription",
-            label: "Transcribing a UK birth certificate in Italy",
-          },
-          {
-            href: "/community/bureaucracy-guides/address-proof-uk",
-            label: "Proof of UK address without bills in your name",
-          },
-        ],
+    relatedItems: [
+      {
+        href: "/community/bureaucracy-guides/italian-passport-uk-docs-prep",
+        label: it
+          ? "Passaporto italiano nel Regno Unito (2025): documenti & preparazione"
+          : "Italian passport in the UK (2025): documents & preparation",
+      },
+      {
+        href: "/community/bureaucracy-guides/italian-cie-id-card-uk",
+        label: it
+          ? "Carta d’Identità Elettronica (CIE) nel Regno Unito (2025)"
+          : "Italian Electronic ID Card (CIE) in the UK (2025)",
+      },
+      {
+        href: "/community/proof-of-address-without-bills-2025",
+        label: it
+          ? "Prova di indirizzo UK senza bollette (2025)"
+          : "Proof of UK address without bills (2025)",
+      },
+      {
+        href: "/community/prenotami-uk-guide",
+        label: it
+          ? "Prenot@Mi & appuntamenti consolari nel Regno Unito (2025)"
+          : "Prenot@Mi & Italian consular appointments in the UK (2025)",
+      },
+    ],
     printableH: it
       ? "Checklist AIRE & FAST IT stampabile"
       : "Printable AIRE & FAST IT checklist",
@@ -505,18 +528,27 @@ export default function Page({ params }: { params: { locale: Locale } }) {
   const locale = params.locale;
   const copy = t(locale);
 
-  // ---------- Structured Data ----------
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "AIRE from the UK (2025): Registration & FAST IT Guide",
+    headline:
+      locale === "it"
+        ? "AIRE dal Regno Unito (2025): guida AIRE & FAST IT"
+        : "AIRE from the UK (2025): Registration & FAST IT Guide",
     datePublished: PUBLISHED,
     dateModified: UPDATED,
     author: { "@type": "Organization", name: "Resinaro" },
-    publisher: { "@type": "Organization", name: "Resinaro" },
+    publisher: {
+      "@type": "Organization",
+      name: "Resinaro",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.resinaro.com/icon.svg",
+      },
+    },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://www.resinaro.com/community/aire-uk",
+      "@id": `https://www.resinaro.com/${locale}/community/aire-uk`,
     },
     inLanguage: copy.inLang,
     articleSection: ["Bureaucracy", "AIRE", "FAST IT", "Consular"],
@@ -530,7 +562,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
         "@type": "ListItem",
         position: 1,
         name: locale === "it" ? "Community" : "Community",
-        item: "https://www.resinaro.com/community",
+        item: `https://www.resinaro.com/${locale}/community`,
       },
       {
         "@type": "ListItem",
@@ -539,7 +571,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
           locale === "it"
             ? "AIRE dal Regno Unito (2025)"
             : "AIRE from the UK (2025)",
-        item: "https://www.resinaro.com/community/aire-uk",
+        item: `https://www.resinaro.com/${locale}/community/aire-uk`,
       },
     ],
   };
@@ -547,7 +579,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
   const speakableJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#summary", "#how-to"] },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#summary", "#how-to"],
+    },
   };
 
   const howToJsonLd = {
@@ -668,15 +703,29 @@ export default function Page({ params }: { params: { locale: Locale } }) {
   const howToAnchor = "#how-to";
   const kitAnchor = "#kit";
 
-  // ---------- Page ----------
   return (
     <main className="bg-[#F9F6F1] text-gray-800 antialiased">
       {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       {/* ===== HERO ===== */}
       <section className="relative isolate overflow-hidden">
@@ -701,7 +750,9 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               {copy.heroTitleA}
               <span className="block text-emerald-200">{copy.heroTitleB}</span>
             </h1>
-            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{copy.heroLead}</p>
+            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">
+              {copy.heroLead}
+            </p>
           </div>
 
           {/* CTA card */}
@@ -713,13 +764,13 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               </div>
               <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
                 <Link
-                  href="/contact"
+                  href={p(locale, "/contact")}
                   className="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white shadow hover:bg-emerald-700"
                 >
                   {copy.ctaBtnPrimary}
                 </Link>
                 <Link
-                  href="/services"
+                  href={p(locale, "/services")}
                   className="inline-flex h-11 items-center justify-center rounded-xl border border-emerald-100 bg-white px-4 text-sm font-semibold text-emerald-800 hover:bg-emerald-50"
                 >
                   {copy.ctaBtnSecondary}
@@ -749,7 +800,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
             { h: copy.usp2H, p: copy.usp2P },
             { h: copy.usp3H, p: copy.usp3P },
           ].map((x) => (
-            <div key={x.h} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div
+              key={x.h}
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+            >
               <h3 className="text-sm font-semibold text-emerald-800">{x.h}</h3>
               <p className="mt-1 text-sm text-gray-700">{x.p}</p>
             </div>
@@ -757,11 +811,92 @@ export default function Page({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
+      {/* ===== On this page (TOC) ===== */}
+      <section className="mx-auto mt-8 max-w-7xl px-6">
+        <nav
+          aria-label={locale === "it" ? "Indice pagina" : "On this page"}
+          className="rounded-2xl bg-white/90 p-4 text-sm shadow-sm ring-1 ring-black/5"
+        >
+          <div className="mb-2 font-semibold text-gray-800">
+            {locale === "it" ? "In questa guida" : "On this page"}
+          </div>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            <li>
+              <a
+                href="#summary"
+                className="text-emerald-800 hover:underline"
+              >
+                {locale === "it"
+                  ? "1. Riassunto & flussi AIRE"
+                  : "1. Summary & AIRE flows"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#need-aire"
+                className="text-emerald-800 hover:underline"
+              >
+                {locale === "it"
+                  ? "2. Devo iscrivermi ad AIRE?"
+                  : "2. Do I need AIRE?"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#flows"
+                className="text-emerald-800 hover:underline"
+              >
+                {locale === "it"
+                  ? "3. Flussi tipici"
+                  : "3. Typical AIRE flows"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#how-to"
+                className="text-emerald-800 hover:underline"
+              >
+                {locale === "it"
+                  ? "4. Iscrizione via FAST IT"
+                  : "4. Registration via FAST IT"}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#fastit-issues"
+                className="text-emerald-800 hover:underline"
+              >
+                {locale === "it"
+                  ? "5. Problemi FAST IT"
+                  : "5. FAST IT issues"}
+              </a>
+            </li>
+            <li>
+              <a href="#kit" className="text-emerald-800 hover:underline">
+                {locale === "it"
+                  ? "6. Supporto Resinaro"
+                  : "6. Resinaro support"}
+              </a>
+            </li>
+            <li>
+              <a href="#faq" className="text-emerald-800 hover:underline">
+                7. FAQ
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+
       {/* ===== Summary & key takeaways ===== */}
-      <section id="summary" className="mx-auto mt-14 max-w-7xl px-6">
+      <section
+        id="summary"
+        className="mx-auto mt-14 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.15fr_.85fr]">
           <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
-            <p className="text-lg font-semibold text-emerald-800">{copy.tldrH}</p>
+            <p className="text-lg font-semibold text-emerald-800">
+              {copy.tldrH}
+            </p>
             <div className="mt-4 space-y-5">
               <p>
                 <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-900">
@@ -769,7 +904,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                 </span>{" "}
                 {copy.tldr1P}
               </p>
-            <p>
+              <p>
                 <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-900">
                   {copy.tldr2}
                 </span>{" "}
@@ -814,11 +949,16 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               { title: copy.take2H, body: copy.take2P },
               { title: copy.take3H, body: copy.take3P },
             ].map((c) => (
-              <div key={c.title} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <div
+                key={c.title}
+                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+              >
                 <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">
                   {locale === "it" ? "Punto chiave" : "Key takeaway"}
                 </p>
-                <h3 className="mt-1 text-base font-semibold text-gray-900">{c.title}</h3>
+                <h3 className="mt-1 text-base font-semibold text-gray-900">
+                  {c.title}
+                </h3>
                 <p className="mt-1 text-sm text-gray-700">{c.body}</p>
               </div>
             ))}
@@ -827,16 +967,24 @@ export default function Page({ params }: { params: { locale: Locale } }) {
       </section>
 
       {/* ===== Do I need AIRE? table ===== */}
-      <section className="mx-auto mt-16 max-w-7xl px-6">
+      <section
+        id="need-aire"
+        className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900">{copy.needH}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {copy.needH}
+          </h2>
           <p className="mt-1 text-sm text-gray-700">{copy.needSub}</p>
           <div className="mt-4 overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-50">
                   {copy.needHeaders.map((h) => (
-                    <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                    <th
+                      key={h}
+                      className="p-3 text-left font-semibold text-gray-900"
+                    >
                       {h}
                     </th>
                   ))}
@@ -844,9 +992,15 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               </thead>
               <tbody>
                 {copy.needRows.map((row, i) => (
-                  <tr key={i} className={i % 2 ? "bg-white" : "bg-gray-50"}>
+                  <tr
+                    key={i}
+                    className={i % 2 ? "bg-white" : "bg-gray-50"}
+                  >
                     {row.map((c, j) => (
-                      <td key={j} className="p-3 text-gray-800 align-top">
+                      <td
+                        key={j}
+                        className="p-3 text-gray-800 align-top"
+                      >
                         {c}
                       </td>
                     ))}
@@ -860,28 +1014,42 @@ export default function Page({ params }: { params: { locale: Locale } }) {
       </section>
 
       {/* ===== Flows cards ===== */}
-      <section className="mx-auto mt-16 max-w-7xl px-6">
+      <section
+        id="flows"
+        className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 shadow-sm">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">{copy.flowsH}</h2>
-              <p className="mt-1 text-sm text-gray-700">{copy.flowsSub}</p>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {copy.flowsH}
+              </h2>
+              <p className="mt-1 text-sm text-gray-700">
+                {copy.flowsSub}
+              </p>
             </div>
             <Link
               href={howToAnchor}
               className="text-sm font-semibold text-emerald-800 underline underline-offset-4"
             >
-              {locale === "it" ? "Vai alla procedura AIRE →" : "Jump to AIRE how-to →"}
+              {locale === "it"
+                ? "Vai alla procedura AIRE →"
+                : "Jump to AIRE how-to →"}
             </Link>
           </div>
 
           <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
             {copy.flows.map((x) => (
-              <div key={x.h} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <div
+                key={x.h}
+                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+              >
                 <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">
                   {x.tag}
                 </p>
-                <h3 className="mt-1 text-base font-semibold text-gray-900">{x.h}</h3>
+                <h3 className="mt-1 text-base font-semibold text-gray-900">
+                  {x.h}
+                </h3>
                 <p className="mt-1 text-sm text-gray-700">{x.p}</p>
                 <ul className="mt-2 list-disc pl-5 text-sm text-gray-800">
                   {x.bullets.map((b: string) => (
@@ -895,12 +1063,17 @@ export default function Page({ params }: { params: { locale: Locale } }) {
       </section>
 
       {/* ===== How-To + FAST IT issues ===== */}
-      <section id="how-to" className="mx-auto mt-16 max-w-7xl px-6">
+      <section
+        id="how-to"
+        className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_.9fr]">
           {/* How-To */}
           <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">{copy.methodH}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {copy.methodH}
+              </h2>
               <Link
                 href="#fastit-issues"
                 className="text-sm font-semibold text-emerald-800 underline underline-offset-4"
@@ -917,12 +1090,16 @@ export default function Page({ params }: { params: { locale: Locale } }) {
             </ol>
 
             <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-              <p className="text-sm text-amber-900">{copy.safetyNote}</p>
+              <p className="text-sm text-amber-900">
+                {copy.safetyNote}
+              </p>
             </div>
 
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex flex-wrap items-center gap-3">
-                <p className="text-sm text-emerald-900">{copy.fridgeCta}</p>
+                <p className="text-sm text-emerald-900">
+                  {copy.fridgeCta}
+                </p>
                 <Link
                   href={kitAnchor}
                   className="inline-flex h-10 items-center justify-center rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700"
@@ -936,15 +1113,20 @@ export default function Page({ params }: { params: { locale: Locale } }) {
           {/* FAST IT issues */}
           <div
             id="fastit-issues"
-            className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm"
+            className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm scroll-mt-28"
           >
-            <h3 className="text-lg font-semibold text-gray-900">{copy.issuesH}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {copy.issuesH}
+            </h3>
             <div className="mt-3 overflow-x-auto rounded-2xl border border-gray-200">
               <table className="w-full border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="bg-gray-50">
                     {copy.issuesHeaders.map((h) => (
-                      <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                      <th
+                        key={h}
+                        className="p-3 text-left font-semibold text-gray-900"
+                      >
                         {h}
                       </th>
                     ))}
@@ -952,9 +1134,15 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                 </thead>
                 <tbody>
                   {copy.issuesRows.map((row, i) => (
-                    <tr key={i} className={i % 2 ? "bg-white" : "bg-gray-50"}>
+                    <tr
+                      key={i}
+                      className={i % 2 ? "bg-white" : "bg-gray-50"}
+                    >
                       {row.map((c, j) => (
-                        <td key={j} className="p-3 text-gray-800 align-top">
+                        <td
+                          key={j}
+                          className="p-3 text-gray-800 align-top"
+                        >
                           {c}
                         </td>
                       ))}
@@ -963,21 +1151,28 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                 </tbody>
               </table>
             </div>
-            <p className="mt-2 text-xs text-gray-600">{copy.issuesTip}</p>
+            <p className="mt-2 text-xs text-gray-600">
+              {copy.issuesTip}
+            </p>
           </div>
         </div>
       </section>
 
       {/* ===== Edge cases ===== */}
-      <section className="mx-auto mt-16 max-w-7xl px-6">
+      <section className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28">
         <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900">{copy.edgeH}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {copy.edgeH}
+          </h2>
           <div className="mt-4 overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full border-collapse text-xs sm:text-sm">
               <thead>
                 <tr className="bg-gray-50">
                   {copy.edgeHeaders.map((h) => (
-                    <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                    <th
+                      key={h}
+                      className="p-3 text-left font-semibold text-gray-900"
+                    >
                       {h}
                     </th>
                   ))}
@@ -985,9 +1180,15 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               </thead>
               <tbody>
                 {copy.edgeRows.map((row, i) => (
-                  <tr key={i} className={i % 2 ? "bg-white" : "bg-gray-50"}>
+                  <tr
+                    key={i}
+                    className={i % 2 ? "bg-white" : "bg-gray-50"}
+                  >
                     {row.map((c, j) => (
-                      <td key={j} className="p-3 text-gray-800 align-top">
+                      <td
+                        key={j}
+                        className="p-3 text-gray-800 align-top"
+                      >
                         {c}
                       </td>
                     ))}
@@ -1000,12 +1201,19 @@ export default function Page({ params }: { params: { locale: Locale } }) {
       </section>
 
       {/* ===== Service kit / conversion ===== */}
-      <section id={kitAnchor.slice(1)} className="mx-auto mt-16 max-w-7xl px-6">
+      <section
+        id={kitAnchor.slice(1)}
+        className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 shadow-sm">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">{copy.kitH}</h2>
-              <p className="mt-1 text-sm text-gray-700">{copy.kitSub}</p>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {copy.kitH}
+              </h2>
+              <p className="mt-1 text-sm text-gray-700">
+                {copy.kitSub}
+              </p>
             </div>
             <Link
               href={howToAnchor}
@@ -1045,13 +1253,13 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                 <p className="text-sm text-emerald-900">{copy.oneToOne}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Link
-                    href="/contact"
+                    href={p(locale, "/contact")}
                     className="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white hover:bg-emerald-700"
                   >
                     {copy.getFreeAdvice}
                   </Link>
                   <Link
-                    href="/services"
+                    href={p(locale, "/services")}
                     className="inline-flex h-11 items-center justify-center rounded-xl border border-emerald-200 bg-white px-5 text-sm font-semibold text-emerald-800 hover:bg-emerald-50"
                   >
                     {copy.exploreServices}
@@ -1060,7 +1268,9 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               </div>
 
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
-                <p className="text-xs text-emerald-900/90">{copy.serviceNote}</p>
+                <p className="text-xs text-emerald-900/90">
+                  {copy.serviceNote}
+                </p>
               </div>
             </div>
           </div>
@@ -1068,9 +1278,14 @@ export default function Page({ params }: { params: { locale: Locale } }) {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="mx-auto mt-16 max-w-7xl px-6">
+      <section
+        id="faq"
+        className="mx-auto mt-16 max-w-7xl px-6 scroll-mt-28"
+      >
         <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900">{copy.faqH}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {copy.faqH}
+          </h2>
           {copy.faqs.map((faq) => {
             const [q, a] = faq as [string, string];
             return (
@@ -1093,26 +1308,36 @@ export default function Page({ params }: { params: { locale: Locale } }) {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_.9fr]">
           {/* Related guides */}
           <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-gray-900">{copy.relatedH}</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {copy.relatedH}
+            </h2>
             <ul className="mt-3 list-disc pl-6 text-sm text-gray-800">
-              {copy.relatedItems.map((item: { href: string; label: string }) => (
-                <li key={item.href}>
-                  <Link
-                    className="text-emerald-800 underline underline-offset-4 hover:text-emerald-900"
-                    href={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {copy.relatedItems.map(
+                (item: { href: string; label: string }) => (
+                  <li key={item.href}>
+                    <Link
+                      className="text-emerald-800 underline underline-offset-4 hover:text-emerald-900"
+                      href={p(locale, item.href)}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
-            <p className="mt-4 text-xs text-gray-600">{copy.affNoteEnd}</p>
+            <p className="mt-4 text-xs text-gray-600">
+              {copy.affNoteEnd}
+            </p>
           </div>
 
           {/* Printable checklist + contact */}
           <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-gray-900">{copy.printableH}</h3>
-            <p className="mt-1 text-sm text-gray-700">{copy.printableP}</p>
+            <h3 className="text-xl font-semibold text-gray-900">
+              {copy.printableH}
+            </h3>
+            <p className="mt-1 text-sm text-gray-700">
+              {copy.printableP}
+            </p>
             <form
               method="POST"
               action={process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT || "#"}
@@ -1134,7 +1359,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
             </form>
             <div className="mt-5 flex flex-wrap gap-2">
               <Link
-                href="/contact"
+                href={p(locale, "/contact")}
                 className="inline-flex h-10 items-center justify-center rounded-xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-800 hover:bg-emerald-50"
               >
                 {copy.contactBtn}

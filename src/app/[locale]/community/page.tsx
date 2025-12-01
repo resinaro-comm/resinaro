@@ -175,7 +175,7 @@ const posts: Post[] = [
     tags: ["deposit", "cleaning"],
     itTitle: "Giorno del trasloco: kit pulizie & piccole riparazioni (affitti UK)",
     itDescription:
-      "Pulizie e micro‑riparazioni a prova di appartamento: microfibre, mocio, ganci adesivi, WD‑40 e controllo umidità.",
+      "Pulizie e micro-riparazioni a prova di appartamento: microfibre, mocio, ganci adesivi, WD-40 e controllo umidità.",
   },
   {
     title: "Raising Bilingual Kids: Italian at Home Starter Pack",
@@ -214,7 +214,7 @@ const posts: Post[] = [
     tags: ["power", "adapters"],
     itTitle: "Prese, adattatori & corrente: Italia ↔ UK senza scintille",
     itDescription:
-      "Adattatori EU→UK e UK→EU con terra, caricabatterie multi‑porta e ciabatte sicure con protezione da sovratensioni.",
+      "Adattatori EU→UK e UK→EU con terra, caricabatterie multi-porta e ciabatte sicure con protezione da sovratensioni.",
   },
 
   // Full length
@@ -245,7 +245,7 @@ const posts: Post[] = [
     itTitle:
       "Nuovo nel Regno Unito? 12 essenziali di dispensa italiana (senza frigo)",
     itDescription:
-      "Basi di dispensa per vivere in UK — ingredienti a lunga conservazione, senza frigorifero. Perfetti per cucine condivise, alloggi temporanei o mini‑appartamenti.",
+      "Basi di dispensa per vivere in UK — ingredienti a lunga conservazione, senza frigorifero. Perfetti per cucine condivise, alloggi temporanei o mini-appartamenti.",
   },
   {
     title: "Open a Revolut Account in the UK (2025) — Quick Guide",
@@ -322,6 +322,7 @@ const posts: Post[] = [
     image: "/images/italian-passport-uk-hero-3840x1280.png",
     minutes: 17,
     tags: ["passport", "consulate"],
+    updatedAt: "2025-10-10",
     itTitle:
       "Passaporto italiano nel Regno Unito (2025): documenti, preparazione e cosa aspettarsi",
     itDescription:
@@ -337,6 +338,7 @@ const posts: Post[] = [
     image: "/images/cie-hero-3840x1280.png",
     minutes: 18,
     tags: ["CIE", "AIRE", "SPID"],
+    updatedAt: "2025-10-10",
     itTitle:
       "Carta d’identità elettronica italiana (CIE) nel Regno Unito (2025): requisiti, documenti, prenotazione & usi",
     itDescription:
@@ -404,7 +406,7 @@ const posts: Post[] = [
     minutes: 15,
     tags: ["NHS", "mental health"],
     itTitle:
-      "Supporto salute mentale NHS nel Regno Unito (2025): come accedere, auto‑invio & cosa aspettarsi",
+      "Supporto salute mentale NHS nel Regno Unito (2025): come accedere, auto-invio & cosa aspettarsi",
     itDescription: "",
   },
   {
@@ -449,7 +451,7 @@ const posts: Post[] = [
     itTitle:
       "Affittare in UK per italiani (2025): Right to Rent, referenze, depositi & modelli",
     itDescription:
-      "Guida passo‑passo in inglese semplice: Right to Rent (UE), superare le referenze senza storico UK, depositi e tutela, checklist visite e truffe.",
+      "Guida passo-passo in inglese semplice: Right to Rent (UE), superare le referenze senza storico UK, depositi e tutela, checklist visite e truffe.",
   },
   {
     title:
@@ -545,7 +547,7 @@ const posts: Post[] = [
     itTitle:
       "National Insurance Number (NIN) per italiani (2025): domanda, recupero & tempi",
     itDescription:
-      "Come richiedere o recuperare il NIN nel 2025: documenti, passaggi online, script telefonico, tempi e follow‑up.",
+      "Come richiedere o recuperare il NIN nel 2025: documenti, passaggi online, script telefonico, tempi e follow-up.",
   },
 
   // Newly added 2025 guides
@@ -611,12 +613,13 @@ const posts: Post[] = [
     itTitle:
       "Mobile UK per chi arriva (2025): miglior SIM & eSIM, PAYG vs abbonamento, roaming UE",
     itDescription:
-      "Guida semplice al mobile UK: SIM vs eSIM, ricaricabile vs mensile, opzioni senza controllo credito, portabilità e troubleshooting con script copia‑incolla.",
+      "Guida semplice al mobile UK: SIM vs eSIM, ricaricabile vs mensile, opzioni senza controllo credito, portabilità e troubleshooting con script copia-incolla.",
   },
 
   // Community guides added Nov 2025
   {
-    title: "Welfare & Benefits in the UK: Universal Credit, Child Benefit, Council Tax Reduction, Housing Support",
+    title:
+      "Welfare & Benefits in the UK: Universal Credit, Child Benefit, Council Tax Reduction, Housing Support",
     description:
       "Clear overview of UK benefits: who can claim, how to apply, and official links — with key differences vs Italy and where to get help.",
     slug: "/community/uk-welfare-benefits",
@@ -627,7 +630,8 @@ const posts: Post[] = [
     updatedAt: "2025-11-05",
   },
   {
-    title: "Start a Business in the UK: Legal Forms, Business Bank Accounts, Visas & Taxes",
+    title:
+      "Start a Business in the UK: Legal Forms, Business Bank Accounts, Visas & Taxes",
     description:
       "Sole trader vs LTD, opening a business account, visas for non-UK nationals and baseline taxes (Income Tax, Corporation Tax, VAT).",
     slug: "/community/start-a-business-uk",
@@ -638,7 +642,8 @@ const posts: Post[] = [
     updatedAt: "2025-11-05",
   },
   {
-    title: "Importing a Car from Italy to the UK: DVLA, VED, Insurance, Plates & Technical Requirements",
+    title:
+      "Importing a Car from Italy to the UK: DVLA, VED, Insurance, Plates & Technical Requirements",
     description:
       "Step-by-step process to import a car from Italy to the UK: HMRC/NOVA, DVLA registration, VED, MOT, insurance, plates and common adjustments.",
     slug: "/community/import-car-italy-to-uk",
@@ -649,7 +654,8 @@ const posts: Post[] = [
     updatedAt: "2025-11-05",
   },
   {
-    title: "Private Healthcare in the UK: Insurance, Dental & Preventive Care",
+    title:
+      "Private Healthcare in the UK: Insurance, Dental & Preventive Care",
     description:
       "How to navigate private healthcare in the UK: choosing a policy, typical costs, international add-ons, dental plans and preventive check-ups.",
     slug: "/community/healthcare-private-insurance-uk",
@@ -712,6 +718,7 @@ const posts: Post[] = [
 function unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
+
 function toBlogJSONLD(list: Post[], locale: "en" | "it") {
   const base = "https://www.resinaro.com";
   const isIt = locale === "it";
@@ -732,35 +739,139 @@ function toBlogJSONLD(list: Post[], locale: "en" | "it") {
   };
 }
 
-// Localized category labels
+// Pretty labels for categories
 function catLabel(cat: string, isIt: boolean) {
-  if (!isIt) return cat;
-  switch (cat) {
-    case "lifestyle":
-      return "stile-di-vita";
-    case "travel":
-      return "viaggi";
-    case "housing":
-      return "casa";
-    case "family":
-      return "famiglia";
-    case "health":
-      return "salute";
-    case "banking":
-      return "banche";
-    case "bureaucracy-guides":
-      return "burocrazia";
-    case "life-in-uk":
-      return "vita-nel-regno-unito";
-    case "mental-health":
-      return "salute-mentale";
-    case "work":
-      return "lavoro";
-    default:
-      return cat;
-  }
+  const en: Record<string, string> = {
+    lifestyle: "Lifestyle",
+    travel: "Travel",
+    housing: "Housing",
+    family: "Family & Parenting",
+    health: "Health",
+    banking: "Banking",
+    "bureaucracy-guides": "Consular & Documents",
+    "life-in-uk": "Life in the UK",
+    "mental-health": "Mental health",
+    work: "Work & Money",
+  };
+  const itMap: Record<string, string> = {
+    lifestyle: "stile di vita",
+    travel: "viaggi",
+    housing: "casa",
+    family: "famiglia",
+    health: "salute",
+    banking: "banche",
+    "bureaucracy-guides": "burocrazia",
+    "life-in-uk": "vita nel Regno Unito",
+    "mental-health": "salute mentale",
+    work: "lavoro",
+  };
+  const map = isIt ? itMap : en;
+  return map[cat] || cat;
 }
 
+const CATEGORY_ORDER = [
+  "bureaucracy-guides",
+  "life-in-uk",
+  "housing",
+  "banking",
+  "work",
+  "health",
+  "family",
+  "travel",
+  "lifestyle",
+  "mental-health",
+];
+
+function formatDate(dateStr: string | undefined, locale: "en" | "it") {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString(locale === "it" ? "it-IT" : "en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+// ---------- Card component ----------
+function GuideCard({
+  post,
+  locale,
+  isIt,
+  index,
+}: {
+  post: Post;
+  locale: "en" | "it";
+  isIt: boolean;
+  index: number;
+}) {
+  const prettyDate = formatDate(post.updatedAt, locale);
+  const title = isIt && post.itTitle ? post.itTitle : post.title;
+  const description =
+    (isIt && post.itDescription ? post.itDescription : post.description) ||
+    (isIt ? "Leggi la guida completa →" : "Read the full guide →");
+
+  return (
+    <Link
+      key={post.slug}
+      href={`/${locale}${post.slug}`}
+      className="group rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition"
+      aria-label={title}
+    >
+      <div className="relative h-44">
+        <Image
+          src={post.image || "/images/resinaro-general.png"}
+          alt={title}
+          fill
+          className="object-cover group-hover:scale-[1.02] transition"
+          sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+          priority={index < 2}
+        />
+      </div>
+      <div className="p-4">
+        <div className="mb-2 flex flex-wrap items-center gap-2">
+          <span className="inline-flex text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+            {catLabel(post.category, isIt)}
+          </span>
+          {prettyDate && (
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+              {isIt ? `Aggiornato ${prettyDate}` : `Updated ${prettyDate}`}
+            </span>
+          )}
+          {post.minutes && (
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+              {isIt ? `${post.minutes} min` : `${post.minutes} min`}
+            </span>
+          )}
+        </div>
+
+        <h3 className="text-lg font-semibold text-green-900 line-clamp-2">
+          {title}
+        </h3>
+        <p className="mt-1 text-sm text-gray-600 line-clamp-3">{description}</p>
+
+        {post.tags && post.tags.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {post.tags.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                className="text-[11px] px-2 py-0.5 rounded-full bg-gray-50 border text-gray-600"
+              >
+                #{t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-3 text-sm font-medium text-green-800 group-hover:underline">
+          {isIt ? "Leggi di più →" : "Read more →"}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// ---------- Page ----------
 export default async function CommunityHub({
   params,
   searchParams,
@@ -774,9 +885,17 @@ export default async function CommunityHub({
   const qRaw = searchParams?.q;
   const q =
     (Array.isArray(qRaw) ? qRaw[0] : qRaw)?.toLowerCase().trim() || "";
-  const category = (Array.isArray(searchParams?.category) ? searchParams?.category[0] : searchParams?.category) || "";
-  const tag = (Array.isArray(searchParams?.tag) ? searchParams?.tag[0] : searchParams?.tag) || "";
-  const sort = (Array.isArray(searchParams?.sort) ? searchParams?.sort[0] : searchParams?.sort) || "";
+  const category =
+    (Array.isArray(searchParams?.category)
+      ? searchParams?.category[0]
+      : searchParams?.category) || "";
+  const tag =
+    (Array.isArray(searchParams?.tag) ? searchParams?.tag[0] : searchParams?.tag) ||
+    "";
+  const sort =
+    (Array.isArray(searchParams?.sort)
+      ? searchParams?.sort[0]
+      : searchParams?.sort) || "";
 
   // Filter
   let filtered = posts.slice();
@@ -807,119 +926,306 @@ export default async function CommunityHub({
   const tags = unique(posts.flatMap((p) => p.tags || [])).sort();
 
   const featured =
-    filtered.find((p) => p.featured) ||
-    filtered[0];
+    filtered.length > 0
+      ? filtered.find((p) => p.featured) || filtered[0]
+      : null;
 
-  const listWithoutFeatured = filtered.filter((p) => p !== featured);
+  const listWithoutFeatured = featured
+    ? filtered.filter((p) => p !== featured)
+    : filtered;
+
+  // Group remaining posts by category for nicer sections
+  const groupedByCategory: Record<string, Post[]> = {};
+  for (const post of listWithoutFeatured) {
+    if (!groupedByCategory[post.category]) {
+      groupedByCategory[post.category] = [];
+    }
+    groupedByCategory[post.category].push(post);
+  }
+  const groupedCategoryKeys = Object.keys(groupedByCategory).sort((a, b) => {
+    const ia = CATEGORY_ORDER.indexOf(a);
+    const ib = CATEGORY_ORDER.indexOf(b);
+    const da = ia === -1 ? CATEGORY_ORDER.length + 1 : ia;
+    const db = ib === -1 ? CATEGORY_ORDER.length + 1 : ib;
+    if (da !== db) return da - db;
+    return a.localeCompare(b);
+  });
 
   const jsonLd = toBlogJSONLD(filtered, locale);
+  const totalCount = posts.length;
+  const showingCount = filtered.length;
+
+  const prettyFeaturedDate = featured
+    ? formatDate(featured.updatedAt, locale)
+    : "";
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800 pb-16">
       {/* HERO */}
       <section className="relative border-b">
         <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-60"
+          className="absolute inset-0 w-full h-full bg-cover bg-center opacity-70"
           style={{ backgroundImage: "url(/images/community-background.png)" }}
           aria-hidden="true"
         />
-        <div className="relative z-10 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-green-900 text-center drop-shadow-lg">
-            {isIt ? "Hub di Conoscenza della Community" : "Community Knowledge Hub"}
-          </h1>
-          <p className="mt-3 text-center text-gray-800 max-w-3xl mx-auto drop-shadow">
-            {isIt
-              ? "Guide pratiche e senza giudizi per italiani e migranti nel Regno Unito. Passi concreti, checklist chiare, zero fuffa."
-              : "Curated, hands-on guides written by and for Italians and migrants in the UK. Practical steps, clear checklists, zero fluff."}
-          </p>
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/55"
+          aria-hidden="true"
+        />
+        <div className="relative z-10">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+              <div className="max-w-2xl">
+                <p className="inline-flex items-center rounded-full bg-black/35 px-3 py-1 text-xs md:text-[13px] font-medium text-emerald-50 backdrop-blur">
+                  <span className="mr-1">📚</span>
+                  {isIt
+                    ? "Guide scritte da chi vive tra Italia e Regno Unito"
+                    : "Guides written by people living between Italy & the UK"}
+                </p>
+                <h1 className="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-emerald-50">
+                  {isIt
+                    ? "Hub di conoscenza della community"
+                    : "Community Knowledge Hub"}
+                </h1>
+                <p className="mt-3 text-sm md:text-base text-emerald-50/90">
+                  {isIt
+                    ? "Guide pratiche per chi vive nel Regno Unito con cuore italiano — passi concreti, checklist chiare, zero fuffa."
+                    : "Curated, hands-on guides for people in the UK with an Italian connection — practical steps, clear checklists, zero fluff."}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2 text-xs md:text-[13px] text-emerald-50/90">
+                  <span className="inline-flex items-center rounded-full bg-emerald-600/95 px-3 py-1 font-semibold">
+                    {isIt ? "Sempre gratuite da leggere" : "Always free to read"}
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-black/35 px-3 py-1">
+                    {isIt ? "Aggiornate nel 2025" : "Updated through 2025"}
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-black/35 px-3 py-1">
+                    {isIt ? "Italiano & inglese" : "Italian & English"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="md:w-80">
+                <div className="rounded-2xl bg-white/95 text-gray-900 shadow-lg p-4 md:p-5 space-y-2 border border-emerald-50">
+                  <p className="text-xs font-semibold text-emerald-800 uppercase tracking-wide">
+                    {isIt ? "Nuovo nel Regno Unito?" : "New to the UK?"}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {isIt
+                      ? "Inizia dalle guide su casa, banca e documenti. Usa i filtri qui sotto per creare il tuo mini-manuale."
+                      : "Start with housing, banking and document guides. Use the filters below to build your own mini handbook."}
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Link
+                      href={`/${locale}/community?category=life-in-uk`}
+                      className="inline-flex items-center text-xs font-medium text-emerald-800 underline underline-offset-4"
+                    >
+                      {isIt ? "Vita in UK →" : "Life in the UK →"}
+                    </Link>
+                    <Link
+                      href={`/${locale}/community?category=bureaucracy-guides`}
+                      className="inline-flex items-center text-xs font-medium text-emerald-800 underline underline-offset-4"
+                    >
+                      {isIt ? "Consolati & documenti →" : "Consular & documents →"}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* FILTER BAR (non-sticky) */}
-      <form className="bg-[#F9F6F1] border-b" role="search">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-3 items-center">
-          <input
-            name="q"
-            defaultValue={q}
-            placeholder={isIt ? "Cerca guide…" : "Search guides…"}
-            aria-label={isIt ? "Cerca nelle guide della community" : "Search community guides"}
-            className="flex-1 min-w-[220px] rounded-lg border border-gray-300 px-4 py-2"
-          />
-          <select
-            name="category"
-            defaultValue={category}
-            aria-label={isIt ? "Filtra per categoria" : "Filter by category"}
-            className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
-          >
-            <option value="">{isIt ? "Tutte le categorie" : "All categories"}</option>
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {catLabel(c, isIt)}
-              </option>
-            ))}
-          </select>
+      {/* FILTER BAR (card, slightly sticky) */}
+      <section className="bg-[#F9F6F1] border-b">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:gap-6">
+            <form
+              className="w-full lg:flex-1 lg:sticky lg:top-24"
+              role="search"
+              method="GET"
+            >
+              <div className="rounded-2xl border border-emerald-50 bg-white/95 shadow-sm backdrop-blur px-4 py-3">
+                <div className="flex flex-col md:flex-row md:items-center md:gap-3">
+                  <div className="flex-1">
+                    <label className="sr-only" htmlFor="q">
+                      {isIt
+                        ? "Cerca nelle guide della community"
+                        : "Search community guides"}
+                    </label>
+                    <div className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2">
+                      <svg
+                        aria-hidden
+                        className="h-4 w-4 opacity-60"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="m21 21-4.3-4.3"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <input
+                        id="q"
+                        name="q"
+                        defaultValue={q}
+                        placeholder={
+                          isIt ? "Cerca guide…" : "Search guides…"
+                        }
+                        className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-3 md:mt-0 flex gap-2">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-lg bg-green-800 text-white px-4 py-2 text-sm font-medium hover:bg-green-900"
+                    >
+                      {isIt ? "Filtra" : "Filter"}
+                    </button>
+                    <Link
+                      href={`/${locale}/community`}
+                      className="inline-flex items-center justify-center rounded-lg border border-transparent px-3 py-2 text-xs text-gray-700 hover:text-green-900"
+                    >
+                      {isIt ? "Reimposta" : "Reset"}
+                    </Link>
+                  </div>
+                </div>
 
-          <select
-            name="tag"
-            defaultValue={tag}
-            aria-label={isIt ? "Filtra per tag" : "Filter by tag"}
-            className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
-          >
-            <option value="">{isIt ? "Tutti i tag" : "All tags"}</option>
-            {tags.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium mb-1">
+                      {isIt ? "Categoria" : "Category"}
+                    </label>
+                    <select
+                      name="category"
+                      defaultValue={category}
+                      aria-label={
+                        isIt ? "Filtra per categoria" : "Filter by category"
+                      }
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">
+                        {isIt ? "Tutte le categorie" : "All categories"}
+                      </option>
+                      {categories.map((c) => (
+                        <option key={c} value={c}>
+                          {catLabel(c, isIt)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-          <select
-            name="sort"
-            defaultValue={sort}
-            aria-label={isIt ? "Ordina risultati" : "Sort results"}
-            className="rounded-lg border border-gray-300 px-3 py-2 bg-white"
-          >
-            <option value="">{isIt ? "Ordina" : "Sort"}</option>
-            <option value="recent">{isIt ? "Aggiornati di recente" : "Recently updated"}</option>
-            <option value="title">{isIt ? "Titolo A–Z" : "Title A–Z"}</option>
-            <option value="category">{isIt ? "Categoria" : "Category"}</option>
-            <option value="readtime">{isIt ? "Lettura più breve" : "Shortest read"}</option>
-          </select>
+                  <div>
+                    <label className="block text-xs font-medium mb-1">
+                      Tag
+                    </label>
+                    <select
+                      name="tag"
+                      defaultValue={tag}
+                      aria-label={
+                        isIt ? "Filtra per tag" : "Filter by tag"
+                      }
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">
+                        {isIt ? "Tutti i tag" : "All tags"}
+                      </option>
+                      {tags.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-          <button
-            type="submit"
-            className="rounded-lg bg-green-800 text-white px-5 py-2 font-medium hover:bg-green-900"
-          >
-            {isIt ? "Applica" : "Apply"}
-          </button>
-          <Link
-            href={`/${locale}/community`}
-            className="text-sm underline text-gray-600 hover:text-green-900"
-          >
-            {isIt ? "Reimposta" : "Reset"}
-          </Link>
+                  <div>
+                    <label className="block text-xs font-medium mb-1">
+                      {isIt ? "Ordina" : "Sort"}
+                    </label>
+                    <select
+                      name="sort"
+                      defaultValue={sort}
+                      aria-label={
+                        isIt ? "Ordina risultati" : "Sort results"
+                      }
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">
+                        {isIt ? "Predefinito" : "Default"}
+                      </option>
+                      <option value="recent">
+                        {isIt
+                          ? "Aggiornati di recente"
+                          : "Recently updated"}
+                      </option>
+                      <option value="title">
+                        {isIt ? "Titolo A–Z" : "Title A–Z"}
+                      </option>
+                      <option value="category">
+                        {isIt ? "Per categoria" : "Category"}
+                      </option>
+                      <option value="readtime">
+                        {isIt ? "Lettura più breve" : "Shortest read"}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <p className="mt-3 text-xs text-gray-500">
+                  {isIt
+                    ? "Suggerimento: combina categoria e tag per costruire il tuo mini-manuale (es. casa + Council Tax)."
+                    : "Tip: mix category and tags to build your own mini-handbook (e.g. housing + Council Tax)."}
+                </p>
+              </div>
+            </form>
+
+            <div className="mt-4 lg:mt-0 lg:w-64 text-xs text-gray-600">
+              <div className="rounded-2xl border border-emerald-50 bg-white/80 p-4 shadow-sm">
+                <p className="font-semibold text-green-900">
+                  {isIt ? "Cos’è questo hub?" : "What is this hub?"}
+                </p>
+                <p className="mt-2">
+                  {isIt
+                    ? "Una libreria viva di guide della community: aggiornate man mano che cambiano le regole, basate su casi reali."
+                    : "A living library of community guides: updated as rules change, grounded in real cases from people living in the UK."}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </form>
+      </section>
 
       {/* COUNTS */}
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between border-b py-4">
-          <h2 className="text-xl md:text-2xl font-semibold text-green-900">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base md:text-lg font-semibold text-green-900">
             {isIt ? (
               <>
-                {filtered.length} {filtered.length === 1 ? "guida" : "guide"}
-                {category ? ` in ${catLabel(category, true)}` : ""}
-                {tag ? ` · ${tag}` : ""}
-                {q ? ` · “${q}”` : ""}
+                {showingCount}{" "}
+                {showingCount === 1 ? "guida" : "guide"} mostrate ·{" "}
+                {totalCount} totali
               </>
             ) : (
               <>
-                {filtered.length} {filtered.length === 1 ? "guide" : "guides"}
-                {category ? ` in ${category}` : ""}
-                {tag ? ` · ${tag}` : ""}
-                {q ? ` · “${q}”` : ""}
+                Showing {showingCount}{" "}
+                {showingCount === 1 ? "guide" : "guides"} · {totalCount} total
               </>
             )}
+            {category
+              ? isIt
+                ? ` in ${catLabel(category, true)}`
+                : ` in ${catLabel(category, false)}`
+              : ""}
+            {tag ? ` · #${tag}` : ""}
+            {q ? ` · “${q}”` : ""}
           </h2>
           <p className="text-sm text-gray-600">
             {isIt ? "Fresche, pratiche e gratuite." : "Fresh, practical and free."}
@@ -929,34 +1235,50 @@ export default async function CommunityHub({
 
       {/* FEATURED CARD */}
       {featured && (
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6">
           <Link
             href={`/${locale}${featured.slug}`}
-            className="block rounded-2xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition"
+            className="block rounded-3xl overflow-hidden border bg-white shadow-md hover:shadow-lg transition"
           >
             <div className="relative h-64 md:h-80">
               <Image
                 src={featured.image || "/images/resinaro-general.png"}
-                alt={featured.title}
+                alt={isIt && featured.itTitle ? featured.itTitle : featured.title}
                 fill
                 priority
                 className="object-cover"
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
               <div className="absolute bottom-0 p-6 md:p-8 text-white">
-                <span className="inline-block text-[11px] bg-emerald-600/90 px-2 py-1 rounded">
-                  {isIt ? "In evidenza" : "Featured"}
-                </span>
-                <h3 className="mt-2 text-2xl md:text-3xl font-bold">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-block text-[11px] bg-emerald-600/95 px-2 py-1 rounded">
+                    {isIt ? "In evidenza" : "Featured"}
+                  </span>
+                  <span className="inline-block text-[11px] bg-black/40 px-2 py-1 rounded">
+                    {catLabel(featured.category, isIt)}
+                  </span>
+                  {featured.minutes && (
+                    <span className="inline-block text-[11px] bg-black/40 px-2 py-1 rounded">
+                      {isIt
+                        ? `${featured.minutes} min di lettura`
+                        : `${featured.minutes} min read`}
+                    </span>
+                  )}
+                </div>
+                <h3 className="mt-3 text-2xl md:text-3xl font-bold">
                   {isIt && featured.itTitle ? featured.itTitle : featured.title}
                 </h3>
                 <p className="mt-1 max-w-3xl text-sm md:text-base opacity-95 line-clamp-2">
-                  {isIt && featured.itDescription ? featured.itDescription : featured.description}
+                  {isIt && featured.itDescription
+                    ? featured.itDescription
+                    : featured.description}
                 </p>
                 <div className="mt-2 text-xs opacity-80">
-                  {featured.minutes ? (isIt ? `${featured.minutes} min di lettura · ` : `${featured.minutes} min read · `) : ""}
-                  {featured.updatedAt ? (isIt ? `Aggiornato ${featured.updatedAt}` : `Updated ${featured.updatedAt}`) : ""}
+                  {prettyFeaturedDate &&
+                    (isIt
+                      ? `Aggiornato ${prettyFeaturedDate}`
+                      : `Updated ${prettyFeaturedDate}`)}
                 </div>
               </div>
             </div>
@@ -964,110 +1286,41 @@ export default async function CommunityHub({
         </div>
       )}
 
-      {/* GRID */}
+      {/* QUICK BUNDLES */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
-        {listWithoutFeatured.length === 0 ? (
-          <div className="rounded-xl border bg-white p-10 text-center text-gray-500">
-            {isIt
-              ? "Nessun articolo corrisponde ai filtri. Prova a rimuovere qualche filtro."
-              : "No posts match your filters. Try clearing some filters above."}
-          </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {listWithoutFeatured.map((post, i) => (
-              <Link
-                key={post.slug}
-                href={`/${locale}${post.slug}`}
-                className="group rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-md transition"
-              >
-                <div className="relative h-44">
-                  <Image
-                    src={post.image || "/images/resinaro-general.png"}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-[1.02] transition"
-                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                    priority={i < 3}
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <span className="inline-flex text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      {catLabel(post.category, isIt)}
-                    </span>
-                    {post.updatedAt && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
-                        {isIt ? `Aggiornato ${post.updatedAt}` : `Updated ${post.updatedAt}`}
-                      </span>
-                    )}
-                    {post.minutes && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                        {isIt ? `${post.minutes} min` : `${post.minutes} min`}
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-lg font-semibold text-green-900 line-clamp-2">
-                    {isIt && post.itTitle ? post.itTitle : post.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-600 line-clamp-3">
-                    {(isIt && post.itDescription ? post.itDescription : post.description) ||
-                      (isIt ? "Leggi la guida completa →" : "Read the full guide →")}
-                  </p>
-
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {post.tags.slice(0, 3).map((t) => (
-                        <span
-                          key={t}
-                          className="text-[11px] px-2 py-0.5 rounded-full bg-gray-50 border text-gray-600"
-                        >
-                          #{t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-3 text-sm font-medium text-green-800 group-hover:underline">
-                    {isIt ? "Leggi di più →" : "Read more →"}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Curated bundles */}
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
         <div className="rounded-xl border bg-white p-5">
           <h3 className="text-lg font-semibold text-green-900">
-            {isIt ? "Raccolte rapide" : "Quick bundles"}
+            {isIt ? "Percorsi rapidi" : "Browse by journey"}
           </h3>
+          <p className="mt-1 text-xs text-gray-600">
+            {isIt
+              ? "Salta direttamente alle raccolte più usate dalla community."
+              : "Jump straight into popular bundles other readers use most."}
+          </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
               href={`/${locale}/community?tag=pantry`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              {isIt ? "Cucina italiana" : "Italian Kitchen"}
+              {isIt ? "Cucina & dispensa" : "Italian kitchen"}
             </Link>
             <Link
               href={`/${locale}/community?category=housing`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              {isIt ? "Casa & Utenze" : "Housing & Utilities"}
+              {isIt ? "Casa & utenze" : "Housing & utilities"}
             </Link>
             <Link
               href={`/${locale}/community?category=bureaucracy-guides`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              {isIt ? "Consolati & Documenti" : "Consular & Documents"}
+              {isIt ? "Consolati & documenti" : "Consular & documents"}
             </Link>
             <Link
               href={`/${locale}/community?category=banking`}
               className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
             >
-              {isIt ? "Banche & Denaro" : "Banking & Money"}
+              {isIt ? "Banche & denaro" : "Banking & money"}
             </Link>
             <Link
               href={`/${locale}/community?category=health`}
@@ -1075,8 +1328,58 @@ export default async function CommunityHub({
             >
               {isIt ? "Salute & NHS" : "Health & NHS"}
             </Link>
+            <Link
+              href={`/${locale}/community?category=life-in-uk`}
+              className="text-sm px-3 py-1 rounded-full border hover:border-green-700 hover:text-green-900"
+            >
+              {isIt ? "Vita quotidiana in UK" : "Day-to-day in the UK"}
+            </Link>
           </div>
         </div>
+      </div>
+
+      {/* GRID BY CATEGORY */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 space-y-10">
+        {showingCount === 0 ? (
+          <div className="rounded-xl border bg-white p-10 text-center text-gray-500">
+            {isIt
+              ? "Nessun articolo corrisponde ai filtri. Prova a rimuovere qualche filtro qui sopra."
+              : "No posts match your filters. Try clearing some of the filters above."}
+          </div>
+        ) : (
+          groupedCategoryKeys.map((catKey) => {
+            const postsInCategory = groupedByCategory[catKey] || [];
+            return (
+              <section key={catKey}>
+                <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="text-xl font-semibold text-green-900">
+                    {catLabel(catKey, isIt)}
+                  </h3>
+                  <p className="text-xs text-gray-600">
+                    {isIt
+                      ? `${postsInCategory.length} ${
+                          postsInCategory.length === 1 ? "guida" : "guide"
+                        }`
+                      : `${postsInCategory.length} ${
+                          postsInCategory.length === 1 ? "guide" : "guides"
+                        }`}
+                  </p>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {postsInCategory.map((post, i) => (
+                    <GuideCard
+                      key={post.slug}
+                      post={post}
+                      locale={locale}
+                      isIt={isIt}
+                      index={i}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })
+        )}
       </div>
 
       {/* JSON-LD */}

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type Locale = "en" | "it";
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: "Italian Passport & ID Card in the UK (2025): Complete Guide",
   description:
     "Step-by-step 2025 guide to Italian passports and CIE in the UK: AIRE, consulates, documents, minors, costs, timelines, common pitfalls and how Resinaro can help with booking and file checks.",
@@ -15,6 +15,14 @@ export const metadata: Metadata = {
     description:
       "Everything you need for Italian passports and ID cards (CIE) from the UK: AIRE, consulates, documents, minors, costs, timelines, and practical booking tips.",
     type: "article",
+    images: [
+      {
+        url: "/images/passport-cie-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Italian passport and ID card (CIE) on a desk with UK documents and a laptop open on Prenot@Mi",
+      },
+    ],
   },
 };
 
@@ -597,6 +605,44 @@ function t(locale: Locale) {
   };
 }
 
+/* --------- Localised metadata (SEO for en/it, OG image) --------- */
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: Locale };
+}): Promise<Metadata> {
+  const locale = params.locale;
+  const it = locale === "it";
+  const copy = t(locale);
+
+  const title = it
+    ? "Passaporto e Carta d’Identità italiana nel Regno Unito (2025): Guida completa"
+    : "Italian Passport & ID Card in the UK (2025): Complete Guide";
+
+  const description = it
+    ? "Guida 2025 passo-passo a passaporto italiano e CIE nel Regno Unito: AIRE, consolati, documenti, minori, costi, tempi, errori comuni e come Resinaro può aiutarti con appuntamenti e controlli fascicolo."
+    : "Step-by-step 2025 guide to Italian passports and CIE in the UK: AIRE, consulates, documents, minors, costs, timelines, common pitfalls and how Resinaro can help with booking and file checks.";
+
+  return {
+    ...baseMetadata,
+    title,
+    description,
+    openGraph: {
+      ...(baseMetadata.openGraph || {}),
+      title,
+      description,
+      images: [
+        {
+          url: "/images/passport-cie-hero.jpg",
+          width: 1200,
+          height: 630,
+          alt: copy.heroAlt,
+        },
+      ],
+    },
+  };
+}
+
 /* -------------------------------- Page --------------------------------- */
 export default function Page({ params }: { params: { locale: Locale } }) {
   const locale = params.locale;
@@ -606,7 +652,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Italian Passport & ID Card in the UK (2025): Complete Guide",
+    headline:
+      locale === "it"
+        ? "Passaporto e Carta d’Identità italiana nel Regno Unito (2025): Guida completa"
+        : "Italian Passport & ID Card in the UK (2025): Complete Guide",
     datePublished: PUBLISHED,
     dateModified: UPDATED,
     author: { "@type": "Organization", name: "Resinaro" },
@@ -617,6 +666,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
     },
     inLanguage: copy.inLang,
     articleSection: ["Bureaucracy", "Passport", "CIE", "AIRE"],
+    image: ["https://www.resinaro.com/images/passport-cie-hero.jpg"],
   };
 
   const breadcrumbJsonLd = {
@@ -672,7 +722,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
     tool: [
       {
         "@type": "HowToTool",
-        name: locale === "it" ? "Computer con accesso a FAST IT / Prenot@Mi" : "Computer with FAST IT / Prenot@Mi access",
+        name:
+          locale === "it"
+            ? "Computer con accesso a FAST IT / Prenot@Mi"
+            : "Computer with FAST IT / Prenot@Mi access",
       },
     ],
     step:
@@ -815,11 +868,26 @@ export default function Page({ params }: { params: { locale: Locale } }) {
   return (
     <main className="bg-[#F9F6F1] text-gray-800 antialiased">
       {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       {/* ===== HERO ===== */}
       <section className="relative isolate overflow-hidden">
@@ -844,7 +912,9 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               {copy.heroTitleA}
               <span className="block text-emerald-200">{copy.heroTitleB}</span>
             </h1>
-            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{copy.heroLead}</p>
+            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">
+              {copy.heroLead}
+            </p>
           </div>
 
           {/* CTA card */}
@@ -892,7 +962,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
             { h: copy.usp2H, p: copy.usp2P },
             { h: copy.usp3H, p: copy.usp3P },
           ].map((x) => (
-            <div key={x.h} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div
+              key={x.h}
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+            >
               <h3 className="text-sm font-semibold text-emerald-800">{x.h}</h3>
               <p className="mt-1 text-sm text-gray-700">{x.p}</p>
             </div>
@@ -957,11 +1030,16 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               { title: copy.take2H, body: copy.take2P },
               { title: copy.take3H, body: copy.take3P },
             ].map((c) => (
-              <div key={c.title} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <div
+                key={c.title}
+                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+              >
                 <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">
                   {locale === "it" ? "Punto chiave" : "Key takeaway"}
                 </p>
-                <h3 className="mt-1 text-base font-semibold text-gray-900">{c.title}</h3>
+                <h3 className="mt-1 text-base font-semibold text-gray-900">
+                  {c.title}
+                </h3>
                 <p className="mt-1 text-sm text-gray-700">{c.body}</p>
               </div>
             ))}
@@ -984,7 +1062,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               <thead>
                 <tr className="bg-gray-50">
                   {copy.jurisHeaders.map((h: string) => (
-                    <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                    <th
+                      key={h}
+                      className="p-3 text-left font-semibold text-gray-900"
+                    >
                       {h}
                     </th>
                   ))}
@@ -1025,7 +1106,9 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                   key={x.h}
                   className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
                 >
-                  <h3 className="text-base font-semibold text-gray-900">{x.h}</h3>
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {x.h}
+                  </h3>
                   <p className="mt-1 text-sm text-gray-700">{x.p}</p>
                   <ul className="mt-2 list-disc pl-5 text-sm text-gray-800">
                     {x.bullets.map((b) => (
@@ -1065,6 +1148,49 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               <p className="text-sm text-amber-900">{copy.safetyNote}</p>
             </div>
 
+            {/* Internal links to deeper guides */}
+            <p className="mt-4 text-xs text-gray-700">
+              {locale === "it" ? (
+                <>
+                  Per esempi concreti di{" "}
+                  <Link
+                    href="/community/bureaucracy-guides/address-proof-uk"
+                    className="text-emerald-800 underline underline-offset-2 hover:text-emerald-900"
+                  >
+                    prova di indirizzo accettata nel Regno Unito
+                  </Link>
+                  , vedi la nostra guida dedicata. Se vuoi capire meglio quando ti conviene davvero
+                  richiedere anche la CIE, puoi leggere la guida{" "}
+                  <Link
+                    href="/community/bureaucracy-guides/italian-cie-uk-docs-prep"
+                    className="text-emerald-800 underline underline-offset-2 hover:text-emerald-900"
+                  >
+                    Carta d’identità elettronica italiana (CIE) nel Regno Unito
+                  </Link>
+                  .
+                </>
+              ) : (
+                <>
+                  For concrete examples of{" "}
+                  <Link
+                    href="/community/bureaucracy-guides/address-proof-uk"
+                    className="text-emerald-800 underline underline-offset-2 hover:text-emerald-900"
+                  >
+                    accepted UK proof of address
+                  </Link>
+                  , check our dedicated guide. If you want a deeper dive into when it actually makes
+                  sense to request a CIE as well, read{" "}
+                  <Link
+                    href="/community/bureaucracy-guides/italian-cie-uk-docs-prep"
+                    className="text-emerald-800 underline underline-offset-2 hover:text-emerald-900"
+                  >
+                    Italian Electronic ID Card (CIE) in the UK
+                  </Link>
+                  .
+                </>
+              )}
+            </p>
+
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex flex-wrap items-center gap-3">
                 <p className="text-sm text-emerald-900">{copy.fridgeCta}</p>
@@ -1083,13 +1209,18 @@ export default function Page({ params }: { params: { locale: Locale } }) {
             id="edge-cases"
             className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm"
           >
-            <h3 className="text-lg font-semibold text-gray-900">{copy.matrixH}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {copy.matrixH}
+            </h3>
             <div className="mt-3 overflow-x-auto rounded-2xl border border-gray-200">
               <table className="w-full border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="bg-gray-50">
                     {copy.matrixHeaders.map((h: string) => (
-                      <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                      <th
+                        key={h}
+                        className="p-3 text-left font-semibold text-gray-900"
+                      >
                         {h}
                       </th>
                     ))}
@@ -1194,7 +1325,10 @@ export default function Page({ params }: { params: { locale: Locale } }) {
               <thead>
                 <tr className="bg-gray-50">
                   {copy.feeHeaders.map((h: string) => (
-                    <th key={h} className="p-3 text-left font-semibold text-gray-900">
+                    <th
+                      key={h}
+                      className="p-3 text-left font-semibold text-gray-900"
+                    >
                       {h}
                     </th>
                   ))}
@@ -1314,25 +1448,25 @@ export default function Page({ params }: { params: { locale: Locale } }) {
           <div className="rounded-3xl border border-gray-200 bg-white p-6 md:p-8 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900">{copy.relatedH}</h2>
             <ul className="mt-3 list-disc pl-6 text-sm text-gray-800">
-              {copy.relatedItems.map(
-                (item: { href: string; label: string }) => (
-                  <li key={item.href}>
-                    <Link
-                      className="text-emerald-800 underline underline-offset-4 hover:text-emerald-900"
-                      href={item.href}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ),
-              )}
+              {copy.relatedItems.map((item: { href: string; label: string }) => (
+                <li key={item.href}>
+                  <Link
+                    className="text-emerald-800 underline underline-offset-4 hover:text-emerald-900"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
             <p className="mt-4 text-xs text-gray-600">{copy.affNoteEnd}</p>
           </div>
 
           {/* Printable checklist + contact CTA */}
           <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-gray-900">{copy.printableH}</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              {copy.printableH}
+            </h3>
             <p className="mt-1 text-sm text-gray-700">{copy.printableP}</p>
             <form
               method="POST"
