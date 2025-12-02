@@ -97,37 +97,6 @@ export default function Footer() {
         bureaucracy: isIt ? "Burocrazia" : "Bureaucracy",
         housing: isIt ? "Casa" : "Housing",
       },
-
-      /* ---- Alveriano footer promo ---- */
-      alv: {
-        heading: isIt
-          ? "Costruito da Alveriano — web & funnel studio"
-          : "Built by Alveriano — web & funnel studio",
-        sub: isIt
-          ? "Siti web veloci, SEO, funnel con AI e contenuti che portano clienti. Creato per aziende di servizi."
-          : "Fast websites, SEO, AI funnels and content that brings leads — built for service businesses.",
-        bullets: isIt
-          ? [
-              "Next.js, prestazioni A+ e accessibilità.",
-              "SEO tecnico + content engine che scala.",
-              "Funnel conversazionali con AI (chatbot sui tuoi contenuti).",
-              "Integrazioni Stripe, Calendly, CRM e automazioni.",
-              "Design pulito, copy chiaro, tracciamento serio.",
-            ]
-          : [
-              "Next.js builds with A+ performance & accessibility.",
-              "Technical SEO + scalable content engine.",
-              "AI conversational funnels (chatbot on your content).",
-              "Stripe, Calendly, CRM integrations & automations.",
-              "Clean design, clear copy, real analytics.",
-            ],
-        ctaPrimary: isIt ? "Scopri Alveriano" : "Explore Alveriano",
-        ctaSecondary: isIt ? "Richiedi un audit gratuito (15 min)" : "Request a free 15-min audit",
-        foot: isIt
-          ? "Pronto a far crescere il tuo sito come Resinaro? Parla con noi: risultati misurabili, senza fronzoli."
-          : "Want results like Resinaro? Talk to us — measurable growth, no fluff.",
-        email: "hello@alveriano.com",
-      },
     }),
     [isIt]
   );
@@ -214,14 +183,14 @@ export default function Footer() {
                 max-w-xl md:max-w-3xl
               "
             >
-              {/* Input has real width; button is fixed-width and never shrinks */}
+              {/* Input has flexible width; button always visible */}
               <input
                 name="email"
                 type="email"
                 inputMode="email"
                 required
                 placeholder={copy.emailPh}
-                className="flex-1 min-w-[14rem] md:min-w-[28rem] px-4 py-2.5 text-[14px] outline-none"
+                className="flex-1 min-w-0 px-4 py-2.5 text-[14px] outline-none"
                 aria-label={copy.emailLabel}
               />
               <button
@@ -247,7 +216,7 @@ export default function Footer() {
       {/* thin divider */}
       <div className="mx-auto max-w-7xl border-t border-black/5" />
 
-      {/* ROW 2: nav — desktop always visible; mobile collapsible */}
+      {/* ROW 2: nav — desktop static; mobile collapsible */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 gap-2 md:grid-cols-4 md:gap-6">
           <FooterSection title={copy.explore}>
@@ -319,79 +288,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* --- Alveriano Promo Band (refined to blend with brand) --- */}
-      <div className="relative bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-          <div className="relative rounded-3xl ring-1 ring-black/5 bg-white/80 backdrop-blur-sm supports-[backdrop-filter]:bg-white/70 p-6 md:p-8 shadow-[0_12px_48px_rgba(0,0,0,.06)]">
-            {/* subtle brand hairline */}
-            <div className="absolute -top-px left-4 right-4 h-[3px] rounded-full overflow-hidden" aria-hidden>
-              <div className="grid grid-cols-3 h-full">
-                <div className="bg-[#0B5D3B]" />
-                <div className="bg-white" />
-                <div className="bg-[#B22222]" />
-              </div>
-            </div>
-
-            <h2 className="text-2xl md:text-[28px] font-extrabold tracking-tight text-emerald-900 text-center">
-              {copy.alv.heading}
-            </h2>
-            <p className="mt-2 text-[15px] md:text-base text-gray-700 text-center max-w-3xl mx-auto">
-              {copy.alv.sub}
-            </p>
-
-            <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[15px] text-gray-800 max-w-4xl mx-auto">
-              {copy.alv.bullets.map((b, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <svg
-                    className="mt-1 h-4 w-4 text-emerald-700"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a
-                href="https://alveriano.com/?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-xl bg-emerald-700 px-5 py-2.5 text-white text-sm font-semibold hover:bg-emerald-800 shadow-sm hover:shadow-md"
-              >
-                {copy.alv.ctaPrimary}
-              </a>
-              <a
-                href={`mailto:${copy.alv.email}?subject=Resinaro%20site%20audit%20request&body=Hi%20Alveriano,%0D%0A%0D%0AWe%27d%20like%20a%2015-minute%20audit.%20Website:%20_____%0D%0AGoals:%20_____%0D%0A`}
-                className="inline-flex items-center justify-center rounded-xl border border-emerald-700 px-5 py-2.5 text-emerald-800 text-sm font-semibold hover:bg-emerald-50"
-              >
-                {copy.alv.ctaSecondary}
-              </a>
-            </div>
-
-            <p className="mt-4 text-center text-[13px] text-gray-700 max-w-3xl mx-auto">
-              {copy.alv.foot}{" "}
-              <a
-                href="https://alveriano.com/case-studies?utm_source=resinaro&utm_medium=referral&utm_campaign=footer_promo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-emerald-600 decoration-2 underline-offset-2 hover:text-emerald-800"
-              >
-                alveriano.com
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* JSON-LD (Resinaro) */}
       <script
         type="application/ld+json"
@@ -422,30 +318,40 @@ export default function Footer() {
 /* ----------------------------- small bits ----------------------------- */
 
 function FooterSection({ title, children }: { title: string; children: React.ReactNode }) {
-  // Mobile: collapsible; Desktop: force-open and show content.
   return (
-    <details className="group md:open">
-      <summary
-        className="
-          mx-auto w-full max-w-sm md:max-w-none md:mx-0
-          flex cursor-pointer list-none items-center justify-between gap-3
-          px-3 py-2 md:px-0 md:py-1
-        "
-      >
-        <span className="text-[13px] font-semibold uppercase tracking-wide text-gray-900 w-full text-center md:text-left">
-          {title}
-        </span>
-        <span
-          aria-hidden
-          className="inline-flex h-5 w-5 items-center justify-center rounded-full border text-xs text-gray-700 md:hidden group-open:rotate-45 transition"
+    <>
+      {/* Mobile: collapsible accordion */}
+      <details className="group md:hidden">
+        <summary
+          className="
+            mx-auto w-full max-w-sm
+            flex cursor-pointer list-none items-center justify-between gap-3
+            px-3 py-2
+          "
         >
-          +
-        </span>
-      </summary>
+          <span className="text-[13px] font-semibold uppercase tracking-wide text-gray-900 w-full text-center">
+            {title}
+          </span>
+          <span
+            aria-hidden
+            className="inline-flex h-5 w-5 items-center justify-center rounded-full border text-xs text-gray-700 group-open:rotate-45 transition"
+          >
+            +
+          </span>
+        </summary>
+        <div className="pb-2">{children}</div>
+      </details>
 
-      {/* On desktop, don't allow closing/hiding; keep content visible */}
-      <div className="pb-2 md:pb-0 md:block">{children}</div>
-    </details>
+      {/* Desktop: static section (always visible, non-collapsible) */}
+      <div className="hidden md:block">
+        <div className="px-0 py-1">
+          <span className="text-[13px] font-semibold uppercase tracking-wide text-gray-900">
+            {title}
+          </span>
+        </div>
+        <div className="mt-1">{children}</div>
+      </div>
+    </>
   );
 }
 
