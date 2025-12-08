@@ -1,13 +1,60 @@
 import VisaForm from "@/components/VisaForm";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 
+/* =============================== METADATA =============================== */
+
 export const metadata: Metadata = {
-  title: "Visa Help (UK) — Booking & Documents | Resinaro",
+  title: "Visa Help (UK) – Guide £35 or 1:1 £70 | Resinaro",
   description:
-    "Friendly visa appointment & document support for Italians in the UK. Flat fee £35 (admin only). Official visa fees paid to the provider. No guarantees.",
-  alternates: { canonical: "/services/visa-booking" },
+    "Visa & biometric appointment help for Italians in the UK. £35 step-by-step guide or £70 1:1 support with account, form and booking. Admin support only; no legal advice; official fees separate.",
+  alternates: {
+    canonical: "/services/visa-booking",
+    languages: {
+      en: "/en/services/visa-booking",
+      it: "/it/services/visa-booking",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    title: "Visa Help (UK) – Guide £35 or 1:1 £70 | Resinaro",
+    description:
+      "Clear visa help for Italians in the UK: £35 step-by-step guide or £70 1:1 support with account setup, forms and booking. We are not immigration advisers.",
+    url: "https://www.resinaro.com/services/visa-booking",
+    siteName: "Resinaro",
+    images: [
+      {
+        url: "/images/service-visa.png",
+        width: 1200,
+        height: 630,
+        alt: "Visa appointment and document help by Resinaro",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Visa Help (UK) – Guide £35 or 1:1 £70 | Resinaro",
+    description:
+      "Visa & biometric appointment help for Italians in the UK. Two options: £35 guide or £70 1:1 admin support. No guarantees or legal advice.",
+    images: ["/images/service-visa.png"],
+    creator: "@resinaro",
+  },
 };
+
+/* =============================== JSON-LD ================================ */
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -19,34 +66,34 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "No. Decisions and appointment availability are controlled by the relevant authority (e.g., UKVI, TLScontact, VFS). We help you locate and book slots and prepare a clean application to reduce errors.",
+          "No. Decisions and appointment availability are controlled only by the official authority (e.g., UKVI, TLScontact, VFS, consulates). We help you prepare and navigate portals to reduce avoidable admin errors, but we cannot guarantee outcomes or appointment dates.",
       },
     },
     {
       "@type": "Question",
-      name: "Who is this service for?",
+      name: "Who is this visa help service for?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Italians in the UK who need help booking a visa/biometrics appointment or preparing documents (work, study, family, visit). We also support non-EU family members connected to Italian citizens with Italy/Schengen applications, where eligible.",
+          "Mainly Italians in the UK (and their close family members) who need help understanding which visa route to select, preparing documents and using official portals such as UKVI, TLScontact or VFS for work, study, family or visit visas.",
       },
     },
     {
       "@type": "Question",
-      name: "Is this legal advice?",
+      name: "Is this immigration or legal advice?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "No. We provide administrative support and document guidance only. We are not solicitors or immigration advisers and do not offer legal advice.",
+          "No. Resinaro provides administrative support only: explaining forms, portals and document organisation based on public information and what you tell us. We are not solicitors or regulated immigration advisers and we do not give legal advice.",
       },
     },
     {
       "@type": "Question",
-      name: "How much does it cost?",
+      name: "What are the £35 and £70 options?",
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "Our admin support is a flat fee of £35 per application. Government/consulate/provider fees are separate and paid directly on the official portal.",
+          "The £35 option is a step-by-step written guide with a tailored document checklist you can follow by yourself. The £70 option includes everything in the guide plus 1:1 support to set up the account, go through the online form with you and help with booking appointments where portals allow. Official visa fees are separate and paid directly to the authority.",
       },
     },
   ],
@@ -55,162 +102,349 @@ const faqJsonLd = {
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Visa Appointment & Document Support",
+  name: "Visa Appointment & Document Support (Guide or 1:1)",
   provider: {
     "@type": "Organization",
     name: "Resinaro",
     url: "https://www.resinaro.com",
     email: "resinaro@proton.me",
   },
-  serviceType: "Visa/biometrics appointment booking and document preparation support",
+  serviceType:
+    "Visa/biometrics appointment booking and document preparation admin support",
   areaServed: { "@type": "Country", name: "United Kingdom" },
   description:
-    "Clear, friendly help for booking visa/biometric appointments and preparing documents. £35 admin fee; official visa fees paid to the provider. No guarantees.",
-  offers: {
-    "@type": "Offer",
-    priceCurrency: "GBP",
-    price: "35",
-    availability: "https://schema.org/InStock",
+    "Visa and biometric appointment help for Italians in the UK. £35 step-by-step written guide or £70 1:1 support with account setup, forms and appointment booking. No legal advice and no guarantees of outcome.",
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Visa step-by-step guide",
+      priceCurrency: "GBP",
+      price: "35",
+      availability: "https://schema.org/InStock",
+      description:
+        "Route check and personalised step-by-step written guide with tailored document checklist to follow on your own. Admin support only; official fees separate.",
+    },
+    {
+      "@type": "Offer",
+      name: "Visa 1:1 account & application support",
+      priceCurrency: "GBP",
+      price: "70",
+      availability: "https://schema.org/InStock",
+      description:
+        "Everything in the £35 guide plus 1:1 support to set up the account, go through the online form with you and help with appointment booking. Admin support only; official fees separate.",
+    },
+  ],
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Services",
+      item: "https://www.resinaro.com/services",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Visa help (guide & 1:1)",
+      item: "https://www.resinaro.com/services/visa-booking",
+    },
+  ],
+};
+
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Resinaro",
+  url: "https://www.resinaro.com",
+  email: "resinaro@proton.me",
+  logo: "https://www.resinaro.com/android-chrome-192x192.png",
+  sameAs: [
+    "https://www.instagram.com/resinaro",
+    "https://www.youtube.com/@resinaro",
+  ],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: "resinaro@proton.me",
+      availableLanguage: ["English", "Italian"],
+      areaServed: "GB",
+    },
+  ],
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Resinaro",
+  url: "https://www.resinaro.com",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://www.resinaro.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string",
   },
 };
 
-/* ----------------------------- i18n strings ---------------------------- */
+/* ============================= i18n strings ============================ */
+
 function t(locale: "en" | "it") {
   const it = locale === "it";
+
   return {
     heroAlt: it
-      ? "Supporto per appuntamenti visti e documenti per italiani nel Regno Unito"
+      ? "Aiuto per appuntamenti visti e documenti per italiani nel Regno Unito"
       : "Visa appointment and document support for Italians in the UK",
-
-    h1: it ? "Assistenza Visto — Appuntamenti & Documenti (£35)" : "Visa Appointment & Document Help (£35)",
-
-    introP: it ? (
+    heroH1: it
+      ? "Aiuto visto – guida da £35 o supporto 1:1 da £70"
+      : "Visa help – £35 guide or £70 1:1 support",
+    heroSub: it ? (
       <>
-        Rendiamo semplice prenotazione e documenti. Paghi <strong>£35</strong> solo per il nostro supporto
-        amministrativo. <em>Le tariffe ufficiali del visto</em> sono separate e si pagano al fornitore
-        (UKVI/TLS/VFS) dopo la nostra guida. Nessuna garanzia su disponibilità o esito.
+        Ti aiutiamo a capire il <strong>percorso visto giusto</strong>, i{" "}
+        <strong>documenti</strong> e i portali (UKVI, TLS, VFS, consolati). Puoi
+        scegliere tra una{" "}
+        <span className="underline underline-offset-4 decoration-emerald-700">
+          guida passo-passo da £35
+        </span>{" "}
+        oppure un{" "}
+        <strong>
+          supporto 1:1 da £70 per account, modulo online e appuntamento
+        </strong>
+        . <strong>Non siamo avvocati d’immigrazione</strong> e non diamo
+        consulenza legale.
       </>
     ) : (
       <>
-        We make booking and paperwork simple. You pay <strong>£35</strong> for our admin support only.{" "}
-        <em>Official visa fees are separate</em> and paid to the provider (UKVI/TLS/VFS) after we guide you.{" "}
-        No guarantees of availability or outcome.
+        We help you understand the <strong>right visa route</strong>,{" "}
+        <strong>documents</strong> and portals (UKVI, TLS, VFS, consulates).
+        Choose between a{" "}
+        <span className="underline underline-offset-4 decoration-emerald-700">
+          £35 step-by-step guide
+        </span>{" "}
+        or{" "}
+        <strong>£70 1:1 support with account, online form and booking</strong>.
+        <strong> We are not immigration lawyers</strong> and we don’t give legal
+        advice.
       </>
     ),
+    heroCta: it ? "Inizia l’aiuto visto" : "Start visa help",
+    heroSecondaryCta: it ? "Vedi il modulo" : "View the form",
+    heroTrustLine: it
+      ? "Italiano e inglese · Solo supporto amministrativo · Processo privato e sicuro"
+      : "Italian & English · Admin support only · Safe, private process",
 
-    whatYouGetH: it ? "Cosa è incluso" : "What you get",
-    whatYouGetList: it
+    heroTierTitle: it ? "Due livelli di supporto" : "Two levels of support",
+    heroTierItems: it
       ? [
-          "Verifica percorso & lista documenti personalizzata",
-          "Setup portale (UKVI/TLS/VFS) + supporto prenotazione",
-          "Revisione pre-invio per ridurre errori",
+          "£35 – guida scritta passo-passo con checklist personalizzata",
+          "£70 – tutto quello della guida + supporto 1:1 per account, modulo e appuntamento",
+          "In entrambi i casi: niente consulenza legale, nessuna garanzia su esito o date.",
         ]
       : [
-          "Route check & tailored document list",
-          "Portal setup (UKVI/TLS/VFS) + booking support",
-          "Pre-submit review to reduce mistakes",
+          "£35 – written step-by-step guide with tailored checklist",
+          "£70 – everything in the guide plus 1:1 help with account, form and appointment",
+          "Both options: no legal advice, no guarantee of outcome or dates.",
         ],
 
-    importantH: it ? "Importante" : "Important",
-    importantP: it ? (
-      <>
-        Non siamo UKVI/TLS/VFS e <strong>non forniamo consulenza legale</strong>. Preferisci email? Invia i
-        documenti a <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
-      </>
-    ) : (
-      <>
-        We are <strong>not</strong> UKVI/TLS/VFS and do not provide legal advice. Prefer email? Send docs to{" "}
-        <a className="underline" href="mailto:resinaro@proton.me">resinaro@proton.me</a>.
-      </>
-    ),
+    whoH: it ? "È per te se…" : "This is for you if…",
+    whoList: it
+      ? [
+          "Sei in Regno Unito e ti serve un visto (lavoro, studio, famiglia, visita, ecc.).",
+          "Ti blocchi davanti ai portali UKVI, TLS, VFS o non capisci bene la procedura.",
+          "Hai paura di sbagliare modulo, percorso o documenti da caricare.",
+          "Vuoi che qualcuno ti organizzi i passi in modo calmo e chiaro.",
+        ]
+      : [
+          "You’re in the UK and need a visa (work, study, family, visit, etc.).",
+          "You feel stuck or confused with UKVI, TLS, VFS or consulate portals.",
+          "You’re worried about choosing the wrong route or missing documents.",
+          "You want someone to organise the steps calmly and clearly for you.",
+        ],
+    whoNotH: it ? "Non è per te se…" : "It’s not for you if…",
+    whoNotList: it
+      ? [
+          "Ti serve una consulenza legale completa o una rappresentanza formale.",
+          "Sei in una situazione estremamente complessa (ricorsi, overstayer, protezione internazionale): in quel caso serve un avvocato/consulente regolamentato.",
+        ]
+      : [
+          "You need full legal advice or formal immigration representation.",
+          "You are in a very complex situation (appeals, overstayer, protection claims) – you need a regulated adviser or solicitor instead.",
+        ],
 
-    formH: it ? "Inizia qui — modulo rapido" : "Start here — quick form",
+    whatH: it ? "Cosa facciamo per te" : "What you get with this service",
+    what1Title: it
+      ? "Verifica percorso e requisiti di base"
+      : "Route check and basic requirements",
+    what1Body: it
+      ? "Analizziamo brevemente la tua situazione e il motivo del visto per orientarti verso il percorso più probabile, usando solo informazioni pubbliche e quello che ci racconti."
+      : "We look at your situation and reason for the visa to point you towards the most likely route, using only public information and what you tell us.",
+    what2Title: it
+      ? "Checklist documenti e istruzioni chiare"
+      : "Document checklist and clear instructions",
+    what2Body: it
+      ? "Ricevi una lista documenti personalizzata con note pratiche su come prepararli e istruzioni passo-passo su cosa cliccare e in che ordine."
+      : "You get a tailored document checklist with practical notes and a step-by-step explanation of what to click and in which order.",
+    what3Title: it
+      ? "Portali, pagamento e appuntamenti"
+      : "Portals, payment and appointments",
+    what3Body: it
+      ? "Con il pacchetto 1:1 ti affianchiamo su account, modulo online e prenotazione appuntamento (quando il portale lo permette), riducendo errori tecnici."
+      : "With the 1:1 option we sit beside you (online) for account, form and booking steps, reducing technical mistakes where the portal allows it.",
+
+    howH: it ? "Come funziona (3 passi)" : "How it works (3 steps)",
+    how1Title: it ? "1. Ci racconti il tuo caso" : "1. You tell us your situation",
+    how1Body: it
+      ? "Compili il modulo qui sotto (o ci scrivi) con il tipo di visto, la tua situazione e la tempistica ideale."
+      : "You fill out the form below (or email us) with your visa type, situation and ideal timeline.",
+    how2Title: it ? "2. Prepariamo la guida" : "2. We prepare your guide",
+    how2Body: it
+      ? "Ti mandiamo una guida passo-passo con checklist documenti e, se hai scelto il 1:1, fissiamo una sessione per fare insieme portali e modulo."
+      : "We send a step-by-step guide with a document checklist and, if you chose 1:1, we schedule a session to go through portals and the form together.",
+    how3Title: it ? "3. Compili e invii con più calma" : "3. You submit with more calm",
+    how3Body: it
+      ? "Segui la guida (e/o la sessione 1:1) per completare il percorso in modo più ordinato. La decisione finale resta sempre all’autorità competente."
+      : "You follow the guide (and/or the 1:1 session) to complete things more calmly and organised. The final decision is always with the authority.",
+
+    pricingH: it ? "Prezzi chiari (supporto amministrativo)" : "Clear pricing (admin support only)",
+    pricingGuideTitle: it ? "£35 – guida passo-passo" : "£35 – step-by-step guide",
+    pricingGuideBody: it
+      ? "Verifica percorso, checklist personalizzata, istruzioni scritte passo-passo con link ai portali. Perfetta se te la cavi da solo ma vuoi ordine."
+      : "Route check, tailored checklist, written step-by-step instructions with links to official portals. Best if you can do it yourself but want structure.",
+    pricingFullTitle: it
+      ? "£70 – supporto 1:1 completo"
+      : "£70 – 1:1 full support",
+    pricingFullBody: it
+      ? "Tutto ciò che include la guida da £35, più sessione 1:1 per account, modulo online e appuntamento (quando possibile). Ideale se vuoi qualcuno “accanto”."
+      : "Everything in the £35 guide plus a 1:1 session for account setup, online form and appointment booking (where possible). Ideal if you want someone “next to you”.",
+    pricingNote: it
+      ? "Le tariffe governative/consolari, il servizio di corriere o priorità e tutte le fee ufficiali si pagano sempre direttamente al fornitore."
+      : "Government/consulate fees, courier or priority services and all official charges are always paid directly to the authority.",
+    pricingSub: it
+      ? "Si tratta solo di supporto amministrativo. Non possiamo garantire l’esito del visto né le tempistiche di decisione."
+      : "This is admin support only. We cannot guarantee your visa outcome or decision timelines.",
+
+    formH: it ? "Inizia l’aiuto visto" : "Start visa help",
     formP: it
-      ? "Un modulo calmo e chiaro. Un passo alla volta — e puoi sempre usare l’email se preferisci."
-      : "A calm, friendly form. One step at a time — and email is always an option if you prefer.",
-
-    includedH: it ? "Cosa comprende" : "What’s included",
-    includedList: it
-      ? [
-          "Valutazione della tua situazione e percorso corretto",
-          "Checklist personalizzata con diciture per le prove",
-          "Creazione account e guida sui portali ufficiali",
-          "Ricerca & prenotazione dell’appuntamento nel centro più vicino",
-          "Revisione pre-invio per intercettare errori comuni",
-          "Email riepilogo con prossimi passi e cosa portare",
-        ]
-      : [
-          "Assessment of your situation and the correct application path",
-          "Tailored checklist with specific evidence wording",
-          "Account setup and guidance on official portals",
-          "Appointment search & booking support at your nearest centre",
-          "Pre-submission review to catch common errors",
-          "Email summary with next steps and what to bring",
-        ],
-    includedNote: it
-      ? "Tariffe governative/consolari, corriere, priorità o biometria sono separate e si pagano al fornitore."
-      : "Government/consulate fees, courier, priority or biometrics fees are separate and paid to the provider.",
-
-    needH: it ? "Cosa potresti dover preparare" : "What you may need",
-    commonH: it ? "Documenti comuni" : "Common items",
-    commonList: it
-      ? ["Passaporto valido", "Prova di indirizzo nel Regno Unito (≤3 mesi)", "Prove finanziarie"]
-      : ["Valid passport", "Proof of UK address (≤3 months)", "Financial evidence"],
-    routeH: it ? "Specifici per percorso" : "Route specific",
-    routeList: it
-      ? ["Lavoro: offerta/CoS", "Studio: CAS/lettera di offerta", "Famiglia/visita: relazione & piano viaggio"]
-      : ["Work: job offer/CoS", "Study: CAS/offer letter", "Family/visit: relationship & travel plan"],
-    needNote: it
-      ? "Confermeremo la lista esatta e suggeriremo alternative se manca qualcosa."
-      : "We’ll confirm the exact list and suggest alternatives if something is missing.",
-
-    urgentH: it ? "Urgenza?" : "Urgent?",
-    urgentP: it ? (
+      ? "Compila il modulo con calma. Puoi indicare se vuoi la guida da £35, il 1:1 da £70 o se non sei ancora sicuro."
+      : "Fill in the form calmly. You can indicate if you prefer the £35 guide, the £70 1:1 support, or if you’re not sure yet.",
+    formSupport: it ? (
       <>
-        Invia un’email a{" "}
-        <a className="underline text-amber-300" href="mailto:resinaro@proton.me?subject=Urgent%20visa%20support">
+        Domande prima di procedere? Scrivici a{" "}
+        <a className="underline" href="mailto:resinaro@proton.me">
           resinaro@proton.me
         </a>{" "}
-        con oggetto <strong>“Urgent visa support”</strong> e la tua località.
+        o su{" "}
+        <a
+          className="underline"
+          href="https://wa.me/447424208127"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp
+        </a>
+        .
       </>
     ) : (
       <>
-        Email{" "}
-        <a className="underline text-amber-300" href="mailto:resinaro@proton.me?subject=Urgent%20visa%20support">
+        Questions before starting? Email{" "}
+        <a className="underline" href="mailto:resinaro@proton.me">
           resinaro@proton.me
         </a>{" "}
-        with subject <strong>“Urgent visa support”</strong> and your location.
+        or message us on{" "}
+        <a
+          className="underline"
+          href="https://wa.me/447424208127"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp
+        </a>
+        .
       </>
     ),
 
-    beforeH: it ? "Prima di iniziare" : "Before you start",
-    beforeList: it
+    docsH: it
+      ? "Cosa potresti dover preparare (promemoria veloce)"
+      : "What you may need to prepare (quick heads-up)",
+    docsForTitle: it ? "Spesso richiedono:" : "Often required:",
+    docsList: it
       ? [
-          "Individua il visto target (lavoro, studio, famiglia, visita, ecc.)",
-          "Tieni a portata di mano documento d’identità e prova di indirizzo UK",
-          "Raccogli eventuali lettere del datore di lavoro/ente formativo",
-          "Per i minori potrebbero servire consensi & documenti aggiuntivi",
+          "Passaporto attuale o documento di identità.",
+          "Prove di reddito o risparmi (estratti conto, buste paga, ecc.).",
+          "Prova di indirizzo o legami con il Regno Unito/Italia.",
+          "Lettere di datore di lavoro, università o sponsor (se rilevante).",
         ]
       : [
-          "Know your target visa (work, study, family, visit, etc.)",
-          "Have ID and proof of UK address to hand",
-          "Gather any sponsor/employer/education letters",
-          "Minors may need consent & extra documents",
+          "Your current passport or ID document.",
+          "Proof of funds or income (bank statements, payslips, etc.).",
+          "Proof of address or ties to the UK/Italy.",
+          "Letters from employer, university or sponsor (if relevant).",
         ],
+    docsNote: it ? (
+      <>
+        Ogni percorso è diverso. Useremo il modulo per capire la tua situazione e
+        ti daremo una lista più precisa. In caso di dubbi grossi, è meglio anche
+        sentire un consulente regolamentato.
+      </>
+    ) : (
+      <>
+        Every route is different. We’ll use the form to understand your situation
+        and send a more precise list. For very complex cases, it’s wise to also
+        speak to a regulated adviser.
+      </>
+    ),
 
-    faqsH: it ? "FAQ" : "FAQs",
-    faq1Q: it ? "Potete compilare i moduli al posto mio?" : "Can you complete the forms for me?",
-    faq1A: it
-      ? "Ti guidiamo passo-passo e verifichiamo gli inserimenti. Dove possibile, assistiamo via screen-share per ridurre errori prima del pagamento."
-      : "We guide you step-by-step and check entries. Where portals allow, we’ll assist via screen-share to reduce errors before payment.",
-    faq2Q: it ? "E se non ci sono appuntamenti disponibili?" : "What if no appointments are available?",
-    faq2A: it
-      ? "Monitoriamo e tentiamo la prenotazione quando si aprono slot, consigliamo centri alternativi dove possibile e condividiamo pattern di orari per aumentare le chances."
-      : "We monitor and attempt booking when slots open, advise on alternative centres where possible, and share timing patterns to improve your chances.",
+    expectationsH: it
+      ? "Aspettative oneste (da leggere)"
+      : "Honest expectations (please read)",
+    expectationsP1: it ? (
+      <>
+        Non siamo avvocati né consulenti d’immigrazione regolamentati. Possiamo
+        aiutarti solo con <strong>supporto amministrativo</strong> (portali,
+        moduli, documenti) basato sulle informazioni pubbliche e su quello che
+        ci scrivi. <strong>Non possiamo garantire</strong> che il visto venga
+        concesso o in quanto tempo.
+      </>
+    ) : (
+      <>
+        We are not lawyers or regulated immigration advisers. We can only offer{" "}
+        <strong>admin support</strong> (portals, forms, documents) based on
+        public information and what you tell us. We{" "}
+        <strong>cannot guarantee</strong> your visa will be granted or how long
+        a decision will take.
+      </>
+    ),
+    expectationsP2: it ? (
+      <>
+        Tu rimani sempre responsabile delle informazioni inserite nei moduli e
+        nelle dichiarazioni. Se hai una situazione limite o urgente, ti
+        consiglieremo di contattare un professionista regolamentato.
+      </>
+    ) : (
+      <>
+        You remain responsible for the information entered into forms and any
+        declarations. If you are in an extreme or urgent situation, we’ll
+        encourage you to speak to a regulated professional.
+      </>
+    ),
+
+    otherH: it ? "Altri percorsi utili" : "Other helpful services",
+    otherPassport: it
+      ? "Appuntamenti passaporto italiano (Prenot@Mi 12+)"
+      : "Italian passport appointments (Prenot@Mi 12+)",
+    otherTranslation: it
+      ? "Traduzioni di documenti per visti e consolati"
+      : "Document translations for visas and consulates",
+    otherContact: it ? "Contatta direttamente Resinaro" : "Contact Resinaro directly",
+    allServices: it ? "Tutti i servizi" : "All services",
   };
 }
 
-/* -------------------------------- Page --------------------------------- */
+/* ================================ PAGE ================================= */
+
 export default function VisaServicePage({
   params,
 }: {
@@ -218,12 +452,14 @@ export default function VisaServicePage({
 }) {
   const { locale } = params;
   const copy = t(locale);
+  const p = (path: string) => `/${locale}${path}`;
 
   return (
-    <main className="bg-neutral-50 text-green-900 min-h-screen">
-      {/* Full-bleed hero */}
-      <section className="relative w-full">
-        <div className="w-full h-[220px] sm:h-[320px] md:h-[420px] overflow-hidden">
+    <main className="min-h-screen bg-neutral-50 text-green-900">
+      {/* ================================ HERO ================================ */}
+      <section className="relative w-full pb-10 pt-4 sm:pt-6 md:pt-8">
+        {/* Background image */}
+        <div className="relative h-[230px] w-full overflow-hidden sm:h-[300px] md:h-[380px] lg:h-[420px]">
           <Image
             src="/images/service-visa.png"
             alt={copy.heroAlt}
@@ -232,137 +468,313 @@ export default function VisaServicePage({
             sizes="100vw"
             priority
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/5" />
         </div>
 
-        {/* Overlay intro + price disclaimers */}
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 -mt-16">
-          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-5 sm:p-7 md:p-9">
-            <h1 className="text-3xl sm:text-4xl font-extrabold">
-              {copy.h1}
-            </h1>
-            <p className="mt-2 text-green-800">
-              {copy.introP}
-            </p>
+        {/* Hero content card */}
+        <div className="-mt-16 mx-auto max-w-5xl px-3 sm:px-6 md:px-8 lg:-mt-20 lg:px-0 relative">
+          <div className="rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur-md md:p-8">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center">
+              <div className="md:flex-1">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-emerald-700">
+                  {locale === "it"
+                    ? "Supporto visto per italiani nel Regno Unito"
+                    : "Visa support for Italians in the UK"}
+                </p>
+                <h1 className="mt-2 text-3xl font-extrabold leading-tight text-emerald-950 sm:text-4xl">
+                  {copy.heroH1}
+                </h1>
+                <p className="mt-3 text-sm text-emerald-900 sm:text-[15px]">
+                  {copy.heroSub}
+                </p>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div className="bg-green-50 border border-green-200 rounded-xl p-3">
-                <h3 className="font-semibold">{copy.whatYouGetH}</h3>
-                <ul className="text-sm text-gray-800 list-disc list-inside mt-1">
-                  {copy.whatYouGetList.map((li) => (
-                    <li key={li}>{li}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
-                <h3 className="font-semibold">{copy.importantH}</h3>
-                <p className="text-sm text-gray-800">
-                  {copy.importantP}
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <a
+                    href="#book"
+                    className="inline-flex items-center justify-center rounded-full bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800 transition-colors"
+                  >
+                    {copy.heroCta}
+                  </a>
+                  <a
+                    href="#book"
+                    className="text-sm font-medium text-emerald-900 underline underline-offset-4"
+                  >
+                    {copy.heroSecondaryCta}
+                  </a>
+                </div>
+
+                <p className="mt-3 text-xs text-emerald-800">
+                  {copy.heroTrustLine}
                 </p>
               </div>
+
+              {/* Hero right – tiers summary */}
+              <div className="md:w-[280px]">
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-900">
+                    {copy.heroTierTitle}
+                  </p>
+                  <ul className="mt-2 space-y-1.5 text-[12px] text-emerald-900">
+                    {copy.heroTierItems.map((item: string, idx: number) => (
+                      <li key={idx} className="flex gap-2">
+                        <span className="mt-[3px] inline-flex h-4 w-4 flex-none items-center justify-center rounded-full bg-emerald-100 text-[10px] text-emerald-800">
+                          ✓
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Form near the top for mobile */}
-      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pt-6 md:pt-10">
-        <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm">
-          <h2 className="text-xl font-semibold mb-2">{copy.formH}</h2>
-          <p className="text-sm text-gray-700 mb-4">
-            {copy.formP}
+      {/* ======================== WHO IT'S FOR / NOT FOR ==================== */}
+      <section className="mx-auto max-w-5xl px-3 pb-6 sm:px-6 md:px-8 md:pb-8">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
+            <h2 className="text-base font-semibold text-emerald-950">
+              {copy.whoH}
+            </h2>
+            <ul className="mt-2 space-y-1.5 text-sm text-emerald-900">
+              {copy.whoList.map((item: string, idx: number) => (
+                <li key={idx} className="flex gap-2">
+                  <span className="mt-[3px] inline-flex h-4 w-4 flex-none items-center justify-center rounded-full bg-emerald-100 text-[10px] text-emerald-800">
+                    ✓
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-rose-100 bg-rose-50/60 p-5 shadow-sm">
+            <h2 className="text-base font-semibold text-emerald-950">
+              {copy.whoNotH}
+            </h2>
+            <ul className="mt-2 space-y-1.5 text-sm text-emerald-900">
+              {copy.whoNotList.map((item: string, idx: number) => (
+                <li key={idx} className="flex gap-2">
+                  <span className="mt-[3px] inline-flex h-4 w-4 flex-none items-center justify-center rounded-full bg-rose-200 text-[10px] text-rose-900">
+                    !
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================= WHAT YOU GET ========================= */}
+      <section className="mx-auto max-w-5xl px-3 pb-6 sm:px-6 md:px-8 md:pb-8">
+        <div className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm md:p-7">
+          <h2 className="text-xl font-semibold text-center text-emerald-950">
+            {copy.whatH}
+          </h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <FeatureCard title={copy.what1Title} body={copy.what1Body} />
+            <FeatureCard title={copy.what2Title} body={copy.what2Body} />
+            <FeatureCard title={copy.what3Title} body={copy.what3Body} />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================== HOW IT WORKS ======================== */}
+      <section className="mx-auto max-w-5xl px-3 pb-6 sm:px-6 md:px-8 md:pb-8">
+        <div className="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm md:p-7">
+          <h2 className="text-xl font-semibold text-center text-emerald-950">
+            {copy.howH}
+          </h2>
+          <ol className="mt-4 grid gap-4 md:grid-cols-3">
+            <StepCard title={copy.how1Title} body={copy.how1Body} index={1} />
+            <StepCard title={copy.how2Title} body={copy.how2Body} index={2} />
+            <StepCard title={copy.how3Title} body={copy.how3Body} index={3} />
+          </ol>
+        </div>
+      </section>
+
+      {/* ================================ PRICING =========================== */}
+      <section className="mx-auto max-w-5xl px-3 pb-4 sm:px-6 md:px-8 md:pb-6">
+        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-5 shadow-sm md:p-7">
+          <h2 className="text-xl font-semibold text-center text-emerald-950">
+            {copy.pricingH}
+          </h2>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl border border-emerald-200 bg-white/70 p-4">
+              <h3 className="text-sm font-semibold text-emerald-950">
+                {copy.pricingGuideTitle}
+              </h3>
+              <p className="mt-1 text-sm text-emerald-900/90">
+                {copy.pricingGuideBody}
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-300 bg-emerald-700 text-emerald-50 p-4">
+              <h3 className="text-sm font-semibold">
+                {copy.pricingFullTitle}
+              </h3>
+              <p className="mt-1 text-sm text-emerald-50/90">
+                {copy.pricingFullBody}
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-3 text-center text-xs text-emerald-900/80">
+            {copy.pricingNote}
           </p>
+          <p className="mt-1 text-center text-xs text-emerald-900/80">
+            {copy.pricingSub}
+          </p>
+        </div>
+      </section>
+
+      {/* ================================ FORM ============================== */}
+      <section
+        id="book"
+        className="mx-auto max-w-5xl px-3 py-6 sm:px-6 md:px-8 md:py-8"
+      >
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:p-7">
+          <div className="mb-4 text-center">
+            <h2 className="text-xl font-semibold text-emerald-950">
+              {copy.formH}
+            </h2>
+            <p className="mt-1 text-sm text-emerald-900">{copy.formP}</p>
+          </div>
           <VisaForm />
+          <p className="mt-4 text-center text-xs text-emerald-900">
+            {copy.formSupport}
+          </p>
         </div>
       </section>
 
-      {/* Helpful info (short & scannable) */}
-      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 py-8 md:py-12 grid gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
-            <h2 className="text-2xl font-semibold">{copy.includedH}</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2 mt-2">
-              {copy.includedList.map((li) => (
-                <li key={li}>{li}</li>
-              ))}
-            </ul>
-            <p className="text-xs text-gray-600 mt-2">
-              {copy.includedNote}
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-7 shadow-sm">
-            <h2 className="text-2xl font-semibold">{copy.needH}</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <h3 className="font-semibold text-sm">{copy.commonH}</h3>
-                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
-                  {copy.commonList.map((li) => (
-                    <li key={li}>{li}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold text-sm">{copy.routeH}</h3>
-                <ul className="text-sm text-gray-700 list-disc list-inside mt-1">
-                  {copy.routeList.map((li) => (
-                    <li key={li}>{li}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <p className="text-xs text-gray-600 mt-2">
-              {copy.needNote}
-            </p>
-          </div>
+      {/* ===================== DOCS + HONEST EXPECTATIONS ================== */}
+      <section className="mx-auto grid max-w-5xl gap-6 px-3 pb-8 sm:px-6 md:grid-cols-[1.1fr_1fr] md:px-8 md:pb-12">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:p-7">
+          <h2 className="text-lg font-semibold text-emerald-950">
+            {copy.docsH}
+          </h2>
+          <h3 className="mt-2 text-sm font-semibold text-emerald-950">
+            {copy.docsForTitle}
+          </h3>
+          <ul className="mt-2 list-disc list-inside text-sm text-emerald-900">
+            {copy.docsList.map((item: string, idx: number) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-emerald-900/90">{copy.docsNote}</p>
         </div>
 
-        <aside className="space-y-6">
-          <div className="bg-green-900 text-white rounded-2xl p-5">
-            <h3 className="font-semibold text-lg">{copy.urgentH}</h3>
-            <p className="text-sm">
-              {copy.urgentP}
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 text-sm text-gray-700 shadow-sm">
-            <h4 className="font-semibold mb-2">{copy.beforeH}</h4>
-            <ul className="list-disc list-inside space-y-2">
-              {copy.beforeList.map((li) => (
-                <li key={li}>{li}</li>
-              ))}
-            </ul>
-          </div>
-        </aside>
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm md:p-7">
+          <h2 className="text-lg font-semibold text-emerald-950">
+            {copy.expectationsH}
+          </h2>
+          <p className="mt-2 text-sm text-emerald-950">{copy.expectationsP1}</p>
+          <p className="mt-2 text-xs text-emerald-900/90">
+            {copy.expectationsP2}
+          </p>
+        </div>
       </section>
 
-      {/* FAQ (short) */}
-      <section className="max-w-5xl mx-auto px-3 sm:px-6 md:px-8 pb-10">
-        <h2 className="text-2xl font-semibold mb-4 text-green-900">{copy.faqsH}</h2>
-
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">{copy.faq1Q}</summary>
-          <div className="mt-2 text-gray-700">
-            {copy.faq1A}
+      {/* ============================= OTHER ROUTES ======================== */}
+      <section className="mx-auto max-w-5xl px-3 pb-12 sm:px-6 md:px-8 md:pb-16">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 text-sm shadow-sm md:p-6">
+          <h2 className="mb-3 text-center text-base font-semibold text-emerald-950">
+            {copy.otherH}
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+            <a
+              className="inline-flex items-center rounded-full border border-emerald-800/20 px-4 py-1.5 text-emerald-900 hover:bg-emerald-50"
+              href={p("/services/passport")}
+            >
+              {copy.otherPassport}
+            </a>
+            <a
+              className="inline-flex items-center rounded-full border border-emerald-800/20 px-4 py-1.5 text-emerald-900 hover:bg-emerald-50"
+              href={p("/services/translation")}
+            >
+              {copy.otherTranslation}
+            </a>
+            <a
+              className="inline-flex items-center rounded-full border border-emerald-800/20 px-4 py-1.5 text-emerald-900 hover:bg-emerald-50"
+              href={p("/contact")}
+            >
+              {copy.otherContact}
+            </a>
+            <a
+              className="inline-flex items-center rounded-full border border-emerald-800/20 px-4 py-1.5 text-emerald-900 hover:bg-emerald-50"
+              href={p("/services")}
+            >
+              {copy.allServices}
+            </a>
           </div>
-        </details>
-
-        <details className="bg-white border border-gray-200 rounded-xl p-4 mb-3">
-          <summary className="font-semibold cursor-pointer">{copy.faq2Q}</summary>
-          <div className="mt-2 text-gray-700">
-            {copy.faq2A}
-          </div>
-        </details>
+        </div>
       </section>
 
-      {/* Structured data */}
+      {/* ============================ STRUCTURED DATA ======================= */}
       <script
         type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <script
         type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+      />
     </main>
+  );
+}
+
+/* ============================ SMALL COMPONENTS ========================== */
+
+function FeatureCard({
+  title,
+  body,
+}: {
+  title: React.ReactNode;
+  body: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
+      <h3 className="text-sm font-semibold text-emerald-950">{title}</h3>
+      <p className="mt-1 text-sm text-emerald-900/90">{body}</p>
+    </div>
+  );
+}
+
+function StepCard({
+  title,
+  body,
+  index,
+}: {
+  title: React.ReactNode;
+  body: React.ReactNode;
+  index: number;
+}) {
+  return (
+    <li className="relative rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
+      <div className="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-700 text-xs font-semibold text-emerald-50">
+        {index}
+      </div>
+      <h3 className="text-sm font-semibold text-emerald-950">{title}</h3>
+      <p className="mt-1 text-sm text-emerald-900/90">{body}</p>
+    </li>
   );
 }

@@ -1,84 +1,64 @@
 // src/components/PassportForm.tsx
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { p } from "@/lib/localePath";
 import { usePathname } from "next/navigation";
 
-/** GAS endpoint **/
+import { loadStripe } from "@stripe/stripe-js";
+import type { StripeElementLocale } from "@stripe/stripe-js";
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+/* =============================== STRIPE =============================== */
+
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+if (!publishableKey) {
+  throw new Error(
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Add it to .env.local",
+  );
+}
+const stripePromise = loadStripe(publishableKey);
+
+/* =============================== GAS ================================= */
+
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
 const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532";
 
-/** Files (kept for future use, not used in this simplified form) **/
-const ALLOWED = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
-const MAX_MB = 5;
-const MAX = MAX_MB * 1024 * 1024;
-
-/** Links **/
-const FAST_IT_URL = "https://serviziconsolari.esteri.it/ScoFE/index.sco";
-
-/** Types **/
-type Service = "prenotami" | "under12";
-type Aire = "yes" | "no" | "unsure";
-type Marital = "single" | "married" | "divorced" | "widowed" | "other";
 type Locale = "en" | "it";
+type Choice = "ap-1" | "ap-2" | "ap-3";
 
-type PersonDetails = {
-  name: string;
-  dob: string;
-  heightCm: string;
-  eyeColour: string;
-  maritalStatus: Marital;
+/* Quantity + pricing for appointments */
+const CHOICES: Record<Choice, { qty: 1 | 2 | 3; amount: number }> = {
+  "ap-1": { qty: 1, amount: 40 },
+  "ap-2": { qty: 2, amount: 78 },
+  "ap-3": { qty: 3, amount: 115 },
 };
 
-type ExtraAccount = {
-  email: string;
-  password: string;
-  show: boolean;
-};
-
-/* ---------- locale detection (fixed) ---------- */
+/* -------------------------- locale detection ------------------------- */
 function useSafeLocale(): Locale {
   const pathname = usePathname() || "/";
-  // Use IT only when the path begins with "/it" or is exactly "/it"
-  // Examples that match IT: /it, /it/, /it/contact
-  // Everything else defaults to EN.
   return /^\/it(\/|$)/i.test(pathname) ? "it" : "en";
 }
 
-/* ---------- i18n (kept for future use) ---------- */
+/* ------------------------------- i18n -------------------------------- */
 function t(locale: Locale) {
-  const en = {
-    submit: {
-      errFile: (label: string) => `${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`,
-      fail: "Submission failed. Try again or email us.",
-      proofLabel: "Proof of address",
-    },
-  } as const;
-
-  const it = {
-    submit: {
-      errFile: (label: string) => `${label}: PDF/JPG/PNG, ≤${MAX_MB}MB`,
-      fail: "Invio non riuscito. Riprova o scrivici.",
-      proofLabel: "Prova di indirizzo",
-    },
-  } as const;
-
-  return locale === "it" ? it : en;
-}
-
-/* ---------- i18n for the single (upgraded) form ---------- */
-function tq(locale: Locale) {
   const it = locale === "it";
+
   return {
     qTitle: it
       ? "Assistenza appuntamento passaporto (Prenot@Mi 12+)"
       : "Passport appointment support (Prenot@Mi 12+)",
     qDesc: it
-      ? "Inserisci i tuoi dati, scegli per quante persone vuoi l’appuntamento e paga in modo sicuro."
-      : "Enter your details, choose how many people need an appointment, and pay securely.",
+      ? "Inserisci i tuoi dati, scegli per quante persone vuoi l’appuntamento e completa il pagamento in modo sicuro su questa pagina."
+      : "Enter your details, choose how many people need an appointment, and complete payment securely on this page.",
+
     fullName: it ? "Nome e cognome *" : "Full name *",
     email: it ? "Email *" : "Email *",
     qty: it
@@ -88,60 +68,81 @@ function tq(locale: Locale) {
       ? "Prezzi appuntamento Prenot@Mi (12+ / adulti): 1 persona £40 • 2 persone £78 • 3 persone £115."
       : "Appointment pricing (Prenot@Mi, 12+ / adults): 1 person £40 • 2 people £78 • 3 people £115.",
 
+    // Klarna / Clearpay highlight (step 1)
     multiPayTitle: it
       ? "Pagamenti flessibili disponibili"
       : "Flexible payments available",
     multiPayLine: it
-      ? "Puoi pagare con carta, Apple Pay / Google Pay, bonifico, oppure a rate tramite Klarna (paga in 3) e Clearpay (paga in 4), se mostrati alla cassa."
-      : "You can pay by card, Apple Pay / Google Pay, bank transfer, or in instalments via Klarna (pay in 3) and Clearpay (pay in 4) where shown at checkout.",
+      ? "Il pagamento viene gestito da Stripe. A seconda della banca e del tuo profilo potresti vedere opzioni come Klarna (paga in 3) e Clearpay (paga in 4), oltre a carta, Apple Pay e Google Pay."
+      : "Payment is handled by Stripe. Depending on your bank and profile you may see options like Klarna (pay in 3) and Clearpay (pay in 4), as well as card, Apple Pay and Google Pay.",
+
+    // Klarna / Clearpay legend (step 2)
+    installmentTitle: it
+      ? "Se vedi queste opzioni al pagamento:"
+      : "If you see these options at checkout:",
+    installmentCard: it
+      ? "Carta: paghi tutto subito, una sola volta."
+      : "Card: pay the full amount now, in one go.",
+    installmentKlarna: it
+      ? "Klarna: di solito permette di dividere l’importo in 3 pagamenti. La disponibilità dipende da Klarna e dalla tua banca."
+      : "Klarna: usually lets you split the amount into 3 payments. Availability depends on Klarna and your bank.",
+    installmentClearpay: it
+      ? "Clearpay: di solito permette di dividere l’importo in 4 pagamenti. La disponibilità dipende da Clearpay e dalla tua banca."
+      : "Clearpay: usually lets you split the amount into 4 payments. Availability depends on Clearpay and your bank.",
 
     // Agreements
     startNowLabel: it
       ? "Acconsento che Resinaro inizi subito a lavorare su questo servizio."
-      : "I agree for Resinaro to start working on this immediately.",
+      : "I agree for Resinaro to start working on this service immediately.",
+    coolingOff: it
+      ? "Capisco che ho 14 giorni di recesso, ma se annullo dopo l’inizio del lavoro potrete trattenere una parte proporzionata; una volta che il servizio è stato completato entro 14 giorni, perdo il diritto di recesso."
+      : "I understand I have a 14-day cooling-off period, but if I cancel after work has started you may retain a proportionate amount; once the service is fully performed within 14 days I lose my right to cancel.",
     refundPrefix: it ? "Ho letto e accetto la" : "I have read and accept the",
-    consent: it
-      ? "Acconsento al trattamento dei dati come descritto nella Privacy Policy."
-      : "I consent to data processing as described in the Privacy Policy.",
+    consentText: it
+      ? "Acconsento al trattamento dei miei dati da parte di Resinaro per fornire questo servizio."
+      : "I consent to Resinaro storing and processing my data in order to provide this service.",
 
-    // Buttons / states (UPDATED)
-    pay: it
-      ? "paga ora con checkout sicuro Stripe"
-      : "pay now with secure Stripe checkout",
-    redirecting: it
-      ? "Reindirizzamento a Stripe…"
-      : "Redirecting to Stripe…",
+    // Buttons / states
+    detailsCta: it ? "Vai al pagamento sicuro" : "Go to secure payment",
+    detailsPreparing: it
+      ? "Preparazione del pagamento sicuro…"
+      : "Preparing secure payment…",
+    payNow: (amount: number) =>
+      it ? `Paga £${amount} ora` : `Pay £${amount} now`,
+    payProcessing: it ? "Pagamento in corso…" : "Processing payment…",
+
+    paymentSecurityNote: it
+      ? "Il pagamento avviene direttamente su questa pagina tramite Stripe. Resinaro non vede né memorizza mai i dati della tua carta. A seconda della banca, potresti vedere anche Klarna (paga in 3) e Clearpay (paga in 4)."
+      : "Payment is processed on this page by Stripe. Resinaro never sees or stores your card details. Depending on your bank, you may also see Klarna (pay in 3) and Clearpay (pay in 4).",
+
+    backToDetails: it
+      ? "← Modifica dati / quantità"
+      : "← Edit details / quantity",
 
     // Errors
-    errorStartNow: it
-      ? "Conferma che possiamo iniziare subito."
-      : "Please confirm you agree we can start immediately.",
-    errorRefund: it
-      ? "Accetta la policy di rimborso."
-      : "Please accept the refund policy.",
-    errorConsent: it
+    errNameEmail: it
+      ? "Inserisci nome completo ed email."
+      : "Please enter your full name and email address.",
+    errQty: it
+      ? "Seleziona quante persone hanno bisogno dell’appuntamento."
+      : "Please choose how many people need an appointment.",
+    errStart: it
+      ? "Conferma che possiamo iniziare subito e di aver compreso i termini di recesso."
+      : "Please confirm we can start immediately and that you understand the cooling-off terms.",
+    errRefund: it
+      ? "Accetta la Refund & Credit Policy."
+      : "Please accept the Refund & Credit Policy.",
+    errConsent: it
       ? "Accetta il consenso privacy."
       : "Please accept the privacy consent.",
-    err: it ? "Si è verificato un errore." : "Something went wrong.",
+    errGeneric: it
+      ? "Qualcosa è andato storto. Riprova o scrivici via email/WhatsApp."
+      : "Something went wrong. Please try again or contact us by email/WhatsApp.",
   } as const;
 }
 
-/* ---------- Small helpers ---------- */
-function okFile(f: File) {
-  return ALLOWED.includes(f.type) && f.size <= MAX;
-}
+/* ------------------------------ UUID helper --------------------------- */
 
-async function toB64(f: File) {
-  const ab = await f.arrayBuffer();
-  let s = "",
-    bytes = new Uint8Array(ab); // eslint-disable-line prefer-const
-  for (let i = 0; i < bytes.length; i += 0x8000) {
-    s += String.fromCharCode(...Array.from(bytes.subarray(i, i + 0x8000)));
-  }
-  return btoa(s);
-}
-
-/** Robust UUID (v4) with fallbacks for older browsers */
 type CryptoWithRandomUUID = Crypto & {
   randomUUID?: () => string;
 };
@@ -167,7 +168,7 @@ function safeUUID(): string {
       }
     }
   } catch {
-    // fall through to simple fallback
+    // fall through
   }
 
   return `rsr-${Date.now().toString(36)}-${Math.random()
@@ -175,72 +176,83 @@ function safeUUID(): string {
     .slice(2, 10)}`;
 }
 
-/* ---------- Single (upgraded) Form component: APPOINTMENTS ONLY ---------- */
-function AppointmentForm({ locale }: { locale: Locale }) {
-  const trq = tq(locale);
+/* ================================ MAIN FORM ============================ */
 
+export default function PassportForm() {
+  const locale = useSafeLocale();
+  const copy = t(locale);
+
+  // Step 1 – intake
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-
-  // Only appointment choices now
-  type Choice = "ap-1" | "ap-2" | "ap-3";
   const [choice, setChoice] = useState<Choice>("ap-1");
-
-  const CHOICES: Record<
-    Choice,
-    { qty: 1 | 2 | 3; kind: "appointment"; amount: number; link: string }
-  > = {
-    "ap-1": {
-      qty: 1,
-      kind: "appointment",
-      amount: 40,
-      link: "https://buy.stripe.com/8x24gz7lkgfZc2BcZcaMU0p",
-    },
-    "ap-2": {
-      qty: 2,
-      kind: "appointment",
-      amount: 78,
-      link: "https://buy.stripe.com/28E3cveNMd3N1nXbV8aMU0q",
-    },
-    "ap-3": {
-      qty: 3,
-      kind: "appointment",
-      amount: 115,
-      link: "https://buy.stripe.com/00w3cvbBAe7R7Ml6AOaMU0r",
-    },
-  };
-
-  const sel = CHOICES[choice];
 
   const [startNowAgree, setStartNowAgree] = useState(false);
   const [refundAgree, setRefundAgree] = useState(false);
-  const [consent, setConsent] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [detailsSubmitting, setDetailsSubmitting] = useState(false);
 
-  const allChecked = startNowAgree && refundAgree && consent;
+  // Step 2 – on-page payment
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [bookingId, setBookingId] = useState<string | null>(null);
 
-  async function onSubmit(e: React.FormEvent) {
+  // Shared UI
+  const [error, setError] = useState<string | null>(null);
+
+  const sel = CHOICES[choice];
+  const amountLabel = `£${sel.amount}`;
+
+  const detailsSubmitDisabled =
+    detailsSubmitting ||
+    !fullName.trim() ||
+    !email.trim() ||
+    !startNowAgree ||
+    !refundAgree ||
+    !privacyConsent;
+
+  const showPaymentStep = !!clientSecret;
+
+  /* ---------- Step 1: handle intake + create PaymentIntent ---------- */
+  async function handleDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setErr(null);
-    if (!startNowAgree) return setErr(trq.errorStartNow);
-    if (!refundAgree) return setErr(trq.errorRefund);
-    if (!consent) return setErr(trq.errorConsent);
+    setError(null);
+
+    if (!fullName.trim() || !email.trim()) {
+      setError(copy.errNameEmail);
+      return;
+    }
+    if (!choice) {
+      setError(copy.errQty);
+      return;
+    }
+    if (!startNowAgree) {
+      setError(copy.errStart);
+      return;
+    }
+    if (!refundAgree) {
+      setError(copy.errRefund);
+      return;
+    }
+    if (!privacyConsent) {
+      setError(copy.errConsent);
+      return;
+    }
 
     try {
-      setLoading(true);
-      const bookingId = safeUUID();
+      setDetailsSubmitting(true);
+      const id = safeUUID();
+      setBookingId(id);
 
-      // Persist lightweight submission to GAS (non-blocking downstream)
-      const data: Record<string, string> = {
+      // Log to Google Apps Script (best-effort)
+      const dataPayload = {
         mode: "single",
         qty: String(sel.qty),
-        kind: sel.kind,
+        amount: String(sel.amount),
         startNowAgree: startNowAgree ? "1" : "0",
         refundPolicyAgree: refundAgree ? "1" : "0",
-        privacyConsent: consent ? "1" : "0",
-        policyVersion: "2025-10-18",
+        privacyConsent: privacyConsent ? "1" : "0",
+        policyVersion: "2025-12-07",
         locale,
       };
 
@@ -250,183 +262,401 @@ function AppointmentForm({ locale }: { locale: Locale }) {
         body: JSON.stringify({
           token: GAS_TOKEN,
           action: "submit",
-          bookingId,
+          bookingId: id,
           service: `passport-appointment-prenotami-${sel.qty}`,
           name: fullName.trim(),
           email: email.trim(),
-          telephone: "", // phone field removed in this simplified form
+          telephone: "",
           files: [],
-          data,
+          data: dataPayload,
         }),
-      }).catch(() => {});
+      }).catch(() => {
+        // If logging fails, still proceed to payment.
+      });
 
-      const url = new URL(sel.link);
-      if (email) url.searchParams.set("prefilled_email", email.trim());
-      url.searchParams.set("client_reference_id", bookingId);
-      window.location.href = url.toString();
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : trq.err);
+      // Ask our API to create a PaymentIntent and return clientSecret
+      const res = await fetch("/api/passport/create-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          choice,
+          qty: sel.qty,
+          name: fullName.trim(),
+          email: email.trim(),
+          locale,
+          bookingId: id,
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.clientSecret) {
+        throw new Error(json.error || copy.errGeneric);
+      }
+
+      setClientSecret(json.clientSecret);
+    } catch (err) {
+      const msg =
+        err instanceof Error && err.message ? err.message : copy.errGeneric;
+      setError(msg);
     } finally {
-      setLoading(false);
+      setDetailsSubmitting(false);
+    }
+  }
+
+  /* -------------------------- RENDER STEP 1 -------------------------- */
+  if (!showPaymentStep) {
+    return (
+      <form
+        onSubmit={handleDetailsSubmit}
+        className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+        aria-live="polite"
+      >
+        <div>
+          <h2 className="text-lg font-semibold text-emerald-950">
+            {copy.qTitle}
+          </h2>
+          <p className="mt-1 text-sm text-zinc-700">{copy.qDesc}</p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm text-zinc-900">{copy.fullName}</span>
+            <input
+              className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="text-sm text-zinc-900">{copy.email}</span>
+            <input
+              type="email"
+              className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+
+        {/* Quantity + clear pricing */}
+        <div>
+          <label className="block">
+            <span className="text-sm text-zinc-900">{copy.qty}</span>
+            <select
+              className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              value={choice}
+              onChange={(e) => setChoice(e.target.value as Choice)}
+              required
+            >
+              <option value="ap-1">
+                {locale === "it"
+                  ? "1 × appuntamento — £40"
+                  : "1 × appointment — £40"}
+              </option>
+              <option value="ap-2">
+                {locale === "it"
+                  ? "2 × appuntamenti — £78"
+                  : "2 × appointments — £78"}
+              </option>
+              <option value="ap-3">
+                {locale === "it"
+                  ? "3 × appuntamenti — £115"
+                  : "3 × appointments — £115"}
+              </option>
+            </select>
+          </label>
+
+          <p className="mt-2 text-xs text-zinc-700">{copy.priceHint}</p>
+
+          {/* Big, visible multi-pay box */}
+          <div className="mt-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-xs text-emerald-950">
+            <p className="font-semibold">{copy.multiPayTitle}</p>
+            <p className="mt-1">{copy.multiPayLine}</p>
+          </div>
+        </div>
+
+        {/* Agreements — all three required */}
+        <div className="space-y-3 rounded-xl border border-green-200 bg-green-50 p-3">
+          <label className="flex items-start gap-2 text-sm text-emerald-950">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={startNowAgree}
+              onChange={(e) => setStartNowAgree(e.target.checked)}
+            />
+            <span>
+              <span className="block font-semibold">
+                {copy.startNowLabel}
+              </span>
+              <span className="mt-0.5 block text-xs">
+                {copy.coolingOff}
+              </span>
+            </span>
+          </label>
+
+          <label className="flex items-start gap-2 text-sm text-emerald-950">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={refundAgree}
+              onChange={(e) => setRefundAgree(e.target.checked)}
+            />
+            <span>
+              {copy.refundPrefix}{" "}
+              <Link
+                href={p(locale, "/refund-policy")}
+                className="underline text-emerald-900"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {locale === "it"
+                  ? "Refund & Credit Policy"
+                  : "Refund & Credit Policy"}
+              </Link>
+              .
+            </span>
+          </label>
+
+          <label className="flex items-start gap-2 text-sm text-emerald-950">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={privacyConsent}
+              onChange={(e) => setPrivacyConsent(e.target.checked)}
+            />
+            <span>
+              {copy.consentText}{" "}
+              <Link
+                href={p(locale, "/privacy-policy")}
+                className="underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        </div>
+
+        {error && (
+          <p className="text-sm text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+
+        <div>
+          <button
+            type="submit"
+            disabled={detailsSubmitDisabled}
+            className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+              detailsSubmitDisabled
+                ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
+                : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
+            }`}
+          >
+            {detailsSubmitting ? copy.detailsPreparing : copy.detailsCta}
+          </button>
+          <p className="mt-1 text-[11px] text-zinc-500">
+            {locale === "it"
+              ? `Prossimo passo: pagamento di ${amountLabel} con Stripe.`
+              : `Next step: pay ${amountLabel} securely with Stripe.`}
+          </p>
+        </div>
+      </form>
+    );
+  }
+
+  /* -------------------------- RENDER STEP 2 -------------------------- */
+  const elementsOptions = {
+    clientSecret: clientSecret!,
+    locale:
+      locale === "it"
+        ? ("it" as StripeElementLocale)
+        : ("en-GB" as StripeElementLocale),
+  };
+
+  return (
+    <Elements stripe={stripePromise} options={elementsOptions}>
+      <PassportPaymentStep
+        locale={locale}
+        copy={copy}
+        choice={choice}
+        amountLabel={amountLabel}
+        bookingId={bookingId!}
+        error={error}
+        setError={setError}
+        onBack={() => {
+          setClientSecret(null);
+          setError(null);
+        }}
+      />
+    </Elements>
+  );
+}
+
+/* ============================= PAYMENT STEP ============================ */
+
+function PassportPaymentStep({
+  locale,
+  copy,
+  choice,
+  amountLabel,
+  bookingId,
+  error,
+  setError,
+  onBack,
+}: {
+  locale: Locale;
+  copy: ReturnType<typeof t>;
+  choice: Choice;
+  amountLabel: string;
+  bookingId: string;
+  error: string | null;
+  setError: (val: string | null) => void;
+  onBack: () => void;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paying, setPaying] = useState(false);
+
+  const sel = CHOICES[choice];
+  const payLabel = copy.payNow(sel.amount);
+
+  const serviceLabel =
+    locale === "it"
+      ? `${sel.qty} × appuntamento passaporto (Prenot@Mi, 12+)`
+      : `${sel.qty} × passport appointment${sel.qty > 1 ? "s" : ""} (Prenot@Mi, 12+)`;
+
+  async function handlePay(e: React.FormEvent) {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+
+    setError(null);
+    setPaying(true);
+
+    try {
+      // Validate PaymentElement fields first
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setError(submitError.message || copy.errGeneric);
+        setPaying(false);
+        return;
+      }
+
+      const base =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : "https://www.resinaro.com";
+
+      const returnUrl = `${base}/services/passport?paid=1&ref=${encodeURIComponent(
+        bookingId,
+      )}`;
+
+      const { error: stripeErr } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: returnUrl,
+        },
+      });
+
+      if (stripeErr) {
+        setError(stripeErr.message || copy.errGeneric);
+        setPaying(false);
+        return;
+      }
+
+      // For cards with 3DS / Klarna / Clearpay etc, Stripe will now
+      // handle any redirects and then send the user to return_url.
+    } catch (err) {
+      const msg =
+        err instanceof Error && err.message ? err.message : copy.errGeneric;
+      setError(msg);
+      setPaying(false);
     }
   }
 
   return (
     <form
-      onSubmit={onSubmit}
-      className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+      onSubmit={handlePay}
+      className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+      aria-live="polite"
     >
-      <div>
-        <h2 className="text-lg font-semibold text-emerald-950">
-          {trq.qTitle}
-        </h2>
-        <p className="mt-1 text-sm text-zinc-700">{trq.qDesc}</p>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="text-sm text-zinc-900">{trq.fullName}</span>
-          <input
-            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-        </label>
-        <label className="block">
-          <span className="text-sm text-zinc-900">{trq.email}</span>
-          <input
-            type="email"
-            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-
-      {/* Quantity + clear pricing */}
-      <div>
-        <label className="block">
-          <span className="text-sm text-zinc-900">{trq.qty}</span>
-          <select
-            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
-            value={choice}
-            onChange={(e) => setChoice(e.target.value as Choice)}
-            required
-          >
-            <option value="ap-1">
-              {locale === "it"
-                ? "1 × appuntamento — £40"
-                : "1 × appointment — £40"}
-            </option>
-            <option value="ap-2">
-              {locale === "it"
-                ? "2 × appuntamenti — £78"
-                : "2 × appointments — £78"}
-            </option>
-            <option value="ap-3">
-              {locale === "it"
-                ? "3 × appuntamenti — £115"
-                : "3 × appointments — £115"}
-            </option>
-          </select>
-        </label>
-
-        <p className="mt-2 text-xs text-zinc-700">{trq.priceHint}</p>
-
-        {/* Big, visible multi-pay box */}
-        <div className="mt-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-xs text-emerald-950">
-          <p className="font-semibold">{trq.multiPayTitle}</p>
-          <p className="mt-1">{trq.multiPayLine}</p>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold text-emerald-950">
+            {locale === "it"
+              ? "Completa il pagamento sicuro"
+              : "Complete secure payment"}
+          </h3>
+          <p className="mt-1 text-sm text-zinc-700">
+            {locale === "it"
+              ? "Inserisci i dati di pagamento qui sotto. Il pagamento viene elaborato da Stripe."
+              : "Enter your payment details below. Payment is processed by Stripe."}
+          </p>
         </div>
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-xs font-medium text-emerald-800 underline underline-offset-2"
+        >
+          {copy.backToDetails}
+        </button>
       </div>
 
-      {/* Agreements — all three required */}
-      <div className="space-y-3 rounded-xl border border-green-200 bg-green-50 p-3">
-        <label className="flex items-start gap-2 text-sm text-emerald-950">
-          <input
-            type="checkbox"
-            className="mt-1"
-            checked={startNowAgree}
-            onChange={(e) => setStartNowAgree(e.target.checked)}
-          />
-          <span>{trq.startNowLabel}</span>
-        </label>
-
-        <label className="flex items-start gap-2 text-sm text-emerald-950">
-          <input
-            type="checkbox"
-            className="mt-1"
-            checked={refundAgree}
-            onChange={(e) => setRefundAgree(e.target.checked)}
-          />
-          <span>
-            {trq.refundPrefix}{" "}
-            <a
-              className="underline"
-              href={p(locale, "/refund-policy")}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {locale === "it" ? "Politica di rimborso" : "Refund Policy"}
-            </a>
-            .
-          </span>
-        </label>
-
-        <label className="flex items-start gap-2 text-sm text-emerald-950">
-          <input
-            type="checkbox"
-            className="mt-1"
-            checked={consent}
-            onChange={(e) => setConsent(e.target.checked)}
-          />
-          <span>
-            {trq.consent}{" "}
-            <a
-              className="underline"
-              href={p(locale, "/privacy-policy")}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Privacy Policy
-            </a>
-            .
-          </span>
-        </label>
+      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-800">
+        <p className="font-semibold">
+          {locale === "it" ? "Riepilogo" : "Summary"}
+        </p>
+        <p className="mt-1">
+          {locale === "it" ? "Servizio:" : "Service:"}{" "}
+          <span className="font-medium">{serviceLabel}</span>
+        </p>
+        <p className="mt-0.5">
+          {locale === "it" ? "Importo:" : "Amount:"}{" "}
+          <span className="font-semibold">{amountLabel}</span>
+        </p>
       </div>
 
-      {err && <p className="text-sm text-red-600">{err}</p>}
+      {/* Stripe Payment Element */}
+      <div className="rounded-xl border border-zinc-200 bg-white p-3">
+        <PaymentElement />
+      </div>
+
+      {/* Klarna / Clearpay legend */}
+      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-[11px] text-zinc-700">
+        <p className="font-semibold">{copy.installmentTitle}</p>
+        <ul className="mt-1 list-disc list-inside space-y-0.5">
+          <li>{copy.installmentCard}</li>
+          <li>{copy.installmentKlarna}</li>
+          <li>{copy.installmentClearpay}</li>
+        </ul>
+      </div>
+
+      {error && (
+        <p className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
 
       <div>
         <button
           type="submit"
-          disabled={loading || !allChecked}
+          disabled={paying || !stripe || !elements}
           className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
-            loading || !allChecked
+            paying || !stripe || !elements
               ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
               : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
           }`}
         >
-          {loading ? trq.redirecting : `${trq.pay} — £${sel.amount}`}
+          {paying ? copy.payProcessing : payLabel}
         </button>
         <p className="mt-1 text-[11px] text-zinc-500">
-          {locale === "it"
-            ? "Verrai reindirizzato a una pagina di pagamento Stripe protetta. Resinaro non vede né memorizza mai i dati della tua carta."
-            : "You’ll be redirected to a secure Stripe payment page. Resinaro never sees or stores your card details."}
+          {copy.paymentSecurityNote}
         </p>
       </div>
     </form>
-  );
-}
-
-/* ---------- Main export: ONLY the upgraded appointments form ---------- */
-export default function PassportForm() {
-  const locale = useSafeLocale(); // ← derives from path correctly
-  return (
-    <div className="space-y-6" aria-live="polite">
-      <AppointmentForm locale={locale} />
-    </div>
   );
 }

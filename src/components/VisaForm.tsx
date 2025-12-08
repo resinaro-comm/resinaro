@@ -1,678 +1,696 @@
 // src/components/VisaForm.tsx
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { p } from "@/lib/localePath";
 
-/** Google Apps Script endpoint + token **/
+import { loadStripe } from "@stripe/stripe-js";
+import type { StripeElementLocale } from "@stripe/stripe-js";
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+/** Stripe (client) **/
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+if (!publishableKey) {
+  throw new Error(
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Add it to .env.local",
+  );
+}
+const stripePromise = loadStripe(publishableKey);
+
+/** Google Apps Script endpoint + token (same as before) **/
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbx_S1yGOb31CWMQVvi6qShVzgRA350Sj40aKnLVNl4ctdHxm77nzjYZIgnhVmgY1BQ/exec";
 const GAS_TOKEN = "abc123!abidsdjaosda!!!hhda2314532"; // must match AUTH_TOKEN in Apps Script
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
+type Locale = "en" | "it";
+type Option = "guide-35" | "full-70";
 
-/* ---------- Small UI helpers ---------- */
-function Section({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
-      <div className="mb-3">
-        <h3 className="text-base sm:text-lg font-semibold text-green-900">{title}</h3>
-        {subtitle && (
-          <p className="text-xs sm:text-sm text-gray-700 mt-0.5">{subtitle}</p>
-        )}
-      </div>
-      <div className="grid gap-3">{children}</div>
-    </section>
-  );
+/* ---------- Locale detection (same pattern as PassportForm) ---------- */
+function useSafeLocale(): Locale {
+  const pathname = usePathname() || "/";
+  return /^\/it(\/|$)/i.test(pathname) ? "it" : "en";
 }
 
-function Field({
-  label,
-  children,
-  hint,
-  required,
-}: {
-  label: string;
-  children: React.ReactNode;
-  hint?: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-green-900">
-        {label} {required && <span className="text-red-600">*</span>}
-      </label>
-      <div className="mt-1">{children}</div>
-      {hint && <p className="text-[11px] text-gray-600 mt-1">{hint}</p>}
-    </div>
-  );
+/* ---------- i18n for visa intake + on-page checkout ---------- */
+function t(locale: Locale) {
+  const it = locale === "it";
+
+  return {
+    title: it ? "Prenota l’aiuto visto" : "Book visa help",
+    desc: it
+      ? "Inserisci i tuoi dati base, scegli se vuoi la guida da £35 o il supporto 1:1 da £70 e completa il pagamento in modo sicuro direttamente su questa pagina."
+      : "Enter your basic details, choose the £35 guide or £70 1:1 support, and complete payment securely on this page.",
+
+    fullName: it ? "Nome e cognome *" : "Full name *",
+    phone: it ? "Telefono / WhatsApp *" : "Phone / WhatsApp *",
+    phoneHint: it
+      ? "Aggiungi il prefisso internazionale, es. +44 7…"
+      : "Include country code, e.g. +44 7…",
+    email: it ? "Email (opzionale)" : "Email (optional)",
+
+    optionLabel: it
+      ? "Che tipo di aiuto vuoi prenotare? *"
+      : "Which option do you want to book? *",
+    option35Title: it ? "£35 – guida passo-passo" : "£35 – step-by-step guide",
+    option35Body: it
+      ? "Guida scritta e checklist personalizzata da seguire in autonomia, con portali e link spiegati in modo chiaro."
+      : "Written guide and tailored checklist you can follow yourself, with portals and links clearly explained.",
+    option70Title: it
+      ? "£70 – supporto 1:1 completo"
+      : "£70 – full 1:1 support",
+    option70Body: it
+      ? "Tutto ciò che include la guida da £35, più supporto 1:1 per creare l’account, compilare il modulo online e fissare l’appuntamento (quando possibile)."
+      : "Everything in the £35 guide plus 1:1 support to create the account, complete the online form and book the appointment (where possible).",
+
+    // Klarna / Clearpay highlight (step 1)
+    multiPayTitle: it
+      ? "Pagamenti flessibili disponibili"
+      : "Flexible payments available",
+    multiPayLine: it
+      ? "Il pagamento viene gestito da Stripe. A seconda della banca e del tuo profilo potresti vedere opzioni come Klarna (paga in 3) e Clearpay (paga in 4), oltre a carta, Apple Pay e Google Pay."
+      : "Payment is handled by Stripe. Depending on your bank and profile you may see options like Klarna (pay in 3) and Clearpay (pay in 4), as well as card, Apple Pay and Google Pay.",
+
+    // Klarna / Clearpay mini-legend (step 2)
+    installmentTitle: it
+      ? "Se vedi queste opzioni al pagamento:"
+      : "If you see these options at checkout:",
+    installmentCard: it
+      ? "Carta: paghi tutto subito, una sola volta."
+      : "Card: pay the full amount now, in one go.",
+    installmentKlarna: it
+      ? "Klarna: di solito permette di dividere l’importo in 3 pagamenti. La disponibilità dipende da Klarna e dalla tua banca."
+      : "Klarna: usually lets you split the amount into 3 payments. Availability depends on Klarna and your bank.",
+    installmentClearpay: it
+      ? "Clearpay: di solito permette di dividere l’importo in 4 pagamenti. La disponibilità dipende da Clearpay e dalla tua banca."
+      : "Clearpay: usually lets you split the amount into 4 payments. Availability depends on Clearpay and your bank.",
+
+    // Agreements
+    startNowLabel: it
+      ? "Chiedo a Resinaro di iniziare a lavorare subito su questo servizio."
+      : "I ask Resinaro to start working on this service immediately.",
+    coolingOff: it
+      ? "Capisco che ho 14 giorni di recesso, ma se annullo dopo l’inizio del lavoro potrete trattenere una parte proporzionata; una volta che il servizio è stato completato entro 14 giorni, perdo il diritto di recesso."
+      : "I understand I have a 14-day cooling-off period, but if I cancel after work has started you may retain a proportionate amount; once the service is fully performed within 14 days I lose my right to cancel.",
+    refundPrefix: it
+      ? "Ho letto e accetto la"
+      : "I have read and accept the",
+    consentText: it
+      ? "Acconsento al trattamento dei miei dati da parte di Resinaro per fornire questo servizio."
+      : "I consent to Resinaro storing and processing my data in order to provide this service.",
+
+    // Buttons / states
+    detailsCta: it ? "Vai al pagamento sicuro" : "Go to secure payment",
+    detailsPreparing: it
+      ? "Preparazione del pagamento sicuro…"
+      : "Preparing secure payment…",
+    pay35: it ? "Paga £35 ora" : "Pay £35 now",
+    pay70: it ? "Paga £70 ora" : "Pay £70 now",
+    payProcessing: it
+      ? "Pagamento in corso…"
+      : "Processing payment…",
+    payDisabled: it ? "Scegli un’opzione" : "Choose an option",
+
+    paymentSecurityNote: it
+      ? "Il pagamento avviene direttamente su questa pagina tramite Stripe. Resinaro non vede né memorizza mai i dati della tua carta. A seconda della banca, potresti vedere anche Klarna (paga in 3) e Clearpay (paga in 4)."
+      : "Payment is processed on this page by Stripe. Resinaro never sees or stores your card details. Depending on your bank, you may also see Klarna (pay in 3) and Clearpay (pay in 4).",
+
+    backToDetails: it
+      ? "← Modifica dati / opzione"
+      : "← Edit details / option",
+
+    // Errors
+    errNamePhone: it
+      ? "Inserisci nome completo e numero di telefono/WhatsApp."
+      : "Please enter your full name and phone/WhatsApp number.",
+    errOption: it
+      ? "Seleziona se vuoi la guida da £35 o il supporto 1:1 da £70."
+      : "Please choose either the £35 guide or the £70 1:1 support option.",
+    errStart: it
+      ? "Conferma che possiamo iniziare subito e di aver compreso i termini di recesso."
+      : "Please confirm we can start immediately and that you understand the cooling-off terms.",
+    errRefund: it
+      ? "Accetta la Refund & Credit Policy."
+      : "Please accept the Refund & Credit Policy.",
+    errConsent: it
+      ? "Accetta il consenso privacy."
+      : "Please accept the privacy consent.",
+    errGeneric: it
+      ? "Qualcosa è andato storto. Riprova o scrivici via email/WhatsApp."
+      : "Something went wrong. Please try again or contact us by email/WhatsApp.",
+  };
 }
 
-/* ---------- Component ---------- */
+/** Robust UUID (v4) with fallbacks for older browsers */
+type CryptoWithRandomUUID = Crypto & {
+  randomUUID?: () => string;
+};
+
+function safeUUID(): string {
+  try {
+    if (typeof crypto !== "undefined") {
+      const c = crypto as CryptoWithRandomUUID;
+
+      if (typeof c.randomUUID === "function") {
+        return c.randomUUID();
+      }
+
+      if (typeof c.getRandomValues === "function") {
+        const buf = new Uint8Array(16);
+        c.getRandomValues(buf);
+        buf[6] = (buf[6] & 0x0f) | 0x40; // version 4
+        buf[8] = (buf[8] & 0x3f) | 0x80; // variant 10
+        const h = Array.from(buf, (b) => b.toString(16).padStart(2, "0"));
+        return `${h.slice(0, 4).join("")}-${h.slice(4, 6).join("")}-${h
+          .slice(6, 8)
+          .join("")}-${h.slice(8, 10).join("")}-${h.slice(10, 16).join("")}`;
+      }
+    }
+  } catch {
+    // fall through
+  }
+
+  return `rsr-${Date.now().toString(36)}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}`;
+}
+
+/* ================================ MAIN FORM ============================ */
+
 export default function VisaForm() {
-  // Wizard steps (one-at-a-time)
-  // 1) Contact  2) Identity  3) Address proof  4) Notes & agreements
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const stepTitles = ["Contact", "Identity", "Address", "Notes & consent"];
-  const pct = [0, 25, 50, 75, 100][step] || 0;
+  const locale = useSafeLocale();
+  const copy = t(locale);
 
-  // Refs
-  const addressRef = useRef<HTMLInputElement | null>(null);
-
-  // Contact (required)
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  // Step 1 – intake
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [telephone, setTelephone] = useState("");
+  const [option, setOption] = useState<Option | "">("");
 
-  // Identity & birth details (required)
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [countryOfBirth, setCountryOfBirth] = useState("");
-  const [currentNationality, setCurrentNationality] = useState("");
-  const [placeOfBirth, setPlaceOfBirth] = useState("");
+  const [startNowAgree, setStartNowAgree] = useState(false);
+  const [refundAgree, setRefundAgree] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
 
-  // Passport (required)
-  const [passportNumber, setPassportNumber] = useState("");
-  const [passportExpiry, setPassportExpiry] = useState("");
+  const [detailsSubmitting, setDetailsSubmitting] = useState(false);
 
-  // Status question (required)
-  const [marriedToEU, setMarriedToEU] = useState<"yes" | "no" | "">("");
+  // Step 2 – on-page payment
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  // Proof of UK residence (upload now or later)
-  const [proofOfAddress, setProofOfAddress] = useState<File | null>(null);
-  const [sendDocsLater, setSendDocsLater] = useState(false);
-
-  // Other
-  const [notes, setNotes] = useState("");
-
-  // Agreements
-  const [startNowConsent, setStartNowConsent] = useState(false); // NEW
-  const [refundPolicyAgree, setRefundPolicyAgree] = useState(false);
-  const [consent, setConsent] = useState(false);
-
-  // UI
-  const [submitting, setSubmitting] = useState(false);
+  // Shared UI
   const [error, setError] = useState<string | null>(null);
 
-  /* ---------- Helpers ---------- */
-  function validateFile(f: File, label: string): string | null {
-    if (!ALLOWED_TYPES.includes(f.type)) return `${label} must be PDF, JPG or PNG.`;
-    if (f.size > MAX_FILE_SIZE) return `${label} must be under ${MAX_FILE_SIZE / (1024 * 1024)} MB.`;
-    return null;
-  }
+  const detailsSubmitDisabled =
+    detailsSubmitting ||
+    !fullName.trim() ||
+    !phone.trim() ||
+    !option ||
+    !startNowAgree ||
+    !refundAgree ||
+    !privacyConsent;
 
-  function onAddressProofChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setError(null);
-    const f = e.target.files?.[0] ?? null;
-    if (!f) {
-      setProofOfAddress(null);
-      return;
-    }
-    const v = validateFile(f, "Proof of address");
-    if (v) {
-      setError(v);
-      if (addressRef.current) addressRef.current.value = "";
-      return;
-    }
-    setProofOfAddress(f);
-  }
+  const showPaymentStep = !!clientSecret;
 
-  function removeProofOfAddress() {
-    setProofOfAddress(null);
-    if (addressRef.current) addressRef.current.value = "";
-  }
+  const amountLabel =
+    option === "full-70" ? "£70" : option === "guide-35" ? "£35" : "";
 
-  async function fileToBase64(file: File) {
-    const buf = await file.arrayBuffer();
-    let binary = "";
-    const bytes = new Uint8Array(buf);
-    const chunk = 0x8000;
-    for (let i = 0; i < bytes.length; i += chunk) {
-      const slice = bytes.subarray(i, i + chunk);
-      binary += String.fromCharCode(...Array.from(slice));
-    }
-    return btoa(binary);
-  }
-
-  /* ---------- Step navigation with per-step validation ---------- */
-  function next() {
-    setError(null);
-
-    if (step === 1) {
-      if (!firstName.trim() || !lastName.trim())
-        return setError("Please enter your first and last name.");
-      if (!email.trim()) return setError("Please enter your email.");
-      if (!telephone.trim()) return setError("Please enter your telephone number.");
-      setStep(2);
-      return;
-    }
-
-    if (step === 2) {
-      if (!dateOfBirth) return setError("Please enter your date of birth.");
-      if (!placeOfBirth.trim()) return setError("Please enter your place of birth (city/town).");
-      if (!countryOfBirth.trim()) return setError("Please enter your country of birth.");
-      if (!currentNationality.trim()) return setError("Please enter your current nationality.");
-      if (!passportNumber.trim()) return setError("Please enter your passport number.");
-      if (!passportExpiry) return setError("Please enter your passport expiry date.");
-      if (marriedToEU === "") return setError("Please tell us if you are married to a European citizen.");
-      setStep(3);
-      return;
-    }
-
-    if (step === 3) {
-      // Address proof is optional; we just proceed.
-      setStep(4);
-      return;
-    }
-  }
-
-  function back() {
-    setError(null);
-    if (step === 1) return;
-    if (step === 2) return setStep(1);
-    if (step === 3) return setStep(2);
-    if (step === 4) return setStep(3);
-  }
-
-  /* ---------- Submit (final step) ---------- */
-  async function handleSubmit(e: React.FormEvent) {
+  /* ---------- Step 1: handle intake + create PaymentIntent ---------- */
+  async function handleDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
-    // Final checks (agreements + a quick sanity on notes)
-    if (!notes.trim()) return setError("Please add a short note about your situation.");
-    if (!startNowConsent)
-      return setError(
-        "Please confirm you want us to start now and understand the cooling-off terms."
-      );
-    if (!refundPolicyAgree)
-      return setError("Please confirm you agree to the Refund & Credit Policy.");
-    if (!consent) return setError("Please consent to data processing to continue.");
-
-    setSubmitting(true);
+    if (!fullName.trim() || !phone.trim()) {
+      setError(copy.errNamePhone);
+      return;
+    }
+    if (!option) {
+      setError(copy.errOption);
+      return;
+    }
+    if (!startNowAgree) {
+      setError(copy.errStart);
+      return;
+    }
+    if (!refundAgree) {
+      setError(copy.errRefund);
+      return;
+    }
+    if (!privacyConsent) {
+      setError(copy.errConsent);
+      return;
+    }
 
     try {
-      const bookingId = crypto.randomUUID();
+      setDetailsSubmitting(true);
+      const id = safeUUID();
 
-      // Build uploads payload (base64)
-      const filesPayload: Array<{ filename: string; mimeType: string; data: string }> = [];
-      if (proofOfAddress) {
-        filesPayload.push({
-          filename: proofOfAddress.name,
-          mimeType: proofOfAddress.type,
-          data: await fileToBase64(proofOfAddress),
-        });
-      }
-
-      // Pack answers
+      // Log to Google Apps Script (best-effort)
       const dataPayload = {
-        passportNumber: passportNumber.trim(),
-        passportExpiry,
-        dateOfBirth,
-        countryOfBirth: countryOfBirth.trim(),
-        currentNationality: currentNationality.trim(),
-        placeOfBirth: placeOfBirth.trim(),
-        marriedToEU,
-        notes: notes.trim(),
-        sendDocsLater: sendDocsLater ? "1" : "0",
-
-        // Agreements (audit trail)
-        startNowConsent: startNowConsent ? "1" : "0",
-        refundPolicyAgree: refundPolicyAgree ? "1" : "0",
-        privacyConsent: consent ? "1" : "0",
-        policyVersion: "2025-10-18",
+        selectedOption: option,
+        startNowAgree: startNowAgree ? "1" : "0",
+        refundPolicyAgree: refundAgree ? "1" : "0",
+        privacyConsent: privacyConsent ? "1" : "0",
+        policyVersion: "2025-12-07",
+        locale,
       };
 
-      // Send to Google Apps Script
-      const r1 = await fetch(GAS_URL, {
+      await fetch(GAS_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({
           token: GAS_TOKEN,
           action: "submit",
-          bookingId,
-          service: "visa-application",
-          name: `${firstName.trim()} ${lastName.trim()}`,
+          bookingId: id,
+          service: `visa-intake-${option}`,
+          name: fullName.trim(),
           email: email.trim(),
-          telephone: telephone.trim(),
-          files: filesPayload,
+          telephone: phone.trim(),
+          files: [],
           data: dataPayload,
+        }),
+      }).catch(() => {
+        // If logging fails, still proceed to payment.
+      });
+
+      // Ask our API to create a PaymentIntent and return clientSecret
+      const res = await fetch("/api/visa/create-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          option,
+          name: fullName.trim(),
+          email: email.trim(),
+          telephone: phone.trim(),
+          locale,
+          bookingId: id,
         }),
       });
 
-      type GasResponse = { ok?: boolean; error?: string } | undefined;
-      let r1json: GasResponse = undefined;
-      try {
-        r1json = (await r1.json()) as GasResponse;
-      } catch {
-        /* Some Apps Script deploys return empty body on success */
-      }
-      if (!r1.ok || !(r1json && r1json.ok)) {
-        const msg = r1json && r1json.error ? r1json.error : "Could not save submission to Google.";
-        throw new Error(msg);
+      const json = await res.json();
+      if (!res.ok || !json.clientSecret) {
+        throw new Error(json.error || copy.errGeneric);
       }
 
-      // Stripe Payment Link
-      const fd = new FormData();
-      fd.append("bookingId", bookingId);
-      fd.append("service", "visa-application");
-      fd.append("email", email.trim());
-      fd.append("name", `${firstName.trim()} ${lastName.trim()}`);
-
-      const r2 = await fetch("/api/services/book", { method: "POST", body: fd });
-      if (!r2.ok) {
-        const text = await r2.text().catch(() => "");
-        throw new Error(text || "Could not prepare checkout.");
-      }
-      const { url } = (await r2.json()) as { url?: string };
-      if (!url) throw new Error("No payment link returned.");
-      window.location.href = url; // → Stripe
-    } catch (err: unknown) {
-      const messageText = err instanceof Error ? err.message : String(err);
-      setError(messageText || "Submission failed — please try again later.");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setClientSecret(json.clientSecret);
+    } catch (err) {
+      const msg =
+        err instanceof Error && err.message ? err.message : copy.errGeneric;
+      setError(msg);
     } finally {
-      setSubmitting(false);
+      setDetailsSubmitting(false);
     }
   }
 
-  const submitDisabled = submitting || !startNowConsent || !refundPolicyAgree || !consent;
+  /* ---------- Render ---------- */
+  if (!showPaymentStep) {
+    // STEP 1: intake only
+    return (
+      <form
+        onSubmit={handleDetailsSubmit}
+        className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+        aria-live="polite"
+      >
+        <div>
+          <h3 className="text-lg font-semibold text-emerald-950">
+            {copy.title}
+          </h3>
+          <p className="mt-1 text-sm text-zinc-700">{copy.desc}</p>
+        </div>
 
-  /* ---------- UI ---------- */
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4"
-      encType="multipart/form-data"
-      aria-live="polite"
-    >
-      {/* Progress */}
-      <div className="w-full bg-gray-200/70 h-2 rounded-full">
-        <div
-          className="h-2 rounded-full bg-green-900 transition-[width] duration-300 ease-out"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm text-zinc-900">{copy.fullName}</span>
+            <input
+              className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </label>
 
-      {/* Stepper */}
-      <ol className="mt-3 grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-        {stepTitles.map((t, i) => {
-          const active = step >= (i + 1);
-          return (
-            <li
-              key={t}
-              className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${
-                active
-                  ? "border-green-300 bg-green-50 text-green-900"
-                  : "border-gray-200 bg-white text-gray-600"
-              }`}
-            >
-              <span
-                className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold ${
-                  active ? "bg-green-800 text-white" : "bg-gray-300 text-gray-700"
-                }`}
-              >
-                {i + 1}
-              </span>
-              <span className="truncate">{t}</span>
-            </li>
-          );
-        })}
-      </ol>
+          <label className="block">
+            <span className="text-sm text-zinc-900">{copy.phone}</span>
+            <input
+              className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder={locale === "it" ? "+44 7…" : "+44 7…"}
+            />
+            <p className="mt-1 text-[11px] text-zinc-500">{copy.phoneHint}</p>
+          </label>
+        </div>
 
-      {/* STEP 1: Contact */}
-      {step === 1 && (
-        <Section
-          title="Level 1 — Contact"
-          subtitle="Say hi 👋 We’ll use these to send your checklist and booking info."
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="First name" required>
-              <input
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="Mario"
-              />
-            </Field>
-            <Field label="Last name" required>
-              <input
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="Rossi"
-              />
-            </Field>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="Email" required>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="you@example.com"
-              />
-            </Field>
-            <Field label="Telephone" required hint="Add country code, e.g. +44 7…">
-              <input
-                value={telephone}
-                onChange={(e) => setTelephone(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="+44…"
-              />
-            </Field>
-          </div>
+        <label className="block">
+          <span className="text-sm text-zinc-900">{copy.email}</span>
+          <input
+            className="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+          />
+        </label>
 
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={next}
-              className="px-4 py-2 rounded bg-green-900 text-white"
-            >
-              Continue
-            </button>
-          </div>
-        </Section>
-      )}
-
-      {/* STEP 2: Identity */}
-      {step === 2 && (
-        <Section
-          title="Level 2 — Identity"
-          subtitle="Exactly as they appear on your passport/birth documents."
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="Date of birth" required hint="Format: dd/mm/yyyy">
-              <input
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="dd/mm/yyyy"
-              />
-            </Field>
-            <Field label="Place of birth (city/town)" required>
-              <input
-                value={placeOfBirth}
-                onChange={(e) => setPlaceOfBirth(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="e.g. Milan"
-              />
-            </Field>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="Country of birth" required>
-              <input
-                value={countryOfBirth}
-                onChange={(e) => setCountryOfBirth(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="e.g. Italy"
-              />
-            </Field>
-            <Field label="Current nationality" required>
-              <input
-                value={currentNationality}
-                onChange={(e) => setCurrentNationality(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="e.g. Italian"
-              />
-            </Field>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="Passport number" required>
-              <input
-                value={passportNumber}
-                onChange={(e) => setPassportNumber(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="As shown on passport"
-              />
-            </Field>
-            <Field label="Passport expiry date" required hint="Format: dd/mm/yyyy">
-              <input
-                value={passportExpiry}
-                onChange={(e) => setPassportExpiry(e.target.value)}
-                className="block w-full rounded border px-3 py-2"
-                placeholder="dd/mm/yyyy"
-              />
-            </Field>
-          </div>
-
-          <div className="rounded-lg border bg-gray-50 p-3">
-            <p className="text-sm font-medium mb-2">
-              Are you married to a European citizen?{" "}
-              <span className="text-red-600">*</span>
-            </p>
-            <div className="flex flex-wrap items-center gap-6">
-              <label className="inline-flex items-center gap-2">
+        {/* Option choice */}
+        <fieldset className="space-y-2">
+          <legend className="text-sm text-zinc-900">
+            {copy.optionLabel} <span className="text-red-600">*</span>
+          </legend>
+          <div className="mt-1 grid gap-3 sm:grid-cols-2">
+            <label className="flex cursor-pointer flex-col rounded-xl border px-3 py-3 text-sm transition-colors hover:border-emerald-500">
+              <div className="flex items-start gap-2">
                 <input
                   type="radio"
-                  name="marriedToEU"
-                  checked={marriedToEU === "yes"}
-                  onChange={() => setMarriedToEU("yes")}
+                  name="visa-option"
+                  className="mt-1"
+                  checked={option === "guide-35"}
+                  onChange={() => setOption("guide-35")}
                 />
-                <span>Yes</span>
-              </label>
-              <label className="inline-flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="marriedToEU"
-                  checked={marriedToEU === "no"}
-                  onChange={() => setMarriedToEU("no")}
-                />
-                <span>No</span>
-              </label>
-            </div>
-          </div>
-
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-
-          <div className="flex justify-between">
-            <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
-            </button>
-            <button
-              type="button"
-              onClick={next}
-              className="px-4 py-2 rounded bg-green-900 text-white"
-            >
-              Continue
-            </button>
-          </div>
-        </Section>
-      )}
-
-      {/* STEP 3: Address proof */}
-      {step === 3 && (
-        <Section
-          title="Level 3 — Address proof"
-          subtitle="Upload now or send it later — whichever is easier."
-        >
-          <div className="rounded-lg border bg-gray-50 p-3">
-            <Field
-              label="Proof of UK residence"
-              hint="Examples: council tax, tenancy, utility bill, bank statement, HMRC/DWP/NHS letter — must show your name & current UK address. PDF/JPG/PNG, up to 5 MB."
-            >
-              <input
-                ref={addressRef}
-                type="file"
-                accept=".pdf,image/png,image/jpeg"
-                onChange={onAddressProofChange}
-                className="block w-full"
-              />
-            </Field>
-            {proofOfAddress && (
-              <div className="mt-2 flex items-center justify-between bg-white border px-3 py-2 rounded">
-                <div className="truncate">
-                  <strong className="text-sm">{proofOfAddress.name}</strong>
-                  <div className="text-xs text-gray-500">
-                    {Math.round(proofOfAddress.size / 1024)} KB
-                  </div>
+                <div>
+                  <p className="font-semibold text-emerald-950">
+                    {copy.option35Title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-zinc-700">
+                    {copy.option35Body}
+                  </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={removeProofOfAddress}
-                  className="text-red-600 text-sm"
-                >
-                  Remove
-                </button>
               </div>
-            )}
-            <label className="flex items-center gap-2 mt-3">
-              <input
-                type="checkbox"
-                checked={sendDocsLater}
-                onChange={(e) => setSendDocsLater(e.target.checked)}
-              />
-              <span className="text-sm">
-                I’ll email any missing documents later to{" "}
-                <a className="underline" href="mailto:resinaro@proton.me">
-                  resinaro@proton.me
-                </a>
-                .
-              </span>
+            </label>
+
+            <label className="flex cursor-pointer flex-col rounded-xl border px-3 py-3 text-sm transition-colors hover:border-emerald-500">
+              <div className="flex items-start gap-2">
+                <input
+                  type="radio"
+                  name="visa-option"
+                  className="mt-1"
+                  checked={option === "full-70"}
+                  onChange={() => setOption("full-70")}
+                />
+                <div>
+                  <p className="font-semibold text-emerald-950">
+                    {copy.option70Title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-zinc-700">
+                    {copy.option70Body}
+                  </p>
+                </div>
+              </div>
             </label>
           </div>
 
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-          <div className="flex justify-between">
-            <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
-            </button>
-            <button
-              type="button"
-              onClick={next}
-              className="px-4 py-2 rounded bg-green-900 text-white"
-            >
-              Continue
-            </button>
+          {/* Klarna / Clearpay info */}
+          <div className="mt-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-xs text-emerald-950">
+            <p className="font-semibold">{copy.multiPayTitle}</p>
+            <p className="mt-1">{copy.multiPayLine}</p>
           </div>
-        </Section>
-      )}
+        </fieldset>
 
-      {/* STEP 4: Notes & agreements (final) */}
-      {step === 4 && (
-        <Section
-          title="Level 4 — Notes & agreements"
-          subtitle="A couple of quick confirmations and we’re done 🎉"
-        >
-          <Field
-            label="Tell us about your situation"
-            hint="Deadlines, dependants, previous refusals, where you’ll apply, etc."
-            required
-          >
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="block w-full rounded border px-3 py-2"
-              rows={4}
-              placeholder="A few sentences help us tailor your checklist."
+        {/* Legal checkboxes */}
+        <div className="space-y-3 rounded-xl border border-green-200 bg-green-50 p-3 text-sm text-emerald-950">
+          <label className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={startNowAgree}
+              onChange={(e) => setStartNowAgree(e.target.checked)}
             />
-          </Field>
+            <span>
+              <span className="block font-semibold">
+                {copy.startNowLabel}
+              </span>
+              <span className="mt-0.5 block text-xs">
+                {copy.coolingOff}
+              </span>
+            </span>
+          </label>
 
-          <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
-            <p className="text-sm text-gray-800">
-              Service fee: <strong>£35</strong> for administrative assistance.{" "}
-              <em>Government/provider fees are separate</em> and paid on the official portal. We’re
-              not UKVI/TLS/VFS and can’t guarantee appointment availability or outcomes — but we’ll
-              make it as easy as possible.
-            </p>
+          <label className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={refundAgree}
+              onChange={(e) => setRefundAgree(e.target.checked)}
+            />
+            <span className="text-sm">
+              {copy.refundPrefix}{" "}
+              <Link
+                href={p(locale, "/refund-policy")}
+                className="text-green-900 underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {locale === "it"
+                  ? "Refund & Credit Policy"
+                  : "Refund & Credit Policy"}
+              </Link>
+              .
+            </span>
+          </label>
 
-            <div className="mt-3 space-y-3 text-sm">
-              <label className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  checked={startNowConsent}
-                  onChange={(e) => setStartNowConsent(e.target.checked)}
-                  className="mt-1"
-                />
-                <span>
-                  I ask you to <strong>start work immediately</strong>. I understand I have a 14-day
-                  cooling-off period, but if I cancel after work has begun you may deduct a
-                  proportionate amount for work already completed; once the service is{" "}
-                  <strong>fully performed</strong> within 14 days, I will{" "}
-                  <strong>lose my right to cancel</strong>.
-                </span>
-              </label>
+          <label className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={privacyConsent}
+              onChange={(e) => setPrivacyConsent(e.target.checked)}
+            />
+            <span className="text-sm">
+              {copy.consentText}{" "}
+              <Link
+                href={p(locale, "/privacy-policy")}
+                className="underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        </div>
 
-              <label className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  checked={refundPolicyAgree}
-                  onChange={(e) => setRefundPolicyAgree(e.target.checked)}
-                  className="mt-1"
-                />
-                <span>
-                  I have read and agree to the{" "}
-                  <Link href="/refund-policy" className="underline text-green-900">
-                    Refund & Credit Policy
-                  </Link>
-                  . I understand Resinaro’s default remedy is account credit valid for 12 months, and
-                  cash refunds are only provided where legally required.
-                </span>
-              </label>
-
-              <label className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(e) => setConsent(e.target.checked)}
-                  className="mt-1"
-                />
-                <span>
-                  I consent to Resinaro storing and processing my information to deliver this
-                  service.{" "}
-                  <Link href="/privacy-policy" className="underline">
-                    Privacy Policy
-                  </Link>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          {error && (
-            <div className="text-red-600 text-sm" role="alert">
-              {error}
-            </div>
-          )}
-
-          <div className="flex justify-between">
-            <button type="button" onClick={back} className="px-3 py-2 rounded border">
-              Back
-            </button>
-            <button
-              type="submit"
-              disabled={submitDisabled}
-              className={`px-4 py-2 rounded text-white ${
-                submitDisabled
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-900 hover:bg-green-800"
-              }`}
-            >
-              {submitting ? "Submitting…" : "Submit details & Pay £35"}
-            </button>
-          </div>
-
-          <p className="text-[11px] text-gray-600 mt-3">
-            Prefer email? Send the same details to{" "}
-            <a className="underline" href="mailto:resinaro@proton.me">
-              resinaro@proton.me
-            </a>
-            .
+        {error && (
+          <p className="text-sm text-red-600" role="alert">
+            {error}
           </p>
-        </Section>
+        )}
+
+        <div>
+          <button
+            type="submit"
+            disabled={detailsSubmitDisabled}
+            className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+              detailsSubmitDisabled
+                ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
+                : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
+            }`}
+          >
+            {detailsSubmitting ? copy.detailsPreparing : copy.detailsCta}
+          </button>
+          {amountLabel && (
+            <p className="mt-1 text-[11px] text-zinc-500">
+              {locale === "it"
+                ? `Prossimo passo: pagamento di ${amountLabel} con Stripe.`
+                : `Next step: pay ${amountLabel} securely with Stripe.`}
+            </p>
+          )}
+        </div>
+      </form>
+    );
+  }
+
+  // STEP 2: payment element (on-page)
+  const elementsOptions = {
+    clientSecret: clientSecret!,
+    locale:
+      locale === "it"
+        ? ("it" as StripeElementLocale)
+        : ("en-GB" as StripeElementLocale),
+  };
+
+  return (
+    <Elements stripe={stripePromise} options={elementsOptions}>
+      <VisaPaymentStep
+        locale={locale}
+        copy={copy}
+        option={option as Option}
+        amountLabel={amountLabel}
+        error={error}
+        setError={setError}
+        onBack={() => {
+          setClientSecret(null);
+          setError(null);
+        }}
+      />
+    </Elements>
+  );
+}
+
+/* ============================= PAYMENT STEP ============================ */
+
+function VisaPaymentStep({
+  locale,
+  copy,
+  option,
+  amountLabel,
+  error,
+  setError,
+  onBack,
+}: {
+  locale: Locale;
+  copy: Record<string, string>;
+  option: Option;
+  amountLabel: string;
+  error: string | null;
+  setError: (val: string | null) => void;
+  onBack: () => void;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paying, setPaying] = useState(false);
+
+  async function handlePay(e: React.FormEvent) {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+
+    setError(null);
+    setPaying(true);
+
+    try {
+      // Validate the PaymentElement fields first (Stripe recommendation)
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setError(submitError.message || copy.errGeneric);
+        setPaying(false);
+        return;
+      }
+
+      const returnUrl =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/services/visa-booking?paid=1`
+          : "https://www.resinaro.com/services/visa-booking?paid=1";
+
+      const { error: stripeErr } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: returnUrl,
+        },
+      });
+
+      if (stripeErr) {
+        setError(stripeErr.message || copy.errGeneric);
+        setPaying(false);
+        return;
+      }
+
+      // For some methods (cards with 3DS, Klarna, Clearpay, etc)
+      // Stripe will now redirect to an intermediate page and then to return_url.
+    } catch (err) {
+      const msg =
+        err instanceof Error && err.message ? err.message : copy.errGeneric;
+      setError(msg);
+      setPaying(false);
+    }
+  }
+
+  const payLabel =
+    option === "full-70"
+      ? copy.pay70
+      : option === "guide-35"
+      ? copy.pay35
+      : copy.payDisabled;
+
+  return (
+    <form
+      onSubmit={handlePay}
+      className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+      aria-live="polite"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold text-emerald-950">
+            {locale === "it"
+              ? "Completa il pagamento sicuro"
+              : "Complete secure payment"}
+          </h3>
+          <p className="mt-1 text-sm text-zinc-700">
+            {locale === "it"
+              ? "Inserisci i dati di pagamento qui sotto. Il pagamento viene elaborato da Stripe."
+              : "Enter your payment details below. Payment is processed by Stripe."}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-xs font-medium text-emerald-800 underline underline-offset-2"
+        >
+          {copy.backToDetails}
+        </button>
+      </div>
+
+      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-800">
+        <p className="font-semibold">
+          {locale === "it" ? "Riepilogo" : "Summary"}
+        </p>
+        <p className="mt-1">
+          {locale === "it" ? "Servizio:" : "Service:"}{" "}
+          <span className="font-medium">
+            {option === "guide-35"
+              ? copy.option35Title
+              : copy.option70Title}
+          </span>
+        </p>
+        {amountLabel && (
+          <p className="mt-0.5">
+            {locale === "it" ? "Importo:" : "Amount:"}{" "}
+            <span className="font-semibold">{amountLabel}</span>
+          </p>
+        )}
+      </div>
+
+      {/* Stripe Payment Element */}
+      <div className="rounded-xl border border-zinc-200 bg-white p-3">
+        <PaymentElement />
+      </div>
+
+      {/* Klarna / Clearpay legend */}
+      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-[11px] text-zinc-700">
+        <p className="font-semibold">{copy.installmentTitle}</p>
+        <ul className="mt-1 list-disc list-inside space-y-0.5">
+          <li>{copy.installmentCard}</li>
+          <li>{copy.installmentKlarna}</li>
+          <li>{copy.installmentClearpay}</li>
+        </ul>
+      </div>
+
+      {error && (
+        <p className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
       )}
+
+      <div>
+        <button
+          type="submit"
+          disabled={paying || !stripe || !elements}
+          className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+            paying || !stripe || !elements
+              ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
+              : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
+          }`}
+        >
+          {paying ? copy.payProcessing : payLabel}
+        </button>
+        <p className="mt-1 text-[11px] text-zinc-500">
+          {copy.paymentSecurityNote}
+        </p>
+      </div>
     </form>
   );
 }

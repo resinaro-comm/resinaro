@@ -115,6 +115,63 @@ function getServices(locale: "en" | "it"): Service[] {
       badge: t.featuredBadgePopular,
       image: "/images/passportreg.png",
     },
+
+    /* ---------- NEW: Citizenship by descent support ---------- */
+    {
+      id: "citizenship-descent",
+      icon: "🌳",
+      title: isIt
+        ? "Supporto cittadinanza per discendenza"
+        : "Citizenship by Descent Support",
+      desc: isIt
+        ? "Orientamento pratico, piano documenti e controllo base pratica per cittadinanza italiana per discendenza (jure sanguinis) dal Regno Unito."
+        : "Practical orientation, document planning and basic file checks for Italian citizenship by descent (jure sanguinis) from the UK.",
+      bullets: isIt
+        ? [
+            "Panoramica non legale sulla possibile idoneità in base alla tua storia familiare",
+            "Strategia documenti per certificati italiani ed esteri",
+            "Checklist e organizzazione pratica prima di spendere in viaggi o agenzie",
+          ]
+        : [
+            "Non-legal overview of your potential eligibility based on your family story",
+            "Document strategy for Italian and foreign certificates",
+            "Checklist and file organisation before spending on travel or agencies",
+          ],
+      fee: "From £35",
+      path: "/services/citizenship-by-descent",
+      turnaround: "1–3 weeks",
+      badge: t.featuredBadgeNew,
+      image: "/images/italian-essentials.png",
+    },
+
+    /* ---------- NEW: Citizenship by marriage support ---------- */
+    {
+      id: "citizenship-marriage",
+      icon: "💍",
+      title: isIt
+        ? "Supporto cittadinanza per matrimonio"
+        : "Citizenship by Marriage Support",
+      desc: isIt
+        ? "Supporto pratico e non legale per la cittadinanza italiana per matrimonio (jure matrimonii) vivendo nel Regno Unito."
+        : "Practical, non-legal support for Italian citizenship by marriage (jure matrimonii) while living in the UK.",
+      bullets: isIt
+        ? [
+            "Spiegazione semplice del percorso per matrimonio basata su fonti ufficiali",
+            "Revisione base dei documenti e checklist personalizzata",
+            "Piano passo-per-passo per sapere sempre cosa fare dopo",
+          ]
+        : [
+            "Plain-language explanation of the marriage route using official sources",
+            "Basic document review and personalised checklist",
+            "Step-by-step plan so you always know what to do next",
+          ],
+      fee: "From £35",
+      path: "/services/citizenship-by-marriage",
+      turnaround: "1–3 weeks",
+      badge: t.featuredBadgeNew,
+      image: "/images/service-passport.png",
+    },
+
     {
       id: "visa",
       icon: "🛃",

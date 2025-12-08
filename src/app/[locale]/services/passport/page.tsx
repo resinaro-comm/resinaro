@@ -6,9 +6,14 @@
 ---------------------------------------------------------------------------*/
 
 import PassportForm from "@/components/PassportForm";
-import CarouselBinder from "@/components/CarouselBinder";
 import type { Metadata } from "next";
 import Image from "next/image";
+import CarouselBinder from "@/components/CarouselBinder";
+import HeroProofPreview from "@/components/HeroProofPreview";
+import {
+  appointmentProofCases,
+  type AppointmentProofCase,
+} from "@/content/appointmentProofCases";
 
 /* =============================== METADATA =============================== */
 
@@ -89,7 +94,7 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text:
-          "We help Italians in the UK with 12+ / adult passport appointments by: (1) checking or setting up your Prenot@Mi account, (2) monitoring the right section for your consulate, and (3) trying to secure a booking when slots appear. We then email you the confirmation and a simple checklist.",
+          "We help Italians in the UK with 12+ / adult passport appointments by: (1) checking, setting up or creating your Prenot@Mi account if needed, (2) monitoring the right section for your consulate, and (3) trying to secure a booking when slots appear. We then email you the confirmation and a simple checklist.",
       },
     },
     {
@@ -230,6 +235,58 @@ const imageObjectsJsonLd = {
   ],
 };
 
+/* ======================== PROOF HELPERS (BY DATE) ===================== */
+
+/**
+ * Sort appointments so that:
+ * - Upcoming/today’s appointments come first
+ * - Then recent past ones
+ * - Within each group, closest dates to today appear first
+ */
+function getProofCasesClosestToToday(limit: number): AppointmentProofCase[] {
+  if (!appointmentProofCases.length) return [];
+
+  const today = new Date();
+  const todayMidnight = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  ).getTime();
+
+  const sorted = [...appointmentProofCases].sort((a, b) => {
+    const aDate = new Date(a.date);
+    const bDate = new Date(b.date);
+
+    if (isNaN(aDate.getTime()) || isNaN(bDate.getTime())) {
+      return 0;
+    }
+
+    const aTime = new Date(
+      aDate.getFullYear(),
+      aDate.getMonth(),
+      aDate.getDate()
+    ).getTime();
+    const bTime = new Date(
+      bDate.getFullYear(),
+      bDate.getMonth(),
+      bDate.getDate()
+    ).getTime();
+
+    const aFutureOrToday = aTime >= todayMidnight;
+    const bFutureOrToday = bTime >= todayMidnight;
+
+    if (aFutureOrToday !== bFutureOrToday) {
+      return aFutureOrToday ? -1 : 1;
+    }
+
+    const aDiff = Math.abs(aTime - todayMidnight);
+    const bDiff = Math.abs(bTime - todayMidnight);
+    return aDiff - bDiff;
+  });
+
+  return sorted.slice(0, limit);
+}
+
 /* ============================= i18n strings ============================ */
 
 function t(locale: "en" | "it") {
@@ -244,39 +301,51 @@ function t(locale: "en" | "it") {
       : "Italian passport appointment help (Prenot@Mi, 12+)",
     heroSub: it ? (
       <>
-        Ti aiutiamo a ottenere un {""}
-        <span className="underline underline-offset-4 decoration-emerald-700">appuntamento</span>{" "}
-        passaporto {""}
-        <strong>su Prenot@Mi</strong> per {""}
+        Ti aiutiamo a ottenere un{" "}
+        <span className="underline underline-offset-4 decoration-emerald-700">
+          appuntamento
+        </span>{" "}
+        passaporto <strong>su Prenot@Mi</strong> per{" "}
         <strong>12+ / adulti nel Regno Unito</strong>. Monitoriamo noi gli
-        slot, con aspettative oneste. {""}
-        <strong>Non siamo il Consolato.</strong>
+        slot, con aspettative oneste. <strong>Non siamo il Consolato.</strong>
       </>
     ) : (
       <>
-        We help you get an Italian passport {""}
-        <span className="underline underline-offset-4 decoration-emerald-700">appointment</span>{" "}
-        <strong>on Prenot@Mi</strong> for {""}
-        <strong>12+ / adults in the UK</strong>. We do the monitoring and
-        clicking, with honest expectations. {""}
+        We help you get an Italian passport{" "}
+        <span className="underline underline-offset-4 decoration-emerald-700">
+          appointment
+        </span>{" "}
+        <strong>on Prenot@Mi</strong> for <strong>12+ / adults in the UK</strong>
+        . We do the monitoring and clicking, with honest expectations.{" "}
         <strong>We are not the Consulate.</strong>
       </>
     ),
-    heroCta: it
-      ? "Inizia l’aiuto per appuntamento"
-      : "Start appointment support",
-    heroSecondaryCta: it
-      ? "Vedi il modulo"
-      : "View the form",
+    heroExperience: it ? (
+      <>
+        Dal 2023 abbiamo già prenotato{" "}
+        <strong>200+ appuntamenti passaporto reali</strong> su Prenot@Mi per
+        italiani seguiti da Londra, Manchester ed Edimburgo.{" "}
+        <span className="whitespace-nowrap">Non è una cosa nuova per noi.</span>
+      </>
+    ) : (
+      <>
+        Since 2023 we’ve booked{" "}
+        <strong>200+ real Prenot@Mi passport appointments</strong> for Italians
+        across London, Manchester and Edinburgh.{" "}
+        <span className="whitespace-nowrap">This isn’t new to us.</span>
+      </>
+    ),
+    heroCta: it ? "Inizia l’aiuto per appuntamento" : "Start appointment support",
+    heroSecondaryCta: it ? "Vedi il modulo" : "View the form",
     heroTrustLine: it
       ? "Persone reali nel Regno Unito · Italiano e inglese · Processo sicuro e privato"
       : "Real humans in the UK · Italian & English · Safe, private process",
 
     miniProofLabel: it
-      ? "Appuntamenti reali Prenot@Mi prenotati da noi"
+      ? "Appuntamenti Prenot@Mi che abbiamo davvero prenotato"
       : "Real Prenot@Mi appointments we’ve booked",
     miniProofCaption: it
-      ? "Dettagli dei clienti nascosti per sicurezza. Le schermate sono sicure da mostrare."
+      ? "Dati dei clienti nascosti per sicurezza. Le schermate sono sicure da mostrare."
       : "Client details are hidden for safety. Screenshots are safe to show.",
 
     whoH: it ? "È per te se…" : "This is for you if…",
@@ -307,14 +376,14 @@ function t(locale: "en" | "it") {
     whatH: it ? "Cosa facciamo per te" : "What you get with this service",
     what1Title: it ? "Controllo dell’account Prenot@Mi" : "Check / set up your Prenot@Mi",
     what1Body: it
-      ? "Controlliamo o ti aiutiamo a configurare il tuo account Prenot@Mi nella sezione giusta per il Consolato competente."
-      : "We check or help you set up your Prenot@Mi account in the correct section for your consulate.",
+      ? "Controlliamo, configuriamo o creiamo il tuo account Prenot@Mi se non esiste ancora, nella sezione giusta per il Consolato competente."
+      : "We check, set up or create your Prenot@Mi account if you don’t have one yet, in the correct section for your consulate.",
     what2Title: it
       ? "Monitoraggio e tentativi di prenotazione"
       : "Monitoring & booking attempts",
     what2Body: it
-      ? "Monitoriamo gli slot, facciamo noi i tentativi e proviamo a bloccare una data/ora per te quando si libera un posto."
-      : "We monitor for new slots, do the clicking, and try to secure a date/time for you when availability appears.",
+      ? "Creiamo il tuo account Prenot@Mi se non ne hai uno, oppure usiamo il tuo account esistente per monitorare gli slot nella sezione corretta e fare i tentativi di prenotazione quando compaiono posti."
+      : "We create your Prenot@Mi account if you don’t have one yet, or use your existing account, then monitor the correct section and attempt to book when slots appear.",
     what3Title: it
       ? "Conferma appuntamento + checklist"
       : "Appointment confirmation + checklist",
@@ -329,8 +398,8 @@ function t(locale: "en" | "it") {
       : "You fill in the form below (or email us) with your basic details, consulate, and any timelines.",
     how2Title: it ? "2. Monitoriamo Prenot@Mi" : "2. We monitor Prenot@Mi",
     how2Body: it
-      ? "Usiamo il tuo account Prenot@Mi per monitorare gli slot nella sezione corretta e fare i tentativi di prenotazione."
-      : "We use your Prenot@Mi account to monitor the correct section and attempt to book when slots appear.",
+      ? "Creiamo il tuo account Prenot@Mi se non ne hai uno, oppure usiamo il tuo account esistente per monitorare gli slot nella sezione corretta e fare i tentativi di prenotazione quando compaiono posti."
+      : "We create your Prenot@Mi account if you don’t have one yet, or use your existing account, then monitor the correct section and attempt to book when slots appear.",
     how3Title: it ? "3. Ti confermiamo l’appuntamento" : "3. We confirm your booking",
     how3Body: it
       ? "Quando l’appuntamento è confermato, ti inviamo email con data/ora e checklist. Se non compaiono slot, ti spieghiamo le alternative."
@@ -355,86 +424,117 @@ function t(locale: "en" | "it") {
       ? "Se non vediamo slot per un periodo prolungato, ti proponiamo le opzioni (incluso il nostro servizio dedicato alle liste d’attesa)."
       : "If no slots appear for a meaningful period, we’ll talk through options with you (including our dedicated waiting-list service).",
 
-    formH: it
-      ? "Inizia l’aiuto per l’appuntamento passaporto"
-      : "Start passport appointment support",
-    formP: it
-      ? "Ti guidiamo passo passo. Puoi anche scegliere di inviare i documenti via email più tardi."
-      : "We guide you step by step. You can also choose to send documents by email later.",
-    formSupport: it ? (
+    paySupportH: it
+      ? "Se in questo momento non hai tutti i soldi"
+      : "If you don’t have all the money right now",
+    paySupportP: it ? (
       <>
-        Domande prima di pagare? Scrivici a{" "}
-        <a className="underline" href="mailto:resinaro@proton.me">
-          resinaro@proton.me
-        </a>{" "}
-        o su{" "}
-        <a
-          className="underline"
-          href="https://wa.me/447424208127"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          WhatsApp
-        </a>
-        .
+        Il consolato di solito permette di pagare il costo del passaporto online
+        dopo l’appuntamento, entro una scadenza breve. Se il budget è stretto o
+        non hai tutti i soldi il giorno stesso, offriamo anche un’opzione
+        facoltativa{" "}
+        <strong>“Paga in 4 con Resinaro”</strong> usando soluzioni come Clearpay
+        (Pay in 4) o Klarna (Pay in 3), dove disponibili:
       </>
     ) : (
       <>
-        Questions before paying? Email{" "}
-        <a className="underline" href="mailto:resinaro@proton.me">
-          resinaro@proton.me
-        </a>{" "}
-        or message us on{" "}
-        <a
-          className="underline"
-          href="https://wa.me/447424208127"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          WhatsApp
-        </a>
-        .
+        The consulate usually lets you pay the passport fee online after the
+        appointment, within a short deadline. If you don’t have all the money
+        on the day and cash-flow is tight, we also offer an optional{" "}
+        <strong>“Pay in 4 with Resinaro” add-on</strong> using providers like
+        Clearpay (Pay in 4) or Klarna (Pay in 3), where available:
+      </>
+    ),
+    paySupportList: it
+      ? [
+          "L’importo totale è £115 per coprire il costo del passaporto.",
+          "Paghi a rate (Paga in 4 con Clearpay o Paga in 3 con Klarna, dove disponibili).",
+          "Al momento della richiesta ti basta pagare solo la prima rata (ad esempio £115/4); noi riceviamo comunque subito l’intero importo di £115.",
+          "Con quei soldi paghiamo noi il passaporto per te oppure ti inviamo fino a circa £100 così puoi pagare il consolato (la tariffa di solito è intorno alle £100 e può variare di qualche sterlina).",
+        ]
+      : [
+          "The total we charge is £115 to cover the passport fee.",
+          "You pay in instalments (Pay in 4 with Clearpay or Pay in 3 with Klarna, where available).",
+          "At checkout you only need to pay the first instalment (for example £115/4); we still receive the full £115 straight away.",
+          "With that money we either pay the passport fee for you or send you up to around £100 so you can pay the consulate yourself (the fee is usually around £100 and can move by a few pounds).",
+        ],
+    paySupportDisclaimer: it ? (
+      <>
+        Importante: il costo e il rilascio del passaporto dipendono sempre solo
+        dal consolato. Soluzioni come Clearpay/Klarna dipendono dai loro termini
+        e dalla tua idoneità.
+      </>
+    ) : (
+      <>
+        Important: the passport fee and the decision always belong only to the
+        consulate. Services like Clearpay/Klarna depend on their terms and your
+        eligibility.
       </>
     ),
 
     galleryH: it
-      ? "Altri appuntamenti passaporto prenotati"
-      : "More passport appointments we’ve booked",
+      ? "Appuntamenti passaporto recenti prenotati (date vicine a oggi)"
+      : "Recent passport appointments we’ve booked (closest to today)",
     galleryP: it
-      ? "Schermate reali da Prenot@Mi. Nascondiamo nome, mail e numeri di prenotazione per la sicurezza dei clienti."
-      : "Real screenshots from Prenot@Mi. We hide names, emails and booking numbers for client safety.",
-
-    docsH: it
-      ? "Cosa ti servirà per l’appuntamento (promemoria veloce)"
-      : "What you’ll need for the appointment (quick heads-up)",
-    docsForTitle: it ? "Per la maggior parte dei casi 12+ / adulti:" : "For most 12+ / adult cases:",
-    docsList: it
-      ? [
-          "Documento d’identità valido (passaporto italiano o carta d’identità).",
-          "Prova di indirizzo nel Regno Unito degli ultimi 3 mesi.",
-          "Iscrizione AIRE aggiornata (o prova che la stai sistemando).",
-        ]
-      : [
-          "Valid Italian ID (passport or ID card).",
-          "Recent UK proof of address (last 3 months).",
-          "AIRE registration up to date (or proof you’re fixing it).",
-        ],
-    docsNote: it ? (
+      ? "Appuntamenti reali di clienti nel Regno Unito. Aggiorniamo spesso questa sezione per mostrare date intorno a questa settimana e alla prossima. I dati personali sono oscurati; il passaporto è rilasciato solo dal consolato."
+      : "These are real appointments from clients in the UK. We update this gallery so you can see bookings around this week and next. Personal data is blurred; passports are always issued by the consulate.",
+    galleryMore: it ? (
       <>
-        Non sei sicuro di avere i requisiti o hai un caso particolare? Scrivici
-        prima:{" "}
-        <a className="underline" href="mailto:resinaro@proton.me">
-          resinaro@proton.me
-        </a>
-        .
+        Su Prenot@Mi abbiamo prenotato molte più pratiche dei{" "}
+        <strong>10+ esempi</strong> mostrati qui. Per privacy mostriamo solo{" "}
+        <strong>uno screenshot per giorno</strong> e{" "}
+        <strong>oscuriamo gli orari</strong>, così il consolato non può
+        incrociare nomi e orari né penalizzare i clienti che usano un servizio
+        di supporto.
       </>
     ) : (
       <>
-        Not sure you qualify or have a complicated case? Email us first:{" "}
-        <a className="underline" href="mailto:resinaro@proton.me">
-          resinaro@proton.me
-        </a>
-        .
+        On Prenot@Mi we’ve booked far more cases than the{" "}
+        <strong>10+ examples</strong> shown here. For privacy we only display{" "}
+        <strong>one screenshot per day</strong> and{" "}
+        <strong>blur appointment times</strong>, so consulates can’t match names
+        to exact times or penalise clients for using a support service.
+      </>
+    ),
+
+    docsH: it
+      ? "Cosa ti servirà il giorno dell’appuntamento"
+      : "What you’ll need on the day of the appointment",
+    docsForTitle: it
+      ? "Il giorno dell’appuntamento ti serviranno di solito:"
+      : "On the day of the appointment you’ll usually need:",
+    docsList: it
+      ? [
+          "Due fototessere recenti e valide per il nuovo passaporto.",
+          "Il tuo vecchio passaporto italiano, anche se scaduto — portalo con te.",
+          "I soldi per pagare il costo del passaporto (di solito intorno alle £100; controlla sempre l’importo esatto sul sito del tuo consolato).",
+          "Il modulo di domanda stampato e già compilato, scaricato dal sito del consolato (per esempio Consolato di Manchester).",
+        ]
+      : [
+          "Two recent, valid passport photos for the new passport.",
+          "Your old Italian passport, even if expired — bring it with you.",
+          "Money to pay the passport fee (usually around £100; always check the exact amount on your consulate’s website).",
+          "The printed and completed application form downloaded from your consulate’s website (for example Consolato di Manchester).",
+        ],
+    docsNote: it ? (
+      <>
+        In molti consolati nel Regno Unito (per esempio Manchester) il
+        passaporto viene di solito rilasciato lo stesso giorno una volta pagata
+        la tassa — spesso entro circa 2 ore dall’appuntamento. Se non hai i
+        soldi il giorno stesso, il consolato di norma ti permette di pagare
+        online dopo l’appuntamento entro una breve scadenza (spesso intorno a
+        10 giorni dalla data). Controlla sempre le regole precise nell’email di
+        conferma e sul sito ufficiale del tuo consolato.
+      </>
+    ) : (
+      <>
+        At many UK consulates (for example Manchester) the passport is usually
+        issued on the same day once the fee is paid — often within about 2
+        hours of your appointment. If you don’t have the money with you on the
+        day, the consulate normally lets you pay online afterwards within a
+        short deadline (often around 10 days from the appointment). Always
+        double-check the exact rules in your confirmation email and on your
+        consulate’s official website.
       </>
     ),
 
@@ -480,10 +580,16 @@ function t(locale: "en" | "it") {
     otherWaitlist: it
       ? "Servizio liste d’attesa Prenot@Mi (quando non ci sono slot)"
       : "Prenot@Mi waiting-list service (when there are no slots)",
-    otherContact: it
-      ? "Contatta direttamente Resinaro"
-      : "Contact Resinaro directly",
+    otherContact: it ? "Contatta direttamente Resinaro" : "Contact Resinaro directly",
     allServices: it ? "Tutti i servizi" : "All services",
+
+    formH: it ? "Prenota il tuo appuntamento" : "Book your appointment",
+    formP: it
+      ? "Compila il modulo qui sotto con i tuoi dettagli. Puoi anche inviarci i documenti via email se preferisci."
+      : "Fill in the form below with your details. You can also email us documents if you prefer.",
+    formSupport: it
+      ? "Hai domande? Scrivi a resinaro@proton.me"
+      : "Questions? Email resinaro@proton.me",
   };
 }
 
@@ -497,6 +603,8 @@ export default function PassportServicePage({
   const { locale } = params;
   const copy = t(locale);
   const p = (path: string) => `/${locale}${path}`;
+
+  const recentProofCases = getProofCasesClosestToToday(10);
 
   return (
     <main className="min-h-screen bg-neutral-50 text-green-900">
@@ -516,7 +624,7 @@ export default function PassportServicePage({
         </div>
 
         {/* Hero content card */}
-        <div className="-mt-16 max-w-5xl px-3 sm:px-6 md:px-8 lg:-mt-20 lg:px-0 mx-auto relative">
+        <div className="-mt-16 mx-auto max-w-5xl px-3 sm:px-6 md:px-8 lg:-mt-20 lg:px-0 relative">
           <div className="rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur-md md:p-8">
             <div className="flex flex-col gap-5 md:flex-row md:items-center">
               <div className="md:flex-1">
@@ -530,6 +638,9 @@ export default function PassportServicePage({
                 </h1>
                 <p className="mt-3 text-sm text-emerald-900 sm:text-[15px]">
                   {copy.heroSub}
+                </p>
+                <p className="mt-2 text-xs text-emerald-900 sm:text-[13px]">
+                  {copy.heroExperience}
                 </p>
 
                 <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -552,54 +663,14 @@ export default function PassportServicePage({
                 </p>
               </div>
 
-              {/* Mini proof strip */}
-              <div className="md:w-[270px]">
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-900">
-                    {copy.miniProofLabel}
-                  </p>
-                  <div className="mt-2 grid grid-cols-2 gap-1.5">
-                    <div className="overflow-hidden rounded-lg bg-neutral-100">
-                      <Image
-                        src="/proof/2026-02-manchester-appointment-01.webp"
-                        alt="Passport appointment proof"
-                        width={360}
-                        height={220}
-                        className="h-20 w-full object-cover"
-                      />
-                    </div>
-                    <div className="overflow-hidden rounded-lg bg-neutral-100">
-                      <Image
-                        src="/proof/proof_1.webp"
-                        alt="Passport appointment proof"
-                        width={360}
-                        height={220}
-                        className="h-20 w-full object-cover"
-                      />
-                    </div>
-                    <div className="overflow-hidden rounded-lg bg-neutral-100">
-                      <Image
-                        src="/proof/proof_4.webp"
-                        alt="Passport appointment proof"
-                        width={360}
-                        height={220}
-                        className="h-20 w-full object-cover"
-                      />
-                    </div>
-                    <div className="overflow-hidden rounded-lg bg-neutral-100">
-                      <Image
-                        src="/proof/proof_7.webp"
-                        alt="Passport appointment proof"
-                        width={360}
-                        height={220}
-                        className="h-20 w-full object-cover"
-                      />
-                    </div>
-                  </div>
-                  <p className="mt-2 text-[11px] leading-snug text-emerald-900/80">
-                    {copy.miniProofCaption}
-                  </p>
-                </div>
+              {/* Hero proof preview with click-to-expand gallery */}
+              <div className="md:w-[280px] mt-2 md:mt-0">
+                <HeroProofPreview
+                  cases={recentProofCases}
+                  locale={locale}
+                  label={copy.miniProofLabel}
+                  caption={copy.miniProofCaption}
+                />
               </div>
             </div>
           </div>
@@ -707,93 +778,48 @@ export default function PassportServicePage({
         </div>
       </section>
 
-      {/* ======================== BIG PROOF GALLERY ======================== */}
-      <section className="mx-auto max-w-5xl px-3 pb-8 sm:px-6 md:px-8 md:pb-10">
-        <div className="space-y-3">
-          <h2 className="text-xl font-semibold text-center text-emerald-950">
-            {copy.galleryH}
-          </h2>
-          <p className="mx-auto max-w-2xl text-center text-xs sm:text-sm text-gray-600">
-            {copy.galleryP}
-          </p>
+      {/* ======================== PROOF GALLERY (CAROUSEL) ================= */}
+      {recentProofCases.length > 0 && (
+        <section className="mx-auto max-w-5xl px-3 pb-8 sm:px-6 md:px-8 md:pb-10">
+          <div className="space-y-3">
+            <h2 className="text-xl font-semibold text-center text-emerald-950">
+              {copy.galleryH}
+            </h2>
+            <p className="mx-auto max-w-2xl text-center text-xs sm:text-sm text-gray-600">
+              {copy.galleryP}
+            </p>
+            <p className="mx-auto max-w-2xl text-center text-[11px] sm:text-xs text-gray-500">
+              {copy.galleryMore}
+            </p>
 
-          <div
-            className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
-            data-carousel
-          >
-            <div className="relative mx-auto w-full max-w-[900px]">
-              <div
-                className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
-                id="appointments-track"
-                data-track
-              >
-                {/* Each figure is a snap-slide. Keep structure for CarouselBinder. */}
-                <CarouselSlide
-                  id="a1"
-                  src="/proof/2026-02-manchester-appointment-01.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a2"
-                  src="/proof/proof_1.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a3"
-                  src="/proof/proof_3.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a4"
-                  src="/proof/proof_4.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a5"
-                  src="/proof/proof_5.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a6"
-                  src="/proof/proof_6.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
-                <CarouselSlide
-                  id="a7"
-                  src="/proof/proof_7.webp"
-                  alt="Passport appointment booked"
-                  locale={locale}
-                />
+            <div
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
+              data-carousel
+            >
+              <div className="relative mx-auto w-full max-w-[900px]">
+                <div
+                  className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+                  id="appointments-track"
+                  data-track
+                >
+                  {recentProofCases.map((item, idx) => (
+                    <ProofCarouselSlide
+                      key={item.id}
+                      id={`ap-${idx + 1}`}
+                      item={item}
+                      locale={locale}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
+            <CarouselBinder />
           </div>
-          <CarouselBinder />
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* ===================== DOCS + HONEST EXPECTATIONS ================== */}
-      <section className="mx-auto grid max-w-5xl gap-6 px-3 pb-8 sm:px-6 md:grid-cols-[1.1fr_1fr] md:px-8 md:pb-12">
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:p-7">
-          <h2 className="text-lg font-semibold text-emerald-950">
-            {copy.docsH}
-          </h2>
-          <h3 className="mt-2 text-sm font-semibold text-emerald-950">
-            {copy.docsForTitle}
-          </h3>
-          <ul className="mt-2 list-disc list-inside text-sm text-emerald-900">
-            {copy.docsList.map((item: string, idx: number) => (
-              <li key={idx}>{item}</li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-emerald-900/90">{copy.docsNote}</p>
-        </div>
-
+      {/* ===================== HONEST EXPECTATIONS ========================= */}
+      <section className="mx-auto max-w-5xl px-3 pb-8 sm:px-6 md:px-8 md:pb-10">
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm md:p-7">
           <h2 className="text-lg font-semibold text-emerald-950">
             {copy.expectationsH}
@@ -802,6 +828,49 @@ export default function PassportServicePage({
           <p className="mt-2 text-xs text-emerald-900/90">
             {copy.expectationsP2}
           </p>
+        </div>
+      </section>
+
+      {/* ============ ON THE DAY OF YOUR APPOINTMENT (DOCS + PAY SUPPORT) == */}
+      <section className="mx-auto max-w-5xl px-3 pb-6 sm:px-6 md:px-8 md:pb-8">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm md:p-7">
+          <h2 className="text-lg font-semibold text-emerald-950">
+            {copy.docsH}
+          </h2>
+          <div className="mt-3 grid gap-6 md:grid-cols-[1.2fr_1fr]">
+            {/* Left: what you need on the day */}
+            <div>
+              <h3 className="text-sm font-semibold text-emerald-950">
+                {copy.docsForTitle}
+              </h3>
+              <ul className="mt-2 list-disc list-inside text-sm text-emerald-900">
+                {copy.docsList.map((item: string, idx: number) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+              <p className="mt-2 text-xs text-emerald-900/90">
+                {copy.docsNote}
+              </p>
+            </div>
+
+            {/* Right: if you don’t have the money */}
+            <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4">
+              <h3 className="text-sm font-semibold text-emerald-950">
+                {copy.paySupportH}
+              </h3>
+              <p className="mt-1 text-xs sm:text-[13px] text-emerald-900/90">
+                {copy.paySupportP}
+              </p>
+              <ul className="mt-2 list-disc list-inside text-xs sm:text-[13px] text-emerald-900/90 space-y-1.5">
+                {copy.paySupportList.map((item: string, idx: number) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+              <p className="mt-2 text-[11px] text-emerald-900/70">
+                {copy.paySupportDisclaimer}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -879,7 +948,13 @@ export default function PassportServicePage({
 
 /* ============================ SMALL COMPONENTS ========================== */
 
-function FeatureCard({ title, body }: { title: React.ReactNode; body: React.ReactNode }) {
+function FeatureCard({
+  title,
+  body,
+}: {
+  title: React.ReactNode;
+  body: React.ReactNode;
+}) {
   return (
     <div className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
       <h3 className="text-sm font-semibold text-emerald-950">{title}</h3>
@@ -908,21 +983,22 @@ function StepCard({
   );
 }
 
-function CarouselSlide({
+/* ========= PROOF CAROUSEL SLIDE (BOTTOM GALLERY, ARROW NAV) =========== */
+
+function ProofCarouselSlide({
   id,
-  src,
-  alt,
+  item,
   locale,
 }: {
   id: string;
-  src: string;
-  alt: string;
+  item: AppointmentProofCase;
   locale: "en" | "it";
 }) {
-  const caption =
+  const caption = item.caption[locale];
+  const privacy =
     locale === "it"
-      ? "Appuntamento passaporto prenotato"
-      : "Passport appointment booked";
+      ? "Dati personali oscurati. Il passaporto è sempre rilasciato solo dal consolato."
+      : "Personal data is blurred. The passport is always issued only by the consulate.";
 
   return (
     <figure
@@ -931,8 +1007,8 @@ function CarouselSlide({
     >
       <div className="h-[64vw] max-h-[520px] sm:h-[46vw] sm:max-h-[520px]">
         <Image
-          src={src}
-          alt={alt}
+          src={item.image}
+          alt={item.alt[locale]}
           width={1600}
           height={1000}
           className="h-full w-full object-contain"
@@ -979,7 +1055,10 @@ function CarouselSlide({
         </svg>
       </button>
       <figcaption className="px-4 py-3 text-center text-xs sm:text-sm text-neutral-700">
-        {caption}
+        {caption}{" "}
+        <span className="block text-[11px] text-neutral-500 mt-1">
+          {privacy}
+        </span>
       </figcaption>
     </figure>
   );

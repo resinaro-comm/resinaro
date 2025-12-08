@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Community Knowledge Hub | Resinaro",
   description:
-    "Practical, judgement-free guides for Italians and migrants in the UK — paperwork, housing, health, and everyday life.",
+    "Practical, judgement-free guides for Italians and migrants in the UK — paperwork, housing, health, everyday life and Italian food.",
   alternates: { canonical: "/community" },
   openGraph: {
     title: "Community Knowledge Hub | Resinaro",
@@ -93,7 +93,8 @@ const posts: Post[] = [
     minutes: 14,
     tags: ["Prenot@Mi", "consulate", "passport"],
     updatedAt: "2025-11-16",
-    itTitle: "Prenot@Mi & appuntamenti consolari Regno Unito (2025): guida di sopravvivenza",
+    itTitle:
+      "Prenot@Mi & appuntamenti consolari Regno Unito (2025): guida di sopravvivenza",
     itDescription:
       "Copertura consolare, pattern di rilascio slot, evitare account bloccati e preparazione al giorno dell’appuntamento.",
     featured: false,
@@ -134,7 +135,8 @@ const posts: Post[] = [
     image: "/images/warmth-energy-hero-3840x1280.png",
     minutes: 9,
     tags: ["housing", "winter"],
-    itTitle: "Stai al caldo, spendi meno: scelte comfort a risparmio energia",
+    itTitle:
+      "Stai al caldo, spendi meno: scelte comfort a risparmio energia",
     itDescription:
       "Acquisti semplici che bloccano gli spifferi e tengono caldo negli affitti UK: guarnizioni, tende termiche, borse dell’acqua calda e stufette a basso consumo.",
   },
@@ -173,7 +175,8 @@ const posts: Post[] = [
     image: "/images/cleaning.png",
     minutes: 11,
     tags: ["deposit", "cleaning"],
-    itTitle: "Giorno del trasloco: kit pulizie & piccole riparazioni (affitti UK)",
+    itTitle:
+      "Giorno del trasloco: kit pulizie & piccole riparazioni (affitti UK)",
     itDescription:
       "Pulizie e micro-riparazioni a prova di appartamento: microfibre, mocio, ganci adesivi, WD-40 e controllo umidità.",
   },
@@ -212,7 +215,8 @@ const posts: Post[] = [
     image: "/images/desk-chargers-adapter.jpg",
     minutes: 8,
     tags: ["power", "adapters"],
-    itTitle: "Prese, adattatori & corrente: Italia ↔ UK senza scintille",
+    itTitle:
+      "Prese, adattatori & corrente: Italia ↔ UK senza scintille",
     itDescription:
       "Adattatori EU→UK e UK→EU con terra, caricabatterie multi-porta e ciabatte sicure con protezione da sovratensioni.",
   },
@@ -247,6 +251,138 @@ const posts: Post[] = [
     itDescription:
       "Basi di dispensa per vivere in UK — ingredienti a lunga conservazione, senza frigorifero. Perfetti per cucine condivise, alloggi temporanei o mini-appartamenti.",
   },
+
+  // New Italian food & lifestyle guides (Dec 2025)
+  {
+    title:
+      "Italian Pantry Essentials in the UK (2025): What to Stock First",
+    description:
+      "Shelf-stable Italian staples for UK life: pasta, passata, oil, tuna, beans and herbs that survive shared kitchens and small cupboards.",
+    slug: "/community/italian-pantry-essentials-uk",
+    category: "lifestyle",
+    image: "/images/italian-essentials.png",
+    minutes: 13,
+    tags: ["pantry", "newcomers"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Dispensa italiana in UK (2025): cosa comprare per primo",
+    itDescription:
+      "Basi di dispensa “all’italiana” per la vita in UK: pasta, passata, olio, tonno, legumi e aromi che resistono a cucine condivise e armadietti piccoli.",
+  },
+  {
+    title:
+      "Italian Snacks & Biscuits in the UK: Taralli, Grissini & More",
+    description:
+      "Where to find Italian-style biscuits, taralli, grissini and sweet spreads in the UK, plus ideas for a quick merenda or tea break.",
+    slug: "/community/italian-snacks-biscuits-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-snacks-hero.jpg",
+    minutes: 10,
+    tags: ["pantry", "snacks"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Snack & biscotti italiani in UK: taralli, grissini & altro",
+    itDescription:
+      "Dove trovare biscotti, taralli, grissini e creme spalmabili “all’italiana” in UK, con idee per merenda veloce o pausa tè.",
+  },
+  {
+    title:
+      "Italian Coffee Beans in the UK: Moka & Espresso-Friendly Picks",
+    description:
+      "How to pick beans and ground coffee in UK shops that work for moka and espresso-style coffee: roast level, grind size and where to buy.",
+    slug: "/community/italian-coffee-beans-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-coffee-beans-hero.jpg",
+    minutes: 9,
+    tags: ["pantry", "coffee", "moka"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Caffè italiano in UK: chicchi & macinato per moka",
+    itDescription:
+      "Come scegliere chicchi e macinato “all’italiana” in UK per moka e espresso: tostatura, macinatura e negozi (online/offline) dove comprarli.",
+  },
+  {
+    title:
+      "Italian Olive Oil in the UK: Extra Virgin (EVOO) Explained",
+    description:
+      "What “extra virgin olive oil” (EVOO) really means, how to read labels in UK supermarkets and which bottle sizes make sense in small flats.",
+    slug: "/community/italian-olive-oil-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-olive-oil-hero.jpg",
+    minutes: 11,
+    tags: ["pantry", "olive-oil"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Olio d’oliva italiano in UK: extravergine (EVOO) spiegato bene",
+    itDescription:
+      "Cosa significa davvero “olio extravergine d’oliva” (EVOO), come leggere le etichette nei supermercati UK e che formati hanno senso in affitto.",
+  },
+  {
+    title:
+      "Italian Pizza Night in a UK Kitchen: Flour, Yeast & Simple Gear",
+    description:
+      "Everything you need for a basic Italian-style pizza night with a UK oven: 00 flour, yeast, trays/steels and a short toppings checklist.",
+    slug: "/community/italian-pizza-night-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-pizza-night-hero.jpg",
+    minutes: 11,
+    tags: ["pantry", "pizza"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Pizza night all’italiana in cucina UK: farina, lievito & strumenti base",
+    itDescription:
+      "Cosa serve per organizzare una pizza “all’italiana” con il forno di casa in UK: farina 00, lievito, teglie/pietre e una checklist di condimenti semplici.",
+  },
+  {
+    title:
+      "Italian Pasta Brands in the UK: Everyday & Bulk Buys",
+    description:
+      "How to choose Italian-style pasta in UK shops: shapes to stock, when to buy supermarket brands and when premium really matters.",
+    slug: "/community/italian-pasta-brands-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-pasta-brands-uk-hero.jpg",
+    minutes: 11,
+    tags: ["pantry", "pasta", "bulk"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Marche di pasta italiana in UK: scorte intelligenti",
+    itDescription:
+      "Come scegliere la pasta “all’italiana” nei supermercati UK: formati jolly da tenere in dispensa, quando basta la marca base e quando vale spendere di più.",
+  },
+  {
+    title:
+      "Best Italian Pasta Brands in the UK (2025): Taste-Tested Picks",
+    description:
+      "From supermarket shelves to Amazon multi-packs: Italian-style pasta brands that hold up al dente in a UK kitchen, with budget and upgrade options.",
+    slug: "/community/best-italian-pasta-brands-uk",
+    category: "lifestyle",
+    image: "/images/community/italian-pasta-brands-uk-hero.jpg",
+    minutes: 13,
+    tags: ["pantry", "pasta"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Migliori marche di pasta italiana in UK (2025)",
+    itDescription:
+      "Dai supermercati ad Amazon: marche di pasta “all’italiana” che restano al dente in cucina UK, con opzioni risparmio e upgrade.",
+  },
+  {
+    title:
+      "Aperitivo at Home in the UK: Simple Italian Board & Drinks",
+    description:
+      "Turn a small UK kitchen into aperitivo hour: easy boards with crisps, olives, taralli, cured meats and simple drink ideas—plus Amazon-friendly tools.",
+    slug: "/community/aperitivo-at-home-uk",
+    category: "lifestyle",
+    image: "/images/community/aperitivo-at-home-hero.jpg",
+    minutes: 11,
+    tags: ["pantry", "snacks", "aperitivo"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Aperitivo in casa in UK: tagliere semplice & drink",
+    itDescription:
+      "Trasforma una cucina UK in ora dell’aperitivo: tagliere con patatine, olive, taralli, salumi e drink semplici — con strumenti facili da comprare online.",
+  },
+
+  // Banking & life
   {
     title: "Open a Revolut Account in the UK (2025) — Quick Guide",
     description:
@@ -287,7 +423,8 @@ const posts: Post[] = [
       "Percorso Starling Bank per migranti: configurazione, protezione FSCS, consegna carta, opzioni business e troubleshooting (2025).",
   },
   {
-    title: "Finding Affordable Housing in London (2025): Guide for New Arrivals",
+    title:
+      "Finding Affordable Housing in London (2025): Guide for New Arrivals",
     description:
       "Practical advice for finding safe, affordable housing in London: where to search, referencing, deposit protection, avoiding scams and emergency help.",
     slug: "/community/life-in-uk/finding-affordable-housing-london-2025",
@@ -295,7 +432,8 @@ const posts: Post[] = [
     image: "/images/housing-london-hero.png",
     minutes: 16,
     tags: ["housing", "london"],
-    itTitle: "Casa accessibile a Londra (2025): guida per nuovi arrivati",
+    itTitle:
+      "Casa accessibile a Londra (2025): guida per nuovi arrivati",
     itDescription:
       "Consigli pratici per trovare casa sicura e accessibile a Londra: dove cercare, referenze, deposito e tutela, truffe da evitare e aiuti d’emergenza.",
   },
@@ -344,6 +482,41 @@ const posts: Post[] = [
     itDescription:
       "Guida completa alla CIE dal Regno Unito: chi può richiederla, documenti necessari, appuntamento, impronte, minori, costi e uso per SPID/CIE ID.",
   },
+
+  // New citizenship guides (Dec 2025)
+  {
+    title:
+      "Italian Citizenship by Descent from the UK (2025): Documents, Lines & Timelines",
+    description:
+      "Step-by-step overview of Italian citizenship jure sanguinis from the UK: who qualifies, how to build your line, documents to collect and realistic timelines.",
+    slug: "/community/citizenship-by-descent-uk",
+    category: "bureaucracy-guides",
+    image: "/images/speak-italian-citizenship.png",
+    minutes: 19,
+    tags: ["citizenship", "jure sanguinis"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Cittadinanza italiana per discendenza dal Regno Unito (2025)",
+    itDescription:
+      "Panoramica passo-passo sulla cittadinanza italiana iure sanguinis dal Regno Unito: chi può farla, come ricostruire la linea, documenti da raccogliere e tempi realistici.",
+  },
+  {
+    title:
+      "Italian Citizenship by Marriage in the UK (2025): B1 Italian, Documents & Timelines",
+    description:
+      "Eligibility, required B1 Italian, documents and application routes for Italian citizenship by marriage (art. 5/7) from the UK, plus common pitfalls.",
+    slug: "/community/citizenship-by-marriage-uk",
+    category: "bureaucracy-guides",
+    image: "/images/travel-cards-in-uk.png",
+    minutes: 18,
+    tags: ["citizenship", "marriage"],
+    updatedAt: "2025-12-07",
+    itTitle:
+      "Cittadinanza italiana per matrimonio dal Regno Unito (2025)",
+    itDescription:
+      "Requisiti, certificato B1 di italiano, documenti e canali di domanda per la cittadinanza per matrimonio dall’UK, con errori frequenti da evitare.",
+  },
+
   {
     title:
       "Registering UK Birth/Marriage/Divorce in Italy (2025): Documents, Apostille & Consular Transcriptions",
@@ -890,8 +1063,9 @@ export default async function CommunityHub({
       ? searchParams?.category[0]
       : searchParams?.category) || "";
   const tag =
-    (Array.isArray(searchParams?.tag) ? searchParams?.tag[0] : searchParams?.tag) ||
-    "";
+    (Array.isArray(searchParams?.tag)
+      ? searchParams?.tag[0]
+      : searchParams?.tag) || "";
   const sort =
     (Array.isArray(searchParams?.sort)
       ? searchParams?.sort[0]
@@ -1026,7 +1200,9 @@ export default async function CommunityHub({
                       href={`/${locale}/community?category=bureaucracy-guides`}
                       className="inline-flex items-center text-xs font-medium text-emerald-800 underline underline-offset-4"
                     >
-                      {isIt ? "Consolati & documenti →" : "Consular & documents →"}
+                      {isIt
+                        ? "Consolati & documenti →"
+                        : "Consular & documents →"}
                     </Link>
                   </div>
                 </div>
@@ -1076,9 +1252,7 @@ export default async function CommunityHub({
                         id="q"
                         name="q"
                         defaultValue={q}
-                        placeholder={
-                          isIt ? "Cerca guide…" : "Search guides…"
-                        }
+                        placeholder={isIt ? "Cerca guide…" : "Search guides…"}
                         className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
                       />
                     </div>
@@ -1130,9 +1304,7 @@ export default async function CommunityHub({
                     <select
                       name="tag"
                       defaultValue={tag}
-                      aria-label={
-                        isIt ? "Filtra per tag" : "Filter by tag"
-                      }
+                      aria-label={isIt ? "Filtra per tag" : "Filter by tag"}
                       className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
                     >
                       <option value="">
@@ -1153,18 +1325,14 @@ export default async function CommunityHub({
                     <select
                       name="sort"
                       defaultValue={sort}
-                      aria-label={
-                        isIt ? "Ordina risultati" : "Sort results"
-                      }
+                      aria-label={isIt ? "Ordina risultati" : "Sort results"}
                       className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
                     >
                       <option value="">
                         {isIt ? "Predefinito" : "Default"}
                       </option>
                       <option value="recent">
-                        {isIt
-                          ? "Aggiornati di recente"
-                          : "Recently updated"}
+                        {isIt ? "Aggiornati di recente" : "Recently updated"}
                       </option>
                       <option value="title">
                         {isIt ? "Titolo A–Z" : "Title A–Z"}
