@@ -41,7 +41,6 @@ function getContainerClasses(
         ? "border-emerald-200 bg-emerald-50"
         : "border-gray-200 bg-white");
   } else if (variant === "strip") {
-    // Minimal, meant to sit inside other coloured sections
     base = "mt-4";
   } else if (variant === "sidebar") {
     base =
@@ -89,7 +88,6 @@ function getItemsClosestToToday(limit: number): AppointmentProofCase[] {
     const bDate = new Date(b.date);
 
     if (isNaN(aDate.getTime()) || isNaN(bDate.getTime())) {
-      // Fallback: keep original order if dates are invalid
       return 0;
     }
 
@@ -107,7 +105,6 @@ function getItemsClosestToToday(limit: number): AppointmentProofCase[] {
     const aFutureOrToday = aTime >= todayMidnight;
     const bFutureOrToday = bTime >= todayMidnight;
 
-    // Prefer upcoming / today over past
     if (aFutureOrToday !== bFutureOrToday) {
       return aFutureOrToday ? -1 : 1;
     }
@@ -131,7 +128,8 @@ export function AppointmentProofGallery({
   className,
 }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const items = getItemsClosestToToday(limit);
 
   if (!items.length) return null;
@@ -166,6 +164,11 @@ export function AppointmentProofGallery({
   const imgSizes = isSidebar
     ? "(min-width: 768px) 260px, 100vw"
     : "(min-width: 1024px) 900px, 100vw";
+
+  const enlargeLabel =
+    locale === "it"
+      ? "Ingrandisci schermata Prenot@Mi"
+      : "Enlarge Prenot@Mi screenshot";
 
   return (
     <section className={containerClasses}>
@@ -207,13 +210,39 @@ export function AppointmentProofGallery({
             priority={isSidebar}
           />
 
+          {/* Enlarge button */}
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            aria-label={enlargeLabel}
+            className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full border border-black/5 bg-white/95 text-gray-700 shadow-sm hover:bg-white"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                d="M9 4H5a1 1 0 0 0-1 1v4M15 4h4a1 1 0 0 1 1 1v4M9 20H5a1 1 0 0 1-1-1v-4M15 20h4a1 1 0 0 0 1-1v-4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+
           {/* Arrows */}
           {items.length > 1 && (
             <>
               <button
                 type="button"
                 onClick={handlePrev}
-                aria-label={locale === "it" ? "Appuntamento precedente" : "Previous appointment"}
+                aria-label={
+                  locale === "it"
+                    ? "Appuntamento precedente"
+                    : "Previous appointment"
+                }
                 className="absolute left-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-black/5 bg-white/95 text-gray-700 shadow-sm hover:bg-white"
               >
                 <svg
@@ -233,7 +262,11 @@ export function AppointmentProofGallery({
               <button
                 type="button"
                 onClick={handleNext}
-                aria-label={locale === "it" ? "Appuntamento successivo" : "Next appointment"}
+                aria-label={
+                  locale === "it"
+                    ? "Appuntamento successivo"
+                    : "Next appointment"
+                }
                 className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-black/5 bg-white/95 text-gray-700 shadow-sm hover:bg-white"
               >
                 <svg
@@ -272,6 +305,39 @@ export function AppointmentProofGallery({
           )}
         </figcaption>
       </figure>
+
+      {/* Modal for enlarged image */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative w-full max-w-5xl">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              aria-label={locale === "it" ? "Chiudi anteprima" : "Close preview"}
+              className="absolute right-3 top-3 z-10 rounded-full bg-black/70 px-2 py-1 text-xs font-semibold text-white hover:bg-black"
+            >
+              {locale === "it" ? "Chiudi" : "Close"}
+            </button>
+            <div className="relative h-[60vh] w-full rounded-2xl bg-black/40">
+              <Image
+                src={current.image}
+                alt={current.alt[locale]}
+                fill
+                className="object-contain"
+                sizes="(min-width: 1024px) 900px, 100vw"
+              />
+            </div>
+            <p className="mt-3 text-[11px] text-gray-100 text-center">
+              {current.caption[locale]}{" "}
+              <span className="block">{disclaimer}</span>
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

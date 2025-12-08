@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { AppointmentProofGallery } from "@/components/proof/AppointmentProofGallery";
 
 type Locale = "en" | "it";
 
@@ -118,8 +119,8 @@ function t(locale: Locale) {
       ? "Quando ha senso farsi aiutare da Resinaro"
       : "When it makes sense to get help from Resinaro",
     serviceStripP: it
-      ? "Se vuoi diminuire il caos, possiamo occuparci noi dei tentativi su Prenot@Mi e della lista d’attesa dove esiste, mentre tu ti concentri sui documenti."
-      : "If you want less chaos, we can handle the Prenot@Mi attempts and waiting list (where available) while you focus on documents.",
+      ? "Se vuoi diminuire il caos, possiamo occuparci noi dei tentativi su Prenot@Mi (e delle liste d’attesa dove esistono) mentre tu ti concentri sui documenti."
+      : "If you want less chaos, we can handle the Prenot@Mi attempts (and waiting lists where they exist) while you focus on documents.",
     serviceStripList: it
       ? [
           "Prenotazione di data/ora su Prenot@Mi (quando il consolato rilascia slot).",
@@ -340,7 +341,7 @@ function t(locale: Locale) {
           ],
           [
             "7) Book and save the confirmation.",
-            "Download or print the receipt with date, time and service; you’ll need it on appointment day.",
+            "Download or print the confirmation with date, time and service; you’ll need it on appointment day.",
           ],
         ],
     safetyNote: it
@@ -967,7 +968,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
-      {/* ===== Service strip: help + pricing + payments + proof images ===== */}
+      {/* ===== Service strip: help + pricing + payments + proof gallery ===== */}
       <section className="mx-auto mt-16 max-w-7xl px-6">
         <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 shadow-sm">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_.9fr]">
@@ -1028,76 +1029,34 @@ export default function Page({ params }: { params: { locale: Locale } }) {
                 </Link>
               </div>
             </div>
+{/* Proof gallery: real Prenot@Mi appointments */}
+<div className="lg:pl-2 lg:pt-2">
+  <AppointmentProofGallery
+    locale={locale}
+    variant="sidebar"
+    emphasis="strong"
+    title={
+      locale === "it"
+        ? "Appuntamenti Prenot@Mi reali dal Regno Unito"
+        : "Real Prenot@Mi appointments (UK)"
+    }
+    subtitle={
+      locale === "it"
+        ? "Screenshot reali di appuntamenti Prenot@Mi prenotati per clienti che vivono nel Regno Unito. Usiamo sempre e solo l’account Prenot@Mi del cliente, senza canali “segreti” o salta-fila; tutti i dati personali sono oscurati."
+        : "Real screenshots of Prenot@Mi appointments booked for clients living in the UK. We always use the client’s own Prenot@Mi account – no “secret channels”, no queue-jumping – and all personal data is blurred."
+    }
+  />
 
-            {/* Proof images from passport page */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-gray-900">
-                {locale === "it"
-                  ? "Esempi recenti (Prenot@Mi Manchester)"
-                  : "Recent real examples (Prenot@Mi Manchester)"}
-              </h3>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <figure className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                  <div className="relative h-40 w-full overflow-hidden rounded-xl bg-neutral-100">
-                    <Image
-                      src="/proof/2026-02-manchester-appointment-01.webp"
-                      alt={
-                        locale === "it"
-                          ? "Appuntamento prenotato — Manchester — Febbraio 2026"
-                          : "Booked appointment — Manchester — February 2026"
-                      }
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <figcaption className="mt-2 text-[11px] text-neutral-700 text-center">
-                    {locale === "it"
-                      ? "Data e ora confermate (nascoste nello screenshot)."
-                      : "Date & time confirmed (hidden in screenshot)."}
-                  </figcaption>
-                </figure>
+  {/* Link to full proof page */}
+  <p className="mt-2 text-[11px] text-emerald-900 underline underline-offset-4">
+    <Link href="/services/proof/appointments-prenotami-booked">
+      {locale === "it"
+        ? "Vedi la galleria completa degli appuntamenti Prenot@Mi →"
+        : "View the full Prenot@Mi appointment gallery →"}
+    </Link>
+  </p>
+</div>
 
-                <figure className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                  <div className="relative h-40 w-full overflow-hidden rounded-xl bg-neutral-100">
-                    <Image
-                      src="/proof/wl-2025-11-10-01.webp"
-                      alt={
-                        locale === "it"
-                          ? "Lista d’attesa confermata — Manchester — 10 Nov 2025"
-                          : "Waiting list secured — Manchester — 10 Nov 2025"
-                      }
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <figcaption className="mt-2 text-[11px] text-neutral-700 text-center">
-                    {locale === "it"
-                      ? "Accesso gestito con credenziali del cliente."
-                      : "Access managed using the client’s own login details."}
-                  </figcaption>
-                </figure>
-              </div>
-
-              <figure className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                <div className="relative h-40 w-full overflow-hidden rounded-xl bg-neutral-100">
-                  <Image
-                    src="/proof/wl-2025-11-12-02.webp"
-                    alt={
-                      locale === "it"
-                        ? "Lista d’attesa confermata — Manchester — 12 Nov 2025"
-                        : "Waiting list secured — Manchester — 12 Nov 2025"
-                    }
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <figcaption className="mt-2 text-[11px] text-neutral-700 text-center">
-                  {locale === "it"
-                    ? "Gli esempi sono reali; dati sensibili oscurati."
-                    : "Real examples; sensitive data blurred for privacy."}
-                </figcaption>
-              </figure>
-            </div>
           </div>
         </div>
       </section>
