@@ -3,17 +3,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { p, type Locale } from "@/lib/localePath";
+import AddressProofChecklist from "@/components/community/address-proof/AddressProofChecklist";
+import AddressProofBuilder from "@/components/community/address-proof/AddressProofBuilder";
+import AddressProofLetterGenerator from "@/components/community/address-proof/AddressProofLetterGenerator";
+import AddressProofExpiryTracker from "@/components/community/address-proof/AddressProofExpiryTracker";
+import AddressProofAffiliateKits from "@/components/community/address-proof/AddressProofAffiliateKits";
 
 const DESCRIPTION_EN =
-  "No utility bills yet? Use these 12 accepted documents for UK proof of address: tenancy, employer/GP letters, bank welcome letter loop, C/O wording, and scripts for banks, GP, DVLA. Premium, practical guide for Italians and newcomers.";
+  "Proof of address without bills in the UK (2025): how migrants and Italians can use 12 accepted documents, C/O wording, employer/GP letters and a practical bundle to unlock bank accounts, NIN, GP, DVLA and consulate appointments.";
 
 const DESCRIPTION_IT =
-  "Nessuna bolletta ancora? Usa questi 12 documenti accettati per la prova di indirizzo nel Regno Unito: contratto di affitto, lettere di datore di lavoro/GP, welcome letter della banca, indirizzo C/O e script pronti per banca, GP, DVLA. Guida pratica per italiani e nuovi arrivati.";
+  "Prova di indirizzo nel Regno Unito senza bollette (2025): come italiani e nuovi arrivati possono usare 12 documenti accettati, indirizzo C/O, lettere di datore di lavoro/GP e un pacchetto pratico per sbloccare banca, NIN, GP, DVLA e consolato.";
 
 // Static metadata (English defaults) + language alternates
 export const metadata: Metadata = {
   title:
-    "Proof of Address Without Bills (2025) — 12 Accepted Docs + Copy-Paste Templates",
+    "Proof of Address Without Bills UK (2025) — 12 Docs, Scripts & Bundle",
   description: DESCRIPTION_EN,
   metadataBase: new URL("https://www.resinaro.com"),
   alternates: {
@@ -25,7 +30,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "Proof of Address Without Bills (2025) — 12 Accepted Docs + Copy-Paste Templates",
+      "Proof of Address Without Bills UK (2025) — 12 Docs, Scripts & Bundle",
     description: DESCRIPTION_EN,
     url: "https://www.resinaro.com/en/community/proof-of-address-without-bills-2025",
     type: "article",
@@ -34,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Proof of Address Without Bills (2025) — 12 Accepted Docs + Copy-Paste Templates",
+      "Proof of Address Without Bills UK (2025) — 12 Docs, Scripts & Bundle",
     description: DESCRIPTION_EN,
     images: ["/images/proof-of-address-uk-hero.png"],
   },
@@ -55,71 +60,71 @@ function t(locale: Locale) {
     heroChip: it ? "IDENTITÀ • SETUP" : "IDENTITY • SETUP",
     heroTitle: it
       ? "Prova di indirizzo senza bollette (2025)"
-      : "Proof of Address Without Bills (2025)",
+      : "Proof of Address Without Bills UK (2025)",
     heroSubtitle: it
-      ? "12 documenti accettati, formule C/O che funzionano, lettere copia-incolla e un “evidence bundle” veloce così banca, GP, council e DVLA dicono sì al primo tentativo."
-      : "12 accepted documents, C/O wording that works, copy-paste letters, and a fast evidence bundle so banks, GP, council and DVLA say yes the first time.",
+      ? "Anche senza bollette puoi costruire un pacchetto di prove d’indirizzo accettato da banca, GP, council, DVLA e consolato — con modelli pronti e strategie pensate per chi è appena arrivato."
+      : "Even with zero bills you can build a proof-of-address bundle accepted by banks, GP, councils, DVLA and the consulate — with ready-made templates and strategies for newcomers.",
     heroMeta: it
-      ? "Aggiornato per il 2025 • Scritto per italiani nel Regno Unito"
-      : "Updated for 2025 • Written for Italians in the UK",
+      ? "Guida per italiani e nuovi arrivati nel Regno Unito"
+      : "Written for Italians and newcomers in the UK",
 
     // Meta bar
     metaBarItems: it
       ? [
-          "✔ Inglese semplice",
-          "✔ Formule sicure per depositi e KYC",
-          "✔ Modelli inclusi",
+          "Categoria: Banca & burocrazia",
+          "Aggiornato 2025",
+          "Lettura 18–25 minuti",
         ]
       : [
-          "✔ Easy English",
-          "✔ Deposit & KYC-safe wording",
-          "✔ Templates included",
+          "Category: Banking & bureaucracy",
+          "Updated for 2025",
+          "18–25 min read",
         ],
 
     // Quick cards
     quickCards: it
       ? [
           {
-            href: "#fastest-routes",
-            title: "Banca veloce",
-            sub: "Opzioni KYC subito",
-          },
-          {
-            href: "#co-setup",
-            title: "C/O fatto bene",
-            sub: "Ospite + cassetta + testo",
+            href: "#before-checklist",
+            title: "Prima di iniziare",
+            sub: "Mini checklist di base",
           },
           {
             href: "#accepted-docs",
-            title: "12 documenti",
-            sub: "Cosa funziona dove",
+            title: "Documenti accettati",
+            sub: "12 opzioni reali",
           },
           {
-            href: "#templates",
-            title: "Modelli",
-            sub: "Lettere & script",
+            href: "#step-by-step",
+            title: "Piano step-by-step",
+            sub: "4 passi chiari",
+          },
+          {
+            href: "#tools",
+            title: "Strumenti interattivi",
+            sub: "Planner, lettere, scadenze",
           },
         ]
       : [
           {
-            href: "#fastest-routes",
-            title: "Bank fast-track",
-            sub: "KYC options now",
-          },
-          {
-            href: "#co-setup",
-            title: "C/O done right",
-            sub: "Host + mailbox + copy",
+            href: "#before-checklist",
+            title: "Before you start",
+            sub: "Basic readiness check",
           },
           {
             href: "#accepted-docs",
-            title: "12 documents",
-            sub: "What works where",
+            title: "Accepted documents",
+            sub: "12 real-world options",
           },
           {
-            href: "#templates",
-            title: "Templates",
-            sub: "Letters & scripts",
+            href: "#step-by-step",
+            title: "Step-by-step plan",
+            sub: "4 clear stages",
+          },
+          {
+            href: "#tools",
+            title: "Interactive tools",
+            sub: "Planner, letters, expiry",
           },
         ],
 
@@ -144,8 +149,8 @@ function t(locale: Locale) {
 
     // Accepted docs table
     acceptedTitle: it
-      ? "1) I 12 documenti accettati (tabella rapida)"
-      : "1) The 12 accepted documents (quick comparison)",
+      ? "I 12 documenti accettati (tabella rapida)"
+      : "The 12 accepted documents (quick comparison)",
     acceptedIntro: it
       ? "Non tutti i servizi accettano le stesse prove. Scegli i due più veloci per il tuo obiettivo."
       : "Not every service accepts the same proof. Pick the fastest two below for your case.",
@@ -346,8 +351,8 @@ function t(locale: Locale) {
 
     // Fastest routes
     fastestTitle: it
-      ? "2) Le vie più veloci per obiettivo (Banca • GP • DVLA • Council)"
-      : "2) Fastest routes by goal (Bank • GP • DVLA • Council)",
+   ? "Vie veloci per obiettivo (Banca • GP • DVLA • Council)"
+   : "Fastest routes by goal (Bank • GP • DVLA • Council)",
     fastestCards: it
       ? [
           {
@@ -436,8 +441,8 @@ function t(locale: Locale) {
 
     // C/O
     coTitle: it
-      ? "3) Indirizzo C/O fatto bene (ospite, cassetta, testo)"
-      : "3) C/O address done right (host, mailbox, wording)",
+  ? "Indirizzo C/O fatto bene (ospite, cassetta, testo)"
+  : "C/O address done right (host, mailbox, wording)",
     coIntro: it
       ? "Il C/O ti permette di ricevere posta a casa di qualcun altro mentre ti sistemi. Alcuni servizi lo accettano se il testo è corretto."
       : "C/O lets you receive post at someone else’s place while you settle. Some services accept it with the right wording.",
@@ -475,8 +480,8 @@ function t(locale: Locale) {
 
     // Templates
     templatesTitle: it
-      ? "4) Modelli da copiare (lettere, email, script)"
-      : "4) Templates you can copy (letters, emails, scripts)",
+  ? "Modelli da copiare (lettere, email, script)"
+  : "Templates you can copy (letters, emails, scripts)",
     templateAHeading: it
       ? "A) Lettera del datore di lavoro (carta intestata)"
       : "A) Employer letter (headed paper)",
@@ -504,8 +509,9 @@ function t(locale: Locale) {
 
     // Evidence bundle
     bundleTitle: it
-      ? "5) Il tuo “evidence bundle” (una cartella, niente panico)"
-      : "5) Your “evidence bundle” (one folder, zero panic)",
+  ? "Il tuo “evidence bundle” (una cartella, niente panico)"
+  : "Your “evidence bundle” (one folder, zero panic)",
+
     bundleMustH: it ? "Essenziali" : "Must-haves",
     bundleMustItems: it
       ? [
@@ -545,8 +551,9 @@ function t(locale: Locale) {
 
     // Naming & scanning
     namingTitle: it
-      ? "6) Nomi dei file, scansioni & igiene dei dati"
-      : "6) File naming, scanning & metadata hygiene",
+  ? "Nomi dei file, scansioni & igiene dei dati"
+  : "File naming, scanning & metadata hygiene",
+
     scanRulesH: it ? "Regole per scansioni" : "Scan quality rules",
     scanRules: it
       ? [
@@ -576,8 +583,9 @@ function t(locale: Locale) {
 
     // Rejections
     fixTitle: it
-      ? "7) Motivi classici di rifiuto (e come sistemarli al volo)"
-      : "7) Top rejection reasons (and instant fixes)",
+  ? "Motivi classici di rifiuto (e come sistemarli al volo)"
+  : "Top rejection reasons (and instant fixes)",
+
     fixCards: it
       ? [
           {
@@ -626,7 +634,7 @@ function t(locale: Locale) {
           },
         ],
 
-    // FAQ content (UI)
+    // FAQ content (UI) – extended in JSON-LD below
     faqTitle: it ? "Domande frequenti" : "FAQ",
     faqEntries: it
       ? [
@@ -727,23 +735,33 @@ function t(locale: Locale) {
     tocTitle: it ? "In questa pagina" : "On this page",
     tocLinks: it
       ? [
+          { href: "#before-checklist", label: "Prima di iniziare" },
           { href: "#accepted-docs", label: "12 documenti accettati" },
-          { href: "#fastest-routes", label: "Vie più veloci per obiettivo" },
-          { href: "#co-setup", label: "Impostare l’indirizzo C/O" },
-          { href: "#templates", label: "Modelli" },
+          { href: "#step-by-step", label: "Piano step-by-step" },
+          {
+            href: "#tricky-situations",
+            label: "Situazioni complicate (C/O, stanze, amici)",
+          },
+          { href: "#tools", label: "Strumenti interattivi" },
           { href: "#bundle", label: "Evidence bundle" },
           { href: "#naming", label: "Scansioni & nomi file" },
           { href: "#fix", label: "Come correggere i rifiuti" },
+          { href: "#kits", label: "Kit opzionali (Amazon)" },
           { href: "#faq", label: "FAQ" },
         ]
       : [
+          { href: "#before-checklist", label: "Before you start" },
           { href: "#accepted-docs", label: "12 accepted documents" },
-          { href: "#fastest-routes", label: "Fastest routes by goal" },
-          { href: "#co-setup", label: "C/O address setup" },
-          { href: "#templates", label: "Templates" },
+          { href: "#step-by-step", label: "Step-by-step plan" },
+          {
+            href: "#tricky-situations",
+            label: "Tricky situations (C/O, house shares)",
+          },
+          { href: "#tools", label: "Interactive tools" },
           { href: "#bundle", label: "Evidence bundle" },
           { href: "#naming", label: "Scan & naming hygiene" },
           { href: "#fix", label: "Rejection fixes" },
+          { href: "#kits", label: "Optional kits (Amazon)" },
           { href: "#faq", label: "FAQ" },
         ],
     tocButton: it ? "Ottieni il bundle" : "Get the bundle",
@@ -758,229 +776,262 @@ export default function Page({
   params: { locale: Locale };
 }) {
   const copy = t(locale);
+  const isItalian = locale === "it";
+  const toolsLocale = locale === "it" ? "it" : "en";
 
-  // JSON-LD: FAQ
-  const faqJsonLd =
-    locale === "it"
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name:
-                "Posso provare il mio indirizzo UK senza bollette di utenze?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Sì. Chi è appena arrivato spesso usa alternative: contratto di affitto, lettere del datore di lavoro, lettere del GP/NHS, lettere del council, welcome letter della banca e altro. Questa guida mostra 12 documenti accettati e modelli pronti.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Cos’è un indirizzo C/O e viene accettato?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "C/O (care of) significa che ricevi posta a casa di un’altra persona in modo temporaneo. Alcune banche e servizi lo accettano se il testo è corretto e c’è il consenso dell’ospitante. Controlla sempre i requisiti precisi.",
-              },
-            },
-            {
-              "@type": "Question",
-              name:
-                "Qual è la prova più veloce per i controlli KYC della banca?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Un contratto di affitto a tuo nome o una welcome letter della banca inviata al tuo indirizzo sono spesso le più rapide. Alcune banche digitali aprono l’account e chiedono la prova solo in un secondo momento.",
-              },
-            },
-            {
-              "@type": "Question",
-              name:
-                "Posso usare una lettera del datore di lavoro o dell’università?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Sì. Molte istituzioni accettano lettere su carta intestata di datore di lavoro o università che confermano il tuo indirizzo UK. Devono includere nome, indirizzo e data.",
-              },
-            },
-            {
-              "@type": "Question",
-              name:
-                "Cosa succede se il mio nome ha accenti o caratteri speciali?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Usa lo stesso formato ovunque. Se un sistema non accetta gli accenti, toglili e mantieni quella versione su banca, council, GP, per evitare incongruenze.",
-              },
-            },
-            {
-              "@type": "Question",
-              name:
-                "Come preparo un “pacchetto di prove” per ridurre i rifiuti?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Crea un evidence bundle ordinato: contratto di affitto in PDF, lettere ufficiali (council/GP) e welcome letter della banca. Dai nomi chiari ai file e usa scansioni di qualità. Segui checklist e modelli della guida.",
-              },
-            },
-          ],
-        }
-      : {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "Can I prove my UK address without utility bills?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Yes. Newcomers often use alternatives: tenancy agreements, employer letters, GP registration letters, council letters, bank welcome letters, and more. This guide shows 12 accepted documents and exact templates.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "What is a C/O address and is it accepted?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "C/O (care of) means you receive mail at someone else’s address temporarily. Some banks and services accept it with correct wording and a host permission note. Always verify the exact requirements.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Which proof is fastest for bank KYC?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "A tenancy agreement in your name or a bank’s own welcome letter sent to your address are often fastest. Some digital banks accept initial onboarding without proof, then ask for it later.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Can I use a letter from my employer or university?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Yes. Many institutions accept employer or university letters on headed paper confirming your UK address. The letter must include your name, address, and date.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "What if my name has accents or special characters?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Use the same format across all services. If a system rejects accents, remove them consistently (bank, council, GP) to avoid mismatches.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "How do I bundle evidence to avoid rejections?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text:
-                  "Create a tidy evidence bundle: tenancy PDF, official letters (council/GP), and a bank welcome letter. Name files clearly and use high-quality scans. Follow our checklist and templates.",
-              },
-            },
-          ],
-        };
-
-  // JSON-LD: HowTo
-  const howToJsonLd =
-    locale === "it"
-      ? {
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          name:
-            "Creare un pacchetto di prova di indirizzo UK in 20 minuti (senza bollette)",
-          totalTime: "PT20M",
-          step: [
-            {
-              "@type": "HowToStep",
-              name: "Scegli il documento più veloce",
-              text:
-                "Parti dal contratto di affitto o da una welcome letter della banca. Se non li hai, usa i modelli di lettera del datore di lavoro/GP di questa guida.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Aggiungi un secondo documento di supporto",
-              text:
-                "Aggiungi, se possibile, una lettera del council, una lettera di registrazione GP/NHS o una lettera dell’università.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Usa il formato di indirizzo corretto",
-              text:
-                "Includi numero civico, via, città e postcode completo. Se usi C/O, segui la formula consigliata nella guida.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Scansiona bene e rinomina i file",
-              text:
-                "Usa buona luce e superficie piana. Dai nomi chiari ai file, tipo cognome_documento_YYYY-MM-DD.pdf.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Invia e tieni traccia",
-              text:
-                "Invia solo ciò che il servizio richiede. Tieni un piccolo log con date e conferme. In caso di rifiuto, usa i modelli di risposta.",
-            },
-          ],
-        }
-      : {
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          name:
-            "Build a UK proof-of-address bundle in 20 minutes (without utility bills)",
-          totalTime: "PT20M",
-          step: [
-            {
-              "@type": "HowToStep",
-              name: "Choose your fastest document",
-              text:
-                "Start with your tenancy agreement or a bank welcome letter. If not available, use an employer/GP letter template from this guide.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Add a second backup",
-              text:
-                "Add a council letter, NHS/GP registration letter, or university letter if possible.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Use correct address format",
-              text:
-                "Include house number, street, city, and full postcode. For C/O lines, follow the wording tips in this guide.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Scan clearly and name files",
-              text:
-                "Use bright light and flat surfaces. Name files with date and type, like surname_doc_YYYY-MM-DD.pdf.",
-            },
-            {
-              "@type": "HowToStep",
-              name: "Submit and track",
-              text:
-                "Send only what the service asks for. Keep a log of dates and confirmations. If rejected, use our fix templates.",
-            },
-          ],
-        };
+  // JSON-LD: FAQ (extended in Part 2)
+  // JSON-LD: HowTo (extended in Part 2)
+  // JSON-LD: Article (extended in Part 2)
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800">
-      {/* JSON-LD */}
+            {/* JSON-LD: FAQ */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            locale === "it"
+              ? {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name:
+                        "Posso provare il mio indirizzo UK senza bollette di utenze?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Sì. Chi è appena arrivato spesso usa alternative: contratto di affitto, lettere del datore di lavoro, lettere del GP/NHS, lettere del council, welcome letter della banca e altro. Questa guida mostra 12 documenti accettati e modelli pronti.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Cos’è un indirizzo C/O e viene accettato?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "C/O (care of) significa che ricevi posta a casa di un’altra persona in modo temporaneo. Alcune banche e servizi lo accettano se il testo è corretto e c’è il consenso dell’ospitante. Controlla sempre i requisiti precisi.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name:
+                        "Qual è la prova più veloce per i controlli KYC della banca?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Un contratto di affitto a tuo nome o una welcome letter della banca inviata al tuo indirizzo sono spesso le più rapide. Alcune banche digitali aprono l’account e chiedono la prova solo in un secondo momento.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name:
+                        "Posso usare una lettera del datore di lavoro o dell’università?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Sì. Molte istituzioni accettano lettere su carta intestata di datore di lavoro o università che confermano il tuo indirizzo UK. Devono includere nome, indirizzo e data.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name:
+                        "Cosa succede se il mio nome ha accenti o caratteri speciali?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Usa lo stesso formato ovunque. Se un sistema non accetta gli accenti, toglili e mantieni quella versione su banca, council, GP, per evitare incongruenze.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name:
+                        "Come preparo un “pacchetto di prove” per ridurre i rifiuti?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Crea un evidence bundle ordinato: contratto di affitto in PDF, lettere ufficiali (council/GP) e welcome letter della banca. Dai nomi chiari ai file e usa scansioni di qualità. Segui checklist e modelli della guida.",
+                      },
+                    },
+                  ],
+                }
+              : {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "Can I prove my UK address without utility bills?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Yes. Newcomers often use alternatives: tenancy agreements, employer letters, GP registration letters, council letters, bank welcome letters, and more. This guide shows 12 accepted documents and exact templates.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "What is a C/O address and is it accepted?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "C/O (care of) means you receive mail at someone else’s address temporarily. Some banks and services accept it with correct wording and a host permission note. Always verify the exact requirements.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Which proof is fastest for bank KYC?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "A tenancy agreement in your name or a bank’s own welcome letter sent to your address are often fastest. Some digital banks accept initial onboarding without proof, then ask for it later.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Can I use a letter from my employer or university?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Yes. Many institutions accept employer or university letters on headed paper confirming your UK address. The letter must include your name, address, and date.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "What if my name has accents or special characters?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Use the same format across all services. If a system rejects accents, remove them consistently (bank, council, GP) to avoid mismatches.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "How do I bundle evidence to avoid rejections?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text:
+                          "Create a tidy evidence bundle: tenancy PDF, official letters (council/GP), and a bank welcome letter. Name files clearly and use high-quality scans. Follow our checklist and templates.",
+                      },
+                    },
+                  ],
+                }
+          ),
+        }}
       />
+
+      {/* JSON-LD: HowTo */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            locale === "it"
+              ? {
+                  "@context": "https://schema.org",
+                  "@type": "HowTo",
+                  name:
+                    "Creare un pacchetto di prova di indirizzo UK in 20 minuti (senza bollette)",
+                  totalTime: "PT20M",
+                  step: [
+                    {
+                      "@type": "HowToStep",
+                      name: "Scegli il documento più veloce",
+                      text:
+                        "Parti dal contratto di affitto o da una welcome letter della banca. Se non li hai, usa i modelli di lettera del datore di lavoro/GP di questa guida.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Aggiungi un secondo documento di supporto",
+                      text:
+                        "Aggiungi, se possibile, una lettera del council, una lettera di registrazione GP/NHS o una lettera dell’università.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Usa il formato di indirizzo corretto",
+                      text:
+                        "Includi numero civico, via, città e postcode completo. Se usi C/O, segui la formula consigliata nella guida.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Scansiona bene e rinomina i file",
+                      text:
+                        "Usa buona luce e superficie piana. Dai nomi chiari ai file, tipo cognome_documento_YYYY-MM-DD.pdf.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Invia e tieni traccia",
+                      text:
+                        "Invia solo ciò che il servizio richiede. Tieni un piccolo log con date e conferme. In caso di rifiuto, usa i modelli di risposta.",
+                    },
+                  ],
+                }
+              : {
+                  "@context": "https://schema.org",
+                  "@type": "HowTo",
+                  name:
+                    "Build a UK proof-of-address bundle in 20 minutes (without utility bills)",
+                  totalTime: "PT20M",
+                  step: [
+                    {
+                      "@type": "HowToStep",
+                      name: "Choose your fastest document",
+                      text:
+                        "Start with your tenancy agreement or a bank welcome letter. If not available, use an employer/GP letter template from this guide.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Add a second backup",
+                      text:
+                        "Add a council letter, NHS/GP registration letter, or university letter if possible.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Use correct address format",
+                      text:
+                        "Include house number, street, city, and full postcode. For C/O lines, follow the wording tips in this guide.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Scan clearly and name files",
+                      text:
+                        "Use bright light and flat surfaces. Name files with date and type, like surname_doc_YYYY-MM-DD.pdf.",
+                    },
+                    {
+                      "@type": "HowToStep",
+                      name: "Submit and track",
+                      text:
+                        "Send only what the service asks for. Keep a log of dates and confirmations. If rejected, use our fix templates.",
+                    },
+                  ],
+                }
+          ),
+        }}
       />
+
+      {/* JSON-LD: Article */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline:
+              locale === "it"
+                ? "Prova di indirizzo senza bollette UK (2025)"
+                : "Proof of Address Without Bills UK (2025)",
+            description: locale === "it" ? DESCRIPTION_IT : DESCRIPTION_EN,
+            inLanguage: copy.lang,
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id":
+                locale === "it"
+                  ? "https://www.resinaro.com/it/community/proof-of-address-without-bills-2025"
+                  : "https://www.resinaro.com/en/community/proof-of-address-without-bills-2025",
+            },
+          }),
+        }}
+      />
+
 
       {/* —— HERO —— */}
       <section className="relative w-full h-[62vh] min-h-[520px] overflow-hidden">
@@ -1057,6 +1108,35 @@ export default function Page({
                   <li key={b}>{b}</li>
                 ))}
               </ul>
+              <p className="mt-4 text-xs text-gray-600">
+                {isItalian
+                  ? "Consiglio: meglio prepararsi prima (“meglio prepararsi prima che farsi bloccare dopo”). Anche se non ti serve oggi, avere prove d’indirizzo ti evita tanti rifiuti più avanti."
+                  : "Tip: meglio prepararsi prima — even if no one is asking for proof today, building a small bundle now saves a lot of stress and rejections later."}
+              </p>
+            </section>
+
+            {/* Before-you-start checklist */}
+            <section
+              id="before-checklist"
+              className="bg-white border rounded-2xl shadow-sm p-6 md:p-8 mb-10"
+            >
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div className="md:w-2/5">
+                  <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-2">
+                    {isItalian
+                      ? "Prima di iniziare: sei pronto?"
+                      : "Before you start: are you ready?"}
+                  </h2>
+                  <p className="text-sm text-gray-700">
+                    {isItalian
+                      ? "In 30–60 secondi controlli le basi: documento, indirizzo, possibilità di ricevere posta. Quando tutto è spuntato, puoi costruire il bundle senza sorprese."
+                      : "In 30–60 seconds you check the basics: ID, address, ability to receive post. Once everything is ticked, you can build your bundle without nasty surprises."}
+                  </p>
+                </div>
+                <div className="md:w-3/5 mt-3 md:mt-0">
+                  <AddressProofChecklist locale={toolsLocale} />
+                </div>
+              </div>
             </section>
 
             {/* 1) Accepted docs */}
@@ -1110,7 +1190,149 @@ export default function Page({
               </p>
             </section>
 
-            {/* 2) Fastest routes */}
+            {/* 2) Step-by-step plan */}
+            <section
+              id="step-by-step"
+              className="bg-white border rounded-2xl shadow-sm p-6 md:p-8 mb-10"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
+                {isItalian
+                  ? "Piano step-by-step: dal caos al bundle"
+                  : "Step-by-step: from chaos to a clean bundle"}
+              </h2>
+              <p className="text-sm text-gray-700 mb-4">
+                {isItalian
+                  ? "L’obiettivo non è trovare “un documento magico”, ma costruire un piccolo pacchetto coerente. Questi quattro passi funzionano bene per la maggior parte delle persone che arrivano in UK senza bollette."
+                  : "The goal is not a single magic document, but a small, consistent bundle. These four steps work for most newcomers who arrive in the UK with zero bills."}
+              </p>
+              <div className="grid md:grid-cols-2 gap-5 text-sm">
+                {/* Step 1 */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Passo 1 — Elenca quello che hai già"
+                      : "Step 1 — List what you already have"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Controlla email, cassetta della posta e documenti di lavoro/studio."
+                        : "Check your email, mailbox, and any work/study documents."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Metti da parte: eventuale contratto di affitto, lettere di datore di lavoro, università, GP/NHS, council."
+                        : "Put aside any tenancy, employer letters, university letters, GP/NHS or council letters you already have."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Guarda la tabella sopra e segna mentalmente quali numeri (1–12) puoi già coprire."
+                        : "Look at the table above and mentally tick which numbers (1–12) you already cover."}
+                    </li>
+                  </ul>
+                  <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-900 italic">
+                    {isItalian
+                      ? "Consiglio Resinaro: avere già 1–2 documenti “forti” (affitto, council, banca) ti mette a metà dell’opera."
+                      : "Resinaro tip: having 1–2 “strong” docs (tenancy, council, bank letter) means you’re already halfway there."}
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Passo 2 — Richiedi nuovi documenti mirati"
+                      : "Step 2 — Request targeted new documents"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Se ti manca un documento “forte”, parti da: contratto di affitto aggiornato, lettera del datore di lavoro, lettera del GP o del council."
+                        : "If you’re missing a “strong” doc, start with: updated tenancy, employer letter, GP letter or council letter."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Usa i nostri modelli (più sotto) per chiedere lettere semplici ma complete."
+                        : "Use the templates below to request simple but complete letters."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Evita email “disperate”: meglio un testo calmo, cortese e chiaro."
+                        : "Avoid “desperate” emails; calm, polite and clear text works best."}
+                    </li>
+                  </ul>
+                  <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-900 italic">
+                    {isItalian
+                      ? "Consiglio Resinaro: chiedi sempre che nella lettera ci siano nome completo, indirizzo UK completo e data di emissione."
+                      : "Resinaro tip: always ask for your full name, full UK address and an issue date on the letter."}
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Passo 3 — Organizza, scansiona, rinomina"
+                      : "Step 3 — Organise, scan, rename"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Metti i documenti originali in una cartellina separata per non rovinarli."
+                        : "Keep your original letters in a separate folder so they don’t get damaged."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Scansiona o fotografa ogni documento in modo leggibile (vedi regole più sotto)."
+                        : "Scan or photograph each document clearly (see rules below)."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Usa nomi file coerenti: cognome_tipo_anno-mese (es. rossi_council_2025-03)."
+                        : "Use consistent filenames: surname_type_year-month (e.g. rossi_council_2025-03)."}
+                    </li>
+                  </ul>
+                  <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-900 italic">
+                    {isItalian
+                      ? "Consiglio Resinaro: un po’ di ordine ora ti evita di ricaricare gli stessi documenti su 10 portali diversi."
+                      : "Resinaro tip: a little structure now saves you from uploading the same doc to 10 portals again and again."}
+                  </div>
+                </div>
+
+                {/* Step 4 */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Passo 4 — Presenta il bundle nel modo giusto"
+                      : "Step 4 — Present your bundle the right way"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Per banca/fintech: segui sempre la lista ufficiale nell’app, non aggiungere file inutili."
+                        : "For banks/fintech: follow the official list in the app; don’t add random extra files."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Per GP/council: porta almeno un documento forte + uno di supporto (es. affitto + lettera GP)."
+                        : "For GP/council: aim for at least one strong doc + one supporting doc (e.g. tenancy + GP letter)."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Per consolato: controlla sempre la pagina ufficiale il giorno prima, poi crea un PDF unico con tutte le pagine necessarie."
+                        : "For consulate: always re-check the official page the day before, then build one tidy PDF with the pages they ask for."}
+                    </li>
+                  </ul>
+                  <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-900 italic">
+                    {isItalian
+                      ? "Consiglio Resinaro: se ti rifiutano, raramente è “colpa tua” al 100%. Usa i nostri modelli di risposta per capire cosa manca e riprovare con calma."
+                      : "Resinaro tip: if you get rejected, it’s rarely 100% “your fault”. Use the reply templates below to understand what’s missing and calmly try again."}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 3) Fastest routes by goal */}
             <section id="fastest-routes" className="mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
                 {copy.fastestTitle}
@@ -1139,7 +1361,7 @@ export default function Page({
               </div>
             </section>
 
-            {/* 3) C/O setup */}
+            {/* 4) C/O setup */}
             <section
               id="co-setup"
               className="bg-white border rounded-2xl shadow-sm p-6 md:p-8 mb-10"
@@ -1173,7 +1395,129 @@ export default function Page({
               <p className="text-xs text-gray-600 mt-3">{copy.coNote}</p>
             </section>
 
-            {/* 4) Templates */}
+            {/* 5) Tricky situations */}
+            <section
+              id="tricky-situations"
+              className="bg-white border rounded-2xl shadow-sm p-6 md:p-8 mb-10"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
+                {isItalian
+                  ? "Situazioni complicate: stanze, C/O, amici, Airbnb"
+                  : "Tricky situations: house shares, C/O, friends, Airbnb"}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6 text-sm">
+                {/* House share / bills included */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Stanza con bollette incluse"
+                      : "Room with bills included"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Chiedi un contratto o una lettera intestata a te (anche se le bollette sono a nome del landlord)."
+                        : "Ask for a contract or headed letter in your name (even if bills stay in the landlord’s name)."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Abbina questa prova a una lettera del datore di lavoro o del GP per rafforzare il pacchetto."
+                        : "Combine this with an employer or GP letter to strengthen your bundle."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Se l’agenzia non collabora, valuta di cambiare struttura appena possibile."
+                        : "If the agency won’t cooperate at all, consider moving when you can."}
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Staying with friends/family */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Ospitato da amici/famiglia (indirizzo C/O)"
+                      : "Staying with friends/family (C/O address)"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Metti il tuo nome sulla cassetta o sul campanello, se possibile."
+                        : "Put your name on the mailbox or buzzer if possible."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Usa la formula C/O indicata sopra + nota firmata dell’ospitante."
+                        : "Use the C/O wording above plus a signed host note."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Fatti inviare almeno una lettera ufficiale a tuo nome (banca, GP, council) a quell’indirizzo."
+                        : "Get at least one official letter in your name (bank, GP, council) sent to that address."}
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Short-term stays */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Airbnb, ostello o alloggio temporaneo"
+                      : "Airbnb, hostel or temporary stay"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Spesso non è accettato come prova di indirizzo principale."
+                        : "Often not accepted as primary proof of address."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Usalo solo come fase di transizione mentre cerchi un affitto più stabile."
+                        : "Treat it as a bridge while you secure a more stable tenancy."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Appena hai un indirizzo più fisso, aggiorna tutti i servizi principali (banca, datore di lavoro, GP)."
+                        : "Once you have a more stable address, update your bank, employer, GP and council as soon as possible."}
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Job started, no tenancy yet */}
+                <div className="border rounded-xl p-4 bg-neutral-50/60">
+                  <h3 className="font-semibold text-emerald-900 mb-1">
+                    {isItalian
+                      ? "Hai già iniziato a lavorare ma non hai ancora una casa"
+                      : "Job already started but no fixed address yet"}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>
+                      {isItalian
+                        ? "Chiedi subito una lettera di conferma indirizzo al datore di lavoro (vedi modello)."
+                        : "Ask HR immediately for an address confirmation letter (see template)."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Se temporaneamente ospitato, usa C/O + lettera del datore di lavoro come combinazione."
+                        : "If you’re temporarily hosted, combine C/O + employer letter."}
+                    </li>
+                    <li>
+                      {isItalian
+                        ? "Quando firmi un contratto di affitto, aggiorna tutti i sistemi e inizia a conservare le prime lettere del council/banca."
+                        : "As soon as you sign a tenancy, update all systems and start keeping your first council/bank letters."}
+                    </li>
+                  </ul>
+                  <p className="mt-3 text-xs text-gray-600">
+                    {isItalian
+                      ? "Se ti trovi bloccato in una di queste situazioni, il team Resinaro può analizzare il tuo caso e suggerire il percorso più realistico."
+                      : "If you feel stuck in one of these situations, the Resinaro team can look at your case and suggest the most realistic next steps."}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* 6) Templates */}
             <section id="templates" className="mb-12">
               <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
                 {copy.templatesTitle}
@@ -1374,7 +1718,71 @@ Kind regards,
               </div>
             </section>
 
-            {/* 6) Naming & scans */}
+            {/* 6) Interactive tools */}
+            <section
+              id="tools"
+              className="bg-white border rounded-2xl shadow-sm p-6 md:p-8 mb-10"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
+                {isItalian
+                  ? "Strumenti interattivi: planner, lettere, scadenze"
+                  : "Interactive tools: planner, letters, expiry tracker"}
+              </h2>
+              <p className="text-sm text-gray-700 mb-5">
+                {isItalian
+                  ? "Questi strumenti restano solo nel tuo browser (niente salvataggi su server). Usali per capire quali prove puoi ottenere, generare bozze di lettere e tenere d’occhio le date."
+                  : "These tools live only in your browser (nothing is stored on our servers). Use them to see which proofs you can get, generate letter drafts, and keep an eye on dates."}
+              </p>
+
+              <div className="space-y-8">
+                {/* Proof builder */}
+                <div className="border rounded-xl p-4 md:p-5 bg-neutral-50/60">
+                  <h3 className="text-lg font-semibold text-emerald-900 mb-2">
+                    {isItalian
+                      ? "Planner “proof bundle”"
+                      : "Proof-of-address bundle planner"}
+                  </h3>
+                  <p className="text-sm text-gray-700 mb-3">
+                    {isItalian
+                      ? "Spunta i documenti che hai o che puoi ottenere nei prossimi 30 giorni. Il planner ti dà un piccolo riassunto del “livello di forza” del tuo pacchetto."
+                      : "Tick the documents you have or can realistically get in the next 30 days. The planner gives you a short summary of how strong your bundle is."}
+                  </p>
+                  <AddressProofBuilder locale={toolsLocale} />
+                </div>
+
+                {/* Letter generator */}
+                <div className="border rounded-xl p-4 md:p-5 bg-neutral-50/60">
+                  <h3 className="text-lg font-semibold text-emerald-900 mb-2">
+                    {isItalian
+                      ? "Generatore di lettere (EN + IT)"
+                      : "Letter generator (EN + IT)"}
+                  </h3>
+                  <p className="text-sm text-gray-700 mb-3">
+                    {isItalian
+                      ? "Scegli il destinatario (datore di lavoro, landlord, GP, banca) e compila i campi base. Otterrai due bozze: una in inglese e una in italiano, da copiare e personalizzare."
+                      : "Choose who you’re writing to (employer, landlord, GP, bank) and fill the basic fields. You’ll get two drafts: one in English and one in Italian, ready to copy and personalise."}
+                  </p>
+                  <AddressProofLetterGenerator locale={toolsLocale} />
+                </div>
+
+                {/* Expiry tracker */}
+                <div className="border rounded-xl p-4 md:p-5 bg-neutral-50/60">
+                  <h3 className="text-lg font-semibold text-emerald-900 mb-2">
+                    {isItalian
+                      ? "Tracker scadenze documenti"
+                      : "Document expiry tracker"}
+                  </h3>
+                  <p className="text-sm text-gray-700 mb-3">
+                    {isItalian
+                      ? "Alcune lettere “scadono” dopo 3 mesi per certe banche o enti. Usa questo piccolo tracker per segnarti date di emissione e capire cosa va aggiornato."
+                      : "Some letters are considered “too old” after 3 months by some banks or authorities. Use this small tracker to log issue dates and see what might need refreshing."}
+                  </p>
+                  <AddressProofExpiryTracker locale={toolsLocale} />
+                </div>
+              </div>
+            </section>
+
+                        {/* 6) Naming & scans */}
             <section id="naming" className="mb-10">
               <h2 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-3">
                 {copy.namingTitle}
@@ -1402,6 +1810,11 @@ Kind regards,
                     </ul>
                   </div>
                 </div>
+                <p className="mt-4 text-xs text-gray-600">
+                  {isItalian
+                    ? "Molti rifiuti arrivano da scansioni tagliate, foto sfocate o file con nomi confusi. Tratta i tuoi documenti come se dovessero leggerli in 10 secondi sullo schermo."
+                    : "Most rejections come from cropped scans, blurry photos or confusing filenames. Assume the person reviewing your docs has 10 seconds on a small screen."}
+                </p>
               </div>
             </section>
 
@@ -1430,7 +1843,18 @@ Kind regards,
                   </div>
                 ))}
               </div>
+              <p className="mt-4 text-xs text-gray-600">
+                {isItalian
+                  ? "Se ricevi un rifiuto, non prenderla sul personale. Spesso è solo un dettaglio tecnico (data, formato del postcode, documento troppo vecchio). Usa il modello di risposta qui sopra e chiedi cosa manca in modo calmo e specifico."
+                  : "If you get a rejection, don’t take it personally. It is usually a technical detail (date, postcode format, document too old). Use the reply template above and calmly ask what’s missing."}
+              </p>
             </section>
+
+            {/* 8) Optional kits (Amazon) */}
+<section id="kits" className="mb-10">
+  <AddressProofAffiliateKits locale={toolsLocale} />
+</section>
+
 
             {/* FAQ */}
             <section
@@ -1460,7 +1884,7 @@ Kind regards,
               <h2 className="text-xl font-bold text-emerald-900 mb-2">
                 {copy.relatedTitle}
               </h2>
-              <ul className="list-disc pl-6">
+              <ul className="list-disc pl-6 text-sm">
                 {copy.relatedLinks.map((link) => (
                   <li key={link.href}>
                     <Link
@@ -1475,25 +1899,30 @@ Kind regards,
             </section>
 
             {/* CTA */}
-            <section className="mt-10 bg-white border rounded-2xl shadow-sm p-6">
-              <h2 className="text-xl font-bold text-emerald-900 mb-2">
+            <section className="mt-10 bg-white border rounded-2xl shadow-sm p-6 md:p-7">
+              <h2 className="text-xl md:text-2xl font-bold text-emerald-900 mb-2">
                 {copy.ctaTitle}
               </h2>
               <p className="text-sm mb-4">{copy.ctaBody}</p>
               <div className="flex flex-wrap gap-3">
                 <Link
                   href="/checkout/proof-of-address-bundle"
-                  className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-700 text-white font-medium"
+                  className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-700 text-white font-medium text-sm md:text-[15px]"
                 >
                   {copy.ctaPrimary}
                 </Link>
                 <Link
                   href={p(locale, "/services")}
-                  className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-100 text-emerald-900 font-medium border"
+                  className="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-100 text-emerald-900 font-medium border text-sm md:text-[15px]"
                 >
                   {copy.ctaSecondary}
                 </Link>
               </div>
+              <p className="mt-3 text-[11px] text-gray-500">
+                {isItalian
+                  ? "Di solito riusciamo a preparare il bundle entro 24–48 ore lavorative in base alla complessità del caso."
+                  : "In most cases we can prepare your bundle within 24–48 working hours, depending on complexity."}
+              </p>
             </section>
 
             {/* Disclosure */}
@@ -1520,12 +1949,20 @@ Kind regards,
                     </a>
                   ))}
                 </nav>
-                <div className="mt-5 border-t pt-4">
+                <div className="mt-5 border-t pt-4 space-y-3">
                   <Link
                     href="/checkout/proof-of-address-bundle"
-                    className="inline-flex items-center px-3 py-2 rounded-lg bg-emerald-700 text-white text-sm font-medium"
+                    className="inline-flex items-center px-3 py-2 rounded-lg bg-emerald-700 text-white text-sm font-medium w-full justify-center"
                   >
                     {copy.tocButton}
+                  </Link>
+                  <Link
+                    href="#tools"
+                    className="inline-flex items-center px-3 py-2 rounded-lg bg-neutral-50 text-emerald-900 text-xs font-medium border w-full justify-center"
+                  >
+                    {isItalian
+                      ? "Vai agli strumenti interattivi"
+                      : "Jump to interactive tools"}
                   </Link>
                 </div>
               </div>
@@ -1536,3 +1973,4 @@ Kind regards,
     </main>
   );
 }
+
