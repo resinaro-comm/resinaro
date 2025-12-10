@@ -44,7 +44,7 @@ type Service = {
 export default function Home() {
   const pathname = usePathname() || "/";
   const locale = (pathname.split("/")[1] === "it" ? "it" : "en") as "en" | "it";
-  const p = (path: string) => `/${locale}${path}`; // locale prefix helper
+  const p = (path: string) => `/${locale}${path}`;
   const isIt = locale === "it";
 
   const servicesTrackRef = useRef<HTMLDivElement | null>(null);
@@ -409,12 +409,13 @@ export default function Home() {
         animate="animate"
       >
         <div className="relative h-[76vh] md:h-[78vh] lg:h-[80vh] w-full">
+          {/* RESTORED ORIGINAL HERO IMAGE */}
           <Image
-            src="/images/og/home-italian-passport-aire-help-1200x630.png"
+            src="/images/landscape-image.png"
             alt={
               isIt
-                ? "Scrivania ordinata con laptop, libretti tipo passaporto e documenti per pratiche consolari italiane dal Regno Unito"
-                : "Tidy desk with laptop, passport-style booklets and paperwork for Italian consular support from the UK"
+                ? "Skyline combinato Italia-Regno Unito"
+                : "Italy and UK combined skyline"
             }
             fill
             priority
@@ -775,7 +776,7 @@ export default function Home() {
             >
               {isIt ? "Scopri di più" : "Learn more"}
             </Link>
-            <Link
+              <Link
               href={p("/contact")}
               className="inline-flex h-11 items-center justify-center rounded-full border border-green-900 px-6 text-sm font-medium text-green-900 hover:bg-emerald-50"
             >

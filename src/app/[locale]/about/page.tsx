@@ -17,8 +17,6 @@ export const metadata: Metadata = {
       "Specialist support for Italians in the UK — Italian passports, consulate appointments, AIRE, CIE, translations and citizenship strategy, with transparent pricing and real outcomes.",
     url: "/about",
     images: ["/images/about/resinaro-about-consular-support-hero-1200x630.jpg"],
-
-
     type: "website",
   },
   twitter: {
@@ -27,7 +25,6 @@ export const metadata: Metadata = {
     description:
       "Italian consular and citizenship support from the UK — passports, Prenot@Mi, AIRE, CIE, translations and route checks, with fair, transparent pricing.",
     images: ["/images/about/resinaro-about-consular-support-hero-1200x630.jpg"],
-
   },
 };
 
@@ -205,8 +202,8 @@ export default async function Page({
   };
 
   // ---------- Config / assets ----------
- const heroSrc = "/images/about/resinaro-about-consular-support-hero-1200x630.jpg";
-
+  // Revert to the older skyline-style hero image used on other pages
+  const heroSrc = "/images/landscape-image.png";
 
   const stats = it
     ? [
@@ -585,8 +582,8 @@ export default async function Page({
             src={heroSrc}
             alt={
               it
-                ? "Skyline del Regno Unito con colori caldi e tricolore italiano in sovrimpressione"
-                : "UK skyline with warm colours and Italian tricolore overlay"
+                ? "Skyline combinato Italia-Regno Unito"
+                : "Italy and UK combined skyline"
             }
             fill
             priority
