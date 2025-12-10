@@ -7,6 +7,10 @@ import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { HomeReviewsSection } from "@/components/HomeReviewsSection";
 
+/* ---------- Constants ---------- */
+const OG_IMAGE_URL =
+  "https://www.resinaro.com/images/og/home-italian-passport-aire-help-1200x630.png";
+
 /* ---------- Anim helpers ---------- */
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -95,8 +99,8 @@ export default function Home() {
       highlight: true,
       image: "/images/homepage/prenotami-passport-application.png",
       imageAlt: isIt
-        ? "Passaporto italiano su un tavolo"
-        : "Italian passport on a table",
+        ? "Passaporto italiano pronto per una pratica consolare"
+        : "Italian passport ready for a consular application",
     },
     {
       href: "/services/visa",
@@ -241,13 +245,14 @@ export default function Home() {
       q: isIt ? "Resinaro è solo per italiani?" : "Is Resinaro only for Italians?",
       a: isIt ? (
         <>
-          No. Aiutiamo italiani e <em>tutte le persone migranti</em> nel Regno
-          Unito. Molte guide sono bilingui (IT/EN).
+          No. Aiutiamo italiani e <em>tutte le persone che vivono all’estero</em>{" "}
+          nel Regno Unito. Molte guide sono bilingui (IT/EN).
         </>
       ) : (
         <>
-          No. We support Italians and <em>all migrants</em> living in the UK.
-          Many guides are bilingual (EN/IT).
+          No. We support Italians and{" "}
+          <em>anyone living in the UK with Italian paperwork</em>. Many guides
+          are bilingual (EN/IT).
         </>
       ),
     },
@@ -337,6 +342,10 @@ export default function Home() {
         name: "Resinaro",
         url: "https://www.resinaro.com",
         logo: "https://www.resinaro.com/icon.svg",
+        image: OG_IMAGE_URL,
+        description: isIt
+          ? "Supporto pratico per passaporti, AIRE e pratiche consolari dal Regno Unito, in italiano e inglese."
+          : "Practical help with Italian passports, AIRE and consular admin from the UK, in Italian and English.",
         areaServed: "GB",
         sameAs: [
           "https://www.youtube.com/@resinaroUK",
@@ -363,7 +372,7 @@ export default function Home() {
         },
       },
     ],
-    []
+    [isIt]
   );
 
   const heroPill = isIt
@@ -386,6 +395,7 @@ export default function Home() {
 
   return (
     <main className="bg-[#F9F6F1] text-gray-800 [--brand:#0B5D3B]">
+      {/* Global structured data (Org + WebSite) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -400,11 +410,11 @@ export default function Home() {
       >
         <div className="relative h-[76vh] md:h-[78vh] lg:h-[80vh] w-full">
           <Image
-            src="/images/landscape-image.png"
+            src="/images/og/home-italian-passport-aire-help-1200x630.png"
             alt={
               isIt
-                ? "Skyline combinato Italia-Regno Unito"
-                : "Italy and UK combined skyline"
+                ? "Scrivania ordinata con laptop, libretti tipo passaporto e documenti per pratiche consolari italiane dal Regno Unito"
+                : "Tidy desk with laptop, passport-style booklets and paperwork for Italian consular support from the UK"
             }
             fill
             priority
@@ -892,9 +902,7 @@ export default function Home() {
             </button>
 
             <h3 className="pr-7 text-lg font-semibold text-emerald-950">
-              {isIt
-                ? "Perché scegliere Resinaro"
-                : "Why choose Resinaro"}
+              {isIt ? "Perché scegliere Resinaro" : "Why choose Resinaro"}
             </h3>
             <p className="mt-1 text-sm text-gray-700">
               {isIt
@@ -908,7 +916,9 @@ export default function Home() {
                   Resinaro
                 </div>
                 <div className="px-3 py-2 font-semibold text-gray-800">
-                  {isIt ? "Da solo / altri servizi" : "On your own / other services"}
+                  {isIt
+                    ? "Da solo / altri servizi"
+                    : "On your own / other services"}
                 </div>
               </div>
               <div className="divide-y divide-gray-100">
