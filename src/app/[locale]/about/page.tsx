@@ -7,24 +7,27 @@ import { type Locale } from "@/i18n";
 
 export const metadata: Metadata = {
   title:
-    "About Resinaro | Fair, transparent support for Italians & migrants in the UK",
+    "About Resinaro | Italian passport, AIRE & consulate support from the UK",
   description:
-    "Resinaro helps migrants with passports, ID cards, NIN, AIRE, housing guidance and mental health signposting — clear pricing, humane support and community-first values.",
+    "Resinaro helps Italians and their families in the UK with Italian passports, Prenot@Mi consulate appointments, AIRE, CIE and citizenship planning — clear pricing, real proof of results and calm, practical guidance.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Resinaro",
     description:
-      "Professional migrant support with fair pricing, transparency and real outcomes.",
+      "Specialist support for Italians in the UK — Italian passports, consulate appointments, AIRE, CIE, translations and citizenship strategy, with transparent pricing and real outcomes.",
     url: "/about",
-    images: ["/images/about/hero-bluehour.png"],
+    images: ["/images/about/resinaro-about-consular-support-hero-1200x630.jpg"],
+
+
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "About Resinaro",
     description:
-      "Fair, transparent migrant support in the UK — passports, NIN, AIRE, housing, mental health signposting.",
-    images: ["/images/about/hero-bluehour.png"],
+      "Italian consular and citizenship support from the UK — passports, Prenot@Mi, AIRE, CIE, translations and route checks, with fair, transparent pricing.",
+    images: ["/images/about/resinaro-about-consular-support-hero-1200x630.jpg"],
+
   },
 };
 
@@ -41,32 +44,34 @@ export default async function Page({
   const copy = {
     heroTitle: it ? "Chi è Resinaro" : "About Resinaro",
     heroTagline: it
-      ? "Un piccolo team di italiani nel Regno Unito che ti aiuta a sopravvivere a consolati, burocrazia UK e moduli infiniti — con prezzi chiari e zero giudizi."
-      : "A small team of Italians in the UK helping you survive consulates, UK bureaucracy and endless forms — with clear pricing and zero judgement.",
+      ? "Un piccolo team di italiani nel Regno Unito che ti aiuta con passaporti, appuntamenti consolari, AIRE, CIE e cittadinanza – con prezzi chiari e zero giudizi."
+      : "A small team of Italians in the UK helping you with Italian passports, consulate appointments, AIRE, CIE and citizenship – with clear pricing and zero judgement.",
     heroBadgeMain: it ? "Italiani nel Regno Unito" : "Italians in the UK",
     heroBadgeSub: it
       ? "Creato da italiani all’estero"
       : "Built by Italians abroad",
     heroNoteTitle: it ? "Non siamo il consolato" : "We’re not the consulate",
     heroNoteBody: it
-      ? "Non possiamo “saltare la fila” o decidere al posto dei consolati o dell’Home Office. Ti aiutiamo a capire il percorso, preparare i documenti e usare al meglio i canali ufficiali."
-      : "We can’t “skip the queue” or decide on behalf of consulates or the Home Office. We help you understand the route, prepare documents, and use official channels properly.",
+      ? "Non possiamo “saltare la fila” o decidere al posto dei consolati o dell’Home Office. Possiamo però preparare il tuo caso in modo ordinato, con i documenti giusti, così da ridurre errori, rifiuti e costi inutili."
+      : "We can’t “skip the queue” or decide on behalf of consulates or the Home Office. What we can do is prepare your case properly, with the right documents, so you avoid mistakes, refusals and unnecessary extra costs.",
     ctaServices: it ? "Vedi i servizi" : "View services",
     ctaContact: it ? "Scrivici" : "Contact us",
 
-    whyTitle: it ? "Perché esistiamo (e perché ci teniamo)" : "Why we exist (and why we care)",
+    whyTitle: it
+      ? "Perché esistiamo (e perché ci teniamo)"
+      : "Why we exist (and why we care)",
     whyBody: it
-      ? "Trasferirsi all’estero ha un livello bonus chiamato “burocrazia”. Hai fatto l’AIRE, ma ora il consolato chiede una prova che non sapevi esistesse, in un formato che nessuna stampante accetta. Resinaro è nato dopo aver aiutato amici e familiari e aver capito che tantissimi vivevano lo stesso labirinto."
-      : "Moving countries comes with a bonus level called “paperwork”. You finally sort AIRE, then the consulate asks for a proof you didn’t know existed, in a format no printer accepts. Resinaro started after helping friends and family and realising how many people were stuck in the same maze.",
+      ? "Ogni pratica consolare o di cittadinanza sbagliata significa soldi e tempo persi: traduzioni da rifare, certificati pagati due volte, viaggi da riprenotare. Resinaro è nato dopo aver aiutato amici e familiari a evitare questi errori con passaporti, AIRE, CIE e pratiche di cittadinanza."
+      : "Every consular or citizenship mistake costs time and money: translations redone, certificates ordered twice, flights rebooked. Resinaro started after helping friends and family avoid these errors with passports, AIRE, CIE and citizenship cases.",
     whyBullet1: it
-      ? "Trasformiamo la confusione in checklist semplici."
-      : "We turn confusion into simple checklists.",
+      ? "Trasformiamo richieste confuse in checklist chiare, passo per passo."
+      : "We turn messy requirements into clear, step-by-step checklists.",
     whyBullet2: it
-      ? "Ti diciamo in anticipo cosa è realistico (soprattutto quando decide il consolato)."
-      : "We tell you up front what’s realistic (especially when the consulate is in charge).",
+      ? "Ti diciamo in anticipo cosa è realistico e dove vale la pena spendere (soprattutto quando decide il consolato)."
+      : "We tell you up front what’s realistic and where it’s worth spending money (especially when the consulate is in charge).",
     whyBullet3: it
-      ? "Rimani sempre aggiornato — niente più “e adesso?”."
-      : "You stay in the loop — no more “what now?” silence.",
+      ? "Riduciamo il rischio di pagare due volte per la stessa pratica o perdere appuntamenti importanti."
+      : "We reduce the risk of paying twice for the same application or missing important appointments.",
 
     whoTitle: it ? "Per chi è Resinaro" : "Who Resinaro is for",
     whoLead: it
@@ -74,14 +79,14 @@ export default async function Page({
       : "If any of these feel like you, you’re in the right place:",
     whoPoints: it
       ? [
-          "Famiglie italiane che cercano di incastrare scuola, lavoro e appuntamenti consolari.",
-          "Studenti e lavoratori che hanno bisogno di NIN, passaporto o CIE ma non sanno da dove iniziare.",
-          "Persone italo-qualcosa (mezzi italiani, italiani-per-amore) che cercano di capire quali diritti hanno.",
+          "Famiglie italiane che devono incastrare scuola, lavoro e appuntamenti consolari senza perdere giorni di ferie o voli.",
+          "Studenti e lavoratori che hanno bisogno di passaporto, CIE o iscrizione AIRE e vogliono evitare errori costosi.",
+          "Persone con radici italiane (mezzi italiani, italiani-per-amore) che vogliono chiarire se hanno diritto alla cittadinanza.",
         ]
       : [
-          "Italian families juggling school, work and consular appointments.",
-          "Students and workers who need an NIN, passport or CIE and don’t know where to start.",
-          "Half-Italian / Italian-by-love people trying to understand what they’re entitled to.",
+          "Italian families juggling school, work and consular appointments without wasting annual leave or flights.",
+          "Students and workers who need a passport, CIE or AIRE registration and want to avoid expensive mistakes.",
+          "People with Italian roots (half-Italian, Italian-by-love) who want clarity on whether they qualify for citizenship.",
         ],
     whoNotTitle: it ? "Cosa non facciamo" : "What we don’t do",
     whoNotPoints: it
@@ -98,32 +103,38 @@ export default async function Page({
 
     whatTitle: it ? "In cosa possiamo aiutarti" : "What we help with",
     whatIntro: it
-      ? "Questa è una panoramica veloce. I dettagli completi, con prezzi e tempistiche aggiornati, sono nella pagina Servizi."
-      : "This is a quick overview. Full details, with up-to-date pricing and timelines, live on the Services page.",
+      ? "Questa è una panoramica veloce dei servizi più richiesti. I dettagli completi, con prezzi e tempistiche aggiornati, sono nella pagina Servizi."
+      : "This is a quick overview of the most requested services. Full details, with up-to-date pricing and timelines, live on the Services page.",
 
     howTitle: it ? "Come lavoriamo" : "How we work",
     step1Title: it ? "1. Raccontaci la situazione" : "1. Tell us what’s going on",
     step1Body: it
       ? "Ci mandi un messaggio o compili il form di contatto con città, scadenze e una foto (anche dal telefono) dei documenti che hai."
       : "You send us a message or fill in the contact form with your city, deadlines and phone photos of any documents you already have.",
-    step1Hint: it ? "Non serve essere “in ordine” prima di scriverci." : "You don’t need everything perfectly organised first.",
+    step1Hint: it
+      ? "Non serve essere “in ordine” prima di scriverci."
+      : "You don’t need everything perfectly organised first.",
     step2Title: it ? "2. Facciamo ordine insieme" : "2. We bring order to it",
     step2Body: it
       ? "Rivediamo il caso, prepariamo una checklist, ti diamo tempi realistici e un preventivo chiaro se serve un servizio a pagamento."
       : "We review your case, build a checklist, give realistic timings and a clear quote if a paid service makes sense.",
-    step2Hint: it ? "Se non siamo il servizio giusto, lo diciamo e ti indirizziamo." : "If we’re not the right fit, we say so and signpost you.",
+    step2Hint: it
+      ? "Se non siamo il servizio giusto, lo diciamo e ti indirizziamo."
+      : "If we’re not the right fit, we say so and signpost you.",
     step3Title: it ? "3. Passi concreti e follow-up" : "3. Concrete steps & follow-up",
     step3Body: it
       ? "Ti accompagniamo nelle prenotazioni o nelle domande, e restiamo disponibili per chiarimenti per un periodo definito."
       : "We guide you through bookings or applications, and stay available for clarifications for a defined follow-up period.",
-    step3Hint: it ? "Con un riepilogo scritto che puoi sempre ritrovare." : "With a written summary you can come back to.",
+    step3Hint: it
+      ? "Con un riepilogo scritto che puoi sempre ritrovare."
+      : "With a written summary you can come back to.",
 
     valuesTitle: it ? "I valori che ci guidano" : "The values behind Resinaro",
     values: it
       ? [
           {
             label: "Chiarezza",
-            text: "Il tuo tempo conta: spieghiamo in modo semplice e pratico.",
+            text: "Il tuo tempo e i tuoi soldi contano: spieghiamo in modo semplice e pratico cosa serve davvero.",
           },
           {
             label: "Correttezza",
@@ -141,7 +152,7 @@ export default async function Page({
       : [
           {
             label: "Clarity",
-            text: "Your time matters: we explain things in plain, practical language.",
+            text: "Your time and money matter: we explain exactly what is required, in plain language.",
           },
           {
             label: "Fairness",
@@ -157,18 +168,18 @@ export default async function Page({
           },
         ],
 
-    inclusionTitle: it ? "Inclusione (sul serio)" : "Inclusion (for real)",
+    inclusionTitle: it ? "Chi può usare Resinaro" : "Who we welcome",
     inclusionBody: it
-      ? "Resinaro è per chiunque stia navigando la vita nel Regno Unito. Italiano, mezzo italiano, italiano-per-amore o semplicemente amante della pasta fatta bene: sei il benvenuto. Non facciamo domande sul tuo status che non servano al caso."
-      : "Resinaro is for anyone navigating life in the UK. Italian, half-Italian, Italian-by-love or simply someone who cares about good pasta: you’re welcome here. We don’t ask about your status unless it’s genuinely needed for your case.",
+      ? "Resinaro è pensato prima di tutto per italiani e famiglie con legami con l’Italia che vivono nel Regno Unito: cittadini italiani, doppi cittadini, italo-qualcosa, partner e figli. Quando c’è di mezzo un consolato italiano, cerchiamo di aiutare anche altre persone dove ha senso."
+      : "Resinaro is built first for Italians and families with Italian ties living in the UK: Italian citizens, dual citizens, Italian-something, partners and kids. Whenever there’s an Italian consulate involved, we try to help others too where it makes sense.",
     inclusionPoints: it
       ? [
           "Supporto in italiano e in inglese semplice.",
-          "Guide gratuite accessibili anche da chi non può permettersi un servizio a pagamento.",
+          "Guide gratuite per orientarti anche se non puoi ancora investire in un servizio a pagamento.",
         ]
       : [
           "Support in Italian and clear, simple English.",
-          "Free guides so people who can’t afford support still get help.",
+          "Free guides so you can get oriented even before investing in paid support.",
         ],
 
     glossaryTitle: it ? "Glossario (linguaggio semplice)" : "Glossary (plain language)",
@@ -179,57 +190,96 @@ export default async function Page({
       : "For questions about your specific situation, ",
     faqContactLink: it ? "scrivici qui" : "contact us here",
 
-    accessTitle: it ? "Accessibilità & protezione dati" : "Accessibility & data protection",
+    accessTitle: it
+      ? "Accessibilità & protezione dati"
+      : "Accessibility & data protection",
     accessBody1: it
       ? "Il sito è costruito con HTML semantico, componenti navigabili da tastiera e combinazioni di colori ad alto contrasto. Continueremo a migliorare accessibilità e compatibilità con lettori di schermo."
       : "The site uses semantic HTML, keyboard-navigable components and high-contrast colour combinations. We’re still improving accessibility and screen-reader compatibility over time.",
     accessBody2: it
       ? "Conserviamo solo i dati strettamente necessari per erogare il servizio richiesto. Puoi chiederci in qualsiasi momento di correggere o cancellare i tuoi dati."
       : "We only keep the data we genuinely need to deliver the service you ask for. You can ask us at any time to correct or delete your data.",
-    accessSeePolicy: it ? "Leggi l’Informativa Privacy completa" : "Read the full Privacy Policy",
+    accessSeePolicy: it
+      ? "Leggi l’Informativa Privacy completa"
+      : "Read the full Privacy Policy",
   };
 
   // ---------- Config / assets ----------
-  const heroSrc = "/images/about/hero-bluehour.png";
+ const heroSrc = "/images/about/resinaro-about-consular-support-hero-1200x630.jpg";
+
 
   const stats = it
     ? [
-        { kpi: "4.000+", label: "Richieste risposte", hint: "Community + email dal 2023" },
-        { kpi: "72%", label: "Casi risolti", hint: "Entro i primi 14 giorni" },
-        { kpi: "48h", label: "Risposta tipica", hint: "Lun–Ven, 10:00–18:00" },
+        {
+          kpi: "4.000+",
+          label: "Richieste risposte",
+          hint: "Community + email dal 2023",
+        },
+        {
+          kpi: "72%",
+          label: "Casi sbloccati",
+          hint: "Passaporti, AIRE, CIE e appuntamenti",
+        },
+        {
+          kpi: "48h",
+          label: "Risposta tipica",
+          hint: "Lun–Ven, 10:00–18:00",
+        },
         { kpi: "£0", label: "Costi nascosti", hint: "Mai. Le odiamo anche noi." },
       ]
     : [
-        { kpi: "4,000+", label: "Queries answered", hint: "Community + email since 2023" },
-        { kpi: "72%", label: "Cases resolved", hint: "Within the first 14 days" },
-        { kpi: "48h", label: "Typical reply", hint: "Mon–Fri, 10:00–18:00" },
-        { kpi: "£0", label: "Hidden fees", hint: "Ever. We hate them too." },
+        {
+          kpi: "4,000+",
+          label: "Queries answered",
+          hint: "Community + email since 2023",
+        },
+        {
+          kpi: "72%",
+          label: "Cases unlocked",
+          hint: "Passports, AIRE, CIE & appointments",
+        },
+        {
+          kpi: "48h",
+          label: "Typical reply",
+          hint: "Mon–Fri, 10:00–18:00",
+        },
+        {
+          kpi: "£0",
+          label: "Hidden fees",
+          hint: "Ever. We hate them too.",
+        },
       ];
 
   const serviceOverview = [
     {
       icon: "🛂",
-      title: it ? "Passaporti & appuntamenti consolari" : "Passports & consular appointments",
+      title: it
+        ? "Passaporti & appuntamenti consolari"
+        : "Passports & consulate appointments",
       body: it
-        ? "Rinnovi passaporto, slot Prenot@Mi (es. Manchester), preparazione documenti e checklist per il giorno dell’appuntamento."
-        : "Passport renewals, Prenot@Mi slots (e.g. Manchester), document prep and checklists for appointment day.",
-      meta: it ? "Da £35 • 1–3 settimane" : "From £35 • 1–3 weeks",
+        ? "Rinnovi passaporto, slot Prenot@Mi (es. Manchester), preparazione documenti e checklist per il giorno dell’appuntamento, così non devi ripagare tasse o viaggi per un errore banale."
+        : "Passport renewals, Prenot@Mi slots (e.g. Manchester), document prep and checklists for appointment day, so you don’t have to repay fees or rebook travel because of a simple mistake.",
+      meta: it ? "Da £55 • tipicamente 1–3 settimane" : "From £55 • typically 1–3 weeks",
     },
     {
       icon: "💳",
-      title: it ? "CIE & AIRE" : "CIE & AIRE",
+      title: it ? "CIE, AIRE & stato civile" : "CIE, AIRE & civil status",
       body: it
-        ? "Iscrizioni/aggiornamenti AIRE, supporto CIE, portali FAST-IT spiegati in modo umano."
-        : "AIRE registrations/updates, CIE support, FAST-IT explained in human language.",
-      meta: it ? "Da £35 • 1–6 settimane" : "From £35 • 1–6 weeks",
+        ? "Iscrizioni/aggiornamenti AIRE, supporto CIE, correzioni dati anagrafici e spiegazione dei portali FAST-IT in modo umano, per evitare fascicoli bloccati per mesi."
+        : "AIRE registrations/updates, CIE support, civil-status corrections and FAST-IT explained in human language, to avoid files sitting stuck for months.",
+      meta: it ? "Da £55 • 1–6 settimane" : "From £55 • 1–6 weeks",
     },
     {
-      icon: "🧾",
-      title: it ? "Vita pratica in UK" : "Day-to-day UK life admin",
+      icon: "📜",
+      title: it
+        ? "Cittadinanza & traduzioni"
+        : "Citizenship & translations",
       body: it
-        ? "National Insurance (NIN), lettere per landlord o datori di lavoro, primo orientamento su benefici e housing."
-        : "National Insurance (NIN), letters to landlords/employers, first-step guidance on benefits and housing.",
-      meta: it ? "Da £35 • tempistiche variabili" : "From £35 • timings vary",
+        ? "Controllo percorso di cittadinanza per discendenza, revisione documenti chiave e traduzioni ufficiali mirate a ciò che il consolato guarda davvero."
+        : "Citizenship-by-descent route checks, review of key documents and targeted official translations focused on what the consulate actually checks.",
+      meta: it
+        ? "Da £75 • pacchetti su misura"
+        : "From £75 • tailored packages",
     },
   ];
 
@@ -237,21 +287,21 @@ export default async function Page({
     ? [
         {
           title: "Famiglia a Leeds",
-          text: "Due genitori e due figli con AIRE bloccata e passaporti in scadenza. Checklist, FAST-IT sistemato e appuntamenti a Manchester confermati in poche settimane.",
+          text: "Due genitori e due figli con AIRE bloccata e passaporti in scadenza. Checklist completa, FAST-IT sistemato e appuntamenti a Manchester confermati in poche settimane – senza dover ripagare voli o foto passaporto.",
         },
         {
-          title: "Lavoratore a Manchester",
-          text: "Arrivato in UK senza NIN né idea da dove iniziare. Insieme abbiamo preparato documenti, domanda e tracking dei passaggi HMRC.",
+          title: "Copywriter a Manchester",
+          text: "Doveva rinnovare il passaporto prima di un viaggio di lavoro. Abbiamo preparato i documenti, trovato uno slot Prenot@Mi e verificato le traduzioni: pratica accettata al primo colpo.",
         },
       ]
     : [
         {
           title: "Family in Leeds",
-          text: "Two parents and two kids with stuck AIRE and expiring passports. We untangled FAST-IT, built a checklist and confirmed Manchester appointments in a few weeks.",
+          text: "Two parents and two kids with stuck AIRE and expiring passports. We untangled FAST-IT, built a full checklist and confirmed Manchester slots within weeks – without paying for new flights or extra passport photos.",
         },
         {
-          title: "Worker in Manchester",
-          text: "Arrived in the UK with no NIN and no idea where to start. We prepared documents together, supported the application and explained each HMRC step.",
+          title: "Freelancer in Manchester",
+          text: "Needed a passport renewal before an important work trip. We prepared documents, secured a Prenot@Mi slot and checked translations: application accepted first time.",
         },
       ];
 
@@ -271,7 +321,7 @@ export default async function Page({
         },
         {
           term: "NIN",
-          def: "National Insurance Number (UK). Serve per lavorare e pagare i contributi/tasse in Regno Unito.",
+          def: "National Insurance Number (UK). Serve per lavorare e pagare i contributi/tasse nel Regno Unito.",
         },
         {
           term: "FAST-IT",
@@ -313,11 +363,11 @@ export default async function Page({
     ? [
         {
           q: "Quali servizi offre Resinaro?",
-          a: "Supporto pratico su passaporti italiani, CIE, AIRE, NIN, housing e primo orientamento su benefici, più segnalazione a servizi di salute mentale.",
+          a: "Supporto pratico su passaporti italiani, appuntamenti consolare/Prenot@Mi, CIE, AIRE, controlli di percorso di cittadinanza e traduzioni ufficiali collegate a pratiche consolari.",
         },
         {
           q: "Aiutate solo gli italiani?",
-          a: "No. Supportiamo italiani e chiunque viva nel Regno Unito e abbia bisogno di questo tipo di supporto.",
+          a: "Lavoriamo soprattutto con cittadini italiani e famiglie con legami con l’Italia che vivono nel Regno Unito. Quando c’è di mezzo un consolato italiano, proviamo ad aiutare anche altre persone dove ha senso.",
         },
         {
           q: "I prezzi sono trasparenti?",
@@ -325,7 +375,7 @@ export default async function Page({
         },
         {
           q: "Posso usare solo le guide gratuite?",
-          a: "Certo. Le guide sono pensate per aiutarti anche se non puoi permetterti un servizio a pagamento.",
+          a: "Certo. Le guide sono pensate per aiutarti anche se non puoi (ancora) permetterti un servizio a pagamento.",
         },
         {
           q: "Quanto è veloce “veloce”?",
@@ -335,11 +385,11 @@ export default async function Page({
     : [
         {
           q: "What services does Resinaro provide?",
-          a: "Hands-on support with Italian passports, CIE, AIRE, NIN, housing and first-step benefits guidance, plus mental health signposting.",
+          a: "Hands-on support with Italian passports, consulate / Prenot@Mi appointments, CIE, AIRE, citizenship-by-descent route checks and official translations linked to consular cases.",
         },
         {
           q: "Do you only help Italians?",
-          a: "No. We support Italians and anyone living in the UK who needs help with these kinds of tasks.",
+          a: "We mainly work with Italian citizens and families with Italian ties living in the UK. Whenever an Italian consulate is involved, we try to help others too where it makes sense.",
         },
         {
           q: "Are your prices transparent?",
@@ -347,7 +397,7 @@ export default async function Page({
         },
         {
           q: "Can I just use the free guides?",
-          a: "Absolutely. The guides are designed to help even if you can’t afford paid support.",
+          a: "Absolutely. The guides are designed to help even if you’re not ready to invest in paid support yet.",
         },
         {
           q: "How fast is “fast”?",
@@ -369,7 +419,7 @@ export default async function Page({
       "https://facebook.com/resinaro",
     ],
     description:
-      "Resinaro provides fair, transparent support for Italians and migrants in the UK.",
+      "Resinaro provides specialist support for Italians and their families in the UK with Italian passports, consulate appointments, AIRE, CIE, translations and citizenship planning.",
     foundingDate: "2025-01-01",
     areaServed: ["GB"],
     email: "resinaro@proton.me",
@@ -414,8 +464,8 @@ export default async function Page({
         acceptedAnswer: {
           "@type": "Answer",
           text: it
-            ? "Aiutiamo con passaporti italiani, appuntamenti per la CIE, National Insurance Number, iscrizione AIRE, orientamento abitativo e segnalazione servizi di salute mentale."
-            : "We help with Italian passports, ID card (CIE) appointments, National Insurance numbers, AIRE registration, housing guidance, and mental health signposting.",
+            ? "Aiutiamo con passaporti italiani, appuntamenti consolare/Prenot@Mi, CIE, iscrizione e aggiornamenti AIRE, controlli di percorso di cittadinanza per discendenza e traduzioni ufficiali collegate a pratiche consolari."
+            : "We help with Italian passports, consulate / Prenot@Mi appointments, CIE, AIRE registration and updates, citizenship-by-descent route checks and official translations connected to consular applications.",
         },
       },
       {
@@ -424,8 +474,8 @@ export default async function Page({
         acceptedAnswer: {
           "@type": "Answer",
           text: it
-            ? "No. Supportiamo italiani e tutte le persone migranti che vivono nel Regno Unito. La nostra community è inclusiva e aperta a tutti."
-            : "No. We support Italians and all migrants living in the UK. Our community is inclusive and open to everyone.",
+            ? "Lavoriamo soprattutto con italiani e famiglie con legami con l’Italia che vivono nel Regno Unito. Quando una pratica coinvolge un consolato italiano, possiamo valutare caso per caso anche richieste da altre persone."
+            : "We mainly support Italians and families with Italian ties living in the UK. When a case involves an Italian consulate, we can sometimes help others on a case-by-case basis.",
         },
       },
       {
@@ -434,18 +484,20 @@ export default async function Page({
         acceptedAnswer: {
           "@type": "Answer",
           text: it
-            ? "Sì. Pubbliciamo tariffe chiare senza costi nascosti e spieghiamo cosa è incluso prima di confermare."
-            : "Yes. We publish clear rates with no hidden fees and explain what’s included before you commit.",
+            ? "Sì. Pubbliciamo tariffe chiare senza costi nascosti e spieghiamo sempre cosa è incluso prima di confermare un servizio."
+            : "Yes. We publish clear rates with no hidden fees and always explain what’s included before confirming a service.",
         },
       },
       {
         "@type": "Question",
-        name: it ? "Siete un ente no profit o un’azienda?" : "Are you a charity or a business?",
+        name: it
+          ? "Siete un ente no profit o un’azienda?"
+          : "Are you a charity or a business?",
         acceptedAnswer: {
           "@type": "Answer",
           text: it
-            ? "Siamo una social business: valori di comunità e consegna professionale. Alcuni servizi sono gratuiti; quelli a pagamento sono chiaramente prezzati per sostenere il progetto."
-            : "We are a social business: community values with professional delivery. Some services are free; paid services are clearly priced to keep the project sustainable.",
+            ? "Siamo una social business: valori di comunità e consegna professionale. Alcune risorse sono gratuite; i servizi a pagamento sono prezzati in modo trasparente per mantenere sostenibile il progetto."
+            : "We are a social business: community values with professional delivery. Some resources are free; paid services are transparently priced to keep the project sustainable.",
         },
       },
     ],
@@ -454,10 +506,12 @@ export default async function Page({
   const howToJsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: it ? "Come ottenere supporto da Resinaro" : "How to get support from Resinaro",
+    name: it
+      ? "Come ottenere supporto da Resinaro"
+      : "How to get support from Resinaro",
     description: it
-      ? "Un percorso semplice in tre passi per ricevere aiuto con pratiche consolari e amministrative UK."
-      : "A simple three-step way to get help with consular and UK admin tasks.",
+      ? "Un percorso semplice in tre passi per ricevere aiuto con pratiche consolari italiane e amministrazione UK collegata."
+      : "A simple three-step way to get help with Italian consular tasks and related UK admin.",
     step: [
       {
         "@type": "HowToStep",
@@ -900,9 +954,7 @@ export default async function Page({
               href={`${prefix}/community/prenotami-uk-guide`}
               className="inline-flex h-9 items-center justify-center rounded-xl bg-white px-3 text-xs font-semibold text-emerald-900 ring-1 ring-slate-200 transition hover:ring-emerald-700"
             >
-              {it
-                ? "Apri la guida Prenot@Mi"
-                : "Open the Prenot@Mi guide"}
+              {it ? "Apri la guida Prenot@Mi" : "Open the Prenot@Mi guide"}
             </Link>
           </div>
         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { HomeReviewsSection } from "@/components/HomeReviewsSection";
 
 /* ---------- Anim helpers ---------- */
 const fadeUp = (delay = 0) => ({
@@ -608,6 +609,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* -------------------- REVIEWS SECTION (NEW) -------------------- */}
+      <HomeReviewsSection />
 
       {/* -------------------- BLOG FIRST -------------------- */}
       <section className="relative overflow-hidden">

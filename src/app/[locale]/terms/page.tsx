@@ -66,8 +66,9 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
             {isIt ? "Termini di Servizio" : "Terms of Service"}
           </h1>
           <div className="mt-2 text-sm text-gray-600">
-            {isIt ? "Ultimo aggiornamento" : "Last updated"}: 24 September 2025 ·{" "}
-            {isIt ? "Versione" : "Version"}: 2025.09
+            {isIt ? "Ultimo aggiornamento" : "Last updated"}:{" "}
+            {isIt ? "9 dicembre 2025" : "9 December 2025"} ·{" "}
+            {isIt ? "Versione" : "Version"}: 2025.12
           </div>
         </header>
 
@@ -81,32 +82,50 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                 </h2>
 
                 {isIt ? (
-                  <ul className="list-disc list-inside text-gray-700 mt-3 space-y-2" lang="it">
-                    <li>Usa i servizi Resinaro in modo lecito e fornisci informazioni accurate.</li>
+                  <ul
+                    className="list-disc list-inside text-gray-700 mt-3 space-y-2"
+                    lang="it"
+                  >
                     <li>
-                      I costi sono mostrati prima della prenotazione. I pagamenti sono gestiti da provider affidabili; Resinaro non
-                      conserva i dati completi della carta.
+                      Usa i servizi Resinaro in modo lecito e fornisci
+                      informazioni accurate.
                     </li>
                     <li>
-                      Forniamo guida ma non possiamo garantire esiti che dipendono da terzi (es. decisioni consolari).
+                      I costi sono mostrati prima della prenotazione. I
+                      pagamenti sono gestiti da provider affidabili; Resinaro
+                      non conserva i dati completi della carta.
                     </li>
                     <li>
-                      Per usare i servizi a pagamento devi accettare questi Termini; l’accettazione è registrata localmente e si gestisce
-                      dalle impostazioni dei cookie.
+                      Forniamo guida ma non possiamo garantire esiti che
+                      dipendono da terzi (es. decisioni consolari).
+                    </li>
+                    <li>
+                      Per usare i servizi a pagamento devi accettare questi
+                      Termini; l’accettazione è registrata localmente e si
+                      gestisce dalle impostazioni dei cookie.
                     </li>
                   </ul>
                 ) : (
-                  <ul className="list-disc list-inside text-gray-700 mt-3 space-y-2" lang="en">
-                    <li>Use Resinaro services lawfully and provide accurate information.</li>
+                  <ul
+                    className="list-disc list-inside text-gray-700 mt-3 space-y-2"
+                    lang="en"
+                  >
                     <li>
-                      Fees are shown before booking. Payments processed by trusted providers; card data is not stored by Resinaro.
+                      Use Resinaro services lawfully and provide accurate
+                      information.
                     </li>
                     <li>
-                      We provide guidance but cannot guarantee outcomes from third parties (for example consulate decisions).
+                      Fees are shown before booking. Payments processed by
+                      trusted providers; card data is not stored by Resinaro.
                     </li>
                     <li>
-                      You must accept these Terms to use paid services; acceptance is recorded locally and can be managed via the cookie
-                      settings.
+                      We provide guidance but cannot guarantee outcomes from
+                      third parties (for example consulate decisions).
+                    </li>
+                    <li>
+                      You must accept these Terms to use paid services;
+                      acceptance is recorded locally and can be managed via the
+                      cookie settings.
                     </li>
                   </ul>
                 )}
@@ -116,10 +135,15 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                     href="/assets/resinaro-terms-summary.pdf"
                     className="inline-block bg-white border rounded px-4 py-2 text-sm hover:bg-gray-50"
                   >
-                    {isIt ? "Scarica il riepilogo (PDF) su una pagina" : "Download one-page summary (PDF)"}
+                    {isIt
+                      ? "Scarica il riepilogo (PDF) su una pagina"
+                      : "Download one-page summary (PDF)"}
                   </a>
 
-                  <Link href={p(locale, "/cookies")} className="inline-block text-sm underline text-green-800">
+                  <Link
+                    href={p(locale, "/cookies")}
+                    className="inline-block text-sm underline text-green-800"
+                  >
                     {isIt ? "Gestisci i cookie" : "Manage cookies"}
                   </Link>
                 </div>
@@ -143,15 +167,26 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
               </h3>
               <nav className="text-sm text-gray-700 space-y-2">
                 {sections.map((s) => (
-                  <a key={s.id} href={`#${s.id}`} className="block hover:text-green-900 hover:underline">
+                  <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    className="block hover:text-green-900 hover:underline"
+                  >
                     {s.title}
                   </a>
                 ))}
               </nav>
 
               <div className="mt-4 text-xs text-gray-500">
-                <div>{isIt ? "Hai bisogno di aiuto a scegliere un servizio?" : "Need help choosing a service?"}</div>
-                <Link href={p(locale, "/contact")} className="underline text-green-800">
+                <div>
+                  {isIt
+                    ? "Hai bisogno di aiuto a scegliere un servizio?"
+                    : "Need help choosing a service?"}
+                </div>
+                <Link
+                  href={p(locale, "/contact")}
+                  className="underline text-green-800"
+                >
                   {isIt ? "Contattaci" : "Contact us"}
                 </Link>
               </div>
@@ -161,19 +196,25 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
           {/* Content */}
           <div className="md:col-span-3 space-y-6">
             {/* 1. Introduction */}
-            <article id="intro" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="intro"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 1. {isIt ? "Introduzione" : "Introduction"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  Questi Termini regolano il rapporto legale tra te e Resinaro. Usando il sito o i servizi di Resinaro accetti questi
-                  Termini. Se non li accetti, per favore non utilizzare i Servizi.
+                  Questi Termini regolano il rapporto legale tra te e Resinaro.
+                  Usando il sito o i servizi di Resinaro accetti questi Termini.
+                  Se non li accetti, per favore non utilizzare i Servizi.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  These Terms set out the legal relationship between you and Resinaro. By using Resinaro&apos;s website or services you
-                  accept these Terms. If you do not accept these Terms, please do not use the Services.
+                  These Terms set out the legal relationship between you and
+                  Resinaro. By using Resinaro&apos;s website or services you
+                  accept these Terms. If you do not accept these Terms, please
+                  do not use the Services.
                 </p>
               )}
 
@@ -182,32 +223,74 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Questi Termini regolano l’accesso e l’uso del sito e dei servizi di Resinaro. Usando i Servizi accetti integralmente
-                    questi Termini, che costituiscono un accordo tra te e Resinaro.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Questi Termini di Servizio regolano l’accesso e l’uso del
+                    sito e dei servizi di Resinaro (i &quot;Servizi&quot;).
+                    Usando i Servizi accetti integralmente questi Termini, che
+                    costituiscono un accordo vincolante tra te e Resinaro in
+                    relazione ai Servizi descritti su questo sito.
+                    <br />
+                    <br />
+                    Ai fini di questi Termini, &quot;Resinaro&quot; indica un{" "}
+                    servizio di supporto con sede nel Regno Unito che fornisce
+                    assistenza pratica a italiani e altri migranti nel Regno
+                    Unito. I termini &quot;noi&quot;, &quot;ci&quot; e
+                    &quot;nostro&quot; si riferiscono a Resinaro; &quot;tu&quot;
+                    indica la persona fisica che utilizza i Servizi come
+                    consumatore.
+                    <br />
+                    <br />
+                    Per utilizzare i nostri Servizi a pagamento devi avere almeno
+                    18 anni, oppure usufruirne con il consenso e sotto la
+                    supervisione di un genitore o tutore legale.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    These Terms of Service govern your access to and use of Resinaro&apos;s website and services (the Services). By using
-                    the Services you accept and agree to these Terms. They form a binding agreement between you and Resinaro in relation
-                    to the Services described on this site.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    These Terms of Service govern your access to and use of
+                    Resinaro&apos;s website and services (the &quot;Services&quot;).
+                    By using the Services you accept and agree to these Terms.
+                    They form a binding agreement between you and Resinaro in
+                    relation to the Services described on this site.
+                    <br />
+                    <br />
+                    For the purposes of these Terms, &quot;Resinaro&quot; means
+                    a UK-based support service providing practical assistance to
+                    Italian and other migrants in the UK. &quot;We&quot;,
+                    &quot;us&quot; and &quot;our&quot; refer to Resinaro; &quot;you&quot;
+                    means the individual using the Services as a consumer.
+                    <br />
+                    <br />
+                    You must be at least 18 years old, or be using our paid
+                    Services with the consent and supervision of a parent or
+                    legal guardian, to use our paid Services.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 2. Services */}
-            <article id="services" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="services"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 2. {isIt ? "I nostri Servizi" : "Our Services"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  Resinaro offre supporto pratico per migranti nel Regno Unito su temi consolari, identità, casa e benefici.
+                  Resinaro offre supporto pratico per migranti nel Regno Unito
+                  su temi consolari, identità, casa e benefici.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Resinaro provides practical guidance and assistance to migrants in the UK across consular, identity, housing and
+                  Resinaro provides practical guidance and assistance to
+                  migrants in the UK across consular, identity, housing and
                   benefits topics.
                 </p>
               )}
@@ -217,33 +300,66 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    I servizi sono erogati in modo professionale e confidenziale. Quando presentiamo terze parti (es. consulenti legali,
-                    traduttori o provider di identità) si tratta solo di presentazioni: Resinaro non controlla gli standard dei terzi e
-                    non è responsabile della loro prestazione.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    I servizi sono erogati in modo professionale e confidenziale.
+                    Quando presentiamo terze parti (es. consulenti legali,
+                    traduttori o provider di identità) si tratta solo di
+                    presentazioni: Resinaro non controlla gli standard dei terzi
+                    e non è responsabile della loro prestazione.
+                    <br />
+                    <br />
+                    I Servizi hanno natura informativa e pratica e non
+                    costituiscono consulenza legale, di immigrazione, finanziaria
+                    o altra consulenza professionale. Non ti rappresentiamo
+                    direttamente nei confronti delle autorità; resti responsabile
+                    delle tue decisioni e di verificare i requisiti presso gli
+                    enti competenti o, se necessario, con un professionista
+                    qualificato.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    Services are delivered professionally and confidentially. Where Resinaro introduces third parties (for example legal
-                    advisers, translators, or identity providers), such introductions are only introductions: Resinaro does not control
-                    third party standards and is not responsible for their performance.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    Services are delivered professionally and confidentially.
+                    Where Resinaro introduces third parties (for example legal
+                    advisers, translators, or identity providers), such
+                    introductions are only introductions: Resinaro does not
+                    control third party standards and is not responsible for
+                    their performance.
+                    <br />
+                    <br />
+                    The Services are informational and practical in nature and do
+                    not constitute legal, immigration, financial or other
+                    professional advice. We do not represent you directly before
+                    authorities; you remain responsible for your own decisions
+                    and for checking requirements with the relevant bodies or a
+                    suitably qualified adviser where needed.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 3. Eligibility */}
-            <article id="eligibility" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="eligibility"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 3. {isIt ? "Idoneità e tuoi impegni" : "Eligibility and your commitments"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: fornisci informazioni accurate e utilizza i servizi in modo lecito.
+                  In breve: fornisci informazioni accurate e utilizza i servizi
+                  in modo lecito.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: provide accurate information and use services lawfully.
+                  Short summary: provide accurate information and use services
+                  lawfully.
                 </p>
               )}
               <details className="mt-2">
@@ -251,32 +367,47 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Dichiari di avere capacità di contrarre e che le informazioni fornite sono accurate e aggiornate. Fornirai le
-                    informazioni ragionevolmente necessarie per il servizio richiesto e userai i Servizi solo per scopi leciti.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Dichiari di avere capacità di contrarre e che le informazioni
+                    fornite sono accurate e aggiornate. Fornirai le informazioni
+                    ragionevolmente necessarie per il servizio richiesto e userai
+                    i Servizi solo per scopi leciti.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    You represent that you are able to enter into a contract and that any information you provide is accurate and up to
-                    date. You agree to provide all information reasonably required to deliver the requested service and to use the
-                    Services for lawful purposes only.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    You represent that you are able to enter into a contract and
+                    that any information you provide is accurate and up to date.
+                    You agree to provide all information reasonably required to
+                    deliver the requested service and to use the Services for
+                    lawful purposes only.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 4. Fees */}
-            <article id="fees" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="fees"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 4. {isIt ? "Tariffe, pagamenti e fatturazione" : "Fees, payment and billing"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: i costi sono chiari alla prenotazione; i pagamenti sono processati da provider affidabili.
+                  In breve: i costi sono chiari alla prenotazione; i pagamenti
+                  sono processati da provider affidabili.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: fees are clear at booking; payments processed by trusted providers.
+                  Short summary: fees are clear at booking; payments processed by
+                  trusted providers.
                 </p>
               )}
               <details className="mt-2">
@@ -284,32 +415,48 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Quando è previsto un costo, sarà indicato chiaramente prima della conferma. Il pagamento è anticipato salvo diverso
-                    accordo scritto. Usiamo processori di pagamento affidabili; Resinaro non conserva i dati completi della carta.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Quando è previsto un costo, sarà indicato chiaramente prima
+                    della conferma. Il pagamento è anticipato salvo diverso
+                    accordo scritto. Usiamo processori di pagamento affidabili;
+                    Resinaro non conserva i dati completi della carta.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    When a fee applies we will make the fee clear before you confirm booking. Payment is required in advance unless
-                    otherwise agreed in writing. We use reputable third party payment processors to handle card payments; Resinaro does
-                    not store full payment card details.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    When a fee applies we will make the fee clear before you
+                    confirm booking. Payment is required in advance unless
+                    otherwise agreed in writing. We use reputable third party
+                    payment processors to handle card payments; Resinaro does not
+                    store full payment card details.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 5. Refunds */}
-            <article id="refunds" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="refunds"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 5. {isIt ? "Cancellazioni e rimborsi" : "Cancellations and refunds"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: i rimborsi dipendono dal servizio e dal lavoro già svolto.
+                  In breve: i rimborsi dipendono dal servizio e dal lavoro già
+                  svolto. I dettagli completi sono nella nostra Politica di
+                  Rimborso e Credito.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: refunds depend on service and work completed.
+                  Short summary: refunds depend on the service and work
+                  completed. Full details are in our Refund &amp; Credit Policy.
                 </p>
               )}
               <details className="mt-2">
@@ -317,34 +464,81 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Se il servizio è stato completato o il lavoro è iniziato, il rimborso può essere ridotto per riflettere l’attività
-                    già svolta. In caso di nostro errore, offriremo un rimedio che può includere rimborso o credito. I dettagli specifici
-                    sono indicati al momento dell’acquisto o nella conferma.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Se il servizio è stato completato o il lavoro è iniziato, il
+                    rimborso può essere ridotto per riflettere l’attività già
+                    svolta. In caso di nostro errore, offriremo un rimedio che
+                    può includere rimborso o credito. I dettagli specifici sono
+                    indicati al momento dell’acquisto o nella conferma.
+                    <br />
+                    <br />
+                    La nostra{" "}
+                    <Link
+                      href={p(locale, "/refund-policy")}
+                      className="underline text-green-800"
+                    >
+                      Politica di Rimborso e Credito
+                    </Link>{" "}
+                    fa parte integrante di questi Termini per i servizi a
+                    pagamento e descrive in modo più dettagliato come funzionano
+                    annullamenti, crediti e rimborsi, incluso il tuo diritto di
+                    recesso di 14 giorni per contratti a distanza secondo la
+                    legge dei consumatori del Regno Unito. In caso di
+                    incoerenza, per i servizi ai consumatori prevarrà la
+                    Politica di Rimborso e Credito.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    If a Service is fully delivered or work has started, refunds may be reduced to reflect work already completed. If
-                    Resinaro fails to deliver an agreed service due to our error, we will offer a remedy which may include a refund or a
-                    credit toward other Services. Specific refund terms will be set out at the point of sale or in the booking
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    If a Service is fully delivered or work has started, refunds
+                    may be reduced to reflect work already completed. If
+                    Resinaro fails to deliver an agreed service due to our
+                    error, we will offer a remedy which may include a refund or
+                    a credit toward other Services. Specific refund terms will
+                    be set out at the point of sale or in the booking
                     confirmation.
+                    <br />
+                    <br />
+                    Our{" "}
+                    <Link
+                      href={p(locale, "/refund-policy")}
+                      className="underline text-green-800"
+                    >
+                      Refund &amp; Credit Policy
+                    </Link>{" "}
+                    forms part of these Terms for paid Services and explains in
+                    more detail how cancellations, credits and refunds work,
+                    including your 14-day cooling-off rights under UK consumer
+                    law for distance and off-premises contracts. If there is any
+                    inconsistency, the Refund &amp; Credit Policy will apply for
+                    consumer services.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 6. Safeguarding */}
-            <article id="safeguarding" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="safeguarding"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 6. {isIt ? "Tutela & dovere di protezione" : "Safeguarding & duty of care"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: diamo priorità alla sicurezza e agiamo in caso di rischi.
+                  In breve: diamo priorità alla sicurezza e agiamo in caso di
+                  rischi.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: we prioritise safety and will act on safeguarding concerns.
+                  Short summary: we prioritise safety and will act on
+                  safeguarding concerns.
                 </p>
               )}
               <details className="mt-2">
@@ -352,34 +546,52 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Resinaro tutela la sicurezza degli utenti. Se riteniamo che qualcuno sia a rischio di danno, abuso o sfruttamento,
-                    potremmo effettuare una segnalazione alle autorità competenti. Adotteremo misure ragionevoli per proteggere i dati,
-                    dando priorità alla sicurezza. Segnalazioni: resinaro@proton.me.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Resinaro tutela la sicurezza degli utenti. Se riteniamo che
+                    qualcuno sia a rischio di danno, abuso o sfruttamento,
+                    potremmo effettuare una segnalazione alle autorità
+                    competenti. Adotteremo misure ragionevoli per proteggere i
+                    dati, dando priorità alla sicurezza. Segnalazioni:
+                    resinaro@proton.me.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    Resinaro is committed to the safety and welfare of service users. If any member of our team believes someone may be
-                    at risk of harm, abuse or exploitation we may make a safeguarding referral to relevant statutory agencies in line
-                    with applicable guidance. We will take reasonable steps to protect personal data in these circumstances while
-                    prioritising safety. To report a safeguarding concern contact resinaro@proton.me.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    Resinaro is committed to the safety and welfare of service
+                    users. If any member of our team believes someone may be at
+                    risk of harm, abuse or exploitation we may make a
+                    safeguarding referral to relevant statutory agencies in line
+                    with applicable guidance. We will take reasonable steps to
+                    protect personal data in these circumstances while
+                    prioritising safety. To report a safeguarding concern
+                    contact resinaro@proton.me.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 7. Privacy */}
-            <article id="privacy" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="privacy"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 7. {isIt ? "Riservatezza & protezione dati" : "Confidentiality & data protection"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: trattiamo i dati personali secondo la nostra Privacy Policy.
+                  In breve: trattiamo i dati personali secondo la nostra
+                  Privacy Policy.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: personal information is handled per our Privacy Policy.
+                  Short summary: personal information is handled per our Privacy
+                  Policy.
                 </p>
               )}
               <details className="mt-2">
@@ -387,32 +599,61 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Trattiamo i dati personali in modo confidenziale e secondo la nostra Privacy Policy. Usando i Servizi acconsenti alla
-                    raccolta, conservazione e uso dei dati come descritto nella Privacy Policy.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Trattiamo i dati personali in modo confidenziale e li
+                    trattiamo in conformità con la nostra{" "}
+                    <Link
+                      href={p(locale, "/privacy-policy")}
+                      className="underline text-green-800"
+                    >
+                      Informativa sulla Privacy
+                    </Link>
+                    . L&apos;informativa spiega in dettaglio quali dati
+                    raccogliamo, come li utilizziamo e le basi giuridiche su cui
+                    si fonda il trattamento. Ti invitiamo a leggerla con
+                    attenzione.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    We treat personal information as confidential and process personal data in accordance with our Privacy Policy. By
-                    using the Services you consent to the collection, storage and use of your personal data as described in the Privacy
-                    Policy.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    We treat personal information as confidential and process
+                    personal data in accordance with our{" "}
+                    <Link
+                      href={p(locale, "/privacy-policy")}
+                      className="underline text-green-800"
+                    >
+                      Privacy Policy
+                    </Link>
+                    . It explains in more detail what data we collect, how we
+                    use it and the legal bases we rely on. Please read it
+                    carefully.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 8. Liability */}
-            <article id="liability" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="liability"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 8. {isIt ? "Limitazione di responsabilità" : "Limitation of liability"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: forniamo guida, ma gli esiti dipendono spesso da terzi e non sono garantiti.
+                  In breve: forniamo guida, ma gli esiti dipendono spesso da
+                  terzi e non sono garantiti.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: guidance is provided but outcomes depending on third parties cannot be guaranteed.
+                  Short summary: guidance is provided but outcomes depending on
+                  third parties cannot be guaranteed.
                 </p>
               )}
               <details className="mt-2">
@@ -420,34 +661,51 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Forniamo supporto ma non possiamo garantire esiti che dipendono da terzi (es. uffici pubblici/consolati). Nei limiti
-                    di legge, Resinaro non risponde di perdite indirette o conseguenziali. Nulla esclude la responsabilità per morte o
-                    lesioni personali da nostra negligenza o per frode.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Forniamo supporto ma non possiamo garantire esiti che
+                    dipendono da terzi (es. uffici pubblici/consolati). Nei
+                    limiti di legge, Resinaro non risponde di perdite indirette
+                    o conseguenziali. Nulla esclude la responsabilità per morte
+                    o lesioni personali da nostra negligenza o per frode.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    Resinaro provides guidance and support but cannot guarantee outcomes which depend on third parties, including
-                    government departments and consular offices. To the fullest extent permitted by law, Resinaro will not be liable for
-                    indirect, special or consequential losses arising from your use of the Services. Nothing in these Terms excludes
-                    liability for death or personal injury caused by our negligence or for fraud.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    Resinaro provides guidance and support but cannot guarantee
+                    outcomes which depend on third parties, including government
+                    departments and consular offices. To the fullest extent
+                    permitted by law, Resinaro will not be liable for indirect,
+                    special or consequential losses arising from your use of the
+                    Services. Nothing in these Terms excludes liability for
+                    death or personal injury caused by our negligence or for
+                    fraud.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 9. Complaints */}
-            <article id="complaints" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="complaints"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 9. {isIt ? "Reclami & controversie" : "Complaints & disputes"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: scrivi a resinaro@proton.me — obiettivo di riscontro: 3 giorni lavorativi.
+                  In breve: scrivi a resinaro@proton.me — obiettivo di
+                  riscontro: 3 giorni lavorativi.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: contact resinaro@proton.me — acknowledgement target: 3 business days.
+                  Short summary: contact resinaro@proton.me — acknowledgement
+                  target: 3 business days.
                 </p>
               )}
               <details className="mt-2">
@@ -455,33 +713,49 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Se non sei soddisfatto, scrivi a resinaro@proton.me. Miriamo a dare riscontro entro tre giorni lavorativi e a
-                    risolvere rapidamente. Se la controversia non si risolve informalmente, potrà essere avviata mediazione o azione
-                    giudiziaria come previsto dai Termini.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Se non sei soddisfatto, scrivi a resinaro@proton.me. Miriamo
+                    a dare riscontro entro tre giorni lavorativi e a risolvere
+                    rapidamente. Se la controversia non si risolve informalmente,
+                    potrà essere avviata mediazione o azione giudiziaria come
+                    previsto dai Termini.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    If you are unhappy with a part of our service contact resinaro@proton.me. We aim to acknowledge complaints within
-                    three business days and to resolve them promptly. Where a dispute cannot be resolved informally the matter may be
-                    referred to mediation or the courts as set out in these Terms.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    If you are unhappy with a part of our service contact
+                    resinaro@proton.me. We aim to acknowledge complaints within
+                    three business days and to resolve them promptly. Where a
+                    dispute cannot be resolved informally the matter may be
+                    referred to mediation or the courts as set out in these
+                    Terms.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 10. Changes */}
-            <article id="changes" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="changes"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 10. {isIt ? "Modifiche ai Termini" : "Changes to these Terms"}
               </h2>
               {isIt ? (
                 <p className="text-gray-700 mb-2" lang="it">
-                  In breve: pubblichiamo gli aggiornamenti in questa pagina; l’uso continuato vale come accettazione.
+                  In breve: pubblichiamo gli aggiornamenti in questa pagina;
+                  l’uso continuato vale come accettazione.
                 </p>
               ) : (
                 <p className="text-gray-700 mb-2" lang="en">
-                  Short summary: we will post updates on this page; continued use after changes equals acceptance.
+                  Short summary: we will post updates on this page; continued
+                  use after changes equals acceptance.
                 </p>
               )}
               <details className="mt-2">
@@ -489,14 +763,24 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    Potremmo aggiornare i Termini; pubblicheremo la versione aggiornata in questa pagina e la relativa data. In caso di
-                    modifiche sostanziali cercheremo di informarti; in alcuni casi potrebbe essere richiesta una nuova accettazione.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    Potremmo aggiornare i Termini; pubblicheremo la versione
+                    aggiornata in questa pagina e la relativa data. In caso di
+                    modifiche sostanziali cercheremo di informarti; in alcuni
+                    casi potrebbe essere richiesta una nuova accettazione.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    We may update these Terms from time to time. We will post the revised Terms on this page and update the last updated
-                    date accordingly. Where we make material changes we will attempt to notify users; in some cases re-acceptance may be
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    We may update these Terms from time to time. We will post
+                    the revised Terms on this page and update the last updated
+                    date accordingly. Where we make material changes we will
+                    attempt to notify users; in some cases re-acceptance may be
                     required.
                   </div>
                 )}
@@ -504,7 +788,10 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
             </article>
 
             {/* 11. Governing law */}
-            <article id="governing-law" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="governing-law"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 11. {isIt ? "Legge applicabile" : "Governing law"}
               </h2>
@@ -522,22 +809,35 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
                   {isIt ? "Leggi il testo completo" : "Read full text"}
                 </summary>
                 {isIt ? (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="it">
-                    I presenti Termini sono regolati dalla legge inglese e gallese. Le controversie saranno devolute alla giurisdizione
-                    esclusiva dei tribunali di Inghilterra e Galles, salvo diverse norme imperative.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="it"
+                  >
+                    I presenti Termini sono regolati dalla legge inglese e
+                    gallese. Le controversie saranno devolute alla giurisdizione
+                    esclusiva dei tribunali di Inghilterra e Galles, salvo
+                    diverse norme imperative.
                   </div>
                 ) : (
-                  <div className="mt-3 text-gray-700 leading-relaxed" lang="en">
-                    These Terms are governed by the laws of England and Wales. Any dispute arising out of or in connection with these
-                    Terms will be subject to the exclusive jurisdiction of the courts of England and Wales, save where mandatory laws
-                    require otherwise.
+                  <div
+                    className="mt-3 text-gray-700 leading-relaxed"
+                    lang="en"
+                  >
+                    These Terms are governed by the laws of England and Wales.
+                    Any dispute arising out of or in connection with these Terms
+                    will be subject to the exclusive jurisdiction of the courts
+                    of England and Wales, save where mandatory laws require
+                    otherwise.
                   </div>
                 )}
               </details>
             </article>
 
             {/* 12. Contact */}
-            <article id="contact" className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+            <article
+              id="contact"
+              className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm"
+            >
               <h2 className="text-2xl font-semibold text-green-900 mb-2">
                 12. {isIt ? "Contatti" : "Contact"}
               </h2>
@@ -553,7 +853,10 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
               <div className="mt-3 text-gray-700">
                 <div>
                   <strong>Email:</strong>{" "}
-                  <a href="mailto:resinaro@proton.me" className="text-green-800 underline">
+                  <a
+                    href="mailto:resinaro@proton.me"
+                    className="text-green-800 underline"
+                  >
                     resinaro@proton.me
                   </a>
                 </div>
@@ -563,13 +866,16 @@ export default function Terms({ params }: { params: { locale: "en" | "it" } }) {
             <div className="text-sm text-gray-500 mt-4">
               {isIt ? (
                 <p lang="it">
-                  Questi Termini non incidono sui tuoi diritti legali. Se una clausola è illecita o inapplicabile, sarà limitata o
-                  rimossa al minimo necessario e il resto dei Termini rimarrà valido.
+                  Questi Termini non incidono sui tuoi diritti legali. Se una
+                  clausola è illecita o inapplicabile, sarà limitata o rimossa
+                  al minimo necessario e il resto dei Termini rimarrà valido.
                 </p>
               ) : (
                 <p lang="en">
-                  These Terms do not affect your statutory rights. If any provision of these Terms is found unlawful or unenforceable,
-                  that provision will be limited or removed to the minimum extent necessary and the remainder of the Terms will remain in
+                  These Terms do not affect your statutory rights. If any
+                  provision of these Terms is found unlawful or unenforceable,
+                  that provision will be limited or removed to the minimum
+                  extent necessary and the remainder of the Terms will remain in
                   full force.
                 </p>
               )}

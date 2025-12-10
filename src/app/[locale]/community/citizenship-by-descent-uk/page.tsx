@@ -3,25 +3,43 @@ import Script from "next/script";
 import Image from "next/image";
 import Link from "next/link";
 import { type Locale } from "@/i18n";
+import { CitizenshipDescentSupportForm } from "@/components/CitizenshipDescentSupportForm";
 
 type PageParams = {
   params: { locale: Locale };
 };
+
+const PUBLISHED = "2025-12-01";
+const UPDATED = "2025-12-01";
+const READING_TIME_MINUTES = 11;
 
 const baseMetadata: Metadata = {
   title:
     "Italian Citizenship by Descent (Jure Sanguinis) from the UK (2025) – Practical Guide",
   description:
     "2025 guide to Italian citizenship by descent (jure sanguinis) from the UK: eligibility, Italian dual citizenship, UK & Italian documents, consulate procedures (London, Manchester, Edinburgh) and practical support with a £35 guide or £170 1:1 help.",
-  alternates: { canonical: "/community/citizenship-by-descent-uk" },
+  alternates: {
+    canonical: "/community/citizenship-by-descent-uk",
+    languages: {
+      en: "/en/community/citizenship-by-descent-uk",
+      it: "/it/community/citizenship-by-descent-uk",
+    },
+  },
   openGraph: {
     title:
       "Italian Citizenship by Descent (Jure Sanguinis) from the UK (2025) – Practical Guide",
     description:
       "Clear overview of Italian citizenship by descent and dual citizenship from the UK: who qualifies, how jure sanguinis works, documents checklist, timelines and practical support options.",
     type: "article",
-    url: "/community/citizenship-by-descent-uk",
-    images: ["/images/community/citizenship-descent-hero.jpg"],
+    url: "https://www.resinaro.com/community/citizenship-by-descent-uk",
+    images: [
+      {
+        url: "https://www.resinaro.com/images/community/citizenship-descent-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Italian passport, UK documents and laptop on a desk in the United Kingdom",
+      },
+    ],
   },
 };
 
@@ -50,74 +68,19 @@ export function generateMetadata({ params }: PageParams): Metadata {
   return baseMetadata;
 }
 
-const updatedDate = "2025-12-01";
-const readingTimeMinutes = 11;
-
-const tocItems = {
-  en: [
-    { id: "what-is", label: "1. What Italian citizenship by descent means" },
-    { id: "requirements", label: "2. Requirements for jure sanguinis" },
-    {
-      id: "how-to-apply-uk",
-      label: "3. How to apply from the UK (London, Manchester, Edinburgh)",
-    },
-    {
-      id: "documents-checklist",
-      label: "4. Documents checklist (Italy + UK)",
-    },
-    {
-      id: "timelines",
-      label: "5. How long Italian citizenship by descent takes",
-    },
-    { id: "support", label: "6. How Resinaro can help you" },
-    { id: "faq", label: "7. FAQ: Italian dual citizenship by descent" },
-  ],
-  it: [
-    {
-      id: "what-is",
-      label: "1. Cosa significa cittadinanza italiana per discendenza",
-    },
-    {
-      id: "requirements",
-      label: "2. Requisiti per la cittadinanza jure sanguinis",
-    },
-    {
-      id: "how-to-apply-uk",
-      label: "3. Come fare domanda dal Regno Unito",
-    },
-    {
-      id: "documents-checklist",
-      label: "4. Lista documenti (Italia + UK)",
-    },
-    {
-      id: "timelines",
-      label: "5. Tempi per la cittadinanza per discendenza",
-    },
-    {
-      id: "support",
-      label: "6. Come può aiutarti Resinaro",
-    },
-    {
-      id: "faq",
-      label: "7. FAQ: doppia cittadinanza per discendenza",
-    },
-  ],
-};
-
 export default function CitizenshipByDescentPage({ params }: PageParams) {
   const locale = params.locale ?? "en";
   const isIt = locale === "it";
   const t = isIt ? translations.it : translations.en;
-  const toc = isIt ? tocItems.it : tocItems.en;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: t.heroTitle,
     description: t.heroSubtitle,
-    inLanguage: locale,
-    dateModified: updatedDate,
-    datePublished: "2025-12-01",
+    inLanguage: isIt ? "it-IT" : "en-GB",
+    dateModified: UPDATED,
+    datePublished: PUBLISHED,
     author: {
       "@type": "Organization",
       name: "Resinaro",
@@ -130,10 +93,14 @@ export default function CitizenshipByDescentPage({ params }: PageParams) {
         url: "https://www.resinaro.com/images/logo-resinaro.png",
       },
     },
+    image: [
+      "https://www.resinaro.com/images/community/citizenship-descent-hero.jpg",
+    ],
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://www.resinaro.com/${locale}/community/citizenship-by-descent-uk`,
     },
+    articleSection: ["Citizenship", "Community"],
   };
 
   const faqJsonLd = {
@@ -149,6 +116,28 @@ export default function CitizenshipByDescentPage({ params }: PageParams) {
     })),
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: isIt ? "Community" : "Community",
+        item: "https://www.resinaro.com/community",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: isIt
+          ? "Cittadinanza per discendenza dal Regno Unito"
+          : "Italian citizenship by descent from the UK",
+        item:
+          "https://www.resinaro.com/community/citizenship-by-descent-uk",
+      },
+    ],
+  };
+
   return (
     <>
       <Script id="citizenship-descent-article-jsonld" type="application/ld+json">
@@ -157,389 +146,313 @@ export default function CitizenshipByDescentPage({ params }: PageParams) {
       <Script id="citizenship-descent-faq-jsonld" type="application/ld+json">
         {JSON.stringify(faqJsonLd)}
       </Script>
+      <Script
+        id="citizenship-descent-breadcrumb-jsonld"
+        type="application/ld+json"
+      >
+        {JSON.stringify(breadcrumbJsonLd)}
+      </Script>
 
-      <main className="bg-slate-50 pb-16 pt-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
-          {/* HERO */}
-          <header className="space-y-6">
-            <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
-              <span className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-sky-800 ring-1 ring-sky-100">
-                {t.heroTag}
-              </span>
-              <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-emerald-800 ring-1 ring-emerald-100">
-                {t.heroPill}
-              </span>
-            </div>
-
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-center">
-              <div className="space-y-4">
-                <h1 className="text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  {t.heroTitle}
-                </h1>
-                <p className="max-w-2xl text-sm sm:text-base text-slate-700">
-                  {t.heroSubtitle}
-                </p>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
-                  <span>
-                    {t.lastUpdatedLabel}{" "}
-                    {formatDateForLocale(updatedDate, locale)}
-                  </span>
-                  <span className="h-3 w-px bg-slate-300" />
-                  <span>
-                    {readingTimeMinutes} {t.minutes}
-                  </span>
-                </div>
-              </div>
-
-              <div className="relative h-52 w-full overflow-hidden rounded-3xl bg-slate-900/5 sm:h-64 lg:h-72">
-                <Image
-                  src="/images/community/citizenship-descent-hero.jpg"
-                  alt={
-                    isIt
-                      ? "Documenti e passaporto italiano su una scrivania nel Regno Unito"
-                      : "Italian passport, UK documents and laptop on a desk in the United Kingdom"
-                  }
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
-          </header>
-
-          {/* BODY: article + simple TOC (non-sticky) */}
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)]">
-            {/* ARTICLE */}
-            <article className="space-y-10">
-              {/* Service block */}
-              <section aria-labelledby="resinaro-support">
-                <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-sky-100 sm:p-6">
-                  <p
-                    id="resinaro-support"
-                    className="text-sm font-semibold text-sky-900"
-                  >
-                    {t.supportTitle}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-700">
-                    {t.supportIntro}
-                  </p>
-
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-xl bg-sky-50 p-4">
-                      <p className="text-[11px] font-semibold tracking-wide text-sky-900">
-                        £35 · {t.guideLabel}
-                      </p>
-                      <p className="mt-2 text-sm text-slate-800">
-                        {t.guideText}
-                      </p>
-                      <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-slate-700">
-                        {t.guideBullets.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={`/${locale}/contact?topic=citizenship-descent-guide`}
-                        className="mt-3 inline-flex items-center text-sm font-semibold text-sky-800 hover:text-sky-900"
-                      >
-                        {t.guideCta}
-                        <span aria-hidden="true" className="ml-1">
-                          →
-                        </span>
-                      </Link>
-                    </div>
-
-                    <div className="rounded-xl bg-slate-900 p-4 text-slate-50">
-                      <p className="text-[11px] font-semibold tracking-wide text-sky-100">
-                        £170 · {t.oneToOneLabel}
-                      </p>
-                      <p className="mt-2 text-sm text-slate-50">
-                        {t.oneToOneText}
-                      </p>
-                      <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-slate-100">
-                        {t.oneToOneBullets.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={`/${locale}/contact?topic=citizenship-descent-1-1`}
-                        className="mt-3 inline-flex items-center text-sm font-semibold text-slate-50 hover:text-white"
-                      >
-                        {t.oneToOneCta}
-                        <span aria-hidden="true" className="ml-1">
-                          →
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <p className="mt-3 text-[11px] text-slate-500">
-                    {t.disclaimerShort}
-                  </p>
-                </div>
-              </section>
-
-              {/* “Is this you?” emotional callout */}
-              <section aria-label={t.isThisYou.title}>
-                <div className="rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-100">
-                  <p className="text-xs font-semibold tracking-wide text-amber-900">
-                    {t.isThisYou.title}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-800">
-                    {t.isThisYou.intro}
-                  </p>
-                  <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-slate-800">
-                    {t.isThisYou.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={`/${locale}/contact?topic=citizenship-descent-1-1`}
-                    className="mt-3 inline-flex items-center text-sm font-semibold text-amber-900 hover:text-amber-950"
-                  >
-                    {t.isThisYou.cta}
-                    <span aria-hidden="true" className="ml-1">
-                      →
-                    </span>
-                  </Link>
-                </div>
-              </section>
-
-              {/* MAIN SECTIONS */}
-
-              <section
-                id="what-is"
-                className="border-t border-slate-200 pt-8"
-              >
-                <h2 className="text-lg font-semibold text-slate-900">
-                  {t.sections.whatIs.title}
-                </h2>
-                {t.sections.whatIs.paragraphs.map((p, i) => (
-                  <p key={i} className="mt-3 text-sm text-slate-700">
-                    {p}
-                  </p>
-                ))}
-              </section>
-
-              <section
-                id="requirements"
-                className="border-t border-slate-200 pt-8"
-              >
-                <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-100">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    {t.sections.requirements.title}
-                  </h2>
-                  <p className="mt-3 text-sm text-slate-700">
-                    {t.sections.requirements.intro}
-                  </p>
-                  <ul className="mt-3 list-disc space-y-1 pl-4 text-sm text-slate-700">
-                    {t.sections.requirements.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs text-slate-500">
-                    {t.sections.requirements.note}
-                  </p>
-                </div>
-              </section>
-
-              <section
-                id="how-to-apply-uk"
-                className="border-t border-slate-200 pt-8"
-              >
-                <div className="rounded-2xl bg-slate-900 p-5 text-slate-50">
-                  <h2 className="text-lg font-semibold">
-                    {t.sections.howToApply.title}
-                  </h2>
-                  <p className="mt-3 text-sm text-slate-100">
-                    {t.sections.howToApply.intro}
-                  </p>
-                  <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-slate-100">
-                    {t.sections.howToApply.steps.map((step, i) => (
-                      <li key={i}>{step}</li>
-                    ))}
-                  </ol>
-                  <p className="mt-3 text-xs text-slate-200">
-                    {t.sections.howToApply.note}
-                  </p>
-                </div>
-              </section>
-
-              <section
-                id="documents-checklist"
-                className="border-t border-slate-200 pt-8"
-              >
-                <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-100">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    {t.sections.documents.title}
-                  </h2>
-                  <p className="mt-3 text-sm text-slate-700">
-                    {t.sections.documents.intro}
-                  </p>
-
-                  <div className="mt-4 grid gap-4 md:grid-cols-2">
-                    <div className="rounded-xl bg-slate-50 p-4">
-                      <h3 className="text-sm font-semibold text-slate-900">
-                        {t.sections.documents.subtitles.italy}
-                      </h3>
-                      <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-slate-700">
-                        {t.sections.documents.italyItems.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="rounded-xl bg-slate-50 p-4">
-                      <h3 className="text-sm font-semibold text-slate-900">
-                        {t.sections.documents.subtitles.uk}
-                      </h3>
-                      <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-slate-700">
-                        {t.sections.documents.ukItems.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <p className="mt-3 text-xs text-slate-500">
-                    {t.sections.documents.note}
-                  </p>
-                </div>
-              </section>
-
-              <section
-                id="timelines"
-                className="border-t border-slate-200 pt-8"
-              >
-                <div className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-100">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    {t.sections.timelines.title}
-                  </h2>
-                  {t.sections.timelines.paragraphs.map((p, i) => (
-                    <p key={i} className="mt-3 text-sm text-slate-700">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-              </section>
-
-              <section id="support" className="border-t border-slate-200 pt-8">
-                <h2 className="text-lg font-semibold text-slate-900">
-                  {t.sections.support.title}
-                </h2>
-                <p className="mt-3 text-sm text-slate-700">
-                  {t.sections.support.intro}
-                </p>
-
-                <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-xl bg-sky-50 p-4">
-                    <h3 className="text-sm font-semibold text-slate-900">
-                      £35 · {t.sections.support.guideTitle}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-700">
-                      {t.sections.support.guideIntro}
-                    </p>
-                    <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-slate-700">
-                      {t.sections.support.guideItems.map((item, i) => (
-                        <li key={i}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="rounded-xl bg-slate-900 p-4 text-slate-50">
-                    <h3 className="text-sm font-semibold">
-                      £170 · {t.sections.support.oneToOneTitle}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-100">
-                      {t.sections.support.oneToOneIntro}
-                    </p>
-                    <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-slate-100">
-                      {t.sections.support.oneToOneItems.map((item, i) => (
-                        <li key={i}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <p className="mt-3 text-xs text-slate-500">
-                  {t.sections.support.note}
-                </p>
-              </section>
-
-              <section id="faq" className="border-t border-slate-200 pt-8">
-                <h2 className="text-lg font-semibold text-slate-900">
-                  {t.sections.faq.title}
-                </h2>
-                <div className="mt-4 space-y-3">
-                  {t.sections.faq.items.map((faq, i) => (
-                    <div
-                      key={i}
-                      className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-100"
-                    >
-                      <p className="text-sm font-semibold text-slate-900">
-                        {faq.q}
-                      </p>
-                      <p className="mt-1 text-sm text-slate-700">{faq.a}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Bottom CTA */}
-              <section className="border-t border-slate-200 pt-8">
-                <div className="rounded-2xl bg-sky-900 px-5 py-6 text-sm text-slate-50 sm:px-6 sm:py-7">
-                  <p className="text-base font-semibold">
-                    {t.bottomCta.title}
-                  </p>
-                  <p className="mt-1 text-sm text-sky-100">
-                    {t.bottomCta.text}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-3">
-                    <Link
-                      href={`/${locale}/contact?topic=citizenship-descent-1-1`}
-                      className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-sky-900 hover:bg-slate-100"
-                    >
-                      {t.bottomCta.primary}
-                    </Link>
-                    <Link
-                      href={`/${locale}/contact?topic=citizenship-descent-guide`}
-                      className="inline-flex items-center text-sm font-semibold text-sky-100 hover:text-white"
-                    >
-                      {t.bottomCta.secondary}
-                      <span aria-hidden="true" className="ml-1">
-                        →
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              </section>
-            </article>
-
-            {/* TOC – normal card, no sticky */}
-            <aside className="hidden lg:block">
-              <div className="space-y-4 rounded-2xl bg-white p-4 text-sm shadow-sm ring-1 ring-slate-100">
-                <div>
-                  <p className="text-xs font-semibold text-slate-500">
-                    {t.tocTitle}
-                  </p>
-                  <nav className="mt-2 space-y-2">
-                    {toc.map((item) => (
-                      <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className="block text-slate-600 hover:text-sky-800"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-                <div className="border-t border-slate-100 pt-3 text-xs text-slate-500">
-                  <p>{t.tocHint}</p>
-                </div>
-              </div>
-            </aside>
+      <main className="bg-[#F9F6F1] text-gray-800 antialiased">
+        {/* HERO – same vibe as the Italy-with-kids page */}
+        <section className="relative isolate overflow-hidden">
+          <div className="absolute inset-0 -z-10">
+            <Image
+              src="/images/community/citizenship-descent-hero.jpg"
+              alt={
+                isIt
+                  ? "Documenti e passaporto italiano su una scrivania nel Regno Unito"
+                  : "Italian passport, UK documents and laptop on a desk in the United Kingdom"
+              }
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/5" />
           </div>
-        </div>
+
+          <div className="relative mx-auto max-w-7xl px-6 pt-28 pb-32 sm:pt-32 md:pt-40 md:pb-40">
+            <div className="max-w-3xl">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+                <span className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 ring-1 ring-white/30">
+                  {t.heroTag}
+                </span>
+                <span className="inline-flex items-center rounded-full bg-emerald-500/80 px-3 py-1">
+                  {t.heroPill}
+                </span>
+              </div>
+
+              <h1 className="mt-4 text-4xl font-black leading-tight text-white drop-shadow md:text-5xl lg:text-6xl">
+                {t.heroTitle}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base text-white/90 md:text-lg">
+                {t.heroSubtitle}
+              </p>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-white/85">
+                <span>
+                  {t.lastUpdatedLabel}{" "}
+                  {formatDateForLocale(UPDATED, locale)}
+                </span>
+                <span className="opacity-60">•</span>
+                <span>
+                  {READING_TIME_MINUTES} {t.minutes}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#F9F6F1] to-transparent" />
+        </section>
+
+        {/* SUMMARY CARD */}
+        <section className="mx-auto mt-10 max-w-7xl px-6 md:mt-14">
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+            <p className="text-lg font-semibold text-emerald-800">
+              {t.summaryH}
+            </p>
+            <div className="mt-4 space-y-4 text-sm text-gray-800">
+              <p>
+                <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900">
+                  {t.s1Label}
+                </span>{" "}
+                {t.s1Text}
+              </p>
+              <p>
+                <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900">
+                  {t.s2Label}
+                </span>{" "}
+                {t.s2Text}
+              </p>
+              <p>
+                <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900">
+                  {t.s3Label}
+                </span>{" "}
+                {t.s3Text}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* “Is this you?” emotional callout */}
+        <section className="mx-auto mt-10 max-w-7xl px-6">
+          <div className="rounded-3xl border border-amber-200 bg-amber-50 p-6 shadow-sm md:p-8">
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-900">
+              {t.isThisYou.title}
+            </p>
+            <p className="mt-2 text-sm text-gray-800">
+              {t.isThisYou.intro}
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-gray-800">
+              {t.isThisYou.items.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+            <Link
+              href={`/${locale}/contact?topic=citizenship-descent-1-1`}
+              className="mt-4 inline-flex items-center text-sm font-semibold text-amber-900 hover:text-amber-950"
+            >
+              {t.isThisYou.cta}
+              <span aria-hidden="true" className="ml-1">
+                →
+              </span>
+            </Link>
+          </div>
+        </section>
+
+        {/* WHAT IT IS */}
+        <section id="what-is" className="mx-auto mt-14 max-w-7xl px-6">
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.sections.whatIs.title}
+            </h2>
+            {t.sections.whatIs.paragraphs.map((p, i) => (
+              <p key={i} className="mt-3 text-sm text-gray-700">
+                {p}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        {/* REQUIREMENTS */}
+        <section id="requirements" className="mx-auto mt-14 max-w-7xl px-6">
+          <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.sections.requirements.title}
+            </h2>
+            <p className="mt-3 text-sm text-gray-800">
+              {t.sections.requirements.intro}
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-gray-800">
+              {t.sections.requirements.items.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-gray-700">
+              {t.sections.requirements.note}
+            </p>
+          </div>
+        </section>
+
+        {/* HOW TO APPLY */}
+        <section id="how-to-apply-uk" className="mx-auto mt-14 max-w-7xl px-6">
+          <div className="rounded-3xl border border-gray-800/10 bg-gray-900 p-6 text-sm text-gray-100 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-white">
+              {t.sections.howToApply.title}
+            </h2>
+            <p className="mt-3 text-sm text-gray-100">
+              {t.sections.howToApply.intro}
+            </p>
+            <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-gray-100">
+              {t.sections.howToApply.steps.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ol>
+            <p className="mt-4 text-xs text-gray-200">
+              {t.sections.howToApply.note}
+            </p>
+          </div>
+        </section>
+
+        {/* DOCUMENTS CHECKLIST */}
+        <section
+          id="documents-checklist"
+          className="mx-auto mt-14 max-w-7xl px-6"
+        >
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.sections.documents.title}
+            </h2>
+            <p className="mt-3 text-sm text-gray-700">
+              {t.sections.documents.intro}
+            </p>
+
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl bg-gray-50 p-4">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  {t.sections.documents.subtitles.italy}
+                </h3>
+                <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-gray-800">
+                  {t.sections.documents.italyItems.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl bg-gray-50 p-4">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  {t.sections.documents.subtitles.uk}
+                </h3>
+                <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-gray-800">
+                  {t.sections.documents.ukItems.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <p className="mt-4 text-xs text-gray-700">
+              {t.sections.documents.note}
+            </p>
+          </div>
+        </section>
+
+        {/* TIMELINES */}
+        <section id="timelines" className="mx-auto mt-14 max-w-7xl px-6">
+          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.sections.timelines.title}
+            </h2>
+            {t.sections.timelines.paragraphs.map((p, i) => (
+              <p key={i} className="mt-3 text-sm text-gray-700">
+                {p}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        {/* SUPPORT SECTION + PAYMENT FORM */}
+        <section
+          id="support"
+          className="mx-auto mt-16 max-w-7xl px-6"
+        >
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_.9fr]">
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm md:p-8">
+              <h2 className="text-2xl font-bold text-gray-900">
+                {t.sections.support.title}
+              </h2>
+              <p className="mt-3 text-sm text-gray-800">
+                {t.sections.support.intro}
+              </p>
+
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-emerald-100">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    £35 · {t.sections.support.guideTitle}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-700">
+                    {t.sections.support.guideIntro}
+                  </p>
+                  <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-gray-700">
+                    {t.sections.support.guideItems.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl bg-gray-900 p-4 text-gray-50 shadow-sm">
+                  <h3 className="text-sm font-semibold">
+                    £170 · {t.sections.support.oneToOneTitle}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-100">
+                    {t.sections.support.oneToOneIntro}
+                  </p>
+                  <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-gray-100">
+                    {t.sections.support.oneToOneItems.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <p className="mt-4 text-xs text-emerald-900/90">
+                {t.sections.support.note}
+              </p>
+            </div>
+
+            <CitizenshipDescentSupportForm
+              locale={isIt ? "it" : "en"}
+            />
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="mx-auto mt-16 max-w-7xl px-6">
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.sections.faq.title}
+            </h2>
+            <div className="mt-4 space-y-3">
+              {t.sections.faq.items.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-sm"
+                >
+                  <summary className="cursor-pointer select-none text-sm font-semibold text-gray-900">
+                    {faq.q}
+                  </summary>
+                  <p className="mt-2 text-sm text-gray-700">
+                    {faq.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Bottom spacer */}
+        <div className="h-20" />
       </main>
     </>
   );
@@ -555,6 +468,17 @@ const translations = {
       "A clear, non-legal overview of Italian citizenship by descent (jure sanguinis) and Italian dual citizenship for people living in the United Kingdom: who can qualify, how the process works via the Italian consulates in London, Manchester and Edinburgh, what documents you usually need and how to avoid wasting time and money.",
     lastUpdatedLabel: "Last updated:",
     minutes: "min read",
+    summaryH:
+      "Quick summary — Italian citizenship by descent from the UK",
+    s1Label: "1) Check if the line roughly works",
+    s1Text:
+      "Map your family line to an Italian-born ancestor and check basic rules on naturalisation and maternal lines before paying for certificates.",
+    s2Label: "2) Collect the right documents in the right order",
+    s2Text:
+      "Start with certificates that prove the direct line; only then move on to extras like police checks, translations and apostilles.",
+    s3Label: "3) Expect a long process, not a quick hack",
+    s3Text:
+      "Timelines are measured in months or years, so a tidy file and realistic expectations are more valuable than one “magic” document.",
     supportTitle: "How Resinaro can support you",
     supportIntro:
       "We don’t promise miracles and we can’t guarantee recognition. What we can do is help you stop guessing: understand the rules, organise your documents and build a realistic plan before you spend more money.",
@@ -580,7 +504,8 @@ const translations = {
       "Resinaro is not a law firm and cannot give legal advice or guarantee citizenship. We focus on practical support with documents, organisation and communication with the authorities.",
     isThisYou: {
       title: "Does this sound like you?",
-      intro: "If you recognise yourself in at least one of these, you’re not alone:",
+      intro:
+        "If you recognise yourself in at least one of these, you’re not alone:",
       items: [
         "You’ve read ten different posts about Italian citizenship by descent and they all say something slightly different.",
         "You’re scared of ordering the wrong UK certificates, translations or apostilles and wasting hundreds of pounds.",
@@ -588,18 +513,11 @@ const translations = {
       ],
       cta: "Send us a quick summary of your case",
     },
-    tocTitle: "On this page",
-    tocHint:
-      "Use this as orientation only. Before you act, always double-check the latest instructions on your Italian consulate’s website.",
-    bottomCta: {
-      title: "Turn a vague idea into a clear, organised file.",
-      text: "Tell us briefly about your family line and where you are in the process. We’ll tell you honestly whether the £35 guide, the £170 1:1 package or something else is the best next step.",
-      primary: "Talk to Resinaro about my case",
-      secondary: "Read the £35 guide first",
-    },
     sections: {
+      /* (unchanged section content from your existing file) */
       whatIs: {
-        title: "1. What Italian citizenship by descent (jure sanguinis) means",
+        title:
+          "1. What Italian citizenship by descent (jure sanguinis) means",
         paragraphs: [
           "“Italian citizenship by descent” – also called jure sanguinis – is based on the idea that Italian citizenship passes down through the blood line from parent to child. When you apply, you are not asking for a “new” citizenship but asking Italy to recognise that, on paper, you have always been Italian through your ancestry.",
           "In practice, you try to show an uninterrupted line from you back to an Italian ancestor using birth, marriage and (sometimes) death certificates. Authorities look at when and where that ancestor was born, whether they became a citizen of another country, and whether that naturalisation happened before or after the birth of the next person in the line.",
@@ -607,7 +525,8 @@ const translations = {
         ],
       },
       requirements: {
-        title: "2. Requirements for Italian citizenship by descent (simplified)",
+        title:
+          "2. Requirements for Italian citizenship by descent (simplified)",
         intro:
           "Only the Italian authorities can give you a definitive answer, but most jure sanguinis routes involve checks like:",
         items: [
@@ -662,7 +581,8 @@ const translations = {
           "The goal is not just to collect random documents, but to have the right ones, in the right format, with names and dates that make sense together. Small discrepancies can sometimes be explained, but it is better to discover them early rather than at the consulate counter.",
       },
       timelines: {
-        title: "5. How long does Italian citizenship by descent take from the UK?",
+        title:
+          "5. How long does Italian citizenship by descent take from the UK?",
         paragraphs: [
           "There is no single guaranteed timeline. People online will mention one or two years; others will talk about much longer waits. The reality is that timeframes depend on your consulate (London, Manchester or Edinburgh), the comune in Italy and the complexity of your family history.",
           "In very rough terms, you can expect months just to collect and legalise documents, plus many more months – sometimes years – of waiting once your file is with the authorities. This is exactly why it is worth getting your documents right the first time and avoiding preventable delays.",
@@ -674,7 +594,8 @@ const translations = {
           "6. How Resinaro can help with Italian citizenship by descent from the UK",
         intro:
           "Resinaro exists for people in the UK who are stuck between Italian rules and British paperwork. We don’t decide who qualifies and we don’t replace lawyers or the consulate, but we can make the administrative side much less painful.",
-        guideTitle: "written guide – Italian citizenship by descent from the UK",
+        guideTitle:
+          "written guide – Italian citizenship by descent from the UK",
         guideIntro:
           "If you’re still at the research stage, the written guide is usually the safest starting point:",
         guideItems: [
@@ -730,6 +651,17 @@ const translations = {
       "Una panoramica chiara – non legale – sulla cittadinanza italiana per discendenza (jure sanguinis) e sulla doppia cittadinanza per chi vive nel Regno Unito: chi può avere diritto, come funziona la procedura tramite i consolati italiani di Londra, Manchester ed Edimburgo, quali documenti servono e come evitare di sprecare tempo e soldi.",
     lastUpdatedLabel: "Ultimo aggiornamento:",
     minutes: "min di lettura",
+    summaryH:
+      "Riassunto veloce — cittadinanza per discendenza dal Regno Unito",
+    s1Label: "1) Verifica se la linea regge in teoria",
+    s1Text:
+      "Disegna la linea fino all’antenato nato in Italia e controlla, a grandi linee, regole su naturalizzazioni e linee materne prima di spendere per certificati.",
+    s2Label: "2) Raccogli i documenti giusti, nell’ordine giusto",
+    s2Text:
+      "Parti dagli atti che dimostrano la linea diretta; solo dopo passa a certificati penali, traduzioni e apostille.",
+    s3Label: "3) Considera un percorso lungo, non un trucco veloce",
+    s3Text:
+      "I tempi si misurano in mesi o anni: una pratica ordinata e aspettative realistiche valgono più del “documento magico”.",
     supportTitle: "Come può aiutarti Resinaro",
     supportIntro:
       "Non promettiamo miracoli e non possiamo garantire il riconoscimento. Possiamo però aiutarti a smettere di andare a tentoni: capire le regole, sistemare i documenti e costruire un piano realistico prima di spendere altri soldi.",
@@ -755,7 +687,8 @@ const translations = {
       "Resinaro non è uno studio legale e non offre pareri giuridici né garanzie di cittadinanza. Ci occupiamo di supporto pratico su documenti, organizzazione e comunicazione con le autorità.",
     isThisYou: {
       title: "Ti rivedi in questa situazione?",
-      intro: "Se ti riconosci almeno in uno di questi punti, sei in buona compagnia:",
+      intro:
+        "Se ti riconosci almeno in uno di questi punti, sei in buona compagnia:",
       items: [
         "Hai letto dieci post diversi sulla cittadinanza per discendenza e ognuno dice qualcosa di leggermente diverso.",
         "Hai paura di ordinare i certificati UK sbagliati, pagare traduzioni inutili o apostille non richieste e buttare via centinaia di sterline.",
@@ -763,16 +696,8 @@ const translations = {
       ],
       cta: "Mandaci due righe sulla tua situazione",
     },
-    tocTitle: "In questa guida",
-    tocHint:
-      "Usa l’indice per orientarti. Prima di fare passi concreti, controlla sempre le indicazioni aggiornate del consolato competente.",
-    bottomCta: {
-      title: "Trasforma un’idea vaga in una pratica ordinata.",
-      text: "Raccontaci in breve la tua linea familiare e a che punto sei. Ti diremo in modo onesto se ha più senso partire dalla guida da £35, dal pacchetto 1:1 da £170 o da altro.",
-      primary: "Parla con Resinaro del tuo caso",
-      secondary: "Leggi prima la guida da £35",
-    },
     sections: {
+      /* same Italian sections as in your current file – kept intact */
       whatIs: {
         title:
           "1. Cosa significa cittadinanza italiana per discendenza (jure sanguinis)",
