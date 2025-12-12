@@ -52,8 +52,8 @@ function copyFor(locale: Locale) {
       ? "Prenota una traduzione certificata"
       : "Book a certified translation",
     desc: it
-      ? "Inserisci email e numero di telefono/WhatsApp, scegli quante pagine ti servono e procedi al pagamento sicuro direttamente su questa pagina. Dopo il pagamento ti scriviamo noi per chiederti i documenti da tradurre e i dettagli del consolato / autorità."
-      : "Add your email and phone/WhatsApp number, choose how many pages you need translated and complete secure payment on this page. After payment we’ll email you to collect the documents and consulate/authority details.",
+      ? "Inserisci email e numero di telefono/WhatsApp, scegli quante pagine ti servono e procedi al pagamento sicuro direttamente su questa pagina. Dopo il pagamento ti chiediamo un documento da tradurre e per quando ti serve."
+      : "Add your email and phone/WhatsApp number, choose how many pages you need translated and complete secure payment on this page. After payment we’ll ask you for the document and your deadline.",
 
     emailLabel: it ? "Email *" : "Email *",
     phoneLabel: it ? "Telefono / WhatsApp *" : "Phone / WhatsApp *",
@@ -69,22 +69,16 @@ function copyFor(locale: Locale) {
     option1: it
       ? "1 pagina – £18 tutto incluso (traduzione + dichiarazione firmata + posta UK 48h)"
       : "1 page – £18 all-in (translation + signed declaration + UK 48h post)",
-    option2: it
-      ? "2 pagine – £24 tutto incluso"
-      : "2 pages – £24 all-in",
-    option3: it
-      ? "3 pagine – £26 tutto incluso"
-      : "3 pages – £26 all-in",
-    option4: it
-      ? "4 pagine – £30 tutto incluso"
-      : "4 pages – £30 all-in",
+    option2: it ? "2 pagine – £24 tutto incluso" : "2 pages – £24 all-in",
+    option3: it ? "3 pagine – £26 tutto incluso" : "3 pages – £26 all-in",
+    option4: it ? "4 pagine – £30 tutto incluso" : "4 pages – £30 all-in",
 
     startNowLabel: it
       ? "Chiedo a Resinaro di iniziare subito a lavorare su questa traduzione."
       : "I ask Resinaro to start working on this translation immediately.",
     coolingOff: it
       ? "Capisco di avere 14 giorni di recesso, ma se annullo dopo l’inizio del lavoro potrete trattenere una parte proporzionata; una volta che la traduzione (PDF e/o copia cartacea) è stata consegnata entro 14 giorni, perdo il diritto di recesso."
-      : "I understand I have a 14-day cooling-off period, but if I cancel after work has started you may retain a proportionate amount; once the translation (PDF and/or hard copy) has been delivered within 14 days, I lose my right to cancel.",
+      : "I understand I have a 14-day cooling-off period, but if I cancel after work has started you may retain a proportionate amount; once the translation (PDF and/or hard copy) has been delivered within 14 days, I lose the right to cancel.",
     refundPrefix: it ? "Ho letto e accetto la" : "I have read and accept the",
     consentText: it
       ? "Acconsento al trattamento dei miei dati da parte di Resinaro per fornire questo servizio di traduzione."
@@ -174,6 +168,7 @@ export default function TranslationForm() {
   const [detailsSubmitting, setDetailsSubmitting] = useState(false);
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [bookingId, setBookingId] = useState<string | null>(null);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -222,6 +217,7 @@ export default function TranslationForm() {
     try {
       setDetailsSubmitting(true);
       const id = safeUUID();
+      setBookingId(id);
 
       const band = pageBand as PageBand;
       const price = PAGE_PRICES[band];
@@ -335,9 +331,7 @@ export default function TranslationForm() {
             {copy.pagesLabel} <span className="text-red-600">*</span>
             <select
               value={pageBand}
-              onChange={(e) =>
-                setPageBand(e.target.value as PageBand | "")
-              }
+              onChange={(e) => setPageBand(e.target.value as PageBand | "")}
               className="mt-1 block w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
             >
               <option value="">{copy.pagesPlaceholder}</option>
@@ -435,6 +429,12 @@ export default function TranslationForm() {
                 : "bg-emerald-700 text-emerald-50 shadow-emerald-700/40 hover:bg-emerald-800"
             }`}
           >
+            {detailsSubmitting && (
+              <span className="-ml-1 mr-2 inline-flex h-4 w-4 items-center justify-center">
+                {/* Animated loading circle */}
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-emerald-100 border-t-emerald-600" />
+              </span>
+            )}
             {detailsSubmitting ? copy.detailsPreparing : copy.detailsCta}
           </button>
           {pageBand && (
@@ -472,6 +472,7 @@ export default function TranslationForm() {
         copy={copy}
         pageBand={pageBand as PageBand}
         amountLabel={amountLabel}
+        bookingId={bookingId!}
         error={error}
         setError={setError}
         onBack={() => {
@@ -491,6 +492,7 @@ function TranslationPaymentStep({
   copy,
   pageBand,
   amountLabel,
+  bookingId,
   error,
   setError,
   onBack,
@@ -499,6 +501,7 @@ function TranslationPaymentStep({
   copy: ReturnType<typeof copyFor>;
   pageBand: PageBand;
   amountLabel: string;
+  bookingId: string;
   error: string | null;
   setError: (val: string | null) => void;
   onBack: () => void;
@@ -530,10 +533,16 @@ function TranslationPaymentStep({
         return;
       }
 
-      const returnUrl =
+      const base =
         typeof window !== "undefined"
-          ? `${window.location.origin}/services/translation?paid=1`
-          : "https://www.resinaro.com/services/translation?paid=1";
+          ? window.location.origin
+          : "https://www.resinaro.com";
+
+      const onboardingPath = p(locale, "/services/translation/onboarding");
+
+      const returnUrl = `${base}${onboardingPath}?paid=1&ref=${encodeURIComponent(
+        bookingId,
+      )}&pages=${encodeURIComponent(pageBand)}`;
 
       const { error: stripeErr } = await stripe.confirmPayment({
         elements,

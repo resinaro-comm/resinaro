@@ -111,7 +111,7 @@ function getServices(locale: "en" | "it"): Service[] {
         : ["Consulate bookings (London/Manchester)", "Document pack checks", "Urgent support"],
       fee: "£35",
       path: "/services/passport",
-      turnaround: "1–3 weeks",
+      turnaround: "1–2 weeks",
       badge: t.featuredBadgePopular,
       image: "/images/passportreg.png",
     },
@@ -244,7 +244,7 @@ function getServices(locale: "en" | "it"): Service[] {
       bullets: isIt
         ? ["Partner traduttori certificati", "Opzioni rapide", "Formattazione per uso ufficiale"]
         : ["Certified translator partners", "Fast turnaround options", "Formatting for official use"],
-      fee: "£35",
+      fee: "£18",
       path: "/services/translation",
       turnaround: "1–3 weeks",
       image: "/images/service-passport.png",
