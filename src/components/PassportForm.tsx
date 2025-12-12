@@ -451,13 +451,20 @@ export default function PassportForm() {
           <button
             type="submit"
             disabled={detailsSubmitDisabled}
-            className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold ${
               detailsSubmitDisabled
                 ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
                 : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
             }`}
           >
-            {detailsSubmitting ? copy.detailsPreparing : copy.detailsCta}
+            {detailsSubmitting ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-200 border-t-emerald-50" />
+                <span>{copy.detailsPreparing}</span>
+              </>
+            ) : (
+              copy.detailsCta
+            )}
           </button>
           <p className="mt-1 text-[11px] text-zinc-500">
             {locale === "it"
@@ -551,9 +558,13 @@ function PassportPaymentStep({
           ? window.location.origin
           : "https://www.resinaro.com";
 
-      const returnUrl = `${base}/services/passport?paid=1&ref=${encodeURIComponent(
+      // locale-aware onboarding path, e.g. /en/services/passport/onboarding
+      const onboardingPath = p(locale, "/services/passport/onboarding");
+
+      // include qty so onboarding knows how many person cards to show
+      const returnUrl = `${base}${onboardingPath}?paid=1&ref=${encodeURIComponent(
         bookingId,
-      )}`;
+      )}&qty=${sel.qty}`;
 
       const { error: stripeErr } = await stripe.confirmPayment({
         elements,
@@ -568,8 +579,7 @@ function PassportPaymentStep({
         return;
       }
 
-      // For cards with 3DS / Klarna / Clearpay etc, Stripe will now
-      // handle any redirects and then send the user to return_url.
+      // For cards with 3DS / Klarna / Clearpay etc, Stripe handles redirects
     } catch (err) {
       const msg =
         err instanceof Error && err.message ? err.message : copy.errGeneric;
@@ -645,13 +655,20 @@ function PassportPaymentStep({
         <button
           type="submit"
           disabled={paying || !stripe || !elements}
-          className={`inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold ${
+          className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold ${
             paying || !stripe || !elements
               ? "cursor-not-allowed border border-zinc-300 bg-zinc-100 text-zinc-500"
               : "border border-emerald-700 bg-emerald-700 text-emerald-50 shadow-sm shadow-emerald-700/40 hover:bg-emerald-800"
           }`}
         >
-          {paying ? copy.payProcessing : payLabel}
+          {paying ? (
+            <>
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-200 border-t-emerald-50" />
+              <span>{copy.payProcessing}</span>
+            </>
+          ) : (
+            payLabel
+          )}
         </button>
         <p className="mt-1 text-[11px] text-zinc-500">
           {copy.paymentSecurityNote}
